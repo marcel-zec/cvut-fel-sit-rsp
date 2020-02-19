@@ -1,3 +1,0 @@
-# RSProject
-
-Projekt na RSP.
