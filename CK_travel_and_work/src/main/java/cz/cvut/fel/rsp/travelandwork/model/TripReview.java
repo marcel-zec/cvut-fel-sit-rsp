@@ -1,8 +1,6 @@
 package cz.cvut.fel.rsp.travelandwork.model;
 
 
-import org.graalvm.compiler.lir.LIRInstruction;
-
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
