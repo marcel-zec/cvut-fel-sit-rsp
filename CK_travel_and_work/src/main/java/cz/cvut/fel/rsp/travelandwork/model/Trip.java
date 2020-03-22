@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.util.List;
 
 @Entity
 @Table(name = "TRIP")
@@ -16,12 +17,6 @@ public class Trip extends AbstractEntity {
     @Size(max = 255, min = 3, message = "Name have to be min 3 and max 255 characters.")
     @NotBlank(message = "Name have to be min 3 and max 255 characters.")
     private String name;
-
-    @Basic(optional = false)
-    @Column(nullable = false)
-    @Min(value = 0, message = "Min 0")
-    @Max(value = 3000, message = "Max 3000")
-    private double price;
 
     @Basic(optional = false)
     @Column(nullable = false, unique = true)
@@ -45,6 +40,14 @@ public class Trip extends AbstractEntity {
     @Max(value = 5, message = "Max 5")
     private double rating;
 
+    @OrderBy("from ASC")
+    @OneToMany(mappedBy = "trip")
+    private List<TripSession> sessions;
+
+    @OrderBy("date ASC")
+    @OneToMany(mappedBy = "trip")
+    private List<TripReview> reviews;
+
     public Trip() {
     }
 
@@ -54,14 +57,6 @@ public class Trip extends AbstractEntity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
     }
 
     public Integer getPossible_xp_reward() {

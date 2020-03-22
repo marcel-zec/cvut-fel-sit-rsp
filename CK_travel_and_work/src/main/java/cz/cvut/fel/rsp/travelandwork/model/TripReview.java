@@ -1,10 +1,9 @@
 package cz.cvut.fel.rsp.travelandwork.model;
 
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import org.graalvm.compiler.lir.LIRInstruction;
+
+import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
@@ -28,6 +27,15 @@ public class TripReview extends AbstractEntity {
     @Min(value = 0, message = "Min 0")
     @Max(value = 5, message = "Max 5")
     private double rating;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    //TODO - pridat do User @OneToMany(mappedBy = "author")
+    private User author;
+
+    @ManyToOne
+    @JoinColumn(name = "trip_id", nullable = false)
+    private Trip trip;
 
     public TripReview() {
         date = LocalDateTime.now();
