@@ -1,9 +1,5 @@
 package cz.cvut.fel.rsp.travelandwork.model;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.validator.constraints.Range;
-
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.List;
@@ -32,7 +28,8 @@ public class Trip extends AbstractEntity {
     @Basic(optional = false)
     @Column(nullable = false)
     @Size(max = 12, message = "Max length is 12.")
-    private Integer phone_number;
+    //TODO - regex na cisla
+    private String phone_number;
 
     @Basic(optional = false)
     @Column(nullable = false)
@@ -75,11 +72,11 @@ public class Trip extends AbstractEntity {
         this.description = description;
     }
 
-    public Integer getPhone_number() {
+    public String getPhone_number() {
         return phone_number;
     }
 
-    public void setPhone_number(Integer phone_number) {
+    public void setPhone_number(String phone_number) {
         this.phone_number = phone_number;
     }
 
