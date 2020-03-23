@@ -15,4 +15,12 @@ public class Category extends AbstractEntity{
     @Column(nullable = false, length = 30)
     @NotBlank(message = "Name of category cannot be blank")
     private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

@@ -49,24 +49,13 @@ public class UserController {
 
     }
 
-    @PostMapping(value = "/trips/trip/signUp", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> signUpToTrip(@RequestBody Trip trip) {
-        //return new ResponseEntity<>(headers, HttpStatus.SUCCESS);
-        return null;
-    }
-
-    @PostMapping(value = "/trips/trip/checkOut", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> checkOuFromTrip(@RequestBody Trip trip) {
-        //return new ResponseEntity<>(headers, HttpStatus.SUCCESS);
-        return null;
-    }
 
     @GetMapping(value = "/trips", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void showTripHistory(@RequestBody Trip trip) {
+    public void showTripHistory(@RequestBody User user) {
 
     }
 
-    @GetMapping(value = "/trips", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/currentUser", produces = MediaType.APPLICATION_JSON_VALUE)
     public void showUserDetails(@RequestBody User user) {
 
     }

@@ -23,5 +23,45 @@ public class Achievement extends AbstractEntity{
     private Category category;
 
     @ManyToMany
-    List<TravelJournal> ownedTravelJournals;
+    private List<TravelJournal> ownedTravelJournals;
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public int getImage() {
+        return image;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public List<TravelJournal> getOwnedTravelJournals() {
+        return ownedTravelJournals;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setImage(int image) {
+        this.image = image;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public void setOwnedTravelJournals(List<TravelJournal> ownedTravelJournals) {
+        this.ownedTravelJournals = ownedTravelJournals;
+    }
 }
