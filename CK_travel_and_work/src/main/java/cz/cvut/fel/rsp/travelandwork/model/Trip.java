@@ -4,14 +4,13 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.List;
 
-@Entity
-@Table(name = "TRIP")
+
 public class Trip extends AbstractEntity {
 
     @Basic(optional = false)
     @Column(nullable = false, length = 255)
-    @Size(max = 255, min = 3, message = "Name have to be min 3 and max 255 characters.")
-    @NotBlank(message = "Name have to be min 3 and max 255 characters.")
+    @Size(max = 255, min = 3, message = "Name has to be from 3 to 255 characters.")
+    @NotBlank(message = "Name has to be from 3 to 255 characters.")
     private String name;
 
     @Basic(optional = false)

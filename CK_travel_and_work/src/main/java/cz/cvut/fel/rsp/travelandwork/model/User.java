@@ -2,6 +2,7 @@ package cz.cvut.fel.rsp.travelandwork.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -48,6 +49,12 @@ public abstract class User extends AbstractEntity {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Address address;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private TravelJournal travelJournal;
 
     public User() {
     }
@@ -109,6 +116,11 @@ public abstract class User extends AbstractEntity {
     public String getEmail() {
         return email;
     }
+
+    public void encodePassword(PasswordEncoder encoder) {
+        this.password = encoder.encode(password);
+    }
+
 
 //    public UserRole getUserRole() {
 //        return userRole;
