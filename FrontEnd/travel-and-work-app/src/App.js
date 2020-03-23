@@ -1,25 +1,39 @@
-import React, { useEffect } from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import React from 'react';
+import logo from './logo.svg';
+import './App.css';
 //na routovanie v aplikacii
-import Router from "./Router";
-//kniznica na HTTP dotazy
-import axios from "axios";
-import Home from "./Components/Home";
-import Navigation from "./Components/Navigation";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-class App extends React.Component {
-    render() {
-        return (
-            //obalia sa vsetky komponenty, ktore maju zvladat routovanie
+function App() {
+  return (
+    //obalia sa vsetky komponenty, ktore maju zvladat routovanie
+    <Router>
+        <Switch>   
+                {/*Global*/}
+                <Route path="/login" exact component={Login} />
+                <Route path="/logout" exact component={Logout} />
+                {/*User*/}
+                <Route path="/register" exact component={Register} />
+                <Route path="/" exact component={Home} />
+                <Route path="/profile" component={Profile} />
+                <Route path="/trips" component={TripList} />
+                <Route path="/trips/:id" component={Trip} />
+                <Route path="/trips/history" component={TripHistoryList} />
+                <Route path="/trips/history/:id" component={TripHistory} />
+        </Switch>    
 
-            <div className="App">
-                <Navigation />
-                {/* router z Router.js */}
-                <Router />
-            </div>
-        );
-    }
+    <div className="App">
+      <header className="App-header">
+        <h1>Ahojky</h1>
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Aplikacia hotova. Môžeme odovzdavať! 
+        </p>
+      </header>
+    </div>
+
+    </Router>
+  );
 }
 
 export default App;
