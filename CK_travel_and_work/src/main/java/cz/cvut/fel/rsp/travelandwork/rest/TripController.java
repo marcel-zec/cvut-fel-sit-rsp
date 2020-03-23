@@ -2,6 +2,7 @@ package cz.cvut.fel.rsp.travelandwork.rest;
 
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
 import cz.cvut.fel.rsp.travelandwork.model.Trip;
+import cz.cvut.fel.rsp.travelandwork.service.TripService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,9 +15,11 @@ import java.util.HashMap;
 @RequestMapping("/trip")
 public class TripController {
 
-    @Autowired
-    public TripController() {
+    private TripService tripService;
 
+    @Autowired
+    public TripController(TripService tripService) {
+        this.tripService = tripService;
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -25,30 +28,32 @@ public class TripController {
     }
 
     @GetMapping(value = "/{identificator}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void get(@PathVariable String identifictor) {
+    public void get(@PathVariable Long identificator) {
 
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void create() {
+    public void create(@RequestBody Trip trip) {
 
     }
 
-    @PostMapping(value = "/{identificator}")
-    public void update(@PathVariable String identifictor) throws NotFoundException{
+    @PatchMapping(value = "/{identificator}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void update(@PathVariable Long identificator) throws NotFoundException{
 
     }
 
     @DeleteMapping(value = "/{identificator}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable String identifictor) throws NotFoundException {
+    public void delete(@PathVariable Long identificator) throws NotFoundException {
 
     }
 
-    @PostMapping(value = "/{identificator}")
-    public ResponseEntity<Void> signUpToTrip(@RequestBody Trip trip) {
+    @PostMapping(value = "/{identificator}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void signUpToTrip(@PathVariable Long identificator) {
+        //ResponseEntity<Void>
         //return new ResponseEntity<>(headers, HttpStatus.SUCCESS);
-        return null;
+        tripService.signUpToTrip(identificator);
     }
 
     @GetMapping(value = "/trips", produces = MediaType.APPLICATION_JSON_VALUE)

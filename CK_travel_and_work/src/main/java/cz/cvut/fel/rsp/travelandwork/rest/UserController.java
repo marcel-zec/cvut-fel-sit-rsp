@@ -44,8 +44,8 @@ public class UserController {
 
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> update(@RequestBody User user) {
+    @PatchMapping(value = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody User user) {
         return null;
     }
 

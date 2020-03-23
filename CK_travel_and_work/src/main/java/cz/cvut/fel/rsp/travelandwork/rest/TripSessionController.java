@@ -25,14 +25,14 @@ public class TripSessionController {
 
     }
 
-    @PostMapping(value = "/{identificator}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void update(@PathVariable String identifictor) throws NotFoundException{
+    @PatchMapping(value = "/{identificator}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void update(@PathVariable Long identifictor) throws NotFoundException{
 
     }
 
     @DeleteMapping(value = "/{identificator}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable String identifictor) throws NotFoundException {
+    public void delete(@PathVariable Long identifictor) throws NotFoundException {
 
     }
 }

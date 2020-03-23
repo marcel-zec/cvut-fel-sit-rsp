@@ -4,7 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.List;
 
-
+@Entity
 public class Trip extends AbstractEntity {
 
     @Basic(optional = false)

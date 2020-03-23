@@ -32,7 +32,7 @@ public class Enrollment extends AbstractEntity {
     private Trip trip;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "trip_id", nullable = false)
+    @JoinColumn(name = "tripSession_id", nullable = false)
     private TripSession tripSession;
 
 

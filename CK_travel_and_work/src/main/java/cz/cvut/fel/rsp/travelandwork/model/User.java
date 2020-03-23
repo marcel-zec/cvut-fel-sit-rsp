@@ -54,7 +54,7 @@ public abstract class User extends AbstractEntity {
     private Address address;
 
     @OneToOne(cascade = CascadeType.ALL)
-    private TravelJournal travelJournal;
+    private TravelJournal travel_journal;
 
     public User() {
     }
