@@ -6,9 +6,10 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+        <h1>Ahojky</h1>
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Aplikacia hotova. Môžeme odovzdavať!
+          Aplikacia hotova. Môžeme odovzdavať! 
         </p>
       </header>
     </div>
