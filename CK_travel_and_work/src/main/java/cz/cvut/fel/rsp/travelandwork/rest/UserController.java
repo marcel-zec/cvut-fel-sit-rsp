@@ -33,44 +33,17 @@ public class UserController {
     }
 
 
-
-    //TODO - od Marcela - presunute do TripControlerra a odstranený requestbody lebo to vieme zistit
-//    @GetMapping(value = "/trips", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public void showAllTrips(@RequestBody User user) {
-//
-//    }
-
-    //TODO - od Marcela - to je otázka či to budeme mať jak osobitné dotazy alebo to budeme filtrovať na frontende, ale ak to bude jak dotaz tak som to dal do TripControllera
-//    @GetMapping(value = "/tripsCantAfford", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public void showAllTripsCantAfford(@RequestBody User user) {
-//
-//    }
-//
-//    @GetMapping(value = "/tripsCanAfford", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public void showAllTripsCanAfford(@RequestBody User user) {
-//
-//    }
-
-    //TODO - od Marcela - tak ako sme pisali na Slacku, že to asi bude cez dotaz na trip jurnal
+    //TODO - najst sposob ako to budeme zobrazovat, ci cez TripJurnal alebo ce list Enrollments
 //    @GetMapping(value = "/trips", produces = MediaType.APPLICATION_JSON_VALUE)
 //    public void showTripHistory(@RequestBody User user) {
 //
 //    }
 
-    //TODO - od Marcela - len som dal preč requestbody lebo vieme zistit kto je prihlaseny
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public void showCurrentUser() {
 
     }
 
-    //TODO - od Marcela - nato môžeme používať SettingController z našej semestrálky z EAR
-//    //Upravit si svuj profil - heslo
-//    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<Void> changePassword(@RequestBody User user) {
-//        return null;
-//    }
-
-    //TODO - od Marcela - asi je zbytočné mať metoódu len na zmenu emailu, radšej na celý profil, tak som to len prepísal z changeEmail na update
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> update(@RequestBody User user) {
         return null;
