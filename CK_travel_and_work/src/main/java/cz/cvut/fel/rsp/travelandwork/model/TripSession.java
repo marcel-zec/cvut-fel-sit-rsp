@@ -13,11 +13,11 @@ public class TripSession extends AbstractEntity {
 
     @Basic(optional = false)
     @Column(nullable = false)
-    private LocalDateTime from;
+    private LocalDateTime fromDate;
 
     @Basic(optional = false)
     @Column(nullable = false)
-    private LocalDateTime to;
+    private LocalDateTime toDate;
 
     @Basic(optional = false)
     @Column(nullable = false)
@@ -32,19 +32,19 @@ public class TripSession extends AbstractEntity {
     public TripSession() {}
 
     public LocalDateTime getFrom() {
-        return from;
+        return fromDate;
     }
 
     public void setFrom(LocalDateTime from) {
-        this.from = from;
+        this.fromDate = from;
     }
 
     public LocalDateTime getTo() {
-        return to;
+        return toDate;
     }
 
     public void setTo(LocalDateTime to) {
-        this.to = to;
+        this.toDate = to;
     }
 
     public double getPrice() {

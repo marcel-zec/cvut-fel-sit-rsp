@@ -43,27 +43,27 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
-		 https://mvnrepository.com/artifact/org.hibernate/hibernate-core
+		<!--https://mvnrepository.com/artifact/org.hibernate/hibernate-core-->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>5.4.2.Final</version>
 		</dependency>
 
-		 PostgreSQL driver
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-		</dependency>
+		<!--PostgreSQL driver-->
+       <dependency>
+           <groupId>org.postgresql</groupId>
+           <artifactId>postgresql</artifactId>
+       </dependency>
 
-		 H2 database for tests
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>test</scope>
-		</dependency>
+		<!--H2 database for tests-->
+       <dependency>
+           <groupId>com.h2database</groupId>
+           <artifactId>h2</artifactId>
+           <scope>test</scope>
+       </dependency>
 
-		<!-- Will pull in Spring security-related dependencies -->
+       <!-- Will pull in Spring security-related dependencies -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
