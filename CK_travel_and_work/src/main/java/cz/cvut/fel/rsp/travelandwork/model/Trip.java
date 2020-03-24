@@ -47,6 +47,10 @@ public class Trip extends AbstractEntity {
     public Trip() {
     }
 
+    public Trip(String a) {
+        name = a;
+    }
+
     public String getName() {
         return name;
     }
