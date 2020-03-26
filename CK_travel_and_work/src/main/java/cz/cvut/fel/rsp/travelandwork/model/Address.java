@@ -36,6 +36,20 @@ public class Address extends AbstractEntity {
     @OneToOne(mappedBy = "address")
     private User user;
 
+    public Address(@NotBlank(message = "City cannot be blank") String city,
+                   @NotBlank(message = "Street cannot be blank") String street,
+                   int houseNumber,
+                   @NotBlank(message = "ZIP code cannot be blank") String zipCode,
+                   @NotBlank(message = "Country cannot be blank") String country,
+                   User user) {
+        this.city = city;
+        this.street = street;
+        this.houseNumber = houseNumber;
+        this.zipCode = zipCode;
+        this.country = country;
+        this.user = user;
+    }
+
     public String getCity() {
         return city;
     }

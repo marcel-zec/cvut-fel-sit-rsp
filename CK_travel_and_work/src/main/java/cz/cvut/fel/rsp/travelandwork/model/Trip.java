@@ -47,6 +47,16 @@ public class Trip extends AbstractEntity {
     public Trip() {
     }
 
+    public Trip(@Size(max = 255, min = 3, message = "Name has to be from 3 to 255 characters.")  @NotBlank(message = "Name has to be from 3 to 255 characters.") String name,
+                @Min(value = 0, message = "Min 0") @Max(value = 20, message = "Max 20") Integer possible_xp_reward,
+                @Size(max = 255, min = 0, message = "Max 255 characters.") String description,
+                @Size(max = 12, message = "Max length is 12.") String phone_number) {
+        this.name = name;
+        this.possible_xp_reward = possible_xp_reward;
+        this.description = description;
+        this.phone_number = phone_number;
+    }
+
     public String getName() {
         return name;
     }
