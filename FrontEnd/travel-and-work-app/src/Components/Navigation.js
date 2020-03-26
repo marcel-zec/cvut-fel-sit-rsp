@@ -8,6 +8,7 @@ import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import { Row, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { NavLink } from "react-router-dom";
 import {
     faTrophy,
     faPowerOff,
@@ -18,7 +19,7 @@ import {
 class Navigation extends React.Component {
     render() {
         return (
-            <Container>
+            <Container className="navigation">
                 <Navbar bg="light" expand="lg">
                     <Col>
                         <Navbar.Brand href="#home">
@@ -42,7 +43,9 @@ class Navigation extends React.Component {
                         <Col>
                             <Nav className="mr-auto">
                                 <Col>
-                                    <Nav.Link href="#home">Home</Nav.Link>
+                                    <Nav.Link>
+                                        <NavLink to="/profile">Home</NavLink>
+                                    </Nav.Link>
                                 </Col>
                                 <Col>
                                     <NavDropdown
