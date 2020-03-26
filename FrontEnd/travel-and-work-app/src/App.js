@@ -15,8 +15,8 @@ class App extends React.Component {
 
             <div className="App">
                 <Navigation />
-                {/* router z Router.js */}
                 <Router />
+                {/* router z Router.js */}
             </div>
         );
     }
