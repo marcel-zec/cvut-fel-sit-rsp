@@ -29,33 +29,30 @@ class Trip extends React.Component {
         return (
             <Link>
                 <Card className="p-3">
-                    <div className="position-relative">
-                        <Card.Header className="position-absolute">
-                            {this.props.trip.xp} xp
-                        </Card.Header>
-                        <Card.Img
-                            variant="top"
-                            src="https://images.unsplash.com/profile-1446404465118-3a53b909cc82?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&cs=tinysrgb&fit=crop&h=128&w=128&s=27a346c2362207494baa7b76f5d606e5"
-                        />
-                        <Card.Title
-                            className="position-absolute ml-4"
-                            style={{ bottom: "0" }}
-                        >
+                    <Card.Img
+                        variant="top"
+                        src="https://images.unsplash.com/profile-1446404465118-3a53b909cc82?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&cs=tinysrgb&fit=crop&h=128&w=128&s=27a346c2362207494baa7b76f5d606e5"
+                    />
+                    <Card.ImgOverlay className="d-flex flex-column justify-content-start align-items-start">
+                        <Card.Header>{this.props.trip.xp} xp</Card.Header>
+                        <Card.Title className="ml-3">
                             {this.props.trip.name}
                         </Card.Title>
-                    </div>
-                    <Card.Body></Card.Body>
-
-                    <Card.Footer>
+                    </Card.ImgOverlay>
+                    <Card.Body>
                         <Row>
-                            {this.props.trip.dateFrom} -{" "}
-                            {this.props.trip.dateTo}
+                            <Col className="d-flex flex-column align-items-center">
+                                <Row>
+                                    {this.props.trip.dateFrom}{" "}
+                                    {this.props.trip.dateTo}
+                                </Row>
+                                <Row>{reviewStars}</Row>
+                            </Col>
+                            <Col className="d-flex flex-column justify-content-center">
+                                {this.props.trip.price}
+                            </Col>
                         </Row>
-                        <Row>
-                            <Col>{reviewStars}</Col>
-                            <Col>{this.props.trip.price}</Col>
-                        </Row>
-                    </Card.Footer>
+                    </Card.Body>
                 </Card>
             </Link>
         );
