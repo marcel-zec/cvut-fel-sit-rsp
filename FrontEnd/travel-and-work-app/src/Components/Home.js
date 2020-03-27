@@ -26,7 +26,7 @@ class Home extends React.Component {
                 name: "Ndasmidas",
                 price: 1350,
                 xp: 20,
-                stars: 3,
+                stars: 1.5,
                 dateFrom: "1995-12-17",
                 dateTo: "1995-12-17"
             },
@@ -42,7 +42,7 @@ class Home extends React.Component {
                 name: "Mdmaoidsa",
                 price: 800,
                 xp: 5,
-                stars: 1,
+                stars: 2.5,
                 dateFrom: "1995-12-17",
                 dateTo: "1995-12-17"
             },
