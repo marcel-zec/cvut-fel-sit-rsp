@@ -22,6 +22,8 @@ class Profile extends React.Component {
             />
         );
 
+        console.log("profile");
+
         return (
             <Container>
                 <Row className={[flexRowWithMgBtn, marginTop]}>
@@ -48,19 +50,19 @@ class Profile extends React.Component {
                 </Container>
                 <Row className={flexRowWithMgBtn}>
                     <Col>
-                        <Link>
+                        <Link to="/profile/details">
                             <FontAwesomeIcon icon={faCog} size="4x" />
                             <h4>Profile</h4>
                         </Link>
                     </Col>
                     <Col>
-                        <Link>
+                        <Link to="/profile/achievments">
                             <FontAwesomeIcon icon={faTrophy} size="4x" />
                             <h4>My acheievments</h4>
                         </Link>
                     </Col>
                     <Col>
-                        <Link>
+                        <Link to="/profile/trips">
                             <FontAwesomeIcon icon={faSuitcase} size="4x" />
                             <h4>My trips</h4>
                         </Link>
