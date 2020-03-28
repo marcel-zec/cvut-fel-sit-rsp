@@ -57,7 +57,7 @@ public class Generator {
      * @return generated trip
      */
     public static Trip generateTrip() {
-       return new Trip("trip no." + randomInt(), randomInt(), "a really good trip", "12345678" + randomInt());
+       return new Trip("trip no." + randomInt(), randomInt(), "a really good trip", "12345678" + randomInt(), "trip" + randomInt());
     }
 
 
