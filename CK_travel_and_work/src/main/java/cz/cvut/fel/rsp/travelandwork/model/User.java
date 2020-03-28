@@ -15,7 +15,7 @@ import javax.validation.constraints.Size;
         @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username AND u.deleted_at is null")
 })
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class User extends AbstractEntity {
+public class User extends AbstractEntity {
 
     @Basic(optional = false)
     @Column(nullable = false, length = 30)
@@ -57,6 +57,15 @@ public abstract class User extends AbstractEntity {
     private TravelJournal travel_journal;
 
     public User() {
+    }
+
+    public User(String username, String password, String firstName, String lastName, String email, Role role){
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.role = role;
     }
 
     public User(@Size(max = 255, min = 3, message = "Username is in incorrect format.") String username,
@@ -121,8 +130,15 @@ public abstract class User extends AbstractEntity {
         this.password = encoder.encode(password);
     }
 
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
-//    public UserRole getUserRole() {
+    public void setTravel_journal(TravelJournal travel_journal) {
+        this.travel_journal = travel_journal;
+    }
+
+    //    public UserRole getUserRole() {
 //        return userRole;
 //    }
 //

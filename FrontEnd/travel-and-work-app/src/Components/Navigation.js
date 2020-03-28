@@ -6,47 +6,79 @@ import Form from "react-bootstrap/Form";
 import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
+import { Row, Col } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 class Navigation extends React.Component {
     render() {
         return (
-            <Container>
+            <Container className="navigation">
                 <Navbar bg="light" expand="lg">
-                    <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+                    <Col>
+                        <Navbar.Brand>
+                            <NavLink to="/">React-Bootstrap</NavLink>
+                        </Navbar.Brand>
+                    </Col>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="mr-auto">
-                            <Nav.Link href="#home">Home</Nav.Link>
-                            <Nav.Link href="#link">Link</Nav.Link>
-                            <NavDropdown
-                                title="Dropdown"
-                                id="basic-nav-dropdown"
-                            >
-                                <NavDropdown.Item href="#action/3.1">
-                                    Action
-                                </NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.2">
-                                    Another action
-                                </NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.3">
-                                    Something
-                                </NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href="#action/3.4">
-                                    Separated link
-                                </NavDropdown.Item>
-                            </NavDropdown>
-                        </Nav>
-                        <Form inline>
-                            <FormControl
-                                type="text"
-                                placeholder="Search"
-                                className="mr-sm-2"
-                            />
-                            <Button variant="outline-success">Search</Button>
-                        </Form>
+                        <Col xs={9}>
+                            <Form inline>
+                                <FormControl
+                                    type="text"
+                                    placeholder="Search"
+                                    className="mr-sm-2"
+                                />
+                                <Button variant="outline-success">
+                                    Search
+                                </Button>
+                            </Form>
+                        </Col>
+                        <Col>
+                            <Nav className="mr-auto">
+                                <Col>
+                                    <Nav.Link>
+                                        <NavLink to="/profile">Home</NavLink>
+                                    </Nav.Link>
+                                </Col>
+                                <Col>
+                                    <NavDropdown
+                                        title=""
+                                        id="basic-nav-dropdown"
+                                    >
+                                        <NavDropdown.Item>XP</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item>
+                                            <NavLink to="/profile/achievments">
+                                                My achievments{" "}
+                                                <FontAwesomeIcon icon="trophy" />
+                                            </NavLink>
+                                        </NavDropdown.Item>
+                                        <NavDropdown.Item>
+                                            <NavLink to="/profile/trips">
+                                                My trips
+                                                <FontAwesomeIcon icon="suitcase" />
+                                            </NavLink>
+                                        </NavDropdown.Item>
+                                        <NavDropdown.Item>
+                                            <NavLink to="/profile/details">
+                                                Settings
+                                                <FontAwesomeIcon icon="cog" />
+                                            </NavLink>
+                                        </NavDropdown.Item>
+                                        <NavDropdown.Item>
+                                            <NavLink to="/">
+                                                Log out
+                                                <FontAwesomeIcon icon="power-off" />
+                                            </NavLink>
+                                        </NavDropdown.Item>
+                                    </NavDropdown>
+                                </Col>
+                            </Nav>
+                        </Col>
                     </Navbar.Collapse>
                 </Navbar>
+                <Row></Row>
             </Container>
         );
     }
