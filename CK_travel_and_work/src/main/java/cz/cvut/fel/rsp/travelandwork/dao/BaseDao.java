@@ -95,8 +95,6 @@ public abstract class BaseDao<T extends AbstractEntity> implements GenericDao<T>
         }
     }
 
-
-
     @Override
     public boolean exists(Long id) {
         return id != null && em.find(type, id) != null;
