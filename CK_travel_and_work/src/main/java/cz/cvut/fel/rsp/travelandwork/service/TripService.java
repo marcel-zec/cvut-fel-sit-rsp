@@ -65,7 +65,6 @@ public class TripService {
 
         trip.setDescription(newTrip.getDescription());
         trip.setName(newTrip.getName());
-        trip.setPhone_number(newTrip.getPhone_number());
         trip.setPossible_xp_reward(newTrip.getPossible_xp_reward());
         trip.setRating(newTrip.getRating());
         tripDao.update(trip);

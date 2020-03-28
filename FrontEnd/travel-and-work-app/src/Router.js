@@ -6,7 +6,7 @@ import Profile from "./Components/Profile/Profile";
 import ProfileTrips from "./Components/Profile/Trips/ProfileTrips";
 import ProfileDetails from "./Components/Profile/ProfileDetails";
 import ProfileAchievments from "./Components/Profile/ProfileAchievments";
-import Trip from "./Components/Home/Trip";
+import TripSmall from "./Components/Home/TripSmall";
 import TripCreate from "./Components/TripCreate";
 import TripEdit from "./Components/TripEdit";
 import TripHistoryList from "./Components/TripHistoryList";
@@ -66,7 +66,7 @@ function Router(props) {
                 />
 
                 <Route path="/trips" exact component={TripList} />
-                <Route path="/trips/:id" component={Trip} />
+                <Route path="/trips/:id" component={TripSmall} />
                 <Route
                     path="/trips/history"
                     exact
