@@ -31,20 +31,10 @@ public class TripSession extends AbstractEntity {
 
     public TripSession() {}
 
-    public LocalDateTime getFrom() {
-        return fromDate;
-    }
-
-    public void setFrom(LocalDateTime from) {
-        this.fromDate = from;
-    }
-
-    public LocalDateTime getTo() {
-        return toDate;
-    }
-
-    public void setTo(LocalDateTime to) {
-        this.toDate = to;
+    public TripSession(LocalDateTime fromDate, LocalDateTime toDate, double price) {
+        this.fromDate = fromDate;
+        this.toDate = toDate;
+        this.price = price;
     }
 
     public double getPrice() {
@@ -53,5 +43,29 @@ public class TripSession extends AbstractEntity {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public LocalDateTime getFromDate() {
+        return fromDate;
+    }
+
+    public void setFromDate(LocalDateTime fromDate) {
+        this.fromDate = fromDate;
+    }
+
+    public LocalDateTime getToDate() {
+        return toDate;
+    }
+
+    public void setToDate(LocalDateTime toDate) {
+        this.toDate = toDate;
+    }
+
+    public Trip getTrip() {
+        return trip;
+    }
+
+    public void setTrip(Trip trip) {
+        this.trip = trip;
     }
 }

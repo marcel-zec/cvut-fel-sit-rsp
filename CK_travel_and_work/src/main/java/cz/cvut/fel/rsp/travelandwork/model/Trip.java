@@ -107,4 +107,12 @@ public class Trip extends AbstractEntity {
     public void setRating(double rating) {
         this.rating = rating;
     }
+
+    public List<TripSession> getSessions() {
+        return sessions;
+    }
+
+    public void setSessions(List<TripSession> sessions) {
+        this.sessions = sessions;
+    }
 }
