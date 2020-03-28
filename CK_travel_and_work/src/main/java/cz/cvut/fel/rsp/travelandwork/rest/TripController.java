@@ -3,13 +3,12 @@ package cz.cvut.fel.rsp.travelandwork.rest;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
 import cz.cvut.fel.rsp.travelandwork.model.Trip;
 import cz.cvut.fel.rsp.travelandwork.service.TripService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -17,6 +16,7 @@ import java.util.List;
 @RequestMapping("/trip")
 public class TripController {
 
+    private static final Logger LOG = LoggerFactory.getLogger(TripController.class);
     private TripService tripService;
 
     @Autowired
@@ -30,29 +30,34 @@ public class TripController {
     }
 
     @GetMapping(value = "/{identificator}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Trip get(@PathVariable Long identificator) {
-        return tripService.find(identificator);
+    public Trip get(@PathVariable String identificator) {
+        return tripService.findByString(identificator);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public void create(@RequestBody Trip trip) {
-
+        tripService.create(trip);
     }
 
     @PatchMapping(value = "/{identificator}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void update(@PathVariable Long identificator) throws NotFoundException{
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void update(@PathVariable String identificator, @RequestBody Trip trip) throws NotFoundException{
 
+        tripService.update(identificator, trip);
+        LOG.info("Trip {} updated.", identificator);
     }
 
     @DeleteMapping(value = "/{identificator}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long identificator) throws NotFoundException {
+    public void delete(@PathVariable String identificator) throws NotFoundException {
 
+        tripService.delete(identificator);
+        LOG.info("Trip {} deleted.", identificator);
     }
 
     @PostMapping(value = "/{identificator}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void signUpToTrip(@PathVariable Long identificator) {
+    public void signUpToTrip(@PathVariable String identificator) {
         //ResponseEntity<Void>
         //return new ResponseEntity<>(headers, HttpStatus.SUCCESS);
         tripService.signUpToTrip(identificator);

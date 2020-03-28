@@ -1,10 +1,13 @@
 package cz.cvut.fel.rsp.travelandwork.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -13,11 +16,11 @@ public class TripSession extends AbstractEntity {
 
     @Basic(optional = false)
     @Column(nullable = false)
-    private LocalDateTime fromDate;
+    private LocalDate from_date;
 
     @Basic(optional = false)
     @Column(nullable = false)
-    private LocalDateTime toDate;
+    private LocalDate to_date;
 
     @Basic(optional = false)
     @Column(nullable = false)
@@ -25,16 +28,35 @@ public class TripSession extends AbstractEntity {
     @Max(value = 3000, message = "Max 3000")
     private double price;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "trip_id", nullable = false)
     private Trip trip;
 
-    public TripSession() {}
+    public TripSession() {
+    }
 
-    public TripSession(LocalDateTime fromDate, LocalDateTime toDate, double price) {
-        this.fromDate = fromDate;
-        this.toDate = toDate;
+    public TripSession(Trip trip, LocalDate from_date, LocalDate to_date, double price) {
+        this.trip = trip;
+        this.from_date = from_date;
+        this.to_date = to_date;
         this.price = price;
+    }
+
+    public LocalDate getFrom_date() {
+        return from_date;
+    }
+
+    public void setFrom_date(LocalDate from_date) {
+        this.from_date = from_date;
+    }
+
+    public LocalDate getTo_date() {
+        return to_date;
+    }
+
+    public void setTo_date(LocalDate to_date) {
+        this.to_date = to_date;
     }
 
     public double getPrice() {
@@ -43,22 +65,6 @@ public class TripSession extends AbstractEntity {
 
     public void setPrice(double price) {
         this.price = price;
-    }
-
-    public LocalDateTime getFromDate() {
-        return fromDate;
-    }
-
-    public void setFromDate(LocalDateTime fromDate) {
-        this.fromDate = fromDate;
-    }
-
-    public LocalDateTime getToDate() {
-        return toDate;
-    }
-
-    public void setToDate(LocalDateTime toDate) {
-        this.toDate = toDate;
     }
 
     public Trip getTrip() {

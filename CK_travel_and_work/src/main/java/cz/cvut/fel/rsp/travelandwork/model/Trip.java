@@ -45,7 +45,7 @@ public class Trip extends AbstractEntity {
     @Max(value = 5, message = "Max 5")
     private double rating;
 
-    @OrderBy("from ASC")
+    @OrderBy("from_date ASC")
     @OneToMany(mappedBy = "trip")
     private List<TripSession> sessions;
 
