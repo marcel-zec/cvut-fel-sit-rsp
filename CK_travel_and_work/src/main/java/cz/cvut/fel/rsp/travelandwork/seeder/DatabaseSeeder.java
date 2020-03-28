@@ -41,6 +41,7 @@ public class DatabaseSeeder implements
         //TODO - vykona sa hned po spusteni
         System.out.println("Vypis po stupusteni aplikacie.");
         createTrips();
+        createAchievement();
     }
 
     @Transactional
