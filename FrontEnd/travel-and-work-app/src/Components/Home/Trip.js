@@ -1,11 +1,6 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    faStar as fullStar,
-    faStarHalf
-} from "@fortawesome/free-solid-svg-icons";
-import { faStar as emptyStar } from "@fortawesome/free-regular-svg-icons";
 import { Button, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
@@ -15,14 +10,14 @@ class Trip extends React.Component {
         for (let i = 0; i < 5; i++) {
             console.log(i - this.props.trip.stars);
             if (i + 1 <= this.props.trip.stars) {
-                reviewStars.push(<FontAwesomeIcon icon={fullStar} />);
+                reviewStars.push(<FontAwesomeIcon icon="star" />);
             } else if (
                 i - this.props.trip.stars < 0 &&
                 i - this.props.trip.stars > -1
             ) {
-                reviewStars.push(<FontAwesomeIcon icon={faStarHalf} />);
+                reviewStars.push(<FontAwesomeIcon icon="star-half" />);
             } else {
-                reviewStars.push(<FontAwesomeIcon icon={emptyStar} />);
+                reviewStars.push(<FontAwesomeIcon icon={["far", "star"]} />);
             }
         }
 

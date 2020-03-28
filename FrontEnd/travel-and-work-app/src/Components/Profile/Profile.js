@@ -1,7 +1,6 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrophy, faCog, faSuitcase } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import Image from "react-bootstrap/Image";
@@ -51,19 +50,19 @@ class Profile extends React.Component {
                 <Row className={flexRowWithMgBtn}>
                     <Col>
                         <Link to="/profile/details">
-                            <FontAwesomeIcon icon={faCog} size="4x" />
+                            <FontAwesomeIcon icon="cog" size="4x" />
                             <h4>Profile</h4>
                         </Link>
                     </Col>
                     <Col>
                         <Link to="/profile/achievments">
-                            <FontAwesomeIcon icon={faTrophy} size="4x" />
+                            <FontAwesomeIcon icon="trophy" size="4x" />
                             <h4>My acheievments</h4>
                         </Link>
                     </Col>
                     <Col>
                         <Link to="/profile/trips">
-                            <FontAwesomeIcon icon={faSuitcase} size="4x" />
+                            <FontAwesomeIcon icon="suitcase" size="4x" />
                             <h4>My trips</h4>
                         </Link>
                     </Col>

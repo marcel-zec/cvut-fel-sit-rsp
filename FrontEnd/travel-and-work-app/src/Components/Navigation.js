@@ -9,12 +9,6 @@ import Container from "react-bootstrap/Container";
 import { Row, Col } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    faTrophy,
-    faPowerOff,
-    faCog,
-    faSuitcase
-} from "@fortawesome/free-solid-svg-icons";
 
 class Navigation extends React.Component {
     render() {
@@ -22,8 +16,8 @@ class Navigation extends React.Component {
             <Container className="navigation">
                 <Navbar bg="light" expand="lg">
                     <Col>
-                        <Navbar.Brand href="#home">
-                            React-Bootstrap
+                        <Navbar.Brand>
+                            <NavLink to="/">React-Bootstrap</NavLink>
                         </Navbar.Brand>
                     </Col>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -54,25 +48,29 @@ class Navigation extends React.Component {
                                     >
                                         <NavDropdown.Item>XP</NavDropdown.Item>
                                         <NavDropdown.Divider />
-                                        <NavDropdown.Item href="#action/3.2">
-                                            My achievments{" "}
-                                            <FontAwesomeIcon icon={faTrophy} />
+                                        <NavDropdown.Item>
+                                            <NavLink to="/profile/achievments">
+                                                My achievments{" "}
+                                                <FontAwesomeIcon icon="trophy" />
+                                            </NavLink>
                                         </NavDropdown.Item>
-                                        <NavDropdown.Item href="#action/3.2">
-                                            My trips
-                                            <FontAwesomeIcon
-                                                icon={faSuitcase}
-                                            />
+                                        <NavDropdown.Item>
+                                            <NavLink to="/profile/trips">
+                                                My trips
+                                                <FontAwesomeIcon icon="suitcase" />
+                                            </NavLink>
                                         </NavDropdown.Item>
-                                        <NavDropdown.Item href="#action/3.3">
-                                            Settings
-                                            <FontAwesomeIcon icon={faCog} />
+                                        <NavDropdown.Item>
+                                            <NavLink to="/profile/details">
+                                                Settings
+                                                <FontAwesomeIcon icon="cog" />
+                                            </NavLink>
                                         </NavDropdown.Item>
-                                        <NavDropdown.Item href="#action/3.4">
-                                            Log out
-                                            <FontAwesomeIcon
-                                                icon={faPowerOff}
-                                            />
+                                        <NavDropdown.Item>
+                                            <NavLink to="/">
+                                                Log out
+                                                <FontAwesomeIcon icon="power-off" />
+                                            </NavLink>
                                         </NavDropdown.Item>
                                     </NavDropdown>
                                 </Col>

@@ -1,57 +1,38 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Card, Button, Col, Row, Image } from "react-bootstrap";
-import {
-    faTrophy,
-    faSwimmer,
-    faMedal,
-    faAward,
-    faCommentMedical,
-    faCommentDots
-} from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
+import AchievmentModal from "../../Achievment/AchievmentModal";
 
 class TripHistory extends React.Component {
     render() {
         const achievments = [];
-        const achievmentClass = "ml-2 mr-2";
+
         this.props.trip.achievments.forEach(element => {
-            if (element.id == 1)
-                achievments.push(
-                    <FontAwesomeIcon
-                        className={achievmentClass}
-                        icon={faTrophy}
-                        size="2x"
-                    />
-                );
-            if (element.id == 2)
-                achievments.push(
-                    <FontAwesomeIcon
-                        className={achievmentClass}
-                        icon={faAward}
-                        size="2x"
-                    />
-                );
-            if (element.id == 3)
-                achievments.push(
-                    <FontAwesomeIcon
-                        className={achievmentClass}
-                        icon={faMedal}
-                        size="2x"
-                    />
-                );
-            if (element.id == 4)
-                achievments.push(
-                    <FontAwesomeIcon icon={faSwimmer} size="2x" />
-                );
+            //faking icons
+            let iconName = "trophy";
+            if (element.id === 2) iconName = "medal";
+            if (element.id === 3) iconName = "swimmer";
+            if (element.id === 4) iconName = "award";
+
+            achievments.push(
+                <AchievmentModal
+                    icon={iconName}
+                    title={element.title}
+                    description={element.description}
+                />
+            );
         });
 
-        let placement = 0;
+        console.log(this.state);
 
+        //incrementing number for tooltips ID
+        let placement = 0;
         let commentButton = null;
         if (this.props.trip.comment) {
+            //comment icons for new comment
             commentButton = (
                 <OverlayTrigger
                     placement="right"
@@ -62,11 +43,12 @@ class TripHistory extends React.Component {
                     }
                 >
                     <Link>
-                        <FontAwesomeIcon icon={faCommentMedical} size="2x" />
+                        <FontAwesomeIcon icon="comment-medical" size="2x" />
                     </Link>
                 </OverlayTrigger>
             );
         } else {
+            //comment icons for updating
             commentButton = (
                 <OverlayTrigger
                     placement="right"
@@ -77,11 +59,12 @@ class TripHistory extends React.Component {
                     }
                 >
                     <Link>
-                        <FontAwesomeIcon icon={faCommentDots} size="2x" />
+                        <FontAwesomeIcon icon="comment-dots" size="2x" />
                     </Link>
                 </OverlayTrigger>
             );
         }
+
         return (
             <Card className="mb-3">
                 <Card.Body className="d-flex flex-row">

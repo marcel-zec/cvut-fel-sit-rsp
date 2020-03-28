@@ -1,7 +1,7 @@
 import React from "react";
-import Profile from "./Profile";
+import Profile from "../Profile";
 import { Container } from "react-bootstrap";
-import TripHistory from "../TripHistory";
+import TripHistory from "./TripHistory";
 
 class ProfileTrips extends Profile {
     state = {
@@ -10,7 +10,10 @@ class ProfileTrips extends Profile {
                 name: "Fdsaiom",
                 xp: 12,
                 tripDate: "1995-12-17",
-                achievments: [{ id: 1 }, { id: 2 }],
+                achievments: [
+                    { id: 1, title: "Aaa", description: "Aaa description" },
+                    { id: 2, title: "Bbb", description: "Bbb description" }
+                ],
                 comment: {
                     commentDate: "1996-02-11",
                     content:
@@ -21,13 +24,17 @@ class ProfileTrips extends Profile {
                 name: "Samujifds",
                 xp: 2,
                 tripDate: "1995-04-02",
-                achievments: [{ id: 3 }]
+                achievments: [
+                    { id: 3, title: "Ccc", description: "Ccc description" }
+                ]
             },
             {
                 name: "Mdsaerrr",
                 xp: 15,
                 tripDate: "1995-06-19",
-                achievments: [{ id: 4 }],
+                achievments: [
+                    { id: 4, title: "Ddd", description: "Ddd description" }
+                ],
                 comment: {
                     commentDate: "1996-02-11",
                     content:
