@@ -16,10 +16,10 @@ public class Achievement extends AbstractEntity{
 
     @Basic(optional = false)
     @Column(nullable = false)
-    private int image;
+    private String icon;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "categrory_id", nullable = false)
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
     @ManyToMany
@@ -33,12 +33,17 @@ public class Achievement extends AbstractEntity{
         return description;
     }
 
-    public int getImage() {
-        return image;
-    }
 
     public Category getCategory() {
         return category;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
     public List<TravelJournal> getOwnedTravelJournals() {
@@ -51,10 +56,6 @@ public class Achievement extends AbstractEntity{
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public void setImage(int image) {
-        this.image = image;
     }
 
     public void setCategory(Category category) {
