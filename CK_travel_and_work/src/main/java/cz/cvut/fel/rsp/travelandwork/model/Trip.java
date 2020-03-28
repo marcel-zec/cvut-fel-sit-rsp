@@ -45,7 +45,7 @@ public class Trip extends AbstractEntity {
     @Max(value = 5, message = "Max 5")
     private double rating;
 
-    @OrderBy("from ASC")
+    @OrderBy("from_date ASC")
     @OneToMany(mappedBy = "trip")
     private List<TripSession> sessions;
 
@@ -106,5 +106,13 @@ public class Trip extends AbstractEntity {
 
     public void setRating(double rating) {
         this.rating = rating;
+    }
+
+    public List<TripSession> getSessions() {
+        return sessions;
+    }
+
+    public void setSessions(List<TripSession> sessions) {
+        this.sessions = sessions;
     }
 }
