@@ -79,7 +79,6 @@ public class Trip extends AbstractEntity {
         this.possible_xp_reward = possible_xp_reward;
         this.description = description;
         this.short_name = short_name;
-        this.phone_number = phone_number;
     }
 
     public String getName() {
