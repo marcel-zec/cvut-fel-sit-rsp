@@ -1,7 +1,9 @@
 package cz.cvut.fel.rsp.travelandwork.seeder;
 
+import cz.cvut.fel.rsp.travelandwork.dao.AchievementDao;
 import cz.cvut.fel.rsp.travelandwork.dao.TripDao;
 import cz.cvut.fel.rsp.travelandwork.dao.TripSessionDao;
+import cz.cvut.fel.rsp.travelandwork.model.Achievement;
 import cz.cvut.fel.rsp.travelandwork.model.Trip;
 import cz.cvut.fel.rsp.travelandwork.model.TripSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +25,14 @@ public class DatabaseSeeder implements
     private Logger LOGGER = Logger.getLogger(DatabaseSeeder.class.getName());
     private TripDao tripDao;
     private TripSessionDao tripSessionDao;
+    private AchievementDao achievementDao;
 
 
     @Autowired
-    public DatabaseSeeder(TripDao tripDao, TripSessionDao tripSessionDao) {
+    public DatabaseSeeder(TripDao tripDao, TripSessionDao tripSessionDao, AchievementDao achievementDao) {
         this.tripDao = tripDao;
         this.tripSessionDao = tripSessionDao;
+        this.achievementDao = achievementDao;
     }
     
     @Override
@@ -82,5 +86,35 @@ public class DatabaseSeeder implements
         tripDao.persist(trip);
         tripSession = new TripSession(trip,LocalDate.parse("2019-01-14"), LocalDate.parse("2019-01-21"),2000);
         tripSessionDao.persist(tripSession);
+    }
+
+    @Transactional
+    void createAchievement(){
+        Achievement achievement = new Achievement("Habamalo","Habamalo is balabo con mambo.","location-arrow");
+        achievementDao.persist(achievement);
+
+        achievement = new Achievement("Kalomone","Kalomone is bumbalo fon lucato.","swimmer");
+        achievementDao.persist(achievement);
+
+        achievement = new Achievement("Swamino","Momone con valuta meta so Swamino.","swimming-pool");
+        achievementDao.persist(achievement);
+
+        achievement = new Achievement("Wanoko","Wanoko der muliko fon gelono","water");
+        achievementDao.persist(achievement);
+
+        achievement = new Achievement("Supero bumbo","Supero bumbo con muplito fongo.","award");
+        achievementDao.persist(achievement);
+
+        achievement = new Achievement("Kingonelo","Richardo con mucho la despacito Kingo.","crown");
+        achievementDao.persist(achievement);
+
+        achievement = new Achievement("Schampiono luscato","Le schapmiono luscato con rumba de la noche.","trophy");
+        achievementDao.persist(achievement);
+
+        achievement = new Achievement("Securito pronto","Los securitos prostos de la salsa.","shield-alt");
+        achievementDao.persist(achievement);
+
+        achievement = new Achievement("Medalo","Picholino de la noche con vuelta macho medalo.","medal");
+        achievementDao.persist(achievement);
     }
 }
