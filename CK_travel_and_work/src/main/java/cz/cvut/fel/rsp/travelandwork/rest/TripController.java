@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("/trip")
@@ -23,13 +24,13 @@ public class TripController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public void getAll() {
-
+    public List<Trip> getAll() {
+        return tripService.findAll();
     }
 
     @GetMapping(value = "/{identificator}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void get(@PathVariable Long identificator) {
-
+    public Trip get(@PathVariable Long identificator) {
+        return tripService.find(identificator);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
