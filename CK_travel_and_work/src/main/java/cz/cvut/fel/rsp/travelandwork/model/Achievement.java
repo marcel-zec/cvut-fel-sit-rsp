@@ -22,6 +22,12 @@ public class Achievement extends AbstractEntity{
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
+    @ManyToMany
+    private List<Trip> trips;
+
+    @ManyToMany
+    private List<TravelJournal> ownedTravelJournals;
+
     public Achievement() {
     }
 
@@ -30,9 +36,6 @@ public class Achievement extends AbstractEntity{
         this.description = description;
         this.icon = icon;
     }
-
-    @ManyToMany
-    private List<TravelJournal> ownedTravelJournals;
 
     public String getName() {
         return name;
@@ -74,4 +77,17 @@ public class Achievement extends AbstractEntity{
     public void setOwnedTravelJournals(List<TravelJournal> ownedTravelJournals) {
         this.ownedTravelJournals = ownedTravelJournals;
     }
+
+
+    public List<Trip> getTrips() {
+        return trips;
+    }
+
+
+    public void setTrips(List<Trip> trips) {
+
+        this.trips = trips;
+    }
+
+
 }

@@ -26,7 +26,7 @@ public class Trip extends AbstractEntity {
     @Column(nullable = false)
     @Min(value = 0, message = "Min 0")
     @Max(value = 20, message = "Max 20")
-    private Integer possible_xp_reward;
+    private int possible_xp_reward;
 
     @Basic(optional = false)
     @Column(nullable = false)
@@ -47,16 +47,25 @@ public class Trip extends AbstractEntity {
 
     @Basic(optional = false)
     @Column(nullable = false)
+    @Size(max = 200, min = 0, message = "Max 200 characters.")
     private String location;
 
     @Basic(optional = false)
     @Column(nullable = false)
     private int requiered_level;
 
-    @OneToMany(mappedBy = "trip")
+    @ManyToMany
+    @JoinTable(
+            name = "required_achievement_trip",
+            joinColumns = @JoinColumn(name = "trip_id"),
+            inverseJoinColumns = @JoinColumn(name = "achievement_id"))
     private List<Achievement> required_achievements;
 
-    @OneToMany(mappedBy = "trip")
+    @ManyToMany
+    @JoinTable(
+            name = "gain_achievement_trip",
+            joinColumns = @JoinColumn(name = "trip_id"),
+            inverseJoinColumns = @JoinColumn(name = "achievement_id"))
     private List<Achievement> gain_achievements;
 
     @OrderBy("from_date ASC")
@@ -71,13 +80,19 @@ public class Trip extends AbstractEntity {
     }
 
     public Trip(@Size(max = 255, min = 3, message = "Name has to be from 3 to 255 characters.")  @NotBlank(message = "Name has to be from 3 to 255 characters.") String name,
-                @Min(value = 0, message = "Min 0") @Max(value = 20, message = "Max 20") Integer possible_xp_reward,
+                @Min(value = 0, message = "Min 0") @Max(value = 20, message = "Max 20") int possible_xp_reward,
                 @Size(max = 3000, min = 0, message = "Max 3000 characters.") String description,
-                @Size(max = 12, message = "Max length is 12.") String phone_number,
-                @Size(max = 100, min = 3, message = "Short name has to be from 3 to 100 characters.")  @NotBlank(message = "Short name has to be from 3 to 100 characters.") String short_name) {
+                @Size(max = 100, min = 3, message = "Short name has to be from 3 to 100 characters.")  @NotBlank(message = "Short name has to be from 3 to 100 characters.") String short_name,
+                @Min(value = 0, message = "Min 0") @Max(value = 10000, message = "Max 10 000") double deposit,
+                @Size(max = 200, min = 0, message = "Max 200 characters.") String location,
+                @Min(value = 0, message = "Min 0") @Max(value = 100, message = "Max 100") int required_level
+                ) {
         this.name = name;
+        this.deposit = deposit;
         this.possible_xp_reward = possible_xp_reward;
         this.description = description;
+        this.location= location;
+        this.requiered_level = required_level;
         this.short_name = short_name;
     }
 
@@ -127,5 +142,76 @@ public class Trip extends AbstractEntity {
 
     public void setShort_name(String short_name) {
         this.short_name = short_name;
+    }
+
+
+    public String getLocation() {
+        return location;
+    }
+
+
+    public void setLocation(String location) {
+
+        this.location = location;
+    }
+
+
+    public double getDeposit() {
+
+        return deposit;
+    }
+
+
+    public void setDeposit(double deposit) {
+
+        this.deposit = deposit;
+    }
+
+
+    public int getRequiered_level() {
+
+        return requiered_level;
+    }
+
+
+    public void setRequiered_level(int requiered_level) {
+
+        this.requiered_level = requiered_level;
+    }
+
+
+    public List<Achievement> getRequired_achievements() {
+
+        return required_achievements;
+    }
+
+
+    public void setRequired_achievements(List<Achievement> required_achievements) {
+
+        this.required_achievements = required_achievements;
+    }
+
+
+    public List<Achievement> getGain_achievements() {
+
+        return gain_achievements;
+    }
+
+
+    public void setGain_achievements(List<Achievement> gain_achievements) {
+
+        this.gain_achievements = gain_achievements;
+    }
+
+
+    public List<TripReview> getReviews() {
+
+        return reviews;
+    }
+
+
+    public void setReviews(List<TripReview> reviews) {
+
+        this.reviews = reviews;
     }
 }
