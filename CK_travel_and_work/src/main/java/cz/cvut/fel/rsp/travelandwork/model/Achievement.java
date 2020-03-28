@@ -22,6 +22,15 @@ public class Achievement extends AbstractEntity{
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
+    public Achievement() {
+    }
+
+    public Achievement(String name, String description, String icon) {
+        this.name = name;
+        this.description = description;
+        this.icon = icon;
+    }
+
     @ManyToMany
     private List<TravelJournal> ownedTravelJournals;
 
