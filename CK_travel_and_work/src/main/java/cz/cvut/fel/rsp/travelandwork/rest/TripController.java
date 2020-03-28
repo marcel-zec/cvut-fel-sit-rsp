@@ -29,13 +29,13 @@ public class TripController {
     }
 
     @GetMapping(value = "/{identificator}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Trip get(@PathVariable Long identificator) {
-        return tripService.find(identificator);
+    public Trip get(@PathVariable String identificator) {
+        return tripService.findByString(identificator);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public void create(@RequestBody Trip trip) {
-
+        tripService.create(trip);
     }
 
     @PatchMapping(value = "/{identificator}", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -48,13 +48,15 @@ public class TripController {
 
     @DeleteMapping(value = "/{identificator}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long identificator) throws NotFoundException {
+    public void delete(@PathVariable String identificator) throws NotFoundException {
 
+        tripService.delete(identificator);
+        LOG.info("Trip {} deleted.", identificator);
     }
 
     @PostMapping(value = "/{identificator}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void signUpToTrip(@PathVariable Long identificator) {
+    public void signUpToTrip(@PathVariable String identificator) {
         //ResponseEntity<Void>
         //return new ResponseEntity<>(headers, HttpStatus.SUCCESS);
         tripService.signUpToTrip(identificator);

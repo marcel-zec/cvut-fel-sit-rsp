@@ -19,12 +19,6 @@ public class TripService {
         this.tripDao = tripDao;
     }
 
-
-    @Transactional
-    public void signUpToTrip(Long id) {
-        Trip trip = tripDao.find(id);
-    }
-
     @Transactional
     public List<Trip> findAll() {
         return tripDao.findAll();
@@ -41,13 +35,25 @@ public class TripService {
     }
 
     @Transactional
-    public Trip findAfford(Long id) {
-        return tripDao.find(id);
+    public void create(Trip trip) {
+        tripDao.persist(trip);
     }
 
     @Transactional
-    public Trip findNotAfford(Long id) {
-        return tripDao.find(id);
+    public void signUpToTrip(String stringId) {
+        Trip trip = tripDao.find(stringId);
+    }
+
+    @Transactional
+    public List<Trip> findAfford() {
+        List<Trip> trips;
+        return null;
+    }
+
+    @Transactional
+    public List<Trip> findNotAfford() {
+        List<Trip> trips;
+        return null;
     }
 
     @Transactional
