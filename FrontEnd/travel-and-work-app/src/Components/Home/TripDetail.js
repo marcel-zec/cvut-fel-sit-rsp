@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-class Trip extends React.Component {
+class TripDetail extends React.Component {
     render() {
         const reviewStars = [];
         for (let i = 0; i < 5; i++) {
@@ -64,4 +64,4 @@ class Trip extends React.Component {
     }
 }
 
-export default Trip;
+export default TripDetail;
