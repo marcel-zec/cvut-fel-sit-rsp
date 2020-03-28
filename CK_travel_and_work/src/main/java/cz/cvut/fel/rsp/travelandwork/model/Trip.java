@@ -35,15 +35,29 @@ public class Trip extends AbstractEntity {
 
     @Basic(optional = false)
     @Column(nullable = false)
-    @Size(max = 12, message = "Max length is 12.")
-    //TODO - regex na cisla
-    private String phone_number;
+    @Min(value = 0, message = "Min 0")
+    @Max(value = 5, message = "Max 5")
+    private double rating;
 
     @Basic(optional = false)
     @Column(nullable = false)
     @Min(value = 0, message = "Min 0")
-    @Max(value = 5, message = "Max 5")
-    private double rating;
+    @Max(value = 10000, message = "Max 10 000")
+    private double deposit;
+
+    @Basic(optional = false)
+    @Column(nullable = false)
+    private String location;
+
+    @Basic(optional = false)
+    @Column(nullable = false)
+    private int requiered_level;
+
+    @OneToMany(mappedBy = "trip")
+    private List<Achievement> required_achievements;
+
+    @OneToMany(mappedBy = "trip")
+    private List<Achievement> gain_achievements;
 
     @OrderBy("from_date ASC")
     @OneToMany(mappedBy = "trip")
