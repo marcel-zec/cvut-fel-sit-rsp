@@ -5,6 +5,9 @@ import javax.validation.constraints.*;
 import java.util.List;
 
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "Trip.findByStringId", query = "SELECT t FROM Trip t WHERE t.short_name = :id AND t.deleted_at is null")
+})
 public class Trip extends AbstractEntity {
 
     @Basic(optional = false)
@@ -12,6 +15,12 @@ public class Trip extends AbstractEntity {
     @Size(max = 255, min = 3, message = "Name has to be from 3 to 255 characters.")
     @NotBlank(message = "Name has to be from 3 to 255 characters.")
     private String name;
+
+    @Basic(optional = false)
+    @Column(nullable = false, length = 255, unique = true)
+    @Size(max = 255, min = 3, message = "Short name has to be from 3 to 100 characters.")
+    @NotBlank(message = "Short name has to be from 3 to 255 characters.")
+    private String short_name;
 
     @Basic(optional = false)
     @Column(nullable = false, unique = true)
