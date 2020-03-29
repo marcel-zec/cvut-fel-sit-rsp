@@ -23,4 +23,8 @@ public class Category extends AbstractEntity{
     public void setName(String name) {
         this.name = name;
     }
+
+    public Category(@NotBlank(message = "Name of category cannot be blank") String name) {
+        this.name = name;
+    }
 }
