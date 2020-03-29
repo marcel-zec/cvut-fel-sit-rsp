@@ -44,6 +44,10 @@ public class TripService {
 
     @Transactional
     public void create(Trip trip) {
+
+        for (TripSession session: trip.getSessions()) {
+            tripSessionDao.persist(session);
+        }
         tripDao.persist(trip);
     }
 
