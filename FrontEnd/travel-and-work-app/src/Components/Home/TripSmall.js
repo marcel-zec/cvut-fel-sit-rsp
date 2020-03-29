@@ -31,20 +31,30 @@ class TripSmall extends React.Component {
         } else {
             dates = numberOfDates + " dates";
         }
+        let sessions = this.props.trip.sessions;
+        let lowestPrice = sessions[0].price;
+
+        sessions.forEach(session => {
+          if (session.price < lowestPrice) {
+            lowestPrice = session.price;
+          }
+        })
 
         return (
             <Link to="/trip/:id">
                 <Card className="p-3">
+                <div className="image-card">
                     <Card.Img
                         variant="top"
-                        src="https://images.unsplash.com/profile-1446404465118-3a53b909cc82?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&cs=tinysrgb&fit=crop&h=128&w=128&s=27a346c2362207494baa7b76f5d606e5"
+                        src="https://www.transparency.cz/wp-content/uploads/Jablonec-nad-Nisou-621x466.jpg"
                     />
+                    </div>
+
                     <Card.ImgOverlay className="d-flex flex-column justify-content-start align-items-start">
-                        <Card.Header>
-                            {this.props.trip.possible_xp_reward} xp
-                        </Card.Header>
-                        <Card.Title className="ml-3">
-                            {this.props.trip.name}
+                            <span className="image-text"> {this.props.trip.possible_xp_reward} xp </span>
+                        <Card.Title className="ml-3" id="trip-title">
+                            <p> <span> {this.props.trip.name} </span>
+                            </p>
                         </Card.Title>
                     </Card.ImgOverlay>
                     <Card.Body>
@@ -53,8 +63,8 @@ class TripSmall extends React.Component {
                                 <Row>{dates}</Row>
                                 <Row>{reviewStars}</Row>
                             </Col>
-                            <Col className="d-flex flex-column justify-content-center">
-                                {this.props.trip.price}
+                            <Col className="d-flex flex-column justify-content-center text">
+                                {lowestPrice} Kč
                             </Col>
                         </Row>
                     </Card.Body>
