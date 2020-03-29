@@ -6,8 +6,10 @@ import java.util.List;
 
 @Entity
 @NamedQueries({
-        @NamedQuery(name = "Trip.findByStringId", query = "SELECT t FROM Trip t WHERE t.short_name = :id AND t.deleted_at is null")
+        @NamedQuery(name = "Trip.findByStringId", query = "SELECT t FROM Trip t WHERE t.short_name = :id AND t.deleted_at is null"),
+        @NamedQuery(name = "Trip.findByLevel", query = "SELECT t FROM Trip t WHERE t.requiered_level = :requiered_level AND t.deleted_at is null")
 })
+
 public class Trip extends AbstractEntity {
 
     @Basic(optional = false)

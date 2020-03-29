@@ -26,4 +26,15 @@ public class TripDao extends BaseDao<Trip> {
             }
         }
     }
+
+    public List<Trip> find(int requiered_level){
+        {
+            try {
+                return em.createNamedQuery("Trip.findByLevel", Trip.class).setParameter("requiered_level", requiered_level)
+                        .getResultList();
+            } catch (NoResultException e) {
+                return null;
+            }
+        }
+    }
 }

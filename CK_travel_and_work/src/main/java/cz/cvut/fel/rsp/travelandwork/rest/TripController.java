@@ -74,12 +74,12 @@ public class TripController {
     }
 
     @GetMapping(value = "/cannotAfford", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void showAllTripsCantUserAfford() {
-
+    public List<Trip> showAllTripsCantUserAfford() {
+        return tripService.findNotAfford();
     }
 
     @GetMapping(value = "/canAfford", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void showAllTripsCanUserAfford() {
-
+    public List<Trip> showAllTripsCanUserAfford() {
+        return tripService.findAfford();
     }
 }
