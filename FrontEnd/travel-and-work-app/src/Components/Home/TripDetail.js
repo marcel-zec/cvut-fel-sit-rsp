@@ -1,66 +1,103 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, Row, Col } from "react-bootstrap";
+import { Button, Row, Col, Container, Image } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import Spinner from "react-bootstrap/Spinner";
+import { Form } from "react-bootstrap";
 
 class TripDetail extends React.Component {
-    render() {
-        const reviewStars = [];
-        for (let i = 0; i < 5; i++) {
-            if (i + 1 <= this.props.trip.rating) {
-                reviewStars.push(<FontAwesomeIcon icon="star" />);
-            } else if (
-                i - this.props.trip.rating < 0 &&
-                i - this.props.trip.rating > -1
-            ) {
-                reviewStars.push(<FontAwesomeIcon icon="star-half" />);
-            } else {
-                reviewStars.push(<FontAwesomeIcon icon={["far", "star"]} />);
-            }
-        }
+    state = { trip: null };
 
-        let numberOfDates = 0;
-        this.props.trip.sessions.forEach(() => {
-            numberOfDates++;
-        });
-        let dates = null;
-        if (numberOfDates == 1) {
-            const session = this.props.trip.sessions[0];
-            dates = session.from_date + " " + session.to_date;
-        } else {
-            dates = numberOfDates + " dates";
-        }
-
-        return (
-            <Link>
-                <Card className="p-3">
-                    <Card.Img
-                        variant="top"
-                        src="https://images.unsplash.com/profile-1446404465118-3a53b909cc82?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&cs=tinysrgb&fit=crop&h=128&w=128&s=27a346c2362207494baa7b76f5d606e5"
-                    />
-                    <Card.ImgOverlay className="d-flex flex-column justify-content-start align-items-start">
-                        <Card.Header>
-                            {this.props.trip.possible_xp_reward} xp
-                        </Card.Header>
-                        <Card.Title className="ml-3">
-                            {this.props.trip.name}
-                        </Card.Title>
-                    </Card.ImgOverlay>
-                    <Card.Body>
-                        <Row>
-                            <Col className="d-flex flex-column align-items-center">
-                                <Row>{dates}</Row>
-                                <Row>{reviewStars}</Row>
-                            </Col>
-                            <Col className="d-flex flex-column justify-content-center">
-                                {this.props.trip.price}
-                            </Col>
-                        </Row>
-                    </Card.Body>
-                </Card>
-            </Link>
+    async componentDidMount() {
+        const response = await fetch(
+            `http://localhost:8080/trip/` + this.props.match.params.id
         );
+        const data = await response.json();
+        console.log(data);
+        this.setState({ trip: data });
+    }
+
+    render() {
+        if (this.state.trip === null) {
+            return (
+                <Container className="p-5">
+                    <Spinner animation="border" role="status">
+                        <span className="sr-only">Loading...</span>
+                    </Spinner>
+                </Container>
+            );
+        } else {
+            //set correct date(s)
+            let options = null;
+            let dateTitle = "Date";
+            if (this.state.trip.sessions.length == 1) {
+                //set one date when only one session
+                const session = this.state.trip.sessions[0];
+                options = (
+                    <Card.Text>
+                        {session.from_date + " " + session.to_date}
+                    </Card.Text>
+                );
+            } else if (this.state.trip.sessions.length > 1) {
+                //create list of options for select when more sessions(dates)
+                let optionArray = [];
+                this.state.trip.sessions.forEach(element => {
+                    optionArray.push(
+                        <option>
+                            {element.from_date + " " + element.to_date}
+                        </option>
+                    );
+                });
+                options = (
+                    <Form.Control as="select">{optionArray}</Form.Control>
+                );
+                dateTitle = "Dates";
+            }
+            return (
+                <Container>
+                    <Card>
+                        <Card.Body className="d-flex flex-row">
+                            <Col>
+                                <Image
+                                    src="https://pbs.twimg.com/profile_images/617828221707513856/ygo8Rtr__400x400.jpg"
+                                    rounded
+                                />
+                            </Col>
+                            <Col>
+                                <Row className="d-flex flex-column">
+                                    <Card.Title>
+                                        {this.state.trip.name}
+                                    </Card.Title>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                        <Card.Title className="mb-2 text-muted">
+                                            Location
+                                        </Card.Title>
+                                        <Card.Text>
+                                            {this.state.trip.location}
+                                        </Card.Text>
+                                        <Card.Title className="mb-2 text-muted">
+                                            Points
+                                        </Card.Title>
+                                        <Card.Text>
+                                            {this.state.trip.possible_xp_reward}
+                                        </Card.Text>
+                                        <Card.Title className="mb-2 text-muted">
+                                            {dateTitle}
+                                        </Card.Title>
+                                        {options}
+                                    </Col>
+                                    <Col>dsadsa</Col>
+                                </Row>
+                            </Col>
+                        </Card.Body>
+                    </Card>
+                </Container>
+            );
+        }
     }
 }
 

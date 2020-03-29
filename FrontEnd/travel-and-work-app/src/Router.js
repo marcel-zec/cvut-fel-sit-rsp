@@ -6,13 +6,12 @@ import Profile from "./Components/Profile/Profile";
 import ProfileTrips from "./Components/Profile/Trips/ProfileTrips";
 import ProfileDetails from "./Components/Profile/ProfileDetails";
 import ProfileAchievments from "./Components/Profile/ProfileAchievments";
-import TripSmall from "./Components/Home/TripSmall";
 import TripCreate from "./Components/TripCreate";
 import TripEdit from "./Components/TripEdit";
 import TripHistoryList from "./Components/TripHistoryList";
-import TripList from "./Components/TripList";
 import Register from "./Components/Register";
 import { Redirect, Switch, Route } from "react-router-dom";
+import TripDetail from "./Components/Home/TripDetail";
 
 function Router(props) {
     const { auth } = props;
@@ -64,9 +63,9 @@ function Router(props) {
                         return allowAuth(<Home />);
                     }}
                 />
+                <Route path="/trips" exact component={Home} />
+                <Route path="/trips/:id" component={TripDetail} />
 
-                <Route path="/trips" exact component={TripList} />
-                <Route path="/trips/:id" component={TripSmall} />
                 <Route
                     path="/trips/history"
                     exact

@@ -35,25 +35,30 @@ class TripSmall extends React.Component {
         let lowestPrice = sessions[0].price;
 
         sessions.forEach(session => {
-          if (session.price < lowestPrice) {
-            lowestPrice = session.price;
-          }
-        })
+            if (session.price < lowestPrice) {
+                lowestPrice = session.price;
+            }
+        });
 
         return (
-            <Link to="/trip/:id">
+            <Link to={"/trips/" + this.props.trip.short_name}>
                 <Card className="p-3">
-                <div className="image-card">
-                    <Card.Img
-                        variant="top"
-                        src="https://www.transparency.cz/wp-content/uploads/Jablonec-nad-Nisou-621x466.jpg"
-                    />
+                    <div className="image-card">
+                        <Card.Img
+                            variant="top"
+                            src="https://www.transparency.cz/wp-content/uploads/Jablonec-nad-Nisou-621x466.jpg"
+                        />
                     </div>
 
                     <Card.ImgOverlay className="d-flex flex-column justify-content-start align-items-start">
-                            <span className="image-text"> {this.props.trip.possible_xp_reward} xp </span>
+                        <span className="image-text">
+                            {" "}
+                            {this.props.trip.possible_xp_reward} xp{" "}
+                        </span>
                         <Card.Title className="ml-3" id="trip-title">
-                            <p> <span> {this.props.trip.name} </span>
+                            <p>
+                                {" "}
+                                <span> {this.props.trip.name} </span>
                             </p>
                         </Card.Title>
                     </Card.ImgOverlay>
