@@ -61,6 +61,8 @@ public class DatabaseSeeder implements
         tripDao.persist(trip);
         tripSession = new TripSession(trip,LocalDate.parse("2020-02-14"), LocalDate.parse("2020-02-21"),2000);
         tripSessionDao.persist(tripSession);
+        tripSession = new TripSession(trip,LocalDate.parse("2020-12-12"), LocalDate.parse("2020-12-20"),1000);
+        tripSessionDao.persist(tripSession);
 
         description = "Etiam a sem odio. Cras congue a odio vitae convallis. Nullam volutpat in eros eget aliquet. Maecenas congue finibus purus, non bibendum dolor finibus vel. Sed a molestie odio, vitae pharetra nisl. Integer quis velit sit amet augue sagittis tincidunt eu quis est. Sed ultricies fringilla ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris vestibulum tincidunt pretium. Donec a lobortis enim, quis malesuada ipsum. Vestibulum egestas erat pulvinar orci posuere, id pharetra arcu scelerisque. Vestibulum sed ultrices magna, dictum tristique lorem. ";
         trip = new Trip("Chef in London",20,description,"londonchef",1000,"London, England",9);
