@@ -22,6 +22,7 @@ import javax.persistence.PersistenceContext;
 @TestPropertySource(locations = "classpath:application-test.properties")
 public class ExampleServiceTest {
 
+
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -34,5 +35,7 @@ public class ExampleServiceTest {
         thrown.expect(AlreadyExistsException.class);
         thrown.reportMissingExceptionWithMessage("Example.");
     }
+
+
 
 }

@@ -45,7 +45,7 @@ public class Generator {
      */
     public static User generateUser() {
         String username =  "UserrNo"+ randomInt();
-        String email = username + "imejl.cz";
+        String email = username + "@imejl.cz";
         final User user = new User(username, generatePassword(), "Tester", "Testovany", email, Role.USER);
         user.setAddress(generateAddress(user));
         return user;

@@ -47,7 +47,7 @@ public class UserService {
     }
 
     @Transactional
-    public User find(Integer id) {
+    public User find(Long id) {
         Objects.requireNonNull(id);
         return dao.find(id);
     }
@@ -58,15 +58,14 @@ public class UserService {
     }
 
     @Transactional
-    public void findAll(List<User> user) {
-        Objects.requireNonNull(user);
-        dao.findAll();
+    public List<User> findAll() {
+        return dao.findAll();
     }
 
     @Transactional
-    public void exists(Long id) {
+    public boolean exists(Long id) {
         Objects.requireNonNull(id);
-        dao.exists(id);
+        return dao.exists(id);
     }
 
 

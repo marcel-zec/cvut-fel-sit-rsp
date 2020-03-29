@@ -145,4 +145,19 @@ public class User extends AbstractEntity {
 //    public void setUserRole(UserRole userRole) {
 //        this.userRole = userRole;
 //    }
+
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", role=" + role +
+                ", address=" + address +
+                ", travel_journal=" + travel_journal +
+                '}';
+    }
 }
