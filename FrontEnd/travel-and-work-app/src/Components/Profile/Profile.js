@@ -16,7 +16,6 @@ class Profile extends React.Component {
         const progressInstance = (
             <ProgressBar
                 now={now}
-                animated
                 label="Just 15 more XP to next level!"
             />
         );
@@ -32,7 +31,7 @@ class Profile extends React.Component {
                 <Row className={flexRowWithMgBtn}>
                     <Col>
                         <Image
-                            src="https://images.unsplash.com/profile-1446404465118-3a53b909cc82?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&cs=tinysrgb&fit=crop&h=128&w=128&s=27a346c2362207494baa7b76f5d606e5"
+                            src="https://blog.pravda.sk/avatar/blog-1166-256.png"
                             roundedCircle
                         />
                         <h4>2. level</h4>

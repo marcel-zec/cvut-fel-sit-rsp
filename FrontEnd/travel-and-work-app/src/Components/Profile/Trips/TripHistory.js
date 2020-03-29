@@ -65,12 +65,14 @@ class TripHistory extends React.Component {
             );
         }
 
+
+
         return (
             <Card className="mb-3">
                 <Card.Body className="d-flex flex-row">
                     <Col>
                         <Image
-                            src="https://images.unsplash.com/profile-1446404465118-3a53b909cc82?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&cs=tinysrgb&fit=crop&h=128&w=128&s=27a346c2362207494baa7b76f5d606e5"
+                            src="https://blog.pravda.sk/avatar/blog-1166-256.png"
                             rounded
                         />
                     </Col>

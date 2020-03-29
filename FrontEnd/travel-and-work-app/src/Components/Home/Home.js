@@ -10,8 +10,7 @@ class Home extends React.Component {
         console.log(data);
         this.setState({ trips: data });
     }
-
-    state = { trips: [] };
+    state = { trips: []};
 
     render() {
         return (
