@@ -1,8 +1,12 @@
 package cz.cvut.fel.rsp.travelandwork.service;
 
 import cz.cvut.fel.rsp.travelandwork.dao.TripDao;
+import cz.cvut.fel.rsp.travelandwork.dao.TripReviewDao;
+import cz.cvut.fel.rsp.travelandwork.dao.TripSessionDao;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
 import cz.cvut.fel.rsp.travelandwork.model.Trip;
+import cz.cvut.fel.rsp.travelandwork.model.TripReview;
+import cz.cvut.fel.rsp.travelandwork.model.TripSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,10 +17,14 @@ import java.util.List;
 public class TripService {
 
     private TripDao tripDao;
+    private TripSessionDao tripSessionDao;
+    private TripReviewDao tripReviewDao;
 
     @Autowired
-    public TripService(TripDao tripDao) {
+    public TripService(TripDao tripDao, TripSessionDao tripSessionDao, TripReviewDao tripReviewDao) {
         this.tripDao = tripDao;
+        this.tripSessionDao = tripSessionDao;
+        this.tripReviewDao = tripReviewDao;
     }
 
     @Transactional
@@ -75,7 +83,19 @@ public class TripService {
 
         Trip trip = tripDao.find(stringId);
         if (trip == null) throw new NotFoundException();
-        // urobit priznak
+
+        for (TripSession session :trip.getSessions()) {
+            session.softDelete();
+            tripSessionDao.update(session);
+        }
+
+        for (TripReview review: trip.getReviews()) {
+            review.softDelete();
+            tripReviewDao.update(review);
+        }
+
+        trip.softDelete();
+        tripDao.update(trip);
     }
 
 
