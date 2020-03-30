@@ -20,22 +20,22 @@ public class TripReviewService {
 
     @Transactional
     public List<TripReview> findAll() {
-        return TripReviewDao.findAll();
+        return tripReviewDao.findAll();
     }
 
     @Transactional
     public TripReview find(Long id) {
-        return TripReviewDao.find(id);
+        return tripReviewDao.find(id);
     }
 
     @Transactional
     public void persist(TripReview tripReview) {
-        TripReviewDao.persist(tripReview);
+        tripReviewDao.persist(tripReview);
     }
 
     @Transactional
     public void update(TripReview tripReview) {
         Objects.requireNonNull(tripReview);
-        TripReviewDao.update(tripReview);
+        tripReviewDao.update(tripReview);
     }
 }
