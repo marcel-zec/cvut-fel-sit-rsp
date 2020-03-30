@@ -3,12 +3,13 @@ package cz.cvut.fel.rsp.travelandwork.service;
 import cz.cvut.fel.rsp.travelandwork.dao.AchievementDao;
 import cz.cvut.fel.rsp.travelandwork.model.Achievement;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
 
-@Repository
+@Service
 public class AchievementService {
     private final AchievementDao achievementDao;
 

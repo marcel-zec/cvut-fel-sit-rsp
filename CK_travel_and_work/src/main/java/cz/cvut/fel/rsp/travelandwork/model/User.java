@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @Table(name = "APP_USER")
@@ -55,6 +56,9 @@ public class User extends AbstractEntity {
 
     @OneToOne(cascade = CascadeType.ALL)
     private TravelJournal travel_journal;
+
+    @OneToMany(mappedBy = "author")
+    private List<TripReview> tripReviews;
 
     public User() {
     }

@@ -60,15 +60,13 @@ public class TravelJournal extends AbstractEntity{
      * If doesn't, adds a new category counted with one trip in there.
      */
     public void addTrip(Trip trip){
-        //TODO upresnit kategorii tripu!!!
-        Category cat = new Category("nejaka kategorie"); //simulace
-        int actualValue = findAndGetCategoryValueIfExists(cat);
+        int actualValue = findAndGetCategoryValueIfExists(trip.getCategory());
         if(actualValue != -1) {
             actualValue++;
-            this.trip_counter.put(cat, actualValue);
+            this.trip_counter.put(trip.getCategory(), actualValue);
         }
         else{
-            this.trip_counter.put(cat, 1);
+            this.trip_counter.put(trip.getCategory(), 1);
         }
         addsXp(trip.getPossible_xp_reward());
     }
