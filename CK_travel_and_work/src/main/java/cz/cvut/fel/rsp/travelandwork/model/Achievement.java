@@ -3,6 +3,10 @@ package cz.cvut.fel.rsp.travelandwork.model;
 import javax.persistence.*;
 import java.util.List;
 
+@NamedQueries({
+        @NamedQuery(name = "Achievement.findById", query = "SELECT a FROM Achievement a WHERE a.id = :id"),
+})
+
 @Entity
 @Table(name = "ACHIEVEMENT")
 public class Achievement extends AbstractEntity{

@@ -53,4 +53,34 @@ public class TravelJournal extends AbstractEntity{
     public void setEarnedAchievements(List<Achievement> earnedAchievements) {
         this.earnedAchievements = earnedAchievements;
     }
+
+    /**
+     * Adds trip to travel journal
+     * If travel journal already contains the category, adds one more.
+     * If doesn't, adds a new category counted with one trip in there.
+     */
+    public void addTrip(Trip trip){
+        int actualValue = findAndGetCategoryValueIfExists(trip.getCategory());
+        if(actualValue != -1) {
+            actualValue++;
+            this.trip_counter.put(trip.getCategory(), actualValue);
+        }
+        else{
+            this.trip_counter.put(trip.getCategory(), 1);
+        }
+        addsXp(trip.getPossible_xp_reward());
+    }
+
+    private int findAndGetCategoryValueIfExists(Category category){
+        for (Category key: this.trip_counter.keySet()) {
+            if(key.equals(category)){
+                return this.trip_counter.get(key);
+            }
+        }
+        return -1;
+    }
+
+    private void addsXp(int xp){
+        this.xp_count += xp;
+    }
 }

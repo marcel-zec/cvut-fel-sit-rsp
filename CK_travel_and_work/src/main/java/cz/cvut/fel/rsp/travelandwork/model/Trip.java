@@ -56,6 +56,10 @@ public class Trip extends AbstractEntity {
     @Column(nullable = false)
     private int requiered_level;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
     @ManyToMany
     @JoinTable(
             name = "required_achievement_trip",
@@ -215,5 +219,13 @@ public class Trip extends AbstractEntity {
     public void setReviews(List<TripReview> reviews) {
 
         this.reviews = reviews;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Category getCategory() {
+        return category;
     }
 }

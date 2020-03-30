@@ -1,11 +1,9 @@
 package cz.cvut.fel.rsp.travelandwork.model;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @Table(name = "CATEGORY")
@@ -23,4 +21,16 @@ public class Category extends AbstractEntity{
     public void setName(String name) {
         this.name = name;
     }
+
+    public Category(@NotBlank(message = "Name of category cannot be blank") String name) {
+        this.name = name;
+    }
+
+    @OneToMany(mappedBy = "category")
+    private List<Trip> trips;
+
+    public boolean add(Trip trip){
+        return trips.add(trip);
+    }
 }
+
