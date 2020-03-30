@@ -57,7 +57,7 @@ public class Trip extends AbstractEntity {
     private int requiered_level;
 
     @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
+    @JoinColumn(name = "category_id")
     private Category category;
 
     @ManyToMany
