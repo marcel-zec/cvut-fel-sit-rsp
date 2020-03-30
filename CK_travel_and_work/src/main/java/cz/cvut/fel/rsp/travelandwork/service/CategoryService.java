@@ -6,6 +6,7 @@ import cz.cvut.fel.rsp.travelandwork.model.Trip;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CategoryService {
@@ -20,7 +21,10 @@ public class CategoryService {
      * adds trip to category
      * @return true if successed
      */
-    public boolean add(Category category, Trip trip){
-        return categoryDao.add(category, trip);
+    @Transactional
+    public void add(Category category, Trip trip){
+        category.add(trip);
+        categoryDao.update(category);
+       // return categoryDao.add(category, trip);
     }
 }
