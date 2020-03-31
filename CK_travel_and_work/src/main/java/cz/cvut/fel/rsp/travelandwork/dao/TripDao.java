@@ -1,13 +1,10 @@
 package cz.cvut.fel.rsp.travelandwork.dao;
 
 import cz.cvut.fel.rsp.travelandwork.model.Trip;
-import cz.cvut.fel.rsp.travelandwork.model.User;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;
-import javax.persistence.PersistenceException;
 import java.util.List;
-import java.util.Objects;
 
 
 @Repository

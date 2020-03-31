@@ -4,7 +4,6 @@ import cz.cvut.fel.rsp.travelandwork.dao.AchievementDao;
 import cz.cvut.fel.rsp.travelandwork.dao.TripDao;
 import cz.cvut.fel.rsp.travelandwork.dao.TripSessionDao;
 import cz.cvut.fel.rsp.travelandwork.model.Achievement;
-import cz.cvut.fel.rsp.travelandwork.model.Trip;
 import cz.cvut.fel.rsp.travelandwork.model.TripSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.logging.Logger;
 
