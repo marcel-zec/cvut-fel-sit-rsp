@@ -1,6 +1,9 @@
 package cz.cvut.fel.rsp.travelandwork.rest;
 
+import cz.cvut.fel.rsp.travelandwork.dao.AchievementDao;
+import cz.cvut.fel.rsp.travelandwork.model.Achievement;
 import cz.cvut.fel.rsp.travelandwork.model.User;
+import cz.cvut.fel.rsp.travelandwork.service.AchievementService;
 import cz.cvut.fel.rsp.travelandwork.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,62 +12,23 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/achievement")
 public class AchievementController {
 
     private static final Logger LOG = LoggerFactory.getLogger(AchievementController.class);
-    private final UserService userService;
+    private final AchievementService achievementService;
 
     @Autowired
-    public AchievementController(UserService userService) {
-        this.userService = userService;
+    public AchievementController(AchievementService achievementService) {
+        this.achievementService = achievementService;
     }
-
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> register(@RequestBody User user) {
-        //userService.persist(user);
-        //LOG.debug("User {} successfully registered.", user);
-        //final HttpHeaders headers = RestUtils.createLocationHeaderFromCurrentUri("/current");
-        //return new ResponseEntity<>(headers, HttpStatus.CREATED);
-        return null;
-    }
-
-
-    //TODO - najst sposob ako to budeme zobrazovat, ci cez TripJurnal alebo ce list Enrollments
-//    @GetMapping(value = "/trips", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public void showTripHistory(@RequestBody User user) {
-//
-//    }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public void showCurrentUser() {
-
+    public List<Achievement> getAll() {
+        return achievementService.findAll();
     }
-
-    @PatchMapping(value = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody User user) {
-        return null;
-    }
-
-
-    @DeleteMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> remove(@RequestBody User user) {
-        //userService.remove(user);
-        //LOG.debug("User {} successfully removed.");
-        //final HttpHeaders headers = RestUtils.createLocationHeaderFromCurrentUri("/current");
-        //return new ResponseEntity<>(headers, HttpStatus.OK);
-        return null;
-    }
-
-
-
-
-
-
-
-
-
-
 }
 
