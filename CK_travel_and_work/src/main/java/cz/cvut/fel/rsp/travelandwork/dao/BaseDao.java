@@ -43,6 +43,7 @@ public abstract class BaseDao<T extends AbstractEntity> implements GenericDao<T>
         }
     }
 
+
     public List<T> findAll(boolean deleted) {
         return em.createQuery("SELECT e FROM " + type.getSimpleName() + " e", type).getResultList();
     }
