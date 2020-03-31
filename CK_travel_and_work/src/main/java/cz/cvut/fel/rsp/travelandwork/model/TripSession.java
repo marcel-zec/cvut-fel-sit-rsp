@@ -6,11 +6,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+
 
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "TripSession.findByTrip", query = "SELECT t FROM TripSession t WHERE t.trip.short_name = :trip_short_name AND t.deleted_at is null")
+})
 @Table(name = "TRIP_SESSION")
 public class TripSession extends AbstractEntity {
 
@@ -74,4 +76,6 @@ public class TripSession extends AbstractEntity {
     public void setTrip(Trip trip) {
         this.trip = trip;
     }
+
+
 }

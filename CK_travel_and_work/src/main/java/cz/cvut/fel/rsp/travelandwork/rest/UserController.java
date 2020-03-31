@@ -1,6 +1,5 @@
 package cz.cvut.fel.rsp.travelandwork.rest;
 
-import cz.cvut.fel.rsp.travelandwork.model.Trip;
 import cz.cvut.fel.rsp.travelandwork.model.User;
 import cz.cvut.fel.rsp.travelandwork.service.UserService;
 import org.slf4j.Logger;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin(origins = "http://localhost:8080")
 public class UserController {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);

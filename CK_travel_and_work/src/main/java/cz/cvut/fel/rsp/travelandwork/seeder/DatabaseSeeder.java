@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -124,7 +123,7 @@ public class DatabaseSeeder implements
     }
 
     void setAchievements(){
-        Trip  trip = tripDao.find("casablanca_me_gusta");
+        Trip trip = tripDao.find("casablanca_me_gusta");
         List<Achievement> achievements = achievementDao.findAll();
         trip.addRequiredAchievement(achievements.get(3));
         trip.addRequiredAchievement(achievements.get(4));

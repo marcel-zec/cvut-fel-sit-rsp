@@ -28,7 +28,6 @@ public class TripReview extends AbstractEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    //TODO - pridat do User @OneToMany(mappedBy = "author")
     private User author;
 
     @ManyToOne

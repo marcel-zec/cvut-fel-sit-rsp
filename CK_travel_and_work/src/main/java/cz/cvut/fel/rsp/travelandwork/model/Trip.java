@@ -1,11 +1,14 @@
 package cz.cvut.fel.rsp.travelandwork.model;
 
+import cz.cvut.fel.rsp.travelandwork.model.*;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "TRIP")
 @NamedQueries({
         @NamedQuery(name = "Trip.findByStringId", query = "SELECT t FROM Trip t WHERE t.short_name = :id AND t.deleted_at is null")
 })
@@ -55,6 +58,11 @@ public class Trip extends AbstractEntity {
     @Column(nullable = false)
     private int requiered_level;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+
     @ManyToMany
     @JoinTable(
             name = "required_achievement_trip",
@@ -87,7 +95,7 @@ public class Trip extends AbstractEntity {
                 @Min(value = 0, message = "Min 0") @Max(value = 10000, message = "Max 10 000") double deposit,
                 @Size(max = 200, min = 0, message = "Max 200 characters.") String location,
                 @Min(value = 0, message = "Min 0") @Max(value = 100, message = "Max 100") int required_level
-                ) {
+    ) {
         this.name = name;
         this.deposit = deposit;
         this.possible_xp_reward = possible_xp_reward;
@@ -97,6 +105,13 @@ public class Trip extends AbstractEntity {
         this.short_name = short_name;
     }
 
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
     public String getName() {
         return name;
     }
@@ -229,4 +244,7 @@ public class Trip extends AbstractEntity {
             this.gain_achievements.add(achievement);
         }
     }
+
+
+
 }

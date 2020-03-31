@@ -2,13 +2,10 @@ package cz.cvut.fel.rsp.travelandwork.environment;
 
 import cz.cvut.fel.rsp.travelandwork.model.Address;
 import cz.cvut.fel.rsp.travelandwork.model.Role;
-import cz.cvut.fel.rsp.travelandwork.model.Trip;
 import cz.cvut.fel.rsp.travelandwork.model.User;
-import cz.cvut.fel.rsp.travelandwork.service.UserService;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.time.LocalDate;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -45,7 +42,7 @@ public class Generator {
      */
     public static User generateUser() {
         String username =  "UserrNo"+ randomInt();
-        String email = username + "imejl.cz";
+        String email = username + "@imejl.cz";
         final User user = new User(username, generatePassword(), "Tester", "Testovany", email, Role.USER);
         user.setAddress(generateAddress(user));
         return user;

@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @Table(name = "APP_USER")
@@ -55,6 +56,9 @@ public class User extends AbstractEntity {
 
     @OneToOne(cascade = CascadeType.ALL)
     private TravelJournal travel_journal;
+
+    @OneToMany(mappedBy = "author")
+    private List<TripReview> tripReviews;
 
     public User() {
     }
@@ -145,4 +149,19 @@ public class User extends AbstractEntity {
 //    public void setUserRole(UserRole userRole) {
 //        this.userRole = userRole;
 //    }
+
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", role=" + role +
+                ", address=" + address +
+                ", travel_journal=" + travel_journal +
+                '}';
+    }
 }

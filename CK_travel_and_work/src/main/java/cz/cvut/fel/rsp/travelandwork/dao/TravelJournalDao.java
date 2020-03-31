@@ -8,4 +8,6 @@ public class TravelJournalDao extends BaseDao<TravelJournal> {
     protected TravelJournalDao() {
         super(TravelJournal.class);
     }
+
+
 }
