@@ -11,17 +11,4 @@ public class AchievementDao extends BaseDao<Achievement>{
     protected AchievementDao() {
         super(Achievement.class);
     }
-
-    public Achievement find(Long id){
-        {
-            try {
-                return em.createNamedQuery("Achievement.findById", Achievement.class).setParameter("id", id)
-                        .getSingleResult();
-            } catch (NoResultException e) {
-                return null;
-            }
-        }
-    }
-
-
 }
