@@ -2,6 +2,7 @@ package cz.cvut.fel.rsp.travelandwork.service;
 
 import cz.cvut.fel.rsp.travelandwork.dao.TravelJournalDao;
 import cz.cvut.fel.rsp.travelandwork.model.TravelJournal;
+import cz.cvut.fel.rsp.travelandwork.model.Trip;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
