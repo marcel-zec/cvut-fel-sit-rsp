@@ -214,4 +214,16 @@ public class Trip extends AbstractEntity {
 
         this.reviews = reviews;
     }
+
+    public void addRequiredAchievement(Achievement achievement){
+        if(!this.required_achievements.contains(achievement)){
+            this.required_achievements.add(achievement);
+        }
+    }
+
+    public void addGainAchievement(Achievement achievement){
+        if(!this.gain_achievements.contains(achievement)){
+            this.gain_achievements.add(achievement);
+        }
+    }
 }
