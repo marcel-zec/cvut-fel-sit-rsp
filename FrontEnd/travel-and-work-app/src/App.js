@@ -19,7 +19,12 @@ import {
     faMedal,
     faAward,
     faCommentMedical,
-    faCommentDots
+    faCommentDots,
+    faShieldAlt,
+    faCrown,
+    faWater,
+    faSwimmingPool,
+    faLocationArrow
 } from "@fortawesome/free-solid-svg-icons";
 import { faStar as emptyStar } from "@fortawesome/free-regular-svg-icons";
 
@@ -36,7 +41,12 @@ library.add(
     faMedal,
     faAward,
     faCommentMedical,
-    faCommentDots
+    faCommentDots,
+    faShieldAlt,
+    faCrown,
+    faWater,
+    faSwimmingPool,
+    faLocationArrow
 );
 
 class App extends React.Component {
