@@ -27,7 +27,6 @@ public class DatabaseSeeder implements
     private TripSessionDao tripSessionDao;
     private AchievementDao achievementDao;
 
-
     @Autowired
     public DatabaseSeeder(TripDao tripDao, TripSessionDao tripSessionDao, AchievementDao achievementDao) {
         this.tripDao = tripDao;
