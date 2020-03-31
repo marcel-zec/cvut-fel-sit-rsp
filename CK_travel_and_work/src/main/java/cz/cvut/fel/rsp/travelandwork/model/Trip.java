@@ -2,13 +2,11 @@ package cz.cvut.fel.rsp.travelandwork.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @NamedQueries({
-        @NamedQuery(name = "Trip.findByStringId", query = "SELECT t FROM Trip t WHERE t.short_name = :id AND t.deleted_at is null"),
-        @NamedQuery(name = "Trip.findByLevel", query = "SELECT t FROM Trip t WHERE t.requiered_level = :requiered_level AND t.deleted_at is null")
+        @NamedQuery(name = "Trip.findByStringId", query = "SELECT t FROM Trip t WHERE t.short_name = :id AND t.deleted_at is null")
 })
 public class Trip extends AbstractEntity {
 
@@ -56,6 +54,11 @@ public class Trip extends AbstractEntity {
     @Column(nullable = false)
     private int requiered_level;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+
     @ManyToMany
     @JoinTable(
             name = "required_achievement_trip",
@@ -98,7 +101,14 @@ public class Trip extends AbstractEntity {
         this.short_name = short_name;
     }
 
-    public String getName() {
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+        public String getName() {
         return name;
     }
 
@@ -215,19 +225,5 @@ public class Trip extends AbstractEntity {
     public void setReviews(List<TripReview> reviews) {
 
         this.reviews = reviews;
-    }
-
-    public void addRequiredAchievement(Achievement achievement){
-        if (this.required_achievements == null) required_achievements = new ArrayList<>();
-        if(!this.required_achievements.contains(achievement)){
-            this.required_achievements.add(achievement);
-        }
-    }
-
-    public void addGainAchievement(Achievement achievement){
-        if (this.gain_achievements == null) gain_achievements = new ArrayList<>();
-        if(!this.gain_achievements.contains(achievement)){
-            this.gain_achievements.add(achievement);
-        }
     }
 }
