@@ -1,11 +1,12 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, Row, Col, Container, Image } from "react-bootstrap";
+import { Button, Row, Col, Container, Image, ListGroup } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Spinner from "react-bootstrap/Spinner";
 import { Form } from "react-bootstrap";
+import AchievmentModal from "../Achievment/AchievmentModal";
 
 class TripDetail extends React.Component {
     state = { trip: null };
@@ -55,9 +56,44 @@ class TripDetail extends React.Component {
                 );
                 dateTitle = "Dates";
             }
+
+            //setting acheivments
+            let requiredAchievements = "none";
+            let gainAchievements = "none";
+            if (this.state.trip.required_achievements.length > 0) {
+                requiredAchievements = [];
+                this.state.trip.required_achievements.forEach(element => {
+                    requiredAchievements.push(
+                        <ListGroup.Item>
+                            <AchievmentModal
+                                titleBeforeIcon={true}
+                                icon={element.icon}
+                                title={element.name}
+                                description={element.description}
+                            />
+                        </ListGroup.Item>
+                    );
+                });
+            }
+            if (this.state.trip.gain_achievements.length > 0) {
+                gainAchievements = [];
+                this.state.trip.gain_achievements.forEach(element => {
+                    gainAchievements.push(
+                        <ListGroup.Item>
+                            <AchievmentModal
+                                titleBeforeIcon={true}
+                                icon={element.icon}
+                                title={element.name}
+                                description={element.description}
+                            />
+                        </ListGroup.Item>
+                    );
+                });
+            }
+
             return (
                 <Container>
-                    <Card>
+                    <Card className="mb-3">
                         <Card.Body className="d-flex flex-row">
                             <Col>
                                 <Image
@@ -95,6 +131,60 @@ class TripDetail extends React.Component {
                             </Col>
                         </Card.Body>
                     </Card>
+                    <Row>
+                        <Col>
+                            <Card style={{ width: "18rem" }} className="mb-3">
+                                <Card.Body>
+                                    <Card.Title>
+                                        Informations about trip
+                                    </Card.Title>
+                                    <Card.Subtitle className="mb-2 text-muted">
+                                        Deposit
+                                    </Card.Subtitle>
+                                    <Card.Text>
+                                        {this.state.trip.deposit}
+                                    </Card.Text>
+                                    <Card.Subtitle className="mb-2 text-muted">
+                                        Minimum level required
+                                    </Card.Subtitle>
+                                    <Card.Text>
+                                        {this.state.trip.requiered_level}
+                                    </Card.Text>
+                                </Card.Body>
+                            </Card>
+
+                            <Card style={{ width: "18rem" }} className="mb-3">
+                                <Card.Body>
+                                    <Card.Title>
+                                        Required achievements
+                                    </Card.Title>
+                                    <ListGroup variant="flush">
+                                        {requiredAchievements}
+                                    </ListGroup>
+                                </Card.Body>
+                            </Card>
+
+                            <Card style={{ width: "18rem" }} className="mb-3">
+                                <Card.Body>
+                                    <Card.Title>Gain achievements</Card.Title>
+                                    <ListGroup variant="flush">
+                                        {gainAchievements}
+                                    </ListGroup>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                        <Col>
+                            <Card className="mb-5">
+                                <Card.Body>
+                                    <Card.Title>Description</Card.Title>
+
+                                    <Card.Text>
+                                        {this.state.trip.description}
+                                    </Card.Text>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    </Row>
                 </Container>
             );
         }
