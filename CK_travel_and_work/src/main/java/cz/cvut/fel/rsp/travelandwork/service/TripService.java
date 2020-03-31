@@ -75,11 +75,25 @@ public class TripService {
         if (trip == null) throw new NotFoundException();
         //pridat vynimku na rolu
 
-        trip.setDescription(newTrip.getDescription());
-        trip.setName(newTrip.getName());
-        trip.setPossible_xp_reward(newTrip.getPossible_xp_reward());
-        trip.setRating(newTrip.getRating());
-        tripDao.update(trip);
+        newTrip.setId(trip.getId());
+        tripDao.update(newTrip);
+
+
+//        trip.setDescription(newTrip.getDescription());
+//        trip.setName(newTrip.getName());
+//        trip.setPossible_xp_reward(newTrip.getPossible_xp_reward());
+//        trip.setRating(newTrip.getRating());
+//        trip.setLocation(newTrip.getLocation());
+//        trip.setCategory(newTrip.getCategory());
+//        trip.setDeposit(newTrip.getDeposit());
+//        trip.setGain_achievements(newTrip.getGain_achievements());
+//        trip.setRequired_achievements(newTrip.getRequired_achievements());
+//        trip.setRequiered_level(newTrip.getRequiered_level());
+//        trip.setReviews(newTrip.getReviews());
+//        trip.setSessions(newTrip.getSessions());
+//        trip.setShort_name(newTrip.getShort_name());
+
+//        tripDao.update(trip);
     }
 
     @Transactional
