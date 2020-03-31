@@ -131,14 +131,14 @@ public class DatabaseSeeder implements
         trip.addGainAchievement(achievements.get(1));
         tripDao.update(trip);
 
-        Trip  trip = tripDao.find("barcechef");
-        List<Achievement> achievements = achievementDao.findAll();
+        trip = tripDao.find("barcechef");
+        achievements = achievementDao.findAll();
         trip.addRequiredAchievement(achievements.get(1));
         trip.addGainAchievement(achievements.get(3));
         tripDao.update(trip);
 
-        Trip  trip = tripDao.find("zagreb_archeology");
-        List<Achievement> achievements = achievementDao.findAll();
+        trip = tripDao.find("zagreb_archeology");
+        achievements = achievementDao.findAll();
         trip.addGainAchievement(achievements.get(2));
         trip.addGainAchievement(achievements.get(1));
         tripDao.update(trip);
