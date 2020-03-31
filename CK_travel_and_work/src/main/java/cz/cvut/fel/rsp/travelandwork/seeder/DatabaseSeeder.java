@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.logging.Logger;
 
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -42,6 +43,7 @@ public class DatabaseSeeder implements
         System.out.println("Vypis po stupusteni aplikacie.");
         createTrips();
         createAchievement();
+        setAchievements();
     }
 
     @Transactional
@@ -119,5 +121,26 @@ public class DatabaseSeeder implements
 
         achievement = new Achievement("Medalo","Picholino de la noche con vuelta macho medalo.","medal");
         achievementDao.persist(achievement);
+    }
+
+    void setAchievements(){
+        Trip  trip = tripDao.find("casablanca_me_gusta");
+        List<Achievement> achievements = achievementDao.findAll();
+        trip.addRequiredAchievement(achievements.get(3));
+        trip.addRequiredAchievement(achievements.get(4));
+        trip.addGainAchievement(achievements.get(1));
+        tripDao.update(trip);
+
+        Trip  trip = tripDao.find("barcechef");
+        List<Achievement> achievements = achievementDao.findAll();
+        trip.addRequiredAchievement(achievements.get(1));
+        trip.addGainAchievement(achievements.get(3));
+        tripDao.update(trip);
+
+        Trip  trip = tripDao.find("zagreb_archeology");
+        List<Achievement> achievements = achievementDao.findAll();
+        trip.addGainAchievement(achievements.get(2));
+        trip.addGainAchievement(achievements.get(1));
+        tripDao.update(trip);
     }
 }
