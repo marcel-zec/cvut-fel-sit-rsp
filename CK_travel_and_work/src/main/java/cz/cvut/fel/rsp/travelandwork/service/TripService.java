@@ -45,10 +45,13 @@ public class TripService {
     @Transactional
     public void create(Trip trip) {
 
+        tripDao.persist(trip);
+        trip = tripDao.find(trip.getShort_name());
         for (TripSession session: trip.getSessions()) {
+            session.setTrip(trip);
             tripSessionDao.persist(session);
         }
-        tripDao.persist(trip);
+       tripDao.update(trip);
     }
 
     @Transactional
@@ -77,7 +80,6 @@ public class TripService {
 
         newTrip.setId(trip.getId());
         tripDao.update(newTrip);
-
 
 //        trip.setDescription(newTrip.getDescription());
 //        trip.setName(newTrip.getName());
