@@ -99,12 +99,6 @@ public class UserDto  {
         return tripReviews;
     }
 
-    public void addReview(TripReview tripReview) {
-
-        if (tripReviews == null) tripReviews = new ArrayList<TripReview>();
-        tripReviews.add(tripReview);
-    }
-
     @Override
     public String toString() {
         return "User{" +
