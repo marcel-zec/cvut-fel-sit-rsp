@@ -2,6 +2,7 @@ package cz.cvut.fel.rsp.travelandwork.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
@@ -39,7 +40,6 @@ public class User extends AbstractEntity {
     @Basic(optional = false)
     @Column(nullable = false)
     @Size(max = 255, min = 6, message = "Password is in incorrect format.")
-    @JsonIgnore
     private String password;
 
     @Email(message = "Email should be valid")
@@ -131,8 +131,8 @@ public class User extends AbstractEntity {
         return email;
     }
 
-    public void encodePassword(PasswordEncoder encoder) {
-        this.password = encoder.encode(password);
+    public void encodePassword() {
+        this.password = new BCryptPasswordEncoder().encode(password);
     }
 
     public void setAddress(Address address) {

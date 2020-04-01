@@ -50,6 +50,10 @@ public class Address extends AbstractEntity {
         this.user = user;
     }
 
+
+    public Address() {
+
+    }
     public String getCity() {
         return city;
     }
