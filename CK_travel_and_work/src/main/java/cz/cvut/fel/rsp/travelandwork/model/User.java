@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -168,6 +169,11 @@ public class User extends AbstractEntity {
         return tripReviews;
     }
 
+    public void addReview(TripReview tripReview) {
+
+         if (tripReviews == null) tripReviews = new ArrayList<TripReview>();
+         tripReviews.add(tripReview);
+    }
 
     @Override
     public String toString() {
