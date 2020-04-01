@@ -1,9 +1,11 @@
 package cz.cvut.fel.rsp.travelandwork.seeder;
 
 import cz.cvut.fel.rsp.travelandwork.dao.AchievementDao;
+import cz.cvut.fel.rsp.travelandwork.dao.CategoryDao;
 import cz.cvut.fel.rsp.travelandwork.dao.TripDao;
 import cz.cvut.fel.rsp.travelandwork.dao.TripSessionDao;
 import cz.cvut.fel.rsp.travelandwork.model.Achievement;
+import cz.cvut.fel.rsp.travelandwork.model.Category;
 import cz.cvut.fel.rsp.travelandwork.model.Trip;
 import cz.cvut.fel.rsp.travelandwork.model.TripSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +28,14 @@ public class DatabaseSeeder implements
     private TripDao tripDao;
     private TripSessionDao tripSessionDao;
     private AchievementDao achievementDao;
-
+    private CategoryDao categoryDao;
 
     @Autowired
-    public DatabaseSeeder(TripDao tripDao, TripSessionDao tripSessionDao, AchievementDao achievementDao) {
+    public DatabaseSeeder(TripDao tripDao, TripSessionDao tripSessionDao, AchievementDao achievementDao, CategoryDao categoryDao) {
         this.tripDao = tripDao;
         this.tripSessionDao = tripSessionDao;
         this.achievementDao = achievementDao;
+        this.categoryDao = categoryDao;
     }
     
     @Override
@@ -42,7 +45,8 @@ public class DatabaseSeeder implements
         System.out.println("Vypis po stupusteni aplikacie.");
         createTrips();
         createAchievement();
-        setAchievements();
+        createCategories();
+        setAchievementsAndCategories();
     }
 
     @Transactional
@@ -122,24 +126,56 @@ public class DatabaseSeeder implements
         achievementDao.persist(achievement);
     }
 
-    void setAchievements(){
-        Trip trip = tripDao.find("casablanca_me_gusta");
+    void setAchievementsAndCategories(){
         List<Achievement> achievements = achievementDao.findAll();
+        List<Category> categories = categoryDao.findAll();
+
+        Trip trip = tripDao.find("casablanca_me_gusta");
         trip.addRequiredAchievement(achievements.get(3));
         trip.addRequiredAchievement(achievements.get(4));
         trip.addGainAchievement(achievements.get(1));
+        trip.setCategory(categories.get(0));
         tripDao.update(trip);
 
         trip = tripDao.find("barcechef");
         achievements = achievementDao.findAll();
         trip.addRequiredAchievement(achievements.get(1));
         trip.addGainAchievement(achievements.get(3));
+        trip.setCategory(categories.get(1));
+        tripDao.update(trip);
+
+        trip = tripDao.find("londonchef");
+        achievements = achievementDao.findAll();
+        trip.addRequiredAchievement(achievements.get(1));
+        trip.addGainAchievement(achievements.get(3));
+        trip.setCategory(categories.get(1));
         tripDao.update(trip);
 
         trip = tripDao.find("zagreb_archeology");
         achievements = achievementDao.findAll();
         trip.addGainAchievement(achievements.get(2));
         trip.addGainAchievement(achievements.get(1));
+        trip.setCategory(categories.get(2));
         tripDao.update(trip);
+    }
+
+    void createCategories(){
+        Category category = new Category("Bumbo");
+        categoryDao.persist(category);
+
+        category = new Category("Santo");
+        categoryDao.persist(category);
+
+        category = new Category("Cholat");
+        categoryDao.persist(category);
+
+        category = new Category("Kufon");
+        categoryDao.persist(category);
+
+        category = new Category("Rokel");
+        categoryDao.persist(category);
+
+        category = new Category("Balamoc");
+        categoryDao.persist(category);
     }
 }

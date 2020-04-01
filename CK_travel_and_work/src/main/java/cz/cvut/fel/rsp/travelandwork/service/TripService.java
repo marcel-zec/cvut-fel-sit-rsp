@@ -16,9 +16,9 @@ import java.util.List;
 @Service
 public class TripService {
 
-    private TripDao tripDao;
-    private TripSessionDao tripSessionDao;
-    private TripReviewDao tripReviewDao;
+    private final TripDao tripDao;
+    private final TripSessionDao tripSessionDao;
+    private final TripReviewDao tripReviewDao;
 
     @Autowired
     public TripService(TripDao tripDao, TripSessionDao tripSessionDao, TripReviewDao tripReviewDao) {
@@ -79,7 +79,8 @@ public class TripService {
         //pridat vynimku na rolu
 
         newTrip.setId(trip.getId());
-        tripDao.update(newTrip);
+        trip=newTrip;
+        tripDao.update(trip);
 
 //        trip.setDescription(newTrip.getDescription());
 //        trip.setName(newTrip.getName());
@@ -94,7 +95,7 @@ public class TripService {
 //        trip.setReviews(newTrip.getReviews());
 //        trip.setSessions(newTrip.getSessions());
 //        trip.setShort_name(newTrip.getShort_name());
-
+//
 //        tripDao.update(trip);
     }
 

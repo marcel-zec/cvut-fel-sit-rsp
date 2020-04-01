@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class CategoryService {
     private final CategoryDao categoryDao;
@@ -25,5 +27,9 @@ public class CategoryService {
         category.add(trip);
         categoryDao.update(category);
        // return categoryDao.add(category, trip);
+    }
+
+    public List<Category> findAll(){
+        return categoryDao.findAll();
     }
 }

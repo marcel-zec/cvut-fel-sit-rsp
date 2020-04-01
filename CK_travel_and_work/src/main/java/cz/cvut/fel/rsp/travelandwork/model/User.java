@@ -151,6 +151,24 @@ public class User extends AbstractEntity {
 //    }
 
 
+    public Address getAddress() {
+
+        return address;
+    }
+
+
+    public TravelJournal getTravel_journal() {
+
+        return travel_journal;
+    }
+
+
+    public List<TripReview> getTripReviews() {
+
+        return tripReviews;
+    }
+
+
     @Override
     public String toString() {
         return "User{" +
