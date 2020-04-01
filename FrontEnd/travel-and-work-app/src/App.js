@@ -24,7 +24,8 @@ import {
     faCrown,
     faWater,
     faSwimmingPool,
-    faLocationArrow
+    faLocationArrow,
+    faTrashAlt
 } from "@fortawesome/free-solid-svg-icons";
 import { faStar as emptyStar } from "@fortawesome/free-regular-svg-icons";
 
@@ -46,7 +47,8 @@ library.add(
     faCrown,
     faWater,
     faSwimmingPool,
-    faLocationArrow
+    faLocationArrow,
+    faTrashAlt
 );
 
 class App extends React.Component {

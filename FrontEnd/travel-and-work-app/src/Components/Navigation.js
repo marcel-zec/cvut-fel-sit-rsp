@@ -72,6 +72,11 @@ class Navigation extends React.Component {
                                             </NavLink>
                                         </NavDropdown.Item>
                                         <NavDropdown.Item>
+                                            <NavLink to="/trip">
+                                                List of trips
+                                            </NavLink>
+                                        </NavDropdown.Item>
+                                        <NavDropdown.Item>
                                             <NavLink to="/">
                                                 Log out
                                                 <FontAwesomeIcon icon="power-off" />

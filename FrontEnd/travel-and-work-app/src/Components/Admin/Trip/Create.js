@@ -4,7 +4,7 @@ import { Col, Button, Row } from "react-bootstrap";
 import { Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-class ProfileDetails extends React.Component {
+class Create extends React.Component {
     state = { achievements: null, show: true, categories: null };
 
     fetchAchievementsHandler = async () => {
@@ -30,9 +30,10 @@ class ProfileDetails extends React.Component {
 
         let categoryOptions = null;
         if (this.state.categories !== null) {
-            if (this.state.categories.lenght > 0) {
+            if (this.state.categories.length > 0) {
                 let categoriesArray = [];
-                this.state.achievements.forEach(element => {
+
+                this.state.categories.forEach(element => {
                     categoriesArray.push(<option>{element.name}</option>);
                 });
                 categoryOptions = (
@@ -122,6 +123,7 @@ class ProfileDetails extends React.Component {
                             controlId="exampleForm.ControlSelect1"
                         >
                             <Form.Label>Category</Form.Label>
+                            {categoryOptions}
                         </Form.Group>
                     </Form.Row>
                     <Form.Group controlId="formGridLocation">
@@ -165,4 +167,4 @@ class ProfileDetails extends React.Component {
     }
 }
 
-export default ProfileDetails;
+export default Create;
