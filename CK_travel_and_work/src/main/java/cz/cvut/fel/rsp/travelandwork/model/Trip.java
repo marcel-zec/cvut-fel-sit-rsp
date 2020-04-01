@@ -56,7 +56,7 @@ public class Trip extends AbstractEntity {
 
     @Basic(optional = false)
     @Column(nullable = false)
-    private int requiered_level;
+    private int required_level;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
@@ -101,7 +101,7 @@ public class Trip extends AbstractEntity {
         this.possible_xp_reward = possible_xp_reward;
         this.description = description;
         this.location= location;
-        this.requiered_level = required_level;
+        this.required_level = required_level;
         this.short_name = short_name;
     }
 
@@ -184,15 +184,15 @@ public class Trip extends AbstractEntity {
     }
 
 
-    public int getRequiered_level() {
+    public int getRequired_level() {
 
-        return requiered_level;
+        return required_level;
     }
 
 
-    public void setRequiered_level(int requiered_level) {
+    public void setRequired_level(int requiered_level) {
 
-        this.requiered_level = requiered_level;
+        this.required_level = requiered_level;
     }
 
 
