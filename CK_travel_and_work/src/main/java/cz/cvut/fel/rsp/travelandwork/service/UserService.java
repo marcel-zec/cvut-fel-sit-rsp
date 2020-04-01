@@ -40,6 +40,10 @@ public class UserService {
         Objects.requireNonNull(user);
         user.encodePassword(passwordEncoder);
         dao.persist(user);
+        user = dao.findByUsername(user.getUsername());
+        if (user.getAddress() != null) addressDao.persist(user.getAddress());
+        if (user.getTravel_journal() != null) travelJournalDao.persist(user.getTravel_journal());
+        dao.update(user);
     }
 
     @Transactional(readOnly = true)
@@ -81,9 +85,9 @@ public class UserService {
         return dao.find(id);
     }
     @Transactional
-    public User findByUsername(String login) {
-        Objects.requireNonNull(login);
-        return dao.findByUsername(login);
+    public User findByUsername(String username) {
+        Objects.requireNonNull(username);
+        return dao.findByUsername(username);
     }
 
     @Transactional

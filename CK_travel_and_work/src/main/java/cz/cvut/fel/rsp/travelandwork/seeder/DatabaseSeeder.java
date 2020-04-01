@@ -121,6 +121,7 @@ public class DatabaseSeeder implements
         achievementDao.persist(achievement);
     }
 
+    @Transactional
     void setAchievements(){
         Trip trip = tripDao.find("casablanca_me_gusta");
         List<Achievement> achievements = achievementDao.findAll();
