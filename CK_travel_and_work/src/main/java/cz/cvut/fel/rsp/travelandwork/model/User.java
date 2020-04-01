@@ -188,4 +188,8 @@ public class User extends AbstractEntity {
                 ", travel_journal=" + travel_journal +
                 '}';
     }
+
+    public void setTripReviews(List<TripReview> tripReviews) {
+        this.tripReviews = tripReviews;
+    }
 }
