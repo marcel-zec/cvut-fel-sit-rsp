@@ -1,7 +1,7 @@
 import React from "react";
-import Home from "./Components/Home/Home";
-import Logout from "./Components/Logout";
-import Login from "./Components/Login";
+import Home from "./Components/Home/Trip/Index";
+import Logout from "./Components/Auth/Logout";
+import Login from "./Components/Auth/Login";
 import Profile from "./Components/Profile/Profile";
 import ProfileTrips from "./Components/Profile/Trips/ProfileTrips";
 import ProfileDetails from "./Components/Profile/ProfileDetails";
@@ -9,11 +9,12 @@ import ProfileAchievments from "./Components/Profile/ProfileAchievments";
 import CreateTrip from "./Components/Admin/Trip/Create";
 import EditTrip from "./Components/Admin/Trip/Edit";
 import IndexTrip from "./Components/Admin/Trip/Index";
-import TripEdit from "./Components/TripEdit";
-import TripHistoryList from "./Components/TripHistoryList";
 import Register from "./Components/Register";
 import { Redirect, Switch, Route } from "react-router-dom";
-import TripDetail from "./Components/Home/TripDetail";
+import TripDetail from "./Components/Home/Trip/Detail";
+import CreateAchievement from "./Components/Admin/Achievement/Create";
+import IndexAchievement from "./Components/Admin/Achievement/Index";
+import EditAchievement from "./Components/Admin/Achievement/Edit";
 
 function Router(props) {
     const { auth } = props;
@@ -68,15 +69,22 @@ function Router(props) {
                 <Route path="/trips" exact component={Home} />
                 <Route path="/trips/:id" component={TripDetail} />
 
-                <Route
-                    path="/trips/history"
-                    exact
-                    component={TripHistoryList}
-                />
                 {/*Admin*/}
                 <Route path="/trip/create" exact component={CreateTrip} />
                 <Route path="/trip" exact component={IndexTrip} />
                 <Route path="/trip/:id/edit" exact component={EditTrip} />
+
+                <Route
+                    path="/achievement/create"
+                    exact
+                    component={CreateAchievement}
+                />
+                <Route path="/achievement" exact component={IndexAchievement} />
+                <Route
+                    path="/achievement/:id/edit"
+                    exact
+                    component={EditAchievement}
+                />
             </Switch>
         </div>
     );

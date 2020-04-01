@@ -17,7 +17,7 @@ class Navigation extends React.Component {
                 <Navbar bg="light" expand="lg">
                     <Col>
                         <Navbar.Brand>
-                            <NavLink to="/">React-Bootstrap</NavLink>
+                            <NavLink to="/">Travel&Work</NavLink>
                         </Navbar.Brand>
                     </Col>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -74,6 +74,16 @@ class Navigation extends React.Component {
                                         <NavDropdown.Item>
                                             <NavLink to="/trip">
                                                 List of trips
+                                            </NavLink>
+                                        </NavDropdown.Item>
+                                        <NavDropdown.Item>
+                                            <NavLink to="/achievement">
+                                                List of achievements
+                                            </NavLink>
+                                        </NavDropdown.Item>
+                                        <NavDropdown.Item>
+                                            <NavLink to="/achievement/create">
+                                                Create achievement
                                             </NavLink>
                                         </NavDropdown.Item>
                                         <NavDropdown.Item>

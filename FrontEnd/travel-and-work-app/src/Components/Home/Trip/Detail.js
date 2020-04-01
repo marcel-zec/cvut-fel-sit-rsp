@@ -6,9 +6,9 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Spinner from "react-bootstrap/Spinner";
 import { Form } from "react-bootstrap";
-import AchievmentModal from "../Achievment/AchievmentModal";
+import AchievmentModal from "../../Achievment/AchievmentModal";
 
-class TripDetail extends React.Component {
+class Detail extends React.Component {
     state = { trip: null };
 
     async componentDidMount() {
@@ -191,4 +191,4 @@ class TripDetail extends React.Component {
     }
 }
 
-export default TripDetail;
+export default Detail;
