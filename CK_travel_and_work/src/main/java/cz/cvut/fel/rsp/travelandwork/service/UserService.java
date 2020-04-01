@@ -106,6 +106,12 @@ public class UserService {
         return userDtos;
     }
 
+    @Transactional
+    public boolean exists(Long id) {
+        Objects.requireNonNull(id);
+        return dao.exists(id);
+    }
+
     private UserDto translate(User user) {
         Objects.requireNonNull(user);
         UserDto userDto = new UserDto();
