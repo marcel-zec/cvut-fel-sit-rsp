@@ -1,5 +1,6 @@
 package cz.cvut.fel.rsp.travelandwork.rest;
 
+import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
 import cz.cvut.fel.rsp.travelandwork.model.User;
 import cz.cvut.fel.rsp.travelandwork.service.UserService;
 import org.slf4j.Logger;
@@ -25,7 +26,7 @@ public class UserController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> register(@RequestBody User user) {
-        //userService.persist(user);
+        userService.create(user);
         //LOG.debug("User {} successfully registered.", user);
         //final HttpHeaders headers = RestUtils.createLocationHeaderFromCurrentUri("/current");
         //return new ResponseEntity<>(headers, HttpStatus.CREATED);
@@ -50,9 +51,9 @@ public class UserController {
     }
 
 
-    @DeleteMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> remove(@RequestBody User user) {
-        //userService.remove(user);
+    @DeleteMapping(value = "{username}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> delete(@PathVariable String username) throws NotFoundException {
+        userService.delete(username);
         //LOG.debug("User {} successfully removed.");
         //final HttpHeaders headers = RestUtils.createLocationHeaderFromCurrentUri("/current");
         //return new ResponseEntity<>(headers, HttpStatus.OK);

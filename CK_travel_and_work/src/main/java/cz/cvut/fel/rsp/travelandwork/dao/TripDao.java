@@ -24,11 +24,11 @@ public class TripDao extends BaseDao<Trip> {
         }
     }
 
-    public List<Trip> find(int requiered_level){
+    public List<Trip> find(int required_level){
 
         {
             try {
-                return em.createNamedQuery("Trip.findByLevel", Trip.class).setParameter("requiered_level", requiered_level)
+                return em.createNamedQuery("Trip.findByLevel", Trip.class).setParameter("required_level", required_level)
                         .getResultList();
             } catch (NoResultException e) {
                 return null;

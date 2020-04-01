@@ -1,7 +1,5 @@
 package cz.cvut.fel.rsp.travelandwork.model;
 
-import cz.cvut.fel.rsp.travelandwork.model.*;
-
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.ArrayList;
@@ -10,7 +8,8 @@ import java.util.List;
 @Entity
 @Table(name = "TRIP")
 @NamedQueries({
-        @NamedQuery(name = "Trip.findByStringId", query = "SELECT t FROM Trip t WHERE t.short_name = :id AND t.deleted_at is null")
+        @NamedQuery(name = "Trip.findByStringId", query = "SELECT t FROM Trip t WHERE t.short_name = :id AND t.deleted_at is null"),
+        @NamedQuery(name = "Trip.findByLevel", query = "SELECT t FROM Trip t WHERE t.required_level = :required_level AND t.deleted_at is null")
 })
 public class Trip extends AbstractEntity {
 
@@ -190,9 +189,9 @@ public class Trip extends AbstractEntity {
     }
 
 
-    public void setRequired_level(int requiered_level) {
+    public void setRequired_level(int required_level) {
 
-        this.required_level = requiered_level;
+        this.required_level = required_level;
     }
 
 

@@ -2,12 +2,14 @@ package cz.cvut.fel.rsp.travelandwork.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -38,7 +40,6 @@ public class User extends AbstractEntity {
     @Basic(optional = false)
     @Column(nullable = false)
     @Size(max = 255, min = 6, message = "Password is in incorrect format.")
-    @JsonIgnore
     private String password;
 
     @Email(message = "Email should be valid")
@@ -130,8 +131,8 @@ public class User extends AbstractEntity {
         return email;
     }
 
-    public void encodePassword(PasswordEncoder encoder) {
-        this.password = encoder.encode(password);
+    public void encodePassword() {
+        this.password = new BCryptPasswordEncoder().encode(password);
     }
 
     public void setAddress(Address address) {
@@ -168,6 +169,11 @@ public class User extends AbstractEntity {
         return tripReviews;
     }
 
+    public void addReview(TripReview tripReview) {
+
+         if (tripReviews == null) tripReviews = new ArrayList<TripReview>();
+         tripReviews.add(tripReview);
+    }
 
     @Override
     public String toString() {
@@ -181,5 +187,9 @@ public class User extends AbstractEntity {
                 ", address=" + address +
                 ", travel_journal=" + travel_journal +
                 '}';
+    }
+
+    public void setTripReviews(List<TripReview> tripReviews) {
+        this.tripReviews = tripReviews;
     }
 }

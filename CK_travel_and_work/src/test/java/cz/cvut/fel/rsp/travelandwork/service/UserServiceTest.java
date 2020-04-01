@@ -49,9 +49,9 @@ public class UserServiceTest {
 
     @Before
     public void init() {
-        sut.persist(testUser);
+        sut.create(testUser);
         for (User us: list) {
-            sut.persist(us);
+            sut.create(us);
             System.out.println(us.toString());
         }
     }
@@ -61,7 +61,7 @@ public class UserServiceTest {
     @Rollback
     public void persist_PersistedUser() {
         User u = Generator.generateUser();
-        sut.persist(u);
+        sut.create(u);
         Assert.assertEquals(u, sut.findByUsername(u.getUsername()));
     }
     @Test

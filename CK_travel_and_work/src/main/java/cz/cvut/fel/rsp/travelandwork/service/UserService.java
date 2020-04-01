@@ -4,6 +4,7 @@ import cz.cvut.fel.rsp.travelandwork.dao.AddressDao;
 import cz.cvut.fel.rsp.travelandwork.dao.TravelJournalDao;
 import cz.cvut.fel.rsp.travelandwork.dao.TripReviewDao;
 import cz.cvut.fel.rsp.travelandwork.dao.UserDao;
+import cz.cvut.fel.rsp.travelandwork.dto.UserDto;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
 import cz.cvut.fel.rsp.travelandwork.model.TravelJournal;
 import cz.cvut.fel.rsp.travelandwork.model.TripReview;
@@ -13,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,24 +24,32 @@ public class UserService {
     private final UserDao dao;
     private final TripReviewDao tripReviewDao;
     private final TravelJournalDao travelJournalDao;
-    private final PasswordEncoder passwordEncoder;
     private final AddressDao addressDao;
 
 
     @Autowired
-    public UserService(UserDao dao, PasswordEncoder passwordEncoder, TripReviewDao tripReviewDao, TravelJournalDao travelJournalDao, AddressDao addressDao) {
+    public UserService(UserDao dao, TripReviewDao tripReviewDao, TravelJournalDao travelJournalDao, AddressDao addressDao) {
         this.dao = dao;
-        this.passwordEncoder = passwordEncoder;
         this.tripReviewDao = tripReviewDao;
         this.travelJournalDao = travelJournalDao;
         this.addressDao = addressDao;
     }
 
     @Transactional
-    public void persist(User user) {
+    public void create(User user) {
         Objects.requireNonNull(user);
-        user.encodePassword(passwordEncoder);
+        user.encodePassword();
         dao.persist(user);
+        user = dao.findByUsername(user.getUsername());
+        if (user.getAddress() != null){
+            user.getAddress().setUser(user);
+            addressDao.persist(user.getAddress());
+        }
+        if (user.getTravel_journal() != null) {
+            user.getTravel_journal().setUser(user);
+            travelJournalDao.persist(user.getTravel_journal());
+        }
+        dao.update(user);
     }
 
     @Transactional(readOnly = true)
@@ -76,19 +86,24 @@ public class UserService {
     }
 
     @Transactional
-    public User find(Long id) {
+    public UserDto find(Long id) {
         Objects.requireNonNull(id);
-        return dao.find(id);
+        return translate(dao.find(id));
     }
     @Transactional
-    public User findByUsername(String login) {
-        Objects.requireNonNull(login);
-        return dao.findByUsername(login);
+    public UserDto findByUsername(String username) {
+        Objects.requireNonNull(username);
+        return translate(dao.findByUsername(username));
     }
 
     @Transactional
-    public List<User> findAll() {
-        return dao.findAll();
+    public List<UserDto> findAll() {
+
+        List<UserDto> userDtos = new ArrayList<>();
+        for (User user:dao.findAll()) {
+            userDtos.add(translate(user));
+        }
+        return userDtos;
     }
 
     @Transactional
@@ -97,5 +112,19 @@ public class UserService {
         return dao.exists(id);
     }
 
+    private UserDto translate(User user) {
+        Objects.requireNonNull(user);
+        UserDto userDto = new UserDto();
+
+        user.setUsername(user.getUsername());
+        userDto.setLastName(user.getLastName());
+        userDto.setFirstName(user.getFirstName());
+        userDto.setEmail(user.getEmail());
+        userDto.setAddress(user.getAddress());
+        userDto.setTravel_journal(user.getTravel_journal());
+        userDto.setTripReviews(user.getTripReviews());
+
+        return userDto;
+    }
 
 }
