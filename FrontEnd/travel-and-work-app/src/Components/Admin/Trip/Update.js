@@ -5,21 +5,25 @@ import { Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 class ProfileDetails extends React.Component {
-    state = { achievements: null, show: true, categories: null };
-
-    fetchAchievementsHandler = async () => {
-        const response = await fetch(`http://localhost:8080/achievement`);
-        const data = await response.json();
-        console.log(data);
-        //show: false -> add class name to button and hide it
-        this.setState({ achievements: data, show: false });
-    };
+    state = { trip: null, achievements: null, categories: null };
 
     async componentDidMount() {
-        const response = await fetch(`http://localhost:8080/category`);
-        const data = await response.json();
-        console.log(data);
-        this.setState({ categories: data });
+        const response1 = await fetch(
+            `http://localhost:8080/trip/` + this.props.match.params.id
+        );
+        const data1 = await response1.json();
+        console.log(data1);
+        this.setState({ trip: data1 });
+
+        const response2 = await fetch(`http://localhost:8080/trip/category`);
+        const data2 = await response2.json();
+        console.log(data2);
+        this.setState({ categories: data2 });
+
+        const response3 = await fetch(`http://localhost:8080/trip/achievement`);
+        const data3 = await response3.json();
+        console.log(data3);
+        this.setState({ achievements: data3 });
     }
 
     render() {
