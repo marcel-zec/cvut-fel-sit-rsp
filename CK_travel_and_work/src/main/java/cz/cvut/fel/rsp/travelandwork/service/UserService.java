@@ -36,7 +36,7 @@ public class UserService {
     }
 
     @Transactional
-    public void persist(User user) {
+    public void create(User user) {
         Objects.requireNonNull(user);
         user.encodePassword(passwordEncoder);
         dao.persist(user);
