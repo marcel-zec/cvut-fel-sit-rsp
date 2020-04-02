@@ -90,16 +90,15 @@ public class TripService {
         }
 
         for (int i = 0; i < newTrip.getSessions().size() ; i++) {
+            TripSession newSession = newTrip.getSessions().get(i);
                 if (i <= trip.getSessions().size()-1 ){
                 TripSession oldSession = trip.getSessions().get(i);
-                TripSession newSession = newTrip.getSessions().get(i);
 
                 newTrip.getSessions().get(i).setId(oldSession.getId());
                 oldSession = newSession;
                 oldSession.setTrip(trip);
                 tripSessionDao.update(oldSession);
             } else {
-                    TripSession newSession = newTrip.getSessions().get(i);
                     newSession.setTrip(trip);
                     tripSessionDao.persist(newSession);
                 }
