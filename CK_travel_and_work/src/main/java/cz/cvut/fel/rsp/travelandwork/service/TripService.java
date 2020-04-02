@@ -107,6 +107,8 @@ public class TripService {
         trip=newTrip;
         tripDao.update(trip);
 
+        //todo upravit reviews
+
 //        trip.setDescription(newTrip.getDescription());
 //        trip.setName(newTrip.getName());
 //        trip.setPossible_xp_reward(newTrip.getPossible_xp_reward());
