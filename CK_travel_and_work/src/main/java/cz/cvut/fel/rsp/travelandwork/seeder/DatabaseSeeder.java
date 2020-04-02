@@ -98,7 +98,7 @@ public class DatabaseSeeder implements
 
     @Transactional
     void createAchievement(){
-        Achievement achievement = new Achievement("Habamalo","Habamalo is balabo con mambo.","location-arrow");
+        Achievement achievement; /* = new Achievement("Habamalo","Habamalo is balabo con mambo.","location-arrow");
         achievementDao.persist(achievement);
 
         achievement = new Achievement("Kalomone","Kalomone is bumbalo fon lucato.","swimmer");
@@ -123,6 +123,77 @@ public class DatabaseSeeder implements
         achievementDao.persist(achievement);
 
         achievement = new Achievement("Medalo","Picholino de la noche con vuelta macho medalo.","medal");
+        achievementDao.persist(achievement);
+*/
+        //ACHIEVEMENTY ZAJEZDOVE
+
+        //Certifikáty
+
+        achievement = new Achievement("Certifikát Angličtina B2", "Uživatel má certifikát B2 v anglickém jazyku.", "graduation-cap");
+        achievementDao.persist(achievement);
+
+        achievement = new Achievement("Certifikát Španěličina C1", "Uživatel má certifikát C1 v španělském jazyku.", "graduation-cap");
+        achievementDao.persist(achievement);
+
+        //Specifické achievementy
+
+        achievement = new Achievement("Kuchař sushi", "Uživatel má zkušenosti s přípravou sushi.", "fish");
+        achievementDao.persist(achievement);
+
+        achievement = new Achievement("Horolezec", "Uživatel má zkušenosti s lezením po skalách.", "mountain");
+        achievementDao.persist(achievement);
+
+        achievement = new Achievement("Restaurátor hradů", "Uživatel má zkušenosti s restaurací starých památek.", "fort-awesome");
+        achievementDao.persist(achievement);
+
+        //Achievementy za počet zájezdů do určité krajiny
+
+        achievement = new Achievement("Skoro Ital!", "Uživatel byl už 5-krát v Itálii.", "flag");
+        achievementDao.persist(achievement);
+
+        achievement = new Achievement("Poprve do Ruska.", "Uživatel byl jednou v Rusku.", "snowflake");
+        achievementDao.persist(achievement);
+
+        //Achievementy za počet zájezdů v konkrétních kategoriích
+
+        achievement = new Achievement("Kuchtík", "Uživatel byl jednou vařit.", "hamburger");
+        achievementDao.persist(achievement);
+
+        achievement = new Achievement("Kuchař", "Uživatel vařil už na 5-ti zájezdech.", "pizza-slice");
+        achievementDao.persist(achievement);
+
+        achievement = new Achievement("Pohl v Reichu", "Uživatel vařil už na 15-ti zájezdech.", "glass-cheers");
+        achievementDao.persist(achievement);
+
+        //ACHIEVEMENTY PROFILOVE
+
+        //Achievementy za počty achievementů
+
+        achievement = new Achievement("Do třetice všechno dobré!", "Uživatel získal svůj třetí achievement.", "trophy");
+        achievementDao.persist(achievement);
+
+        achievement = new Achievement("Kopa achievementů", "Uživatel získal svůj 60-tý achievement.", "crown");
+        achievementDao.persist(achievement);
+
+        //Achievementy za různorodost tripů achievementů
+
+        achievement = new Achievement("Švýcarák", "Uživatel má za sebou více než 5 tripů z různých kategorii.", "pastafarianism");
+        achievementDao.persist(achievement);
+
+        achievement = new Achievement("Světoběžník", "Uživatel navštívil už 10 různých zemí.", "compass");
+        achievementDao.persist(achievement);
+
+        //Achievementy za délku registrace
+
+        achievement = new Achievement("Už tři roky s námi", "Uživatel byl zaregistrován po dobu 3 let.", "glass-cheers");
+        achievementDao.persist(achievement);
+
+        //Achievementy za počet dní strávených na cestách
+
+        achievement = new Achievement("Turista", "Uživatel procestoval 10 dní.", "running");
+        achievementDao.persist(achievement);
+
+        achievement = new Achievement("Poutník", "Uživatel procestoval 60 dní.", "campground");
         achievementDao.persist(achievement);
     }
 
