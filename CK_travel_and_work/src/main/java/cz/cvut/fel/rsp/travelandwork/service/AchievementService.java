@@ -28,7 +28,7 @@ public class AchievementService {
     }
 
     @Transactional
-    public void persist(Achievement achievement) {
+    public void create(Achievement achievement) {
         achievementDao.persist(achievement);
     }
 
