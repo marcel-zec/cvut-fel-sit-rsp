@@ -4,6 +4,7 @@ import cz.cvut.fel.rsp.travelandwork.dao.TripDao;
 import cz.cvut.fel.rsp.travelandwork.dao.TripReviewDao;
 import cz.cvut.fel.rsp.travelandwork.dao.TripSessionDao;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
+import cz.cvut.fel.rsp.travelandwork.model.Achievement;
 import cz.cvut.fel.rsp.travelandwork.model.Trip;
 import cz.cvut.fel.rsp.travelandwork.model.TripReview;
 import cz.cvut.fel.rsp.travelandwork.model.TripSession;
@@ -79,6 +80,31 @@ public class TripService {
         //todo pridat vynimku na rolu
 
         newTrip.setId(trip.getId());
+
+        //less new sessions
+        if (newTrip.getSessions().size() < trip.getSessions().size()){
+            for ( int i = newTrip.getSessions().size() ; i < trip.getSessions().size(); i++) {
+                trip.getSessions().get(i).softDelete();
+                tripSessionDao.update( trip.getSessions().get(i));
+            }
+        }
+
+        for (int i = 0; i < newTrip.getSessions().size() ; i++) {
+                if (i <= trip.getSessions().size()-1 ){
+                TripSession oldSession = trip.getSessions().get(i);
+                TripSession newSession = newTrip.getSessions().get(i);
+
+                newTrip.getSessions().get(i).setId(oldSession.getId());
+                oldSession = newSession;
+                oldSession.setTrip(trip);
+                tripSessionDao.update(oldSession);
+            } else {
+                    TripSession newSession = newTrip.getSessions().get(i);
+                    newSession.setTrip(trip);
+                    tripSessionDao.persist(newSession);
+                }
+        }
+
         trip=newTrip;
         tripDao.update(trip);
 
