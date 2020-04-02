@@ -29,36 +29,36 @@
 }
 
 #trip-title {
-  font-family:'Candara Bold', 'Candara Regular', 'Candara';
-  -webkit-font-smoothing: antialiased;
-  font-weight: 700;
-  color: white;
-  margin: 0;
-  margin-top: 35%;
-  text-align: left;
-  left: 0px;
-  width: 187px;
-  transform-origin: 93.5px 21.5px;
+    font-family: "Candara Bold", "Candara Regular", "Candara";
+    -webkit-font-smoothing: antialiased;
+    font-weight: 700;
+    color: white;
+    margin: 0;
+    margin-top: 35%;
+    text-align: left;
+    left: 0px;
+    width: 187px;
+    transform-origin: 93.5px 21.5px;
 }
 
-.image-text{
-  font-family: "Arial tučné", "Arial obyčejné", Arial;
-  color: #e1f7d5;
-  font-weight: 700;
-  font-size: 13px;
-  background: rgb(255, 102, 102);
-  padding: 7px;
-  margin-top: -5;
+.image-text {
+    font-family: "Arial tučné", "Arial obyčejné", Arial;
+    color: #e1f7d5;
+    font-weight: 700;
+    font-size: 13px;
+    background: rgb(255, 102, 102);
+    padding: 7px;
+    margin-top: -5;
 }
 
-.image-card{
-  filter: brightness(70%);
+.image-card {
+    filter: brightness(70%);
 }
 
-.text{
-  font-family: "Arial tučné", "Arial obyčejné", Arial;
-  color: rgb(255, 102, 102);
-  font-weight: 700;
+.text {
+    font-family: "Arial tučné", "Arial obyčejné", Arial;
+    color: rgb(255, 102, 102);
+    font-weight: 700;
     font-style: normal;
     font-size: 20px;
 }

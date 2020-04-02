@@ -4,7 +4,7 @@ import TripSmall from "./TripSmall";
 import CardColumns from "react-bootstrap/CardColumns";
 import Spinner from "react-bootstrap/Spinner";
 
-class Home extends React.Component {
+class Index extends React.Component {
     async componentDidMount() {
         const response = await fetch(`http://localhost:8080/trip`);
         const data = await response.json();
@@ -38,4 +38,4 @@ class Home extends React.Component {
     }
 }
 
-export default Home;
+export default Index;

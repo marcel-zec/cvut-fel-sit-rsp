@@ -2,6 +2,7 @@ package cz.cvut.fel.rsp.travelandwork.environment;
 
 import cz.cvut.fel.rsp.travelandwork.model.Address;
 import cz.cvut.fel.rsp.travelandwork.model.Role;
+import cz.cvut.fel.rsp.travelandwork.model.Trip;
 import cz.cvut.fel.rsp.travelandwork.model.User;
 
 import java.sql.Date;
@@ -53,9 +54,9 @@ public class Generator {
      * Generates trip
      * @return generated trip
      */
-//    public static Trip generateTrip() {
-//       return new Trip("trip no." + randomInt(), randomInt(), "a really good trip", "12345678" + randomInt(), "trip" + randomInt());
-//    }
+    public static Trip generateTrip() {
+       return new Trip("trip no." + randomInt(), randomInt(), "a really good trip","trip" , randomInt(), "GB", randomInt());
+   }
 
 
     /**

@@ -1,0 +1,16 @@
+{
+    "icons": [
+        { "icon": "trophy" },
+        { "icon": "power-off" },
+        { "icon": "cog" },
+        { "icon": "suitcase" },
+        { "icon": "swimmer" },
+        { "icon": "medal" },
+        { "icon": "award" },
+        { "icon": "shield-alt" },
+        { "icon": "crown" },
+        { "icon": "water" },
+        { "icon": "swimming-pool" },
+        { "icon": "location-arrow" }
+    ]
+}

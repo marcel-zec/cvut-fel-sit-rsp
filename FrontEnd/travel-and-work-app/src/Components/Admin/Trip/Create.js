@@ -4,7 +4,7 @@ import { Col, Button, Row } from "react-bootstrap";
 import { Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-class ProfileDetails extends React.Component {
+class Create extends React.Component {
     state = { achievements: null, show: true, categories: null };
 
     fetchAchievementsHandler = async () => {
@@ -23,11 +23,17 @@ class ProfileDetails extends React.Component {
     }
 
     render() {
+        let possibleXPrewardOptions = [];
+        for (let i = 0; i < 25; i++) {
+            possibleXPrewardOptions.push(<option>{i + 1}</option>);
+        }
+
         let categoryOptions = null;
         if (this.state.categories !== null) {
-            if (this.state.categories.lenght > 0) {
+            if (this.state.categories.length > 0) {
                 let categoriesArray = [];
-                this.state.achievements.forEach(element => {
+
+                this.state.categories.forEach(element => {
                     categoriesArray.push(<option>{element.name}</option>);
                 });
                 categoryOptions = (
@@ -108,11 +114,7 @@ class ProfileDetails extends React.Component {
                         >
                             <Form.Label>Possible XP reward</Form.Label>
                             <Form.Control as="select">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
+                                {possibleXPrewardOptions}
                             </Form.Control>
                         </Form.Group>
 
@@ -121,6 +123,7 @@ class ProfileDetails extends React.Component {
                             controlId="exampleForm.ControlSelect1"
                         >
                             <Form.Label>Category</Form.Label>
+                            {categoryOptions}
                         </Form.Group>
                     </Form.Row>
                     <Form.Group controlId="formGridLocation">
@@ -164,4 +167,4 @@ class ProfileDetails extends React.Component {
     }
 }
 
-export default ProfileDetails;
+export default Create;

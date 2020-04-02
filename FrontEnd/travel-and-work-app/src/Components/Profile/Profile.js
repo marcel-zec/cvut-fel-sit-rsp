@@ -14,10 +14,7 @@ class Profile extends React.Component {
 
         const now = 60;
         const progressInstance = (
-            <ProgressBar
-                now={now}
-                label="Just 15 more XP to next level!"
-            />
+            <ProgressBar now={now} label="Just 15 more XP to next level!" />
         );
 
         console.log("profile");

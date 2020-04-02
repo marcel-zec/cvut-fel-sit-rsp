@@ -4,8 +4,6 @@ import "./App.css";
 //na routovanie v aplikacii
 import Router from "./Router";
 //kniznica na HTTP dotazy
-import axios from "axios";
-import Home from "./Components/Home/Home";
 import Navigation from "./Components/Navigation";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -24,7 +22,8 @@ import {
     faCrown,
     faWater,
     faSwimmingPool,
-    faLocationArrow
+    faLocationArrow,
+    faTrashAlt
 } from "@fortawesome/free-solid-svg-icons";
 import { faStar as emptyStar } from "@fortawesome/free-regular-svg-icons";
 
@@ -46,7 +45,8 @@ library.add(
     faCrown,
     faWater,
     faSwimmingPool,
-    faLocationArrow
+    faLocationArrow,
+    faTrashAlt
 );
 
 class App extends React.Component {
