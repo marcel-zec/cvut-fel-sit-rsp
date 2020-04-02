@@ -76,7 +76,7 @@ public class TripService {
         Trip trip = tripDao.find(stringId);
 
         if (trip == null) throw new NotFoundException();
-        //pridat vynimku na rolu
+        //todo pridat vynimku na rolu
 
         newTrip.setId(trip.getId());
         trip=newTrip;
