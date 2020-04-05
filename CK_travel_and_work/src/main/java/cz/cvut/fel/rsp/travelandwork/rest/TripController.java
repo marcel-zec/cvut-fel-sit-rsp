@@ -35,13 +35,13 @@ public class TripController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void create(@RequestBody Trip trip) {
+    public void create(@RequestBody Trip trip) throws Exception {
         tripService.create(trip);
     }
 
     @PatchMapping(value = "/{identificator}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable String identificator, @RequestBody Trip trip) throws NotFoundException{
+    public void update(@PathVariable String identificator, @RequestBody Trip trip) throws Exception {
 
         tripService.update(identificator, trip);
         LOG.info("Trip {} updated.", identificator);

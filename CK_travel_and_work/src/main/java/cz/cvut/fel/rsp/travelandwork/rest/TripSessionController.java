@@ -27,9 +27,9 @@ public class TripSessionController {
         return tripSessionService.findAllInTrip(trip_short_name);
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void create() {
-
+    @PostMapping(value = "/{trip_short_name}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void create(@PathVariable String trip_short_name, @RequestBody TripSession tripSession) throws Exception {
+        tripSessionService.create(trip_short_name, tripSession);
     }
 
     @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
