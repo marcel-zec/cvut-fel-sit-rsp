@@ -23,6 +23,10 @@ public class Enrollment extends AbstractEntity {
     @Column(nullable = false)
     private int actual_xp_reward;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private String state;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "travelJournal_id", nullable = false)
     private TravelJournal travelJournal;
@@ -82,5 +86,17 @@ public class Enrollment extends AbstractEntity {
 
     public void setTripSession(TripSession tripSession) {
         this.tripSession = tripSession;
+    }
+
+
+    public String getState() {
+
+        return state;
+    }
+
+
+    public void setState(String state) {
+
+        this.state = state;
     }
 }
