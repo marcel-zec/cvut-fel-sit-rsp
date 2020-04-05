@@ -3,6 +3,7 @@ package cz.cvut.fel.rsp.travelandwork.service;
 import cz.cvut.fel.rsp.travelandwork.dao.TripDao;
 import cz.cvut.fel.rsp.travelandwork.dao.TripReviewDao;
 import cz.cvut.fel.rsp.travelandwork.dao.TripSessionDao;
+import cz.cvut.fel.rsp.travelandwork.exception.BadDateException;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
 import cz.cvut.fel.rsp.travelandwork.model.Trip;
 import cz.cvut.fel.rsp.travelandwork.model.TripReview;
@@ -44,7 +45,7 @@ public class TripService {
     }
 
     @Transactional
-    public void create(Trip trip) throws Exception {
+    public void create(Trip trip) throws BadDateException {
 
         Objects.requireNonNull(trip);
         tripDao.persist(trip);
@@ -52,13 +53,12 @@ public class TripService {
         for (TripSession session: trip.getSessions()) {
             if (session.getTo_date().isBefore(session.getFrom_date())) {
                 tripDao.remove(trip);
-                throw new Exception();
+                throw new BadDateException();
             }
             session.setTrip(trip);
             tripSessionDao.persist(session);
         }
        tripDao.update(trip);
-        //todo pridat exception
     }
 
     @Transactional
@@ -79,12 +79,11 @@ public class TripService {
     }
 
     @Transactional
-    public void update(String stringId, Trip newTrip) throws Exception {
+    public void update(String stringId, Trip newTrip) throws BadDateException, NotFoundException {
         Trip trip = tripDao.find(stringId);
 
         if (trip == null) throw new NotFoundException();
         //todo pridat vynimku na rolu
-        //todo pridat exception
 
         newTrip.setId(trip.getId());
 
@@ -99,7 +98,7 @@ public class TripService {
 
         for (int i = 0; i < newTrip.getSessions().size() ; i++) {
             TripSession newSession = newTrip.getSessions().get(i);
-            if (newSession.getTo_date().isBefore(newSession.getFrom_date())) throw new Exception();
+            if (newSession.getTo_date().isBefore(newSession.getFrom_date())) throw new BadDateException();
 
                 if (i <= trip.getSessions().size()-1 ){
                 TripSession oldSession = trip.getSessions().get(i);
