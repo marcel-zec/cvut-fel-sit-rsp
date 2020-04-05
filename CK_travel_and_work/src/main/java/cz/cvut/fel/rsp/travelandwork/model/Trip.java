@@ -55,6 +55,7 @@ public class Trip extends AbstractEntity {
 
     @Basic(optional = false)
     @Column(nullable = false)
+    @Min(value = 0, message = "Min 0")
     private int required_level;
 
     @ManyToOne

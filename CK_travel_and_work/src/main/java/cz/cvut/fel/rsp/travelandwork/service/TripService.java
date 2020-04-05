@@ -4,7 +4,6 @@ import cz.cvut.fel.rsp.travelandwork.dao.TripDao;
 import cz.cvut.fel.rsp.travelandwork.dao.TripReviewDao;
 import cz.cvut.fel.rsp.travelandwork.dao.TripSessionDao;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
-import cz.cvut.fel.rsp.travelandwork.model.Achievement;
 import cz.cvut.fel.rsp.travelandwork.model.Trip;
 import cz.cvut.fel.rsp.travelandwork.model.TripReview;
 import cz.cvut.fel.rsp.travelandwork.model.TripSession;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class TripService {
@@ -44,15 +44,21 @@ public class TripService {
     }
 
     @Transactional
-    public void create(Trip trip) {
+    public void create(Trip trip) throws Exception {
 
+        Objects.requireNonNull(trip);
         tripDao.persist(trip);
         trip = tripDao.find(trip.getShort_name());
         for (TripSession session: trip.getSessions()) {
+            if (session.getTo_date().isBefore(session.getFrom_date())) {
+                tripDao.remove(trip);
+                throw new Exception();
+            }
             session.setTrip(trip);
             tripSessionDao.persist(session);
         }
        tripDao.update(trip);
+        //todo pridat exception
     }
 
     @Transactional
@@ -73,11 +79,12 @@ public class TripService {
     }
 
     @Transactional
-    public void update(String stringId, Trip newTrip) throws NotFoundException {
+    public void update(String stringId, Trip newTrip) throws Exception {
         Trip trip = tripDao.find(stringId);
 
         if (trip == null) throw new NotFoundException();
         //todo pridat vynimku na rolu
+        //todo pridat exception
 
         newTrip.setId(trip.getId());
 
@@ -92,6 +99,8 @@ public class TripService {
 
         for (int i = 0; i < newTrip.getSessions().size() ; i++) {
             TripSession newSession = newTrip.getSessions().get(i);
+            if (newSession.getTo_date().isBefore(newSession.getFrom_date())) throw new Exception();
+
                 if (i <= trip.getSessions().size()-1 ){
                 TripSession oldSession = trip.getSessions().get(i);
 
@@ -107,22 +116,6 @@ public class TripService {
 
         trip=newTrip;
         tripDao.update(trip);
-
-//        trip.setDescription(newTrip.getDescription());
-//        trip.setName(newTrip.getName());
-//        trip.setPossible_xp_reward(newTrip.getPossible_xp_reward());
-//        trip.setRating(newTrip.getRating());
-//        trip.setLocation(newTrip.getLocation());
-//        trip.setCategory(newTrip.getCategory());
-//        trip.setDeposit(newTrip.getDeposit());
-//        trip.setGain_achievements(newTrip.getGain_achievements());
-//        trip.setRequired_achievements(newTrip.getRequired_achievements());
-//        trip.setRequiered_level(newTrip.getRequiered_level());
-//        trip.setReviews(newTrip.getReviews());
-//        trip.setSessions(newTrip.getSessions());
-//        trip.setShort_name(newTrip.getShort_name());
-//
-//        tripDao.update(trip);
     }
 
     @Transactional
@@ -144,7 +137,5 @@ public class TripService {
         trip.softDelete();
         tripDao.update(trip);
     }
-
-
 
 }
