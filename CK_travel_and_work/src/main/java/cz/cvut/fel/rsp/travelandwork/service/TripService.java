@@ -81,6 +81,7 @@ public class TripService {
 
         newTrip.setId(trip.getId());
 
+        newTrip.setReviews(trip.getReviews());
         //less new sessions
         if (newTrip.getSessions().size() < trip.getSessions().size()){
             for ( int i = newTrip.getSessions().size() ; i < trip.getSessions().size(); i++) {
@@ -106,8 +107,6 @@ public class TripService {
 
         trip=newTrip;
         tripDao.update(trip);
-
-        //todo upravit reviews
 
 //        trip.setDescription(newTrip.getDescription());
 //        trip.setName(newTrip.getName());
