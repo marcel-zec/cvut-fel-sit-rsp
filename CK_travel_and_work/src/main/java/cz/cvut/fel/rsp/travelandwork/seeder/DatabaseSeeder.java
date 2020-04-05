@@ -26,5 +26,5 @@ public class DatabaseSeeder implements
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         //TODO - vykona sa hned po spusteni
         System.out.println("Vypis po stupusteni aplikacie.");
-    }
+    }   
 }
