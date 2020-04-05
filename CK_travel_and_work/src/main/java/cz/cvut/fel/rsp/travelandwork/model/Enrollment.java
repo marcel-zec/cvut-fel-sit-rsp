@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.HashMap;
+import java.util.List;
 
 @Entity
 @Table(name = "ENROLLMENT")
@@ -26,6 +27,13 @@ public class Enrollment extends AbstractEntity {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private String state;
+
+    @ManyToMany
+    @JoinTable(
+            name = "recieved_achievement_trip",
+            joinColumns = @JoinColumn(name = "enrollment_id"),
+            inverseJoinColumns = @JoinColumn(name = "achievement_id"))
+    private List<Achievement> recieved_achievements;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "travelJournal_id", nullable = false)
