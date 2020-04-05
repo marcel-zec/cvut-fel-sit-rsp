@@ -20,6 +20,9 @@ public class TravelJournal extends AbstractEntity{
     @ManyToMany
     private List<Achievement> earnedAchievements;
 
+    @OneToMany(mappedBy = "travelJournal")
+    private List<Enrollment> enrollments;
+
     public int getXp_count() {
         return xp_count;
     }
@@ -51,6 +54,18 @@ public class TravelJournal extends AbstractEntity{
     public void setEarnedAchievements(List<Achievement> earnedAchievements) {
         this.earnedAchievements = earnedAchievements;
     }
+
+    public List<Enrollment> getEnrollments() {
+
+        return enrollments;
+    }
+
+
+    public void setEnrollments(List<Enrollment> enrollments) {
+
+        this.enrollments = enrollments;
+    }
+
 
     /**
      * Adds trip to travel journal
