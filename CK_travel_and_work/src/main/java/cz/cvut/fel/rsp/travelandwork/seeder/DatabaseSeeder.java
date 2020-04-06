@@ -45,7 +45,7 @@ public class DatabaseSeeder implements
         System.out.println("Vypis po stupusteni aplikacie.");
         createAchievement();
         createCategories();
-        setAchievementsAndCategories();
+        //setAchievementsAndCategories();
         createTrips();
     }
 
@@ -101,11 +101,11 @@ public class DatabaseSeeder implements
         //trip.addGainAchievement();
         //trip.addRequiredAchievement();
         tripDao.persist(trip);
-        tripSession = new TripSession(trip, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 6000);
+        tripSession = new TripSession(trip, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 3000);
         tripSessionDao.persist(tripSession);
-        tripSession = new TripSession(trip, LocalDate.parse("2020-06-12"), LocalDate.parse("2020-06-18"), 6000);
+        tripSession = new TripSession(trip, LocalDate.parse("2020-06-12"), LocalDate.parse("2020-06-18"), 3000);
         tripSessionDao.persist(tripSession);
-        tripSession = new TripSession(trip, LocalDate.parse("2020-06-18"), LocalDate.parse("2020-06-24"), 6000);
+        tripSession = new TripSession(trip, LocalDate.parse("2020-06-18"), LocalDate.parse("2020-06-24"), 3000);
         tripSessionDao.persist(tripSession);
 
         description = "Tento zajezd bude mit zalohu, pro absolvování je potřeba mít achievement ´Kuchař ryb fugu´." ;

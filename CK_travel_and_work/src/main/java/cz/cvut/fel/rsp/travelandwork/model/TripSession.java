@@ -27,7 +27,7 @@ public class TripSession extends AbstractEntity {
     @Basic(optional = false)
     @Column(nullable = false)
     @Min(value = 0, message = "Min 0")
-    @Max(value = 3000, message = "Max 3000")
+    @Max(value = 99999, message = "Max 99999")
     private double price;
 
     @JsonIgnore
