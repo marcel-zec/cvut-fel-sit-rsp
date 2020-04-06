@@ -40,6 +40,7 @@ public class User extends AbstractEntity {
     @Basic(optional = false)
     @Column(nullable = false)
     @Size(max = 255, min = 6, message = "Password is in incorrect format.")
+    @NotBlank(message = "Password cannot be blank")
     private String password;
 
     @Email(message = "Email should be valid")
