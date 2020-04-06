@@ -109,7 +109,7 @@ public class DatabaseSeeder implements
         tripSessionDao.persist(tripSession);
 
         description = "Tento zajezd bude mit zalohu, pro absolvování je potřeba mít achievement ´Kuchař ryb fugu´." ;
-        trip = new Trip("Vaření ryb Fugu, Praha",10,description,"fuguvar",500,"Praha, Česká republika",1);
+        trip = new Trip("Vaření ryb Fugu, Praha",10,description,"fuguvar",3459,"Praha, Česká republika",1);
         tripDao.persist(trip);
         tripSession = new TripSession(trip, LocalDate.parse("2020-07-06"), LocalDate.parse("2020-07-12"), 0);
         tripSessionDao.persist(tripSession);
