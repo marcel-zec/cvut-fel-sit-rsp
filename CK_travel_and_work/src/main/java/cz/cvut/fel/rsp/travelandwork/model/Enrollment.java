@@ -27,7 +27,7 @@ public class Enrollment extends AbstractEntity {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private String state;
+    private EnrollmentState state;
 
     @ManyToMany
     @JoinTable(
@@ -98,13 +98,13 @@ public class Enrollment extends AbstractEntity {
     }
 
 
-    public String getState() {
+    public EnrollmentState getState() {
 
         return state;
     }
 
 
-    public void setState(String state) {
+    public void setState(EnrollmentState state) {
 
         this.state = state;
     }
