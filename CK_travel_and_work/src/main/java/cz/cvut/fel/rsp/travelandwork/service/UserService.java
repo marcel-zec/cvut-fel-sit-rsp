@@ -86,8 +86,15 @@ public class UserService {
     }
 
     @Transactional
-    public void update(User user) {
-        Objects.requireNonNull(user);
+    public void update(User newUser) throws NotFoundException {
+        Objects.requireNonNull(newUser);
+        User user = dao.findByUsername(newUser.getUsername());
+        //todo vynimka len admin alebo prihlaseny
+        if (user == null) throw new NotFoundException();
+
+        newUser.setId(user.getId());
+        newUser.setTripReviews(user.getTripReviews());
+        user=newUser;
         dao.update(user);
     }
 

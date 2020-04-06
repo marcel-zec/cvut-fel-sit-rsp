@@ -21,6 +21,11 @@ public class RequestWrapper {
     }
 
 
+    public RequestWrapper() {
+
+    }
+
+
     public User getUser() {
 
         return user;
