@@ -1,5 +1,7 @@
 package cz.cvut.fel.rsp.travelandwork.rest;
 
+import cz.cvut.fel.rsp.travelandwork.dto.RequestWrapper;
+import cz.cvut.fel.rsp.travelandwork.exception.BadPassword;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
 import cz.cvut.fel.rsp.travelandwork.model.User;
 import cz.cvut.fel.rsp.travelandwork.service.UserService;
@@ -10,6 +12,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/user")
@@ -25,8 +29,8 @@ public class UserController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> register(@RequestBody User user) {
-        userService.create(user);
+    public ResponseEntity<Void> register(@RequestBody RequestWrapper requestWrapper) throws BadPassword {
+        userService.create(requestWrapper.getUser(), requestWrapper.getPassword_control());
         //LOG.debug("User {} successfully registered.", user);
         //final HttpHeaders headers = RestUtils.createLocationHeaderFromCurrentUri("/current");
         //return new ResponseEntity<>(headers, HttpStatus.CREATED);

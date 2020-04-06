@@ -1,6 +1,5 @@
 package cz.cvut.fel.rsp.travelandwork.model;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -40,6 +39,7 @@ public class User extends AbstractEntity {
     @Basic(optional = false)
     @Column(nullable = false)
     @Size(max = 255, min = 6, message = "Password is in incorrect format.")
+    @NotBlank(message = "Password cannot be blank")
     private String password;
 
     @Email(message = "Email should be valid")

@@ -4,11 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.List;
-
-@NamedQueries({
-        @NamedQuery(name = "Achievement.findById", query = "SELECT a FROM Achievement a WHERE a.id = :id"),
-})
-
 @Entity
 @Table(name = "ACHIEVEMENT")
 public class Achievement extends AbstractEntity{
@@ -34,7 +29,11 @@ public class Achievement extends AbstractEntity{
 
     @JsonIgnore
     @ManyToMany
-    private List<TravelJournal> ownedTravelJournals;
+    @JoinTable(
+            name = "achievement_owned_travel_journals",
+            joinColumns = @JoinColumn(name = "achievement_id"),
+            inverseJoinColumns = @JoinColumn(name = "traveljournal_id"))
+    private List<TravelJournal> owned_travel_journals;
 
     public Achievement() {
     }
@@ -71,7 +70,7 @@ public class Achievement extends AbstractEntity{
     }
 
     public List<TravelJournal> getOwnedTravelJournals() {
-        return ownedTravelJournals;
+        return owned_travel_journals;
     }
 
     public void setName(String name) {
@@ -82,8 +81,8 @@ public class Achievement extends AbstractEntity{
         this.description = description;
     }
 
-    public void setOwnedTravelJournals(List<TravelJournal> ownedTravelJournals) {
-        this.ownedTravelJournals = ownedTravelJournals;
+    public void setOwned_travel_journals(List<TravelJournal> owned_travel_journals) {
+        this.owned_travel_journals = owned_travel_journals;
     }
 
 

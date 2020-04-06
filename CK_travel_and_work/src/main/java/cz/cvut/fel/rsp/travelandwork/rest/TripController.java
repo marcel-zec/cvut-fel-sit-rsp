@@ -69,6 +69,7 @@ public class TripController {
 
     }
 
+
     @GetMapping(value = "/history", produces = MediaType.APPLICATION_JSON_VALUE)
     public void showTripHistoryOfUser() {
 
