@@ -183,7 +183,7 @@ public class DatabaseSeeder implements
         achievementDao.persist(achievement);
         achievement = new Achievement("Horolezec", "Uživatel má zkušenosti s lezením po skalách.", "mountain");
         achievementDao.persist(achievement);
-        achievement = new Achievement("Restaurátor hradů", "Uživatel má zkušenosti s restaurací starých památek.", "fort-awesome");
+        achievement = new Achievement("Restaurátor hradů", "Uživatel má zkušenosti s restaurací starých památek.", "chess-rook");
         achievementDao.persist(achievement);
 
         //Achievementy za počet zájezdů do určité krajiny

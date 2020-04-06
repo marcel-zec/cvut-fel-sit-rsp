@@ -23,7 +23,20 @@ import {
     faWater,
     faSwimmingPool,
     faLocationArrow,
-    faTrashAlt
+    faTrashAlt,
+    faGraduationCap,
+    faFish,
+    faMountain,
+    faFlag,
+    faSnowflake,
+    faHamburger,
+    faPizzaSlice,
+    faGlassCheers,
+    faPastafarianism,
+    faCompass,
+    faRunning,
+    faCampground,
+    faChessRook,
 } from "@fortawesome/free-solid-svg-icons";
 import { faStar as emptyStar } from "@fortawesome/free-regular-svg-icons";
 
@@ -46,7 +59,20 @@ library.add(
     faWater,
     faSwimmingPool,
     faLocationArrow,
-    faTrashAlt
+    faTrashAlt,
+    faGraduationCap,
+    faFish,
+    faMountain,
+    faFlag,
+    faSnowflake,
+    faHamburger,
+    faPizzaSlice,
+    faGlassCheers,
+    faPastafarianism,
+    faCompass,
+    faRunning,
+    faCampground,
+    faChessRook
 );
 
 class App extends React.Component {

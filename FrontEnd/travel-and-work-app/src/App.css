@@ -71,3 +71,7 @@
         transform: rotate(360deg);
     }
 }
+
+.choosen-icon {
+    color: cornflowerblue;
+}
