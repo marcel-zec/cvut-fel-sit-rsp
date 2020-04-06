@@ -5,6 +5,7 @@ import cz.cvut.fel.rsp.travelandwork.dao.TravelJournalDao;
 import cz.cvut.fel.rsp.travelandwork.dao.TripReviewDao;
 import cz.cvut.fel.rsp.travelandwork.dao.UserDao;
 import cz.cvut.fel.rsp.travelandwork.dto.UserDto;
+import cz.cvut.fel.rsp.travelandwork.exception.BadPassword;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
 import cz.cvut.fel.rsp.travelandwork.model.Enrollment;
 import cz.cvut.fel.rsp.travelandwork.model.TravelJournal;
@@ -37,8 +38,9 @@ public class UserService {
     }
 
     @Transactional
-    public void create(User user) {
+    public void create(User user, String passwordAgain) throws BadPassword {
         Objects.requireNonNull(user);
+        if (!user.getPassword().equals(passwordAgain)) throw new BadPassword();
         user.encodePassword();
         dao.persist(user);
         user = dao.findByUsername(user.getUsername());

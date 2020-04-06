@@ -1,6 +1,5 @@
 package cz.cvut.fel.rsp.travelandwork.model;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
