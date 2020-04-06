@@ -32,7 +32,7 @@ public class Achievement extends AbstractEntity{
     @JoinTable(
             name = "achievement_owned_travel_journals",
             joinColumns = @JoinColumn(name = "achievement_id"),
-            inverseJoinColumns = @JoinColumn(name = "traveljounal_id"))
+            inverseJoinColumns = @JoinColumn(name = "traveljournal_id"))
     private List<TravelJournal> owned_travel_journals;
 
     public Achievement() {
