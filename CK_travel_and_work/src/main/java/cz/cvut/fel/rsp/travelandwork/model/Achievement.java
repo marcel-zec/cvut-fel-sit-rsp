@@ -1,5 +1,7 @@
 package cz.cvut.fel.rsp.travelandwork.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -26,9 +28,11 @@ public class Achievement extends AbstractEntity{
 //    @JoinColumn(name = "category_id", nullable = false)
 //    private Category category;
 
+    @JsonIgnore
     @ManyToMany
     private List<Trip> trips;
 
+    @JsonIgnore
     @ManyToMany
     private List<TravelJournal> ownedTravelJournals;
 

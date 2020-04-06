@@ -28,6 +28,11 @@ public class AchievementController {
         this.achievementService = achievementService;
     }
 
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Achievement get(@PathVariable Long id){
+        return achievementService.find(id);
+    }
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Achievement> getAll() {
         return achievementService.findAll();
