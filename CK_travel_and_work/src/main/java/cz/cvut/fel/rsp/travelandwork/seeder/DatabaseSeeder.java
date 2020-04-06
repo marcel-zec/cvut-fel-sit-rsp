@@ -43,19 +43,19 @@ public class DatabaseSeeder implements
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         //TODO - vykona sa hned po spusteni
         System.out.println("Vypis po stupusteni aplikacie.");
-        createTrips();
         createAchievement();
         createCategories();
-        setAchievementsAndCategories();
+        //setAchievementsAndCategories();
+        createTrips();
     }
 
     @Transactional
     void createTrips(){
         String description = "Nullam gravida lectus tempus congue pretium. Nunc volutpat diam orci, a consectetur dui iaculis sollicitudin. Fusce varius nisi placerat turpis viverra pulvinar. Pellentesque vel commodo nibh, sed volutpat nunc. Duis congue enim malesuada sapien commodo egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum interdum, ante eu vehicula porttitor, libero purus consequat metus, quis aliquet lectus orci sit amet mi. Aenean libero sapien, tempus sit amet lorem in, cursus sodales erat. Vivamus suscipit felis et ex pulvinar, vitae rutrum diam tempus. ";
         Trip trip = new Trip("Casablanca Me gusto",15,description,"casablanca_me_gusta",1000,"Casablan, Mexico",2);
-        tripDao.persist(trip);
-        TripSession tripSession = new TripSession(trip,LocalDate.parse("2020-09-12"), LocalDate.parse("2020-10-12"),2000);
-        tripSessionDao.persist(tripSession);
+        /*tripDao.persist(trip);
+        */TripSession tripSession = new TripSession(trip,LocalDate.parse("2020-09-12"), LocalDate.parse("2020-10-12"),2000);
+        /*tripSessionDao.persist(tripSession);
         tripSession = new TripSession(trip,LocalDate.parse("2020-10-12"), LocalDate.parse("2020-11-12"),2500);
         tripSessionDao.persist(tripSession);
         tripSession = new TripSession(trip,LocalDate.parse("2020-12-12"), LocalDate.parse("2020-12-20"),1800);
@@ -93,6 +93,49 @@ public class DatabaseSeeder implements
         trip = new Trip("Laster",8,description,"laster",500,"Laster, Lasterland",2);
         tripDao.persist(trip);
         tripSession = new TripSession(trip,LocalDate.parse("2019-01-14"), LocalDate.parse("2019-01-21"),2000);
+        tripSessionDao.persist(tripSession);*/
+
+        //priklady tripov a user progressu medzi nimi
+        description = "Tento zajezd bude mit cenu za dopravu a kurz, po absolvování se odemkne achievement ´kuchař ryb fugu´, pro absolvování je potřeba mít achievement ´Kuchtík´." ;
+        trip = new Trip("Kurz vaření ryb Fugu",10,description,"fugukurz",1000,"Tokyo, Japan",1);
+        //trip.addGainAchievement();
+        //trip.addRequiredAchievement();
+        tripDao.persist(trip);
+        tripSession = new TripSession(trip, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 3000);
+        tripSessionDao.persist(tripSession);
+        tripSession = new TripSession(trip, LocalDate.parse("2020-06-12"), LocalDate.parse("2020-06-18"), 3000);
+        tripSessionDao.persist(tripSession);
+        tripSession = new TripSession(trip, LocalDate.parse("2020-06-18"), LocalDate.parse("2020-06-24"), 3000);
+        tripSessionDao.persist(tripSession);
+
+        description = "Tento zajezd bude mit zalohu, pro absolvování je potřeba mít achievement ´Kuchař ryb fugu´." ;
+        trip = new Trip("Vaření ryb Fugu, Praha",10,description,"fuguvar",500,"Praha, Česká republika",1);
+        tripDao.persist(trip);
+        tripSession = new TripSession(trip, LocalDate.parse("2020-07-06"), LocalDate.parse("2020-07-12"), 0);
+        tripSessionDao.persist(tripSession);
+        tripSession = new TripSession(trip, LocalDate.parse("2020-07-12"), LocalDate.parse("2020-07-18"), 0);
+        tripSessionDao.persist(tripSession);
+        tripSession = new TripSession(trip, LocalDate.parse("2020-07-18"), LocalDate.parse("2020-07-24"), 0);
+        tripSessionDao.persist(tripSession);
+
+        description = "Tento zajezd bude mit zalohu, pro absolvování je potřeba mít achievement ´Kuchař´." ;
+        trip = new Trip("Kuchař na Pražském hradě",8,description,"prahradvar",1000,"Praha, Česká republika",3);
+        tripDao.persist(trip);
+        tripSession = new TripSession(trip, LocalDate.parse("2020-07-06"), LocalDate.parse("2020-07-12"), 0);
+        tripSessionDao.persist(tripSession);
+        tripSession = new TripSession(trip, LocalDate.parse("2020-07-12"), LocalDate.parse("2020-07-18"), 0);
+        tripSessionDao.persist(tripSession);
+        tripSession = new TripSession(trip, LocalDate.parse("2020-07-18"), LocalDate.parse("2020-07-24"), 0);
+        tripSessionDao.persist(tripSession);
+
+        description = "Tento zajezd nevyzaduje zadne achievementy a po nem se nedaji ziskat specialni achievementy ale daji se ziskat achievementy jako jsou např. ´Kuchtík´, ´Kuchař´ apod. Odměna Xp je dost nízká aby se nedalo jednoduše dostat za tuhle práci na prestižnější místa jako pražský hrad, ale zároveň je možno si dopomoct s touto lehčí a dostupnější práci nahnat achievement kuchař, jestliže xp grind mám za sebou z jiných zájezdů." ;
+        trip = new Trip("Kuchař menza Studentský dům, Praha",3,description,"studumkuch",50,"Praha, Česká republika",1);
+        tripDao.persist(trip);
+        tripSession = new TripSession(trip, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 0);
+        tripSessionDao.persist(tripSession);
+        tripSession = new TripSession(trip, LocalDate.parse("2020-06-12"), LocalDate.parse("2020-06-18"), 0);
+        tripSessionDao.persist(tripSession);
+        tripSession = new TripSession(trip, LocalDate.parse("2020-06-18"), LocalDate.parse("2020-06-24"), 0);
         tripSessionDao.persist(tripSession);
     }
 
@@ -128,71 +171,56 @@ public class DatabaseSeeder implements
         //ACHIEVEMENTY ZAJEZDOVE
 
         //Certifikáty
-
         achievement = new Achievement("Certifikát Angličtina B2", "Uživatel má certifikát B2 v anglickém jazyku.", "graduation-cap");
         achievementDao.persist(achievement);
-
         achievement = new Achievement("Certifikát Španěličina C1", "Uživatel má certifikát C1 v španělském jazyku.", "graduation-cap");
         achievementDao.persist(achievement);
 
         //Specifické achievementy
-
         achievement = new Achievement("Kuchař sushi", "Uživatel má zkušenosti s přípravou sushi.", "fish");
         achievementDao.persist(achievement);
-
+        achievement = new Achievement("Kuchař ryby fugu", "Uživatel má zkušenosti s přípravou jedovatých ryb fugu.", "fish");
+        achievementDao.persist(achievement);
         achievement = new Achievement("Horolezec", "Uživatel má zkušenosti s lezením po skalách.", "mountain");
         achievementDao.persist(achievement);
-
-        achievement = new Achievement("Restaurátor hradů", "Uživatel má zkušenosti s restaurací starých památek.", "fort-awesome");
+        achievement = new Achievement("Restaurátor hradů", "Uživatel má zkušenosti s restaurací starých památek.", "chess-rook");
         achievementDao.persist(achievement);
 
         //Achievementy za počet zájezdů do určité krajiny
-
         achievement = new Achievement("Skoro Ital!", "Uživatel byl už 5-krát v Itálii.", "flag");
         achievementDao.persist(achievement);
-
         achievement = new Achievement("Poprve do Ruska.", "Uživatel byl jednou v Rusku.", "snowflake");
         achievementDao.persist(achievement);
 
         //Achievementy za počet zájezdů v konkrétních kategoriích
-
         achievement = new Achievement("Kuchtík", "Uživatel byl jednou vařit.", "hamburger");
         achievementDao.persist(achievement);
-
         achievement = new Achievement("Kuchař", "Uživatel vařil už na 5-ti zájezdech.", "pizza-slice");
         achievementDao.persist(achievement);
-
         achievement = new Achievement("Pohl v Reichu", "Uživatel vařil už na 15-ti zájezdech.", "glass-cheers");
         achievementDao.persist(achievement);
 
         //ACHIEVEMENTY PROFILOVE
 
         //Achievementy za počty achievementů
-
         achievement = new Achievement("Do třetice všechno dobré!", "Uživatel získal svůj třetí achievement.", "trophy");
         achievementDao.persist(achievement);
-
         achievement = new Achievement("Kopa achievementů", "Uživatel získal svůj 60-tý achievement.", "crown");
         achievementDao.persist(achievement);
 
         //Achievementy za různorodost tripů achievementů
-
         achievement = new Achievement("Švýcarák", "Uživatel má za sebou více než 5 tripů z různých kategorii.", "pastafarianism");
         achievementDao.persist(achievement);
-
         achievement = new Achievement("Světoběžník", "Uživatel navštívil už 10 různých zemí.", "compass");
         achievementDao.persist(achievement);
 
         //Achievementy za délku registrace
-
         achievement = new Achievement("Už tři roky s námi", "Uživatel byl zaregistrován po dobu 3 let.", "glass-cheers");
         achievementDao.persist(achievement);
 
         //Achievementy za počet dní strávených na cestách
-
         achievement = new Achievement("Turista", "Uživatel procestoval 10 dní.", "running");
         achievementDao.persist(achievement);
-
         achievement = new Achievement("Poutník", "Uživatel procestoval 60 dní.", "campground");
         achievementDao.persist(achievement);
     }

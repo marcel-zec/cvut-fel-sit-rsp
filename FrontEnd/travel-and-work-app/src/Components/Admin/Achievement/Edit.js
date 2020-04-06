@@ -3,56 +3,68 @@ import Form from "react-bootstrap/Form";
 import { Col, Button, Row } from "react-bootstrap";
 import { Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import icons from "../../../Files/icons.json";
+import ErrorMessage from "../../SmartGadgets/ErrorMessage";
 import Spinner from "react-bootstrap/Spinner";
-import { getElementError } from "@testing-library/react";
 
 class Edit extends React.Component {
-    state = { trip: null, achievements: null, categories: null };
+    state = { achievement: null };
 
     async componentDidMount() {
         const response1 = await fetch(
-            `http://localhost:8080/trip/` + this.props.match.params.id
+            `http://localhost:8080/achievement/` + this.props.match.params.id
         );
-        const data1 = await response1.json();
-        console.log(data1);
-        this.setState({ trip: data1 });
-
-        const response2 = await fetch(`http://localhost:8080/category`);
-        const data2 = await response2.json();
-        console.log(data2);
-        this.setState({
-            categories: data2
-        });
-
-        const response3 = await fetch(`http://localhost:8080/achievement`);
-        const data3 = await response3.json();
-        console.log(data3);
-        this.setState({ achievements: data3 });
+        const data = await response1.json();
+        console.log(data);
+        this.setState({ achievement: data });
     }
+    /*
+    const data = { username: 'example' };
 
-    achievementElementCompleted = (checkedInput, element) => {
-        let formInput = checkedInput ? (
-            <Form.Check.Input type="checkbox" checked />
-        ) : (
-            <Form.Check.Input type="checkbox" />
-        );
-        return (
-            <>
-                <Form.Check.Label>
-                    {formInput}
-                    <FontAwesomeIcon icon={element.icon} size="lg" />
-                    {element.name}
-                </Form.Check.Label>
-            </>
-        );
+    fetch('https://example.com/profile', {
+        method: 'POST', // or 'PUT'
+        headers: {
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+        })
+        .then((response) => response.json())
+        .then((data) => {
+        console.log('Success:', data);
+        })
+        .catch((error) => {
+        console.error('Error:', error);
+    });
+    */
+
+    submitHandler = (event) => {
+        event.preventDefault();
+        console.log(this.state.name);
+        console.log(this.state.description);
+        console.log(this.state.icon);
+
+        fetch("http://localhost:8080/achievement", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(this.state),
+        })
+            .then((response) => {
+                if (!response.ok) console.log("nene");
+                else console.log("okik");
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log("Success:", data);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
     };
 
     render() {
-        if (
-            this.state.categories === null ||
-            this.state.trip === null ||
-            this.state.achievements === null
-        ) {
+        if (this.state.achievement === null) {
             return (
                 <Container className="p-5">
                     <Spinner animation="border" role="status">
@@ -61,171 +73,77 @@ class Edit extends React.Component {
                 </Container>
             );
         } else {
-            let possibleXPrewardOptions = [];
-            for (let i = 0; i < 25; i++) {
-                let option =
-                    i + 1 == this.state.trip.possible_xp_reward ? (
-                        <option selected>{i + 1}</option>
-                    ) : (
-                        <option>{i + 1}</option>
-                    );
-                possibleXPrewardOptions.push(option);
-            }
+            let iconsToForm = [];
 
-            let categoryOptions = null;
-
-            if (this.state.categories.length > 0) {
-                let categoriesArray = [];
-
-                this.state.categories.forEach(element => {
-                    let option = <option>{element.name}</option>;
-                    if (this.state.trip.category) {
-                        if (this.state.trip.category.name == element.name)
-                            option = <option selected>{element.name}</option>;
-                    }
-                    categoriesArray.push(option);
-                });
-                categoryOptions = (
-                    <Form.Control as="select">
-                        <option>Choose category..</option>
-                        {categoriesArray}
-                    </Form.Control>
+            icons.icons.forEach((element) => {
+                iconsToForm.push(
+                    <div className="m-5">
+                        <Form.Check.Label>
+                            <Form.Check
+                                type="radio"
+                                name="formHorizontalRadios"
+                                id={element.icon}
+                                defaultChecked={
+                                    this.state.achievement.icon == element.icon
+                                        ? "checked"
+                                        : ""
+                                }
+                                onChange={(event) =>
+                                    this.setState({
+                                        achievement: {
+                                            ...this.state.achievement,
+                                            icon: event.target.id,
+                                        },
+                                    })
+                                }
+                            />
+                            <FontAwesomeIcon
+                                className={
+                                    this.state.achievement.icon == element.icon
+                                        ? "choosen-icon"
+                                        : ""
+                                }
+                                icon={element.icon}
+                                size="3x"
+                            />
+                        </Form.Check.Label>
+                    </div>
                 );
-            }
-
-            let requiredAchievements = null;
-            let requiredAchievementsArray = [];
-            let gainAchievements = null;
-            let gainAchievementsArray = [];
-
-            if (this.state.achievements.length > 0) {
-                this.state.achievements.forEach(element => {
-                    if (
-                        this.state.trip.required_achievements.some(
-                            item => item.name == element.name
-                        )
-                    ) {
-                        requiredAchievementsArray.push(
-                            this.achievementElementCompleted(true, element)
-                        );
-                    } else {
-                        requiredAchievementsArray.push(
-                            this.achievementElementCompleted(false, element)
-                        );
-                    }
-                });
-                requiredAchievements = (
-                    <Form.Group>
-                        <Form.Label>Required achievements</Form.Label>
-                        <div className="d-flex flex-column align-items-start ml-5">
-                            {requiredAchievementsArray}
-                        </div>
-                    </Form.Group>
-                );
-
-                this.state.achievements.forEach(element => {
-                    if (
-                        this.state.trip.gain_achievements.some(
-                            item => item.name == element.name
-                        )
-                    ) {
-                        gainAchievementsArray.push(
-                            this.achievementElementCompleted(true, element)
-                        );
-                    } else {
-                        gainAchievementsArray.push(
-                            this.achievementElementCompleted(false, element)
-                        );
-                    }
-                });
-
-                gainAchievements = (
-                    <Form.Group>
-                        <Form.Label>Gain achievements</Form.Label>
-                        <div className="d-flex flex-column align-items-start ml-5">
-                            {gainAchievementsArray}
-                        </div>
-                    </Form.Group>
-                );
-            }
+            });
 
             return (
                 <Container>
-                    <Form className="mt-3 mb-5">
-                        <h1>Edit trip</h1>
-                        <Form.Row>
-                            <Form.Group as={Col} controlId="formGridName">
-                                <Form.Label>Name of trip</Form.Label>
-                                <Form.Control value={this.state.trip.name} />
-                            </Form.Group>
+                    <Form className="mt-3 mb-5" onSubmit={this.submitHandler}>
+                        <h1>Edit achievement</h1>
 
-                            <Form.Group as={Col} controlId="formGridShortName">
-                                <Form.Label>Identificatation name</Form.Label>
-                                <Form.Control
-                                    value={this.state.trip.short_name}
-                                />
-                            </Form.Group>
-                        </Form.Row>
-                        <Form.Row>
-                            <Form.Group as={Col} controlId="formGridDeposit">
-                                <Form.Label>Deposit</Form.Label>
-                                <Form.Control value={this.state.trip.deposit} />
-                            </Form.Group>
-
-                            <Form.Group as={Col} controlId="formGridExperience">
-                                <Form.Label>Required level</Form.Label>
-                                <Form.Control
-                                    value={this.state.trip.requiered_level}
-                                />
-                            </Form.Group>
-                        </Form.Row>
-                        <Form.Row>
-                            <Form.Group
-                                as={Col}
-                                controlId="exampleForm.ControlSelect1"
-                            >
-                                <Form.Label>Possible XP reward</Form.Label>
-                                <Form.Control as="select">
-                                    {possibleXPrewardOptions}
-                                </Form.Control>
-                            </Form.Group>
-
-                            <Form.Group
-                                as={Col}
-                                controlId="exampleForm.ControlSelect1"
-                            >
-                                <Form.Label>Category</Form.Label>
-                                {categoryOptions}
-                            </Form.Group>
-                        </Form.Row>
-                        <Form.Group controlId="formGridLocation">
-                            <Form.Label>Location</Form.Label>
-                            <Form.Control value={this.state.trip.location} />
+                        <Form.Group as={Col} controlId="formGridName">
+                            <Form.Label>Name of trip</Form.Label>
+                            <Form.Control
+                                value={this.state.achievement.name}
+                                onChange={(event) =>
+                                    this.setState({ name: event.target.value })
+                                }
+                            />
                         </Form.Group>
+
                         <Form.Group controlId="exampleForm.ControlTextarea1">
                             <Form.Label>Description</Form.Label>
                             <Form.Control
                                 as="textarea"
                                 rows="5"
-                                value={this.state.trip.description}
+                                value={this.state.achievement.description}
+                                onChange={(event) =>
+                                    this.setState({
+                                        description: event.target.value,
+                                    })
+                                }
                             />
                         </Form.Group>
-                        <Form.Row>
-                            <Form.Group
-                                as={Col}
-                                className="pl-5"
-                                controlId="formGridName"
-                            >
-                                {requiredAchievements}
-                            </Form.Group>
-                            <Form.Group
-                                as={Col}
-                                className="pl-5"
-                                controlId="formGridName"
-                            >
-                                {gainAchievements}
-                            </Form.Group>
-                        </Form.Row>
+
+                        <Form.Group className="d-flex flex-row flex-wrap">
+                            {iconsToForm}
+                        </Form.Group>
+
                         <Button variant="primary" type="submit">
                             Submit
                         </Button>

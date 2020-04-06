@@ -5,7 +5,7 @@ import { Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 class Create extends React.Component {
-    state = { achievements: null, show: true, categories: null };
+    state = { achievements: null, show: true, categories: null, trip: null };
 
     fetchAchievementsHandler = async () => {
         const response = await fetch(`http://localhost:8080/achievement`);
@@ -21,6 +21,11 @@ class Create extends React.Component {
         console.log(data);
         this.setState({ categories: data });
     }
+
+    submitHandler = event => {
+        event.preventDefault();
+        console.log(this.state.trip);
+    };
 
     render() {
         let possibleXPrewardOptions = [];
@@ -83,17 +88,31 @@ class Create extends React.Component {
 
         return (
             <Container>
-                <Form className="mt-3 mb-5">
+                <Form className="mt-3 mb-5" onSubmit={this.submitHandler}>
                     <h1>Create trip</h1>
                     <Form.Row>
                         <Form.Group as={Col} controlId="formGridName">
                             <Form.Label>Name of trip</Form.Label>
-                            <Form.Control placeholder="Enter name" />
+                            <Form.Control
+                                placeholder="Enter name"
+                                onChange={event =>
+                                    this.setState({
+                                        trip: { name: event.target.value }
+                                    })
+                                }
+                            />
                         </Form.Group>
 
                         <Form.Group as={Col} controlId="formGridShortName">
                             <Form.Label>Identificatation name</Form.Label>
-                            <Form.Control placeholder="Enter unique key for trip" />
+                            <Form.Control
+                                placeholder="Enter unique key for trip"
+                                onChange={event =>
+                                    this.setState({
+                                        trip: { short_name: event.target.value }
+                                    })
+                                }
+                            />
                         </Form.Group>
                     </Form.Row>
                     <Form.Row>

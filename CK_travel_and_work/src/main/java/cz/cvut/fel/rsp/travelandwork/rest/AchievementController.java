@@ -8,6 +8,7 @@ import cz.cvut.fel.rsp.travelandwork.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,9 +28,20 @@ public class AchievementController {
         this.achievementService = achievementService;
     }
 
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Achievement get(@PathVariable Long id){
+        return achievementService.find(id);
+    }
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Achievement> getAll() {
         return achievementService.findAll();
+    }
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public void create(@RequestBody Achievement achievement){
+        achievementService.create(achievement);
     }
 }
 

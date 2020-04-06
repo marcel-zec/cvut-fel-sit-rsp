@@ -4,7 +4,7 @@ import ModalCentered from "./ModalCentered";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./Modal.css";
 
-function AchievmentModal(props) {
+function AchievementModal(props) {
     const [modalShow, setModalShow] = React.useState(false);
 
     /* <Button variant="primary" onClick={() => setModalShow(true)}>
@@ -50,4 +50,4 @@ function AchievmentModal(props) {
         </>
     );
 }
-export default AchievmentModal;
+export default AchievementModal;

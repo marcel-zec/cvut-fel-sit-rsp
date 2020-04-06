@@ -11,6 +11,18 @@
         { "icon": "crown" },
         { "icon": "water" },
         { "icon": "swimming-pool" },
-        { "icon": "location-arrow" }
+        { "icon": "graduation-cap" },
+        { "icon": "fish" },
+        { "icon": "mountain" },
+        { "icon": "flag" },
+        { "icon": "snowflake" },
+        { "icon": "hamburger" },
+        { "icon": "pizza-slice" },
+        { "icon": "glass-cheers" },
+        { "icon": "pastafarianism" },
+        { "icon": "compass" },
+        { "icon": "running" },
+        { "icon": "campground" },
+        { "icon": "chess-rook" }
     ]
 }
