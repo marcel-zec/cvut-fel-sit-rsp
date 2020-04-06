@@ -1,5 +1,6 @@
 package cz.cvut.fel.rsp.travelandwork.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import cz.cvut.fel.rsp.travelandwork.model.*;
 
 import javax.persistence.*;
@@ -81,6 +82,7 @@ public class Trip extends AbstractEntity {
     @OneToMany(mappedBy = "trip")
     private List<TripSession> sessions;
 
+    @JsonIgnore
     @OrderBy("date ASC")
     @OneToMany(mappedBy = "trip")
     private List<TripReview> reviews;

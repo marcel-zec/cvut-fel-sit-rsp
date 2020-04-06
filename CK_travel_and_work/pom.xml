@@ -55,7 +55,18 @@
            <groupId>org.postgresql</groupId>
            <artifactId>postgresql</artifactId>
        </dependency>
+		<!--Google cloud driver-->
+		<dependency>
+			<groupId>com.google.cloud.sql</groupId>
+			<artifactId>postgres-socket-factory</artifactId>
+			<version>1.0.15</version>
+		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-gcp-starter-sql-postgresql</artifactId>
+			<version>1.2.2.RELEASE</version>
+		</dependency>
 		<!--H2 database for tests-->
        <dependency>
            <groupId>com.h2database</groupId>
