@@ -5,7 +5,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 
 @Entity
 @Table(name = "ENROLLMENT")
@@ -13,7 +15,7 @@ public class Enrollment extends AbstractEntity {
     @Basic(optional = false)
     @Column(nullable = false)
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date enrollDate;
+    private LocalDateTime enrollDate;
 
     @Basic(optional = false)
     @Column(nullable = false)
@@ -22,6 +24,17 @@ public class Enrollment extends AbstractEntity {
     @Basic(optional = false)
     @Column(nullable = false)
     private int actual_xp_reward;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private String state;
+
+    @ManyToMany
+    @JoinTable(
+            name = "recieved_achievement_trip",
+            joinColumns = @JoinColumn(name = "enrollment_id"),
+            inverseJoinColumns = @JoinColumn(name = "achievement_id"))
+    private List<Achievement> recieved_achievements;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "travelJournal_id", nullable = false)
@@ -36,7 +49,7 @@ public class Enrollment extends AbstractEntity {
     private TripSession tripSession;
 
 
-    public Date getEnrollDate() {
+    public LocalDateTime getEnrollDate() {
         return enrollDate;
     }
 
@@ -60,7 +73,7 @@ public class Enrollment extends AbstractEntity {
         return tripSession;
     }
 
-    public void setEnrollDate(Date enrollDate) {
+    public void setEnrollDate(LocalDateTime enrollDate) {
         this.enrollDate = enrollDate;
     }
 
@@ -82,5 +95,17 @@ public class Enrollment extends AbstractEntity {
 
     public void setTripSession(TripSession tripSession) {
         this.tripSession = tripSession;
+    }
+
+
+    public String getState() {
+
+        return state;
+    }
+
+
+    public void setState(String state) {
+
+        this.state = state;
     }
 }

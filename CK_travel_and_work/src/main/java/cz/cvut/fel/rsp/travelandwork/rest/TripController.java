@@ -1,5 +1,6 @@
 package cz.cvut.fel.rsp.travelandwork.rest;
 
+import cz.cvut.fel.rsp.travelandwork.exception.BadDateException;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
 import cz.cvut.fel.rsp.travelandwork.model.Trip;
 import cz.cvut.fel.rsp.travelandwork.service.TripService;
@@ -35,13 +36,13 @@ public class TripController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void create(@RequestBody Trip trip) throws Exception {
+    public void create(@RequestBody Trip trip) throws BadDateException {
         tripService.create(trip);
     }
 
     @PatchMapping(value = "/{identificator}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable String identificator, @RequestBody Trip trip) throws Exception {
+    public void update(@PathVariable String identificator, @RequestBody Trip trip) throws BadDateException, NotFoundException {
 
         tripService.update(identificator, trip);
         LOG.info("Trip {} updated.", identificator);

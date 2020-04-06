@@ -6,6 +6,7 @@ import cz.cvut.fel.rsp.travelandwork.dao.TripReviewDao;
 import cz.cvut.fel.rsp.travelandwork.dao.UserDao;
 import cz.cvut.fel.rsp.travelandwork.dto.UserDto;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
+import cz.cvut.fel.rsp.travelandwork.model.Enrollment;
 import cz.cvut.fel.rsp.travelandwork.model.TravelJournal;
 import cz.cvut.fel.rsp.travelandwork.model.TripReview;
 import cz.cvut.fel.rsp.travelandwork.model.User;
@@ -66,6 +67,9 @@ public class UserService {
         user.getAddress().softDelete();
         addressDao.update(user.getAddress());
 
+        for (Enrollment e :user.getTravel_journal().getEnrollments()) {
+            e.softDelete();
+        }
         user.getTravel_journal().softDelete();
         travelJournalDao.update(user.getTravel_journal());
 
