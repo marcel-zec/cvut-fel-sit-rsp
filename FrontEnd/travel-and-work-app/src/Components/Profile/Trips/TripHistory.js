@@ -4,7 +4,7 @@ import { Card, Button, Col, Row, Image } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
-import AchievmentModal from "../../Achievment/AchievmentModal";
+import AchievmentModal from "../../SmartGadgets/AchievementModal";
 
 class TripHistory extends React.Component {
     render() {
@@ -64,8 +64,6 @@ class TripHistory extends React.Component {
                 </OverlayTrigger>
             );
         }
-
-
 
         return (
             <Card className="mb-3">

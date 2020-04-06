@@ -8,22 +8,15 @@ import { Link } from "react-router-dom";
 
 class Index extends React.Component {
     state = {
-        achievements: [
-            {
-                name: "dasdas",
-                description: "dedaedea",
-                icon: "trophy"
-            }
-        ]
+        achievements: null
     };
-    /*
+
     async componentDidMount() {
         const response = await fetch(`http://localhost:8080/achievement`);
         const data = await response.json();
         console.log(data);
         this.setState({ achievements: data });
     }
-    */
 
     render() {
         if (this.state.achievements === null) {

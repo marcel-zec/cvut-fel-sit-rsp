@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Spinner from "react-bootstrap/Spinner";
 import { Form } from "react-bootstrap";
-import AchievmentModal from "../../Achievment/AchievmentModal";
+import AchievmentModal from "../../SmartGadgets/AchievementModal";
 
 class Detail extends React.Component {
     state = { trip: null };
