@@ -3,9 +3,22 @@ import Form from "react-bootstrap/Form";
 import { Col, Button, Row } from "react-bootstrap";
 import { Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import SessionInput from "./UI/SessionInput";
 
 class Create extends React.Component {
-    state = { achievements: null, show: true, categories: null, trip: null };
+    state = {
+        achievements: null,
+        show: true,
+        categories: null,
+        trip: null,
+        sessions: [
+            {
+                date_from: null,
+                date_to: null,
+                price: null,
+            },
+        ],
+    };
 
     fetchAchievementsHandler = async () => {
         const response = await fetch(`http://localhost:8080/achievement`);
@@ -22,7 +35,7 @@ class Create extends React.Component {
         this.setState({ categories: data });
     }
 
-    submitHandler = event => {
+    submitHandler = (event) => {
         event.preventDefault();
         console.log(this.state.trip);
     };
@@ -38,7 +51,7 @@ class Create extends React.Component {
             if (this.state.categories.length > 0) {
                 let categoriesArray = [];
 
-                this.state.categories.forEach(element => {
+                this.state.categories.forEach((element) => {
                     categoriesArray.push(<option>{element.name}</option>);
                 });
                 categoryOptions = (
@@ -52,7 +65,7 @@ class Create extends React.Component {
         if (this.state.achievements !== null) {
             if (this.state.achievements.length > 0) {
                 let achievementsArray = [];
-                this.state.achievements.forEach(element => {
+                this.state.achievements.forEach((element) => {
                     let achievementElement = (
                         <>
                             <Form.Check.Label>
@@ -86,6 +99,11 @@ class Create extends React.Component {
             }
         }
 
+        let sessions = [];
+        this.state.sessions.forEach(() => {
+            sessions.push(<SessionInput />);
+        });
+
         return (
             <Container>
                 <Form className="mt-3 mb-5" onSubmit={this.submitHandler}>
@@ -95,9 +113,9 @@ class Create extends React.Component {
                             <Form.Label>Name of trip</Form.Label>
                             <Form.Control
                                 placeholder="Enter name"
-                                onChange={event =>
+                                onChange={(event) =>
                                     this.setState({
-                                        trip: { name: event.target.value }
+                                        trip: { name: event.target.value },
                                     })
                                 }
                             />
@@ -107,14 +125,17 @@ class Create extends React.Component {
                             <Form.Label>Identificatation name</Form.Label>
                             <Form.Control
                                 placeholder="Enter unique key for trip"
-                                onChange={event =>
+                                onChange={(event) =>
                                     this.setState({
-                                        trip: { short_name: event.target.value }
+                                        trip: {
+                                            short_name: event.target.value,
+                                        },
                                     })
                                 }
                             />
                         </Form.Group>
                     </Form.Row>
+                    {sessions}
                     <Form.Row>
                         <Form.Group as={Col} controlId="formGridDeposit">
                             <Form.Label>Deposit</Form.Label>
