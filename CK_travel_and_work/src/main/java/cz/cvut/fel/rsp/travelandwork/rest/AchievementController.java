@@ -33,6 +33,12 @@ public class AchievementController {
         return achievementService.find(id);
     }
 
+    @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void update(@RequestBody Achievement achievement){
+        achievementService.update(achievement);
+    }
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Achievement> getAll() {
         return achievementService.findAll();
