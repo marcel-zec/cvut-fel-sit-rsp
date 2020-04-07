@@ -10,43 +10,43 @@ class Create extends React.Component {
         achievement: { name: null, description: null, icon: null },
         form: {
             isValid: false,
-            element: [
-                {
+            elements: {
+                icon: {
                     keyForUpdate: "icon",
                     idForUpdate: true,
                     touched: false,
                     valid: false,
                     validationRules: [],
                 },
-                {
+                name: {
                     keyForUpdate: "name",
                     idForUpdate: false,
                     touched: false,
                     valid: false,
                     validationRules: [],
                 },
-                {
+                description: {
                     keyForUpdate: "description",
                     idForUpdate: false,
                     touched: false,
                     valid: false,
                     validationRules: [],
                 },
-            ],
+            },
         },
     };
 
     /**
      * Update state from input.
      * @param {event} event
-     * @param {Object} formState
+     * @param {String} nameOfFormInput,
      */
-    inputUpdateHandler(event, formState) {
-        const newState = { ...this.state };
-        if (formState.idForUpdate)
-            newState.achievement[formState.keyForUpdate] = event.target.id;
-        else newState.achievement[formState.keyForUpdate] = event.target.value;
-        this.setState(newState);
+    inputUpdateHandler(event, nameOfFormInput) {
+        const newState = { ...this.state.achievement };
+        if (this.state.form.elements[nameOfFormInput].idForUpdate)
+            newState[nameOfFormInput] = event.target.id;
+        else newState[nameOfFormInput] = event.target.value;
+        this.setState({ achievement: newState });
     }
     /*
     validateForm(inputs = {}) {
@@ -96,10 +96,7 @@ class Create extends React.Component {
                             name="formHorizontalRadios"
                             id={element.icon}
                             onChange={(event) =>
-                                this.inputUpdateHandler(
-                                    event,
-                                    this.state.form.element[0]
-                                )
+                                this.inputUpdateHandler(event, "icon")
                             }
                         />
                         <FontAwesomeIcon
@@ -126,10 +123,7 @@ class Create extends React.Component {
                         <Form.Control
                             placeholder="Enter name"
                             onChange={(event) =>
-                                this.inputUpdateHandler(
-                                    event,
-                                    this.state.form.element[1]
-                                )
+                                this.inputUpdateHandler(event, "name")
                             }
                         />
                     </Form.Group>
@@ -140,10 +134,7 @@ class Create extends React.Component {
                             as="textarea"
                             rows="5"
                             onChange={(event) =>
-                                this.inputUpdateHandler(
-                                    event,
-                                    this.state.form.element[2]
-                                )
+                                this.inputUpdateHandler(event, "description")
                             }
                         />
                     </Form.Group>

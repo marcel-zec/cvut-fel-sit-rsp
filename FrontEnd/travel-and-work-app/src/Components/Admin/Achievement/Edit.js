@@ -11,29 +11,26 @@ class Edit extends React.Component {
         achievement: { name: null, description: null, icon: null },
         form: {
             isValid: false,
-            element: [
-                {
-                    keyForUpdate: "icon",
+            elements: {
+                icon: {
                     idForUpdate: true,
                     touched: false,
                     valid: false,
                     validationRules: [],
                 },
-                {
-                    keyForUpdate: "name",
+                name: {
                     idForUpdate: false,
                     touched: false,
                     valid: false,
                     validationRules: [],
                 },
-                {
-                    keyForUpdate: "description",
+                description: {
                     idForUpdate: false,
                     touched: false,
                     valid: false,
                     validationRules: [],
                 },
-            ],
+            },
         },
     };
 
@@ -49,14 +46,14 @@ class Edit extends React.Component {
     /**
      * Update state from input.
      * @param {event} event
-     * @param {Object} formState
+     * @param {String} nameOfFormInput,
      */
-    inputUpdateHandler(event, formState) {
-        const newState = { ...this.state };
-        if (formState.idForUpdate)
-            newState.achievement[formState.keyForUpdate] = event.target.id;
-        else newState.achievement[formState.keyForUpdate] = event.target.value;
-        this.setState(newState);
+    inputUpdateHandler(event, nameOfFormInput) {
+        const newState = { ...this.state.achievement };
+        if (this.state.form.elements[nameOfFormInput].idForUpdate)
+            newState[nameOfFormInput] = event.target.id;
+        else newState[nameOfFormInput] = event.target.value;
+        this.setState({ achievement: newState });
     }
 
     submitHandler = (event) => {
@@ -102,10 +99,7 @@ class Edit extends React.Component {
                                         : ""
                                 }
                                 onChange={(event) =>
-                                    this.inputUpdateHandler(
-                                        event,
-                                        this.state.form.element[0]
-                                    )
+                                    this.inputUpdateHandler(event, "icon")
                                 }
                             />
                             <FontAwesomeIcon
@@ -132,10 +126,7 @@ class Edit extends React.Component {
                             <Form.Control
                                 value={this.state.achievement.name}
                                 onChange={(event) =>
-                                    this.inputUpdateHandler(
-                                        event,
-                                        this.state.form.element[1]
-                                    )
+                                    this.inputUpdateHandler(event, "name")
                                 }
                             />
                         </Form.Group>
@@ -149,7 +140,7 @@ class Edit extends React.Component {
                                 onChange={(event) =>
                                     this.inputUpdateHandler(
                                         event,
-                                        this.state.form.element[2]
+                                        "description"
                                     )
                                 }
                             />
