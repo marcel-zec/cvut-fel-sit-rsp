@@ -1,5 +1,6 @@
 package cz.cvut.fel.rsp.travelandwork.rest;
 
+import cz.cvut.fel.rsp.travelandwork.dto.TripSessionDto;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
 import cz.cvut.fel.rsp.travelandwork.model.TripSession;
 import cz.cvut.fel.rsp.travelandwork.service.TripSessionService;
@@ -23,7 +24,7 @@ public class TripSessionController {
 
 
     @GetMapping(value = "/{trip_short_name}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<TripSession> findAllInTrip(@PathVariable String trip_short_name) {
+    public List<TripSessionDto> findAllInTrip(@PathVariable String trip_short_name) {
         return tripSessionService.findAllInTrip(trip_short_name);
     }
 
