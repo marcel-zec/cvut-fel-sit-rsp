@@ -1,30 +1,23 @@
 import React from "react";
-import { Form, Col } from "react-bootstrap";
+import { Form, Col, Button } from "react-bootstrap";
 
-class SessionInput extends React.Component {
-    state = {
-        date_to: null,
-        date_from: null,
-        price: null,
-    };
+export class SessionInput extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            date_from: props.session.date_from,
+            date_to: props.session.date_to,
+            price: props.session.price,
+        };
+    }
 
-    inputUpdateHandler(event, nameOfInput) {
+    inputUpdateHandler = (event, nameOfInput) => {
         const newState = { ...this.state };
         newState[nameOfInput] = event.target.value;
         this.setState(newState);
         console.log(this.state);
-    }
-
-    checkForUpdate() {
-        let full = true;
-        for (let property in this.state) {
-            if (this.state[property] == null) full = false;
-        }
-        console.log("update check: " + full);
-        if (full) {
-            this.props.onChangeMethod(this.state);
-        }
-    }
+        this.props.onChangeMethod(this.state);
+    };
 
     render() {
         return (
@@ -61,6 +54,13 @@ class SessionInput extends React.Component {
                         }
                     />
                 </Form.Group>
+
+                <Button
+                    variant="danger"
+                    onClick={() => this.props.forDeleteSession(this.state)}
+                >
+                    Danger
+                </Button>
             </Form.Row>
         );
     }

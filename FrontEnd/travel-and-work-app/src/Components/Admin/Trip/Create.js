@@ -125,7 +125,48 @@ class Create extends React.Component {
         console.log(this.state.trip);
     }
 
-    inputSessionUpdatenHandler(session) {}
+    sessionDeleteHandler = (session) => {
+        let newState = [...this.state.trip.sessions];
+        const found = newState.findIndex((element) => {
+            return element.index == session.index;
+        });
+        if (found > -1) {
+            newState.splice(found, 1);
+        }
+        this.setState((oldState) => ({
+            trip: {
+                ...oldState.trip,
+                sessions: newState,
+            },
+        }));
+    };
+
+    inputSessionUpdateHandler = (session) => {
+        console.log(this.state.trip);
+        let newState = [...this.state.trip.sessions];
+        const found = newState.findIndex((element) => {
+            return element.index == session.index;
+        });
+        console.log("found: " + found);
+        if (found > -1) {
+            console.log("if in inputSessionUpdate");
+            for (let property in newState[found]) {
+                newState[found][property] = session[property];
+            }
+        } else {
+            console.log("else in inputSessionUpdate");
+            session.index = this.state.trip.sessions.length;
+            newState.push(session);
+        }
+        this.setState((oldState) => ({
+            trip: {
+                ...oldState.trip,
+                sessions: newState,
+            },
+        }));
+        console.log("bavi?");
+        console.log(this.state.trip.sessions);
+    };
 
     fetchAchievementsHandler = async () => {
         const response = await fetch(`http://localhost:8080/achievement`);
@@ -235,11 +276,6 @@ class Create extends React.Component {
                             />
                         </Form.Group>
                     </Form.Row>
-                    <SessionGroup
-                        onChangeMethod={(event) =>
-                            this.inputUpdateHandler(event, "category")
-                        }
-                    />
                     <Form.Row>
                         <Form.Group as={Col} controlId="formGridDeposit">
                             <Form.Label>Deposit</Form.Label>
@@ -312,6 +348,8 @@ class Create extends React.Component {
                     </Form.Group>
                     <SessionGroup
                         onChangeMethod={this.inputSessionUpdateHandler}
+                        sessions={this.state.trip.sessions}
+                        forDeleteSession={this.sessionDeleteHandler}
                     />
                     <Button
                         variant="primary"
