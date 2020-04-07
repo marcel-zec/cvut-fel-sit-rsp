@@ -27,6 +27,7 @@ public class Achievement extends AbstractEntity{
     @ManyToMany
     private List<Trip> trips;
 
+
     @JsonIgnore
     @ManyToMany
     @JoinTable(
@@ -69,7 +70,7 @@ public class Achievement extends AbstractEntity{
         this.icon = icon;
     }
 
-    public List<TravelJournal> getOwnedTravelJournals() {
+    public List<TravelJournal> getOwned_travel_journals() {
         return owned_travel_journals;
     }
 
@@ -84,7 +85,6 @@ public class Achievement extends AbstractEntity{
     public void setOwned_travel_journals(List<TravelJournal> owned_travel_journals) {
         this.owned_travel_journals = owned_travel_journals;
     }
-
 
     public List<Trip> getTrips() {
         return trips;
