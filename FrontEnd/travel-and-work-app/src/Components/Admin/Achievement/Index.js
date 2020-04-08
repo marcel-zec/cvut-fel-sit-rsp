@@ -5,10 +5,11 @@ import { Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Spinner from "react-bootstrap/Spinner";
 import { Link } from "react-router-dom";
+import ButtonInRow from "../../SmartGadgets/ButtonInRow";
 
 class Index extends React.Component {
     state = {
-        achievements: null
+        achievements: null,
     };
 
     async componentDidMount() {
@@ -28,7 +29,7 @@ class Index extends React.Component {
         } else {
             let tableRows = [];
             if (this.state.achievements.length > 0) {
-                this.state.achievements.forEach(element => {
+                this.state.achievements.forEach((element) => {
                     tableRows.push(
                         <tr>
                             <td>{element.name}</td>
@@ -57,6 +58,13 @@ class Index extends React.Component {
 
             return (
                 <Container>
+                    <ButtonInRow
+                        variant="success"
+                        link="/achievement/create"
+                        side="right"
+                        label="Add achievement"
+                    />
+
                     <Table striped bordered hover>
                         <thead>
                             <tr>

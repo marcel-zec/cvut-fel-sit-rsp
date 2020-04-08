@@ -5,6 +5,7 @@ import { Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Spinner from "react-bootstrap/Spinner";
 import { Link } from "react-router-dom";
+import ButtonInRow from "../../SmartGadgets/ButtonInRow";
 
 class Index extends React.Component {
     state = { trips: null };
@@ -25,7 +26,7 @@ class Index extends React.Component {
         } else {
             let tableRows = [];
             if (this.state.trips.length > 0) {
-                this.state.trips.forEach(element => {
+                this.state.trips.forEach((element) => {
                     let category = null;
                     if (element.category) category = element.category.name;
 
@@ -55,6 +56,13 @@ class Index extends React.Component {
 
             return (
                 <Container>
+                    <ButtonInRow
+                        variant="success"
+                        link="/trip/create"
+                        side="right"
+                        label="Add trip"
+                    />
+
                     <Table striped bordered hover>
                         <thead>
                             <tr>

@@ -5,6 +5,7 @@ import { Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import icons from "../../../Files/icons.json";
 import Spinner from "react-bootstrap/Spinner";
+import ButtonInRow from "../../SmartGadgets/ButtonInRow";
 
 class Edit extends React.Component {
     state = {
@@ -118,6 +119,14 @@ class Edit extends React.Component {
 
             return (
                 <Container>
+                    <ButtonInRow
+                        variant="danger"
+                        link="/achievement"
+                        side="left"
+                        label=""
+                        back={true}
+                    />
+
                     <Form className="mt-3 mb-5" onSubmit={this.submitHandler}>
                         <h1>Edit achievement</h1>
 

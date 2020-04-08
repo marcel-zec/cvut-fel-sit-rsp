@@ -4,6 +4,7 @@ import { Col, Button, Row } from "react-bootstrap";
 import { Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import icons from "../../../Files/icons.json";
+import ButtonInRow from "../../SmartGadgets/ButtonInRow";
 
 class Create extends React.Component {
     state = {
@@ -82,6 +83,8 @@ class Create extends React.Component {
             body: JSON.stringify(this.state.achievement),
         }).then((response) => {
             if (response.ok) this.props.history.push("/achievement");
+            //TODO - osetrenie vynimiek
+            else console.log("Error: somethhing goes wrong");
         });
     };
 
@@ -115,6 +118,14 @@ class Create extends React.Component {
 
         return (
             <Container>
+                <ButtonInRow
+                    variant="danger"
+                    link="/achievement"
+                    side="left"
+                    label=""
+                    back={true}
+                />
+
                 <Form className="mt-3 mb-5" onSubmit={this.submitHandler}>
                     <h1>Create achievement</h1>
 
