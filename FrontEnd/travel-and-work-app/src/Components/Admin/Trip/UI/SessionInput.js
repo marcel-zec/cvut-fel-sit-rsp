@@ -5,9 +5,10 @@ export class SessionInput extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            date_from: props.session.date_from,
-            date_to: props.session.date_to,
-            price: props.session.price,
+            index: this.props.session.index,
+            date_from: this.props.session.date_from,
+            date_to: this.props.session.date_to,
+            price: this.props.session.price,
         };
     }
 

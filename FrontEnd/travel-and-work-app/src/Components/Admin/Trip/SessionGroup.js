@@ -3,11 +3,6 @@ import { Form, Button } from "react-bootstrap";
 import SessionInput from "./UI/SessionInput";
 
 class SessionGroup extends React.Component {
-    state = { index: null };
-    callbackFunction = (childData) => {
-        console.log(childData);
-    };
-
     addNewSessionHandler = () => {
         let session = {
             index: null,
@@ -22,13 +17,15 @@ class SessionGroup extends React.Component {
         let arraySessions = null;
         if (this.props !== null) {
             arraySessions = [];
-            for (let session in this.props.sessions) {
+            console.log(this.props.sessions);
+            const sessions = this.props.sessions;
+            for (let i = 0; i < sessions.length; i++) {
                 arraySessions.push(
-                    <Form.Row>
+                    <Form.Row key={sessions[i].index}>
                         <SessionInput
                             onChangeMethod={this.props.onChangeMethod}
                             forDeleteSession={this.props.forDeleteSession}
-                            session={session}
+                            session={sessions[i]}
                         />
                     </Form.Row>
                 );

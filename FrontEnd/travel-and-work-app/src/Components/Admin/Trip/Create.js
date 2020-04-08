@@ -143,29 +143,26 @@ class Create extends React.Component {
 
     inputSessionUpdateHandler = (session) => {
         console.log(this.state.trip);
-        let newState = [...this.state.trip.sessions];
-        const found = newState.findIndex((element) => {
+        let newState = { ...this.state };
+        const found = newState.trip.sessions.findIndex((element) => {
             return element.index == session.index;
         });
         console.log("found: " + found);
         if (found > -1) {
             console.log("if in inputSessionUpdate");
             for (let property in newState[found]) {
-                newState[found][property] = session[property];
+                newState.trip.sessions[found][property] = session[property];
             }
         } else {
             console.log("else in inputSessionUpdate");
             session.index = this.state.trip.sessions.length;
-            newState.push(session);
+            newState.trip.sessions.push(session);
+            console.log("new");
+            console.log(newState);
         }
-        this.setState((oldState) => ({
-            trip: {
-                ...oldState.trip,
-                sessions: newState,
-            },
-        }));
+        this.setState(newState);
         console.log("bavi?");
-        console.log(this.state.trip.sessions);
+        console.log(this.state);
     };
 
     fetchAchievementsHandler = async () => {
