@@ -4,6 +4,7 @@ import { Col, Button, Row, Spinner } from "react-bootstrap";
 import { Container } from "react-bootstrap";
 import Achievements from "./UI/Achievements";
 import SessionGroup from "./SessionGroup";
+import ButtonInRow from "../../SmartGadgets/ButtonInRow";
 
 class Create extends React.Component {
     state = {
@@ -86,7 +87,7 @@ class Create extends React.Component {
      * @param {Boolean} arrayToPush - if want push to array
      * @param {Boolean} checkbox
      */
-    inputUpdateHandler(event, nameOfFormInput) {
+    inputUpdateHandler = (event, nameOfFormInput) => {
         const stringProperties = [
             "name",
             "short_name",
@@ -122,7 +123,7 @@ class Create extends React.Component {
         }
         this.setState({ trip: newState });
         console.log(this.state.trip);
-    }
+    };
 
     sessionDeleteHandler = (session) => {
         let newState = [...this.state.trip.sessions];
@@ -163,7 +164,24 @@ class Create extends React.Component {
         console.log(this.state);
     };
 
-    fetchAchievementsHandler = async () => {};
+    submitHandler = (event) => {
+        event.preventDefault();
+        console.log(this.state.trip);
+        //this.validateForm(this.state.achievement);
+
+        fetch("http://localhost:8080/trip", {
+            method: "POST",
+            mode: "cors",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(this.state.trip),
+        }).then((response) => {
+            if (response.ok) this.props.history.push("/trip");
+            //TODO - osetrenie vynimiek
+            else console.log("Error: somethhing goes wrong");
+        });
+    };
 
     async componentDidMount() {
         const response1 = await fetch(`http://localhost:8080/category`);
@@ -177,11 +195,6 @@ class Create extends React.Component {
         //show: false -> add class name to button and hide it
         this.setState({ achievements: data2 });
     }
-
-    submitHandler = (event) => {
-        event.preventDefault();
-        console.log(this.state.trip);
-    };
 
     render() {
         if (this.state.achievements == null && this.state.categories == null) {
@@ -219,6 +232,14 @@ class Create extends React.Component {
 
             return (
                 <Container>
+                    <ButtonInRow
+                        variant="danger"
+                        link="/trip"
+                        side="left"
+                        label=""
+                        back={true}
+                    />
+
                     <Form className="mt-3 mb-5" onSubmit={this.submitHandler}>
                         <h1>Create trip</h1>
                         <Form.Row>
@@ -322,7 +343,10 @@ class Create extends React.Component {
                             />
                         </Form.Group>
 
-                        <Achievements items={this.state.achievements} />
+                        <Achievements
+                            items={this.state.achievements}
+                            onChangeMethod={this.inputUpdateHandler}
+                        />
 
                         <SessionGroup
                             onChangeMethod={this.inputSessionUpdateHandler}
