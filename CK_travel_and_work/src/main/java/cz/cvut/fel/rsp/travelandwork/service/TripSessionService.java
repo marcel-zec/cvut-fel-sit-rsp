@@ -19,13 +19,13 @@ public class TripSessionService {
 
     private TripSessionDao tripSessionDao;
     private TripDao tripDao;
-    private TripService tripService;
+    private final TranslateService translateService;
 
     @Autowired
-    public TripSessionService(TripSessionDao tripSessionDao, TripDao tripDao, TripService tripService) {
+    public TripSessionService(TripSessionDao tripSessionDao, TripDao tripDao, TranslateService translateService) {
         this.tripSessionDao = tripSessionDao;
         this.tripDao = tripDao;
-        this.tripService = tripService;
+        this.translateService = translateService;
     }
 
     @Transactional
@@ -48,7 +48,7 @@ public class TripSessionService {
 
     private TripSessionDto translate(TripSession tripSession) {
         Objects.requireNonNull(tripSession);
-        TripDto tripDto = tripService.translate(tripSession.getTrip());
+        TripDto tripDto = translateService.translateTrip(tripSession.getTrip());
         return new TripSessionDto(tripSession.getFrom_date(),tripSession.getTo_date(),tripSession.getPrice(),tripDto);
     }
 }

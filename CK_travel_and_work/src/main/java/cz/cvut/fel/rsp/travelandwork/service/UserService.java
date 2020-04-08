@@ -24,14 +24,16 @@ public class UserService {
     private final TripReviewDao tripReviewDao;
     private final TravelJournalDao travelJournalDao;
     private final AddressDao addressDao;
+    private final TranslateService translateService;
 
 
     @Autowired
-    public UserService(UserDao dao, TripReviewDao tripReviewDao, TravelJournalDao travelJournalDao, AddressDao addressDao) {
+    public UserService(UserDao dao, TripReviewDao tripReviewDao, TravelJournalDao travelJournalDao, AddressDao addressDao, TranslateService translateService) {
         this.dao = dao;
         this.tripReviewDao = tripReviewDao;
         this.travelJournalDao = travelJournalDao;
         this.addressDao = addressDao;
+        this.translateService = translateService;
     }
 
     @Transactional
@@ -40,7 +42,6 @@ public class UserService {
         if (!user.getPassword().equals(passwordAgain)) throw new BadPassword();
         user.encodePassword();
         dao.persist(user);
-        user = dao.findByUsername(user.getUsername());
         if (user.getAddress() != null){
             user.getAddress().setUser(user);
             addressDao.persist(user.getAddress());
@@ -111,12 +112,12 @@ public class UserService {
     @Transactional
     public UserDto find(Long id) {
         Objects.requireNonNull(id);
-        return translate(dao.find(id));
+        return translateService.translateUser(dao.find(id));
     }
     @Transactional
     public UserDto findByUsername(String username) {
         Objects.requireNonNull(username);
-        return translate(dao.findByUsername(username));
+        return translateService.translateUser(dao.findByUsername(username));
     }
 
     @Transactional
@@ -124,7 +125,7 @@ public class UserService {
 
         List<UserDto> userDtos = new ArrayList<>();
         for (User user:dao.findAll()) {
-            userDtos.add(translate(user));
+            userDtos.add(translateService.translateUser(user));
         }
         return userDtos;
     }
@@ -135,19 +136,5 @@ public class UserService {
         return dao.exists(id);
     }
 
-    private UserDto translate(User user) {
-        Objects.requireNonNull(user);
-        UserDto userDto = new UserDto();
-
-        userDto.setUsername(user.getUsername());
-        userDto.setLastName(user.getLastName());
-        userDto.setFirstName(user.getFirstName());
-        userDto.setEmail(user.getEmail());
-        userDto.setAddress(user.getAddress());
-        userDto.setTravel_journal(user.getTravel_journal());
-        userDto.setTripReviews(user.getTripReviews());
-
-        return userDto;
-    }
 
 }

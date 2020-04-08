@@ -23,12 +23,15 @@ public class TripService {
     private final TripDao tripDao;
     private final TripSessionDao tripSessionDao;
     private final TripReviewDao tripReviewDao;
+    private final TranslateService translateService;
 
     @Autowired
-    public TripService(TripDao tripDao, TripSessionDao tripSessionDao, TripReviewDao tripReviewDao) {
+    public TripService(TripDao tripDao, TripSessionDao tripSessionDao, TripReviewDao tripReviewDao, TranslateService translateService) {
         this.tripDao = tripDao;
         this.tripSessionDao = tripSessionDao;
         this.tripReviewDao = tripReviewDao;
+        this.translateService = translateService;
+
     }
 
     @Transactional
@@ -41,7 +44,7 @@ public class TripService {
         List<TripDto> tripDtos = new ArrayList<>();
 
         for (Trip trip:tripDao.findAll()) {
-            tripDtos.add(translate(trip));
+            tripDtos.add(translateService.translateTrip(trip));
         }
         return tripDtos;
     }
@@ -61,7 +64,6 @@ public class TripService {
 
         Objects.requireNonNull(trip);
         tripDao.persist(trip);
-        trip = tripDao.find(trip.getShort_name());
         for (TripSession session: trip.getSessions()) {
             if (session.getTo_date().isBefore(session.getFrom_date())) {
                 tripDao.remove(trip);
@@ -149,12 +151,6 @@ public class TripService {
         tripDao.update(trip);
     }
 
-    @Transactional
-    public TripDto translate(Trip trip) {
-        Objects.requireNonNull(trip);
-        return new TripDto(trip.getName(),trip.getShort_name(),trip.getPossible_xp_reward(),
-                trip.getDescription(),trip.getRating(),trip.getDeposit(),trip.getLocation(), trip.getRequired_level(),
-                trip.getCategory(),trip.getRequired_achievements(),trip.getGain_achievements());
-    }
+
 
 }
