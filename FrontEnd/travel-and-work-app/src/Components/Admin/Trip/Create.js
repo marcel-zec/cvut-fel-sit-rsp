@@ -139,6 +139,7 @@ class Create extends React.Component {
                 sessions: newState,
             },
         }));
+        console.log(this.state.trip.sessions);
     };
 
     inputSessionUpdateHandler = (session) => {
@@ -150,9 +151,7 @@ class Create extends React.Component {
         console.log("found: " + found);
         if (found > -1) {
             console.log("if in inputSessionUpdate");
-            for (let property in newState[found]) {
-                newState.trip.sessions[found][property] = session[property];
-            }
+            newState.trip.sessions[found] = session;
         } else {
             console.log("else in inputSessionUpdate");
             session.index = this.state.trip.sessions.length;
