@@ -14,7 +14,7 @@ function Achievements(props) {
                     items={props.items}
                     formInputName="requeired_achievements"
                     onChangeMethod={(event) =>
-                        this.inputUpdateHandler(event, "required_achievements")
+                        props.onChangeMethod(event, "required_achievements")
                     }
                 />
             );
@@ -24,7 +24,7 @@ function Achievements(props) {
                     items={props.items}
                     formInputName="gain_achievements"
                     onChangeMethod={(event) =>
-                        this.inputUpdateHandler(event, "gain_achievements")
+                        props.onChangeMethod(event, "gain_achievements")
                     }
                 />
             );

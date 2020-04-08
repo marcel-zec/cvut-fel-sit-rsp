@@ -86,7 +86,7 @@ class Create extends React.Component {
      * @param {Boolean} arrayToPush - if want push to array
      * @param {Boolean} checkbox
      */
-    inputUpdateHandler(event, nameOfFormInput) {
+    inputUpdateHandler = (event, nameOfFormInput) => {
         const stringProperties = [
             "name",
             "short_name",
@@ -122,7 +122,7 @@ class Create extends React.Component {
         }
         this.setState({ trip: newState });
         console.log(this.state.trip);
-    }
+    };
 
     sessionDeleteHandler = (session) => {
         let newState = [...this.state.trip.sessions];
@@ -163,7 +163,24 @@ class Create extends React.Component {
         console.log(this.state);
     };
 
-    fetchAchievementsHandler = async () => {};
+    submitHandler = (event) => {
+        event.preventDefault();
+        console.log(this.state.trip);
+        //this.validateForm(this.state.achievement);
+
+        /*
+        fetch("http://localhost:8080/achievement", {
+            method: "POST",
+            mode: "cors",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(this.state.achievement),
+        }).then((response) => {
+            if (response.ok) this.props.history.push("/achievement");
+        });
+        */
+    };
 
     async componentDidMount() {
         const response1 = await fetch(`http://localhost:8080/category`);
@@ -177,11 +194,6 @@ class Create extends React.Component {
         //show: false -> add class name to button and hide it
         this.setState({ achievements: data2 });
     }
-
-    submitHandler = (event) => {
-        event.preventDefault();
-        console.log(this.state.trip);
-    };
 
     render() {
         if (this.state.achievements == null && this.state.categories == null) {
@@ -322,7 +334,10 @@ class Create extends React.Component {
                             />
                         </Form.Group>
 
-                        <Achievements items={this.state.achievements} />
+                        <Achievements
+                            items={this.state.achievements}
+                            onChangeMethod={this.inputUpdateHandler}
+                        />
 
                         <SessionGroup
                             onChangeMethod={this.inputSessionUpdateHandler}
