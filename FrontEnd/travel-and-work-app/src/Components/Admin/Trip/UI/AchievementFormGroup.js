@@ -1,5 +1,5 @@
 import React from "react";
-import { Form } from "react-bootstrap";
+import { Form, Col } from "react-bootstrap";
 import AchievementInput from "./AchievementInput";
 
 function AchievementFormGroup(props) {
@@ -14,7 +14,7 @@ function AchievementFormGroup(props) {
     });
 
     return (
-        <Form.Group>
+        <Form.Group as={Col}>
             <Form.Label>{props.label}</Form.Label>
             <div className="d-flex flex-column align-items-start ml-5">
                 {itemsArray}

@@ -3,23 +3,48 @@ import { Form, Button } from "react-bootstrap";
 import SessionInput from "./UI/SessionInput";
 
 class SessionGroup extends React.Component {
-    send(el) {
-        console.log("dsadsadsa");
-    }
+    addNewSessionHandler = () => {
+        let session = {
+            index: null,
+            date_from: null,
+            date_to: null,
+            price: null,
+        };
+        this.props.onChangeMethod(session);
+    };
 
     render() {
-        let sessions = [];
-        this.props.sessions.forEach((element) => {
-            <SessionInput
-                onChangeMethod={(session) => this.props.onChangeMethod(session)}
-            />;
-        });
+        let arraySessions = null;
+        if (this.props !== null) {
+            arraySessions = [];
+            console.log(this.props.sessions);
+            const sessions = this.props.sessions;
+            for (let i = 0; i < sessions.length; i++) {
+                arraySessions.push(
+                    <Form.Row key={sessions[i].index}>
+                        <SessionInput
+                            onChangeMethod={this.props.onChangeMethod}
+                            forDeleteSession={this.props.forDeleteSession}
+                            session={sessions[i]}
+                        />
+                    </Form.Row>
+                );
+            }
+        }
+
         return (
-            <Form.Row>
-                <Button variant="primary" type="button">
-                    Add trip session
-                </Button>
-            </Form.Row>
+            <>
+                <Form.Row>
+                    <Button
+                        variant="primary"
+                        type="button"
+                        onClick={() => this.addNewSessionHandler()}
+                    >
+                        Add trip session
+                    </Button>
+                </Form.Row>
+                {arraySessions}
+            </>
         );
     }
 }
