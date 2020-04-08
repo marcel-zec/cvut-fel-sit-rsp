@@ -1,6 +1,8 @@
 package cz.cvut.fel.rsp.travelandwork.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -33,6 +35,7 @@ public class Address extends AbstractEntity {
     @NotBlank(message = "Country cannot be blank")
     private String country;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "address")
     private User user;
 

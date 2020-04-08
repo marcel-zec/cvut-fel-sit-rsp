@@ -246,5 +246,23 @@ public class Trip extends AbstractEntity {
     }
 
 
+    @Override
+    public String toString() {
 
+        return "Trip{" +
+                "name='" + name + '\'' +
+                ", short_name='" + short_name + '\'' +
+                ", possible_xp_reward=" + possible_xp_reward +
+                ", description='" + description + '\'' +
+                ", rating=" + rating +
+                ", deposit=" + deposit +
+                ", location='" + location + '\'' +
+                ", required_level=" + required_level +
+                ", category=" + category +
+                ", required_achievements=" + required_achievements +
+                ", gain_achievements=" + gain_achievements +
+                ", sessions=" + sessions +
+                ", reviews=" + reviews +
+                '}';
+    }
 }

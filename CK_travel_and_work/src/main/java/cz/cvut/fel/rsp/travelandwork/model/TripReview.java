@@ -1,6 +1,8 @@
 package cz.cvut.fel.rsp.travelandwork.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -26,6 +28,7 @@ public class TripReview extends AbstractEntity {
     @Max(value = 5, message = "Max 5")
     private double rating;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User author;

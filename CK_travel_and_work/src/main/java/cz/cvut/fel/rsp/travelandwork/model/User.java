@@ -1,8 +1,7 @@
 package cz.cvut.fel.rsp.travelandwork.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import cz.cvut.fel.rsp.travelandwork.dto.AddressDto;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;

@@ -1,5 +1,6 @@
 package cz.cvut.fel.rsp.travelandwork.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import cz.cvut.fel.rsp.travelandwork.model.Address;
 import cz.cvut.fel.rsp.travelandwork.model.TravelJournal;
 import cz.cvut.fel.rsp.travelandwork.model.TripReview;
@@ -7,7 +8,6 @@ import cz.cvut.fel.rsp.travelandwork.model.TripReview;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
 import java.util.List;
 
 public class UserDto  {

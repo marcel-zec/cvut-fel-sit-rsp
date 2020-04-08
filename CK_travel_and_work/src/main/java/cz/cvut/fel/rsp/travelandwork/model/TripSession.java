@@ -2,7 +2,6 @@ package cz.cvut.fel.rsp.travelandwork.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import cz.cvut.fel.rsp.travelandwork.dto.TripDto;
 
 import javax.persistence.*;
 import javax.validation.constraints.FutureOrPresent;

@@ -1,5 +1,7 @@
 package cz.cvut.fel.rsp.travelandwork.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +16,7 @@ public class TravelJournal extends AbstractEntity{
     @Column(nullable = false)
     private HashMap<Category, Integer> trip_counter;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "travel_journal")
     private User user;
 
