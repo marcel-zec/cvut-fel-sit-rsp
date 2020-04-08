@@ -1,5 +1,6 @@
 package cz.cvut.fel.rsp.travelandwork.rest;
 
+import cz.cvut.fel.rsp.travelandwork.dto.TripDto;
 import cz.cvut.fel.rsp.travelandwork.exception.BadDateException;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
 import cz.cvut.fel.rsp.travelandwork.model.Trip;
@@ -28,6 +29,11 @@ public class TripController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Trip> getAll() {
         return tripService.findAll();
+    }
+
+    @GetMapping(value = "/shortcut", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<TripDto> getAllDto() {
+        return tripService.findAllDto();
     }
 
     @GetMapping(value = "/{identificator}", produces = MediaType.APPLICATION_JSON_VALUE)

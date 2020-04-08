@@ -7,10 +7,7 @@ import cz.cvut.fel.rsp.travelandwork.dao.UserDao;
 import cz.cvut.fel.rsp.travelandwork.dto.UserDto;
 import cz.cvut.fel.rsp.travelandwork.exception.BadPassword;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
-import cz.cvut.fel.rsp.travelandwork.model.Enrollment;
-import cz.cvut.fel.rsp.travelandwork.model.TravelJournal;
-import cz.cvut.fel.rsp.travelandwork.model.TripReview;
-import cz.cvut.fel.rsp.travelandwork.model.User;
+import cz.cvut.fel.rsp.travelandwork.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -94,6 +91,19 @@ public class UserService {
 
         newUser.setId(user.getId());
         newUser.setTripReviews(user.getTripReviews());
+        if (newUser.getAddress() != null ) {
+            Address oldAddress = user.getAddress();
+            newUser.getAddress().setId(oldAddress.getId());
+            oldAddress = newUser.getAddress();
+            addressDao.update(oldAddress);
+        }
+        if (newUser.getTravel_journal() != null){
+            TravelJournal oldTravelJournal = user.getTravel_journal();
+            newUser.getTravel_journal().setId(oldTravelJournal.getId());
+            oldTravelJournal = newUser.getTravel_journal();
+            travelJournalDao.update(oldTravelJournal);
+        }
+
         user=newUser;
         dao.update(user);
     }
@@ -129,7 +139,7 @@ public class UserService {
         Objects.requireNonNull(user);
         UserDto userDto = new UserDto();
 
-        user.setUsername(user.getUsername());
+        userDto.setUsername(user.getUsername());
         userDto.setLastName(user.getLastName());
         userDto.setFirstName(user.getFirstName());
         userDto.setEmail(user.getEmail());

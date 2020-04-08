@@ -3,6 +3,7 @@ package cz.cvut.fel.rsp.travelandwork.service;
 import cz.cvut.fel.rsp.travelandwork.dao.TripDao;
 import cz.cvut.fel.rsp.travelandwork.dao.TripReviewDao;
 import cz.cvut.fel.rsp.travelandwork.dao.TripSessionDao;
+import cz.cvut.fel.rsp.travelandwork.dto.TripDto;
 import cz.cvut.fel.rsp.travelandwork.exception.BadDateException;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
 import cz.cvut.fel.rsp.travelandwork.model.Trip;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,6 +34,16 @@ public class TripService {
     @Transactional
     public List<Trip> findAll() {
         return tripDao.findAll();
+    }
+
+    @Transactional
+    public List<TripDto> findAllDto() {
+        List<TripDto> tripDtos = new ArrayList<>();
+
+        for (Trip trip:tripDao.findAll()) {
+            tripDtos.add(translate(trip));
+        }
+        return tripDtos;
     }
 
     @Transactional
@@ -135,6 +147,14 @@ public class TripService {
 
         trip.softDelete();
         tripDao.update(trip);
+    }
+
+    @Transactional
+    public TripDto translate(Trip trip) {
+        Objects.requireNonNull(trip);
+        return new TripDto(trip.getName(),trip.getShort_name(),trip.getPossible_xp_reward(),
+                trip.getDescription(),trip.getRating(),trip.getDeposit(),trip.getLocation(), trip.getRequired_level(),
+                trip.getCategory(),trip.getRequired_achievements(),trip.getGain_achievements());
     }
 
 }
