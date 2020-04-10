@@ -34,7 +34,7 @@ class SessionGroup extends React.Component {
 
         return (
             <>
-                <Form.Row className="m-5">
+                <Form.Row>
                     <ButtonInRow
                         variant="success"
                         side="left"

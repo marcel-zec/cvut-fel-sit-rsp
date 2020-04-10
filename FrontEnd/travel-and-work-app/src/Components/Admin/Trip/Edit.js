@@ -169,11 +169,9 @@ class Edit extends React.Component {
         event.preventDefault();
         console.log(this.state.trip);
         //this.validateForm(this.state.achievement);
-        /*
-        //TODO - upravit na update
-        fetch("http://localhost:8080/trip", {
-            method: "POST",
-            mode: "cors",
+
+        fetch("http://localhost:8080/trip/" + this.props.match.params.id, {
+            method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
             },
@@ -183,7 +181,6 @@ class Edit extends React.Component {
             //TODO - osetrenie vynimiek
             else console.log("Error: somethhing goes wrong");
         });
-        */
     };
 
     async componentDidMount() {
@@ -230,7 +227,7 @@ class Edit extends React.Component {
             let categoryOptions = null;
             if (this.state.categories.length > 0) {
                 let categoriesArray = [];
-                categoriesArray.push(<option>Choose category..</option>);
+                categoriesArray.push(<option>Select category..</option>);
 
                 this.state.categories.forEach((element) => {
                     if (

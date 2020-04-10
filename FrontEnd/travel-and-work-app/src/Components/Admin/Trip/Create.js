@@ -158,6 +158,7 @@ class Create extends React.Component {
     inputSessionUpdateHandler = (session) => {
         console.log(this.state.trip);
         let newState = { ...this.state };
+
         const found = newState.trip.sessions.findIndex((element) => {
             return element.index == session.index;
         });
@@ -227,7 +228,7 @@ class Create extends React.Component {
             let categoryOptions = null;
             if (this.state.categories.length > 0) {
                 let categoriesArray = [];
-
+                categoriesArray.push(<option>Select category..</option>);
                 this.state.categories.forEach((element) => {
                     categoriesArray.push(<option>{element.name}</option>);
                 });

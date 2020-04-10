@@ -16,10 +16,11 @@ class SessionInput extends React.Component {
         console.log(this.props.session.from_date);
     }
 
-    inputUpdateHandler = (event, nameOfInput) => {
+    inputUpdateHandler = async (event, nameOfInput) => {
         const newState = { ...this.state };
-        newState[nameOfInput] = parseFloat(event.target.value);
-        this.setState(newState);
+        newState[nameOfInput] = event.target.value;
+        console.log([nameOfInput] + ":" + event.target.value);
+        await this.setState(newState);
         console.log(this.state);
         this.props.onChangeMethod(this.state);
     };
