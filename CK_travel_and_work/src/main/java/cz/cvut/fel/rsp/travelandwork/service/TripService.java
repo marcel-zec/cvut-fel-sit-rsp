@@ -5,6 +5,7 @@ import cz.cvut.fel.rsp.travelandwork.dao.TripReviewDao;
 import cz.cvut.fel.rsp.travelandwork.dao.TripSessionDao;
 import cz.cvut.fel.rsp.travelandwork.dto.TripDto;
 import cz.cvut.fel.rsp.travelandwork.exception.BadDateException;
+import cz.cvut.fel.rsp.travelandwork.exception.MissingVariableException;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
 import cz.cvut.fel.rsp.travelandwork.model.Trip;
 import cz.cvut.fel.rsp.travelandwork.model.TripReview;
@@ -60,9 +61,10 @@ public class TripService {
     }
 
     @Transactional
-    public void create(Trip trip) throws BadDateException {
+    public void create(Trip trip) throws BadDateException, MissingVariableException {
 
         Objects.requireNonNull(trip);
+        if (trip.getSessions().size()<=0) throw new MissingVariableException();
         tripDao.persist(trip);
         for (TripSession session: trip.getSessions()) {
             if (session.getTo_date().isBefore(session.getFrom_date())) {
@@ -93,7 +95,7 @@ public class TripService {
     }
 
     @Transactional
-    public void update(String stringId, Trip newTrip) throws BadDateException, NotFoundException {
+    public void update(String stringId, Trip newTrip) throws BadDateException, NotFoundException, MissingVariableException {
         Trip trip = tripDao.find(stringId);
 
         if (trip == null) throw new NotFoundException();
@@ -102,6 +104,8 @@ public class TripService {
         newTrip.setId(trip.getId());
 
         newTrip.setReviews(trip.getReviews());
+        if (newTrip.getSessions().size()<=0) throw new MissingVariableException();
+
         //less new sessions
         if (newTrip.getSessions().size() < trip.getSessions().size()){
             for ( int i = newTrip.getSessions().size() ; i < trip.getSessions().size(); i++) {
