@@ -1,13 +1,16 @@
 import React from "react";
 import { Form, Col, Button } from "react-bootstrap";
+import DatePicker from "react-datepicker";
 
-export class SessionInput extends React.Component {
+import "react-datepicker/dist/react-datepicker.css";
+
+class SessionInput extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             index: this.props.session.index,
-            date_from: this.props.session.date_from,
-            date_to: this.props.session.date_to,
+            from_date: this.props.session.date_from,
+            to_date: this.props.session.date_to,
             price: this.props.session.price,
         };
     }
@@ -20,27 +23,33 @@ export class SessionInput extends React.Component {
         this.props.onChangeMethod(this.state);
     };
 
+    dateChangeHandler = (date, stateName) => {
+        this.setState({
+            [stateName]: date,
+        });
+    };
+
     render() {
         return (
             <Form.Row>
                 <Form.Group as={Col} controlId="formGridName">
                     <Form.Label>Date from</Form.Label>
-                    <Form.Control
-                        placeholder=""
-                        value={this.state.date_from}
-                        onChange={(event) =>
-                            this.inputUpdateHandler(event, "date_from")
+                    <DatePicker
+                        selected={this.state.from_date}
+                        dateFormat="dd-MM-yyyy"
+                        onChange={(date) =>
+                            this.dateChangeHandler(date, "from_date")
                         }
                     />
                 </Form.Group>
 
                 <Form.Group as={Col} controlId="formGridShortName">
                     <Form.Label>Date to</Form.Label>
-                    <Form.Control
-                        placeholder=""
-                        value={this.state.date_to}
-                        onChange={(event) =>
-                            this.inputUpdateHandler(event, "date_to")
+                    <DatePicker
+                        selected={this.state.to_date}
+                        dateFormat="dd-MM-yyyy"
+                        onChange={(date) =>
+                            this.dateChangeHandler(date, "to_date")
                         }
                     />
                 </Form.Group>

@@ -94,7 +94,6 @@ class Create extends React.Component {
             "deposit",
             "required_level",
             "possible_xp_reward",
-            "category",
             "location",
             "description",
         ];
@@ -116,9 +115,23 @@ class Create extends React.Component {
                 let index = newState[nameOfFormInput].indexOf(found);
                 newState[nameOfFormInput].splice(index, 1);
             }
-            //if not found element, that means user checked element
+          //push achievement
             else {
-                newState[nameOfFormInput].push({ id: event.target.id });
+                let found = this.state.achievements.find((object) => {
+                    return object.id == event.target.id;
+                });
+                
+                if (found) {
+                    newState[nameOfFormInput].push(found);
+                }
+            }
+        } else if (nameOfFormInput == "category") {
+            console.log(event.target.value);
+            let foundIndex = this.state.categories.findIndex(
+                (category) => category.name == event.target.value
+            );
+            if (foundIndex > -1) {
+                newState.category = this.state.categories[foundIndex];
             }
         }
         this.setState({ trip: newState });
