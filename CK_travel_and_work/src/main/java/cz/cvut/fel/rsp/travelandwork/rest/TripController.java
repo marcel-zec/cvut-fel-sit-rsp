@@ -45,6 +45,9 @@ public class TripController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public void create(@RequestBody Trip trip) throws BadDateException, MissingVariableException {
+        System.out.println(trip.getSessions().get(0).getFrom_date());
+        System.out.println(trip.getSessions().get(0).getTo_date());
+        System.out.println(trip.getSessions().get(0).getPrice());
         tripService.create(trip);
     }
 

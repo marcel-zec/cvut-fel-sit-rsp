@@ -1,40 +1,50 @@
 import React from "react";
 import { Form, Col, Button } from "react-bootstrap";
 import DatePicker from "react-datepicker";
-
 import "react-datepicker/dist/react-datepicker.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 class SessionInput extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             index: this.props.session.index,
-            from_date: this.props.session.date_from,
-            to_date: this.props.session.date_to,
+            from_date: Date.parse(this.props.session.from_date),
+            to_date: Date.parse(this.props.session.to_date),
             price: this.props.session.price,
         };
+        console.log(this.props.session.from_date);
     }
 
     inputUpdateHandler = (event, nameOfInput) => {
         const newState = { ...this.state };
-        newState[nameOfInput] = event.target.value;
+        newState[nameOfInput] = parseFloat(event.target.value);
         this.setState(newState);
         console.log(this.state);
         this.props.onChangeMethod(this.state);
     };
 
     dateChangeHandler = (date, stateName) => {
+        let newDate = new Date(date);
+        newDate.setTime(
+            newDate.getTime() - new Date().getTimezoneOffset() * 60 * 1000
+        );
         this.setState({
-            [stateName]: date,
+            [stateName]: newDate,
         });
     };
 
     render() {
         return (
-            <Form.Row>
-                <Form.Group as={Col} controlId="formGridName">
+            <Form.Row key={this.state.index}>
+                <Form.Group
+                    as={Col}
+                    controlId="formGridName"
+                    className="d-flex flex-column"
+                >
                     <Form.Label>Date from</Form.Label>
                     <DatePicker
+                        className="form-control"
                         selected={this.state.from_date}
                         dateFormat="dd-MM-yyyy"
                         onChange={(date) =>
@@ -43,9 +53,14 @@ class SessionInput extends React.Component {
                     />
                 </Form.Group>
 
-                <Form.Group as={Col} controlId="formGridShortName">
+                <Form.Group
+                    as={Col}
+                    controlId="formGridShortName"
+                    className="d-flex flex-column"
+                >
                     <Form.Label>Date to</Form.Label>
                     <DatePicker
+                        className="form-control"
                         selected={this.state.to_date}
                         dateFormat="dd-MM-yyyy"
                         onChange={(date) =>
@@ -64,13 +79,21 @@ class SessionInput extends React.Component {
                         }
                     />
                 </Form.Group>
-
-                <Button
-                    variant="danger"
-                    onClick={() => this.props.forDeleteSession(this.state)}
-                >
-                    Danger
-                </Button>
+                <Form.Group className="d-flex flex-column justify-content-end mb-4">
+                    <Button
+                        variant="danger"
+                        size="sm"
+                        onClick={() => this.props.forDeleteSession(this.state)}
+                    >
+                        <FontAwesomeIcon
+                            icon="times"
+                            size="lg"
+                            onClick={() =>
+                                this.props.forDeleteSession(this.state)
+                            }
+                        />
+                    </Button>
+                </Form.Group>
             </Form.Row>
         );
     }

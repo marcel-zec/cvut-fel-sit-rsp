@@ -115,12 +115,12 @@ class Create extends React.Component {
                 let index = newState[nameOfFormInput].indexOf(found);
                 newState[nameOfFormInput].splice(index, 1);
             }
-          //push achievement
+            //push achievement
             else {
                 let found = this.state.achievements.find((object) => {
                     return object.id == event.target.id;
                 });
-                
+
                 if (found) {
                     newState[nameOfFormInput].push(found);
                 }
@@ -359,6 +359,8 @@ class Create extends React.Component {
                         <Achievements
                             items={this.state.achievements}
                             onChangeMethod={this.inputUpdateHandler}
+                            selectedGain={[]}
+                            selectedRequired={[]}
                         />
 
                         <SessionGroup

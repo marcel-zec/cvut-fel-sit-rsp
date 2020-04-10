@@ -38,6 +38,7 @@ import {
     faCampground,
     faChessRook,
     faChevronLeft,
+    faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 import { faStar as emptyStar } from "@fortawesome/free-regular-svg-icons";
 
@@ -74,7 +75,8 @@ library.add(
     faRunning,
     faCampground,
     faChessRook,
-    faChevronLeft
+    faChevronLeft,
+    faTimes
 );
 
 class App extends React.Component {
