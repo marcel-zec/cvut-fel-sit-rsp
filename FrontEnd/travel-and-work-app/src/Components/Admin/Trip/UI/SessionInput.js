@@ -7,13 +7,29 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 class SessionInput extends React.Component {
     constructor(props) {
         super(props);
+        let fromDate = this.props.session.from_date
+            ? new Date(this.props.session.from_date)
+            : null;
+        let toDate = this.props.session.to_date
+            ? new Date(this.props.session.to_date)
+            : null;
         this.state = {
             index: this.props.session.index,
-            from_date: Date.parse(this.props.session.from_date),
-            to_date: Date.parse(this.props.session.to_date),
+            from_date: fromDate
+                ? new Date(
+                      fromDate.getTime() + fromDate.getTimezoneOffset() * 60000
+                  )
+                : null,
+            to_date: toDate
+                ? new Date(
+                      toDate.getTime() + toDate.getTimezoneOffset() * 60000
+                  )
+                : null,
             price: this.props.session.price,
         };
-        console.log(this.props.session.from_date);
+        console.log("constructor");
+        console.log(this.props);
+        console.log(this.state);
     }
 
     inputUpdateHandler = async (event, nameOfInput) => {
@@ -25,14 +41,22 @@ class SessionInput extends React.Component {
         this.props.onChangeMethod(this.state);
     };
 
-    dateChangeHandler = (date, stateName) => {
+    dateChangeHandler = async (date, stateName) => {
+        console.log("before new Date");
+        console.log(date);
         let newDate = new Date(date);
+        console.log("after new Date");
+        console.log(newDate);
         newDate.setTime(
             newDate.getTime() - new Date().getTimezoneOffset() * 60 * 1000
         );
-        this.setState({
+        console.log("after getTimezoneOffset");
+        console.log(newDate);
+        await this.setState({
             [stateName]: newDate,
         });
+        console.log("after setState");
+        console.log(this.state);
     };
 
     render() {
