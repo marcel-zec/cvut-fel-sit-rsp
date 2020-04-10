@@ -1,0 +1,124 @@
+import React from "react";
+import Form from "react-bootstrap/Form";
+import { Col, Button, Spinner } from "react-bootstrap";
+import { Container } from "react-bootstrap";
+import ButtonInRow from "../../SmartGadgets/ButtonInRow";
+
+class Edit extends React.Component {
+    state = {
+        category: null,
+        form: {
+            isValid: false,
+            elements: {
+                name: {
+                    touched: false,
+                    valid: false,
+                    validationRules: [],
+                },
+            },
+        },
+    };
+
+    async componentDidMount() {
+        const response = await fetch(
+            `http://localhost:8080/category/` + this.props.match.params.id
+        );
+        const data = await response.json();
+        console.log(data);
+        this.setState({ category: data });
+    }
+
+    /**
+     * Update state from input.
+     * @param {event} event
+     * @param {String} nameOfFormInput,
+     */
+    inputUpdateHandler(event, nameOfFormInput) {
+        const newState = { ...this.state.category };
+        newState[nameOfFormInput] = event.target.value;
+        this.setState({ category: newState });
+    }
+    /*
+    validateForm(inputs = {}) {
+        console.log("in valdiation");
+        const formInputs = Object.keys(inputs);
+        formInputs.forEach((el, index) => {
+            let isValid = true;
+            let rules = this.state.form.element[index].validationRules;
+            console.log(rules);
+            if (rules.hasOwnProperty("required")) {
+                if (rules.required) {
+                    this.state.form.element[index].touched = true;
+                    console.log("bfr " + this.state.form.element[index].valid);
+                    this.state.form.element[index].valid = el.trim() !== "";
+                    console.log("aft " + this.state.form.element[index].valid);
+                }
+            }
+        });
+    }
+    */
+
+    submitHandler = (event) => {
+        event.preventDefault();
+        console.log(this.state.category);
+        //this.validateForm(this.state.achievement);
+
+        fetch("http://localhost:8080/category/" + this.props.match.params.id, {
+            method: "PATCH",
+            mode: "cors",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(this.state.category),
+        }).then((response) => {
+            if (response.ok) this.props.history.push("/category");
+            //TODO - osetrenie vynimiek
+            else console.log("Error: somethhing goes wrong");
+        });
+    };
+
+    render() {
+        if (this.state.category === null) {
+            return (
+                <Container className="mt-5 p-5">
+                    <Spinner animation="border" role="status">
+                        <span className="sr-only">Loading...</span>
+                    </Spinner>
+                </Container>
+            );
+        } else {
+            return (
+                <Container>
+                    <ButtonInRow
+                        variant="danger"
+                        link="/category"
+                        side="left"
+                        label=""
+                        back={true}
+                    />
+
+                    <Form className="mt-3 mb-5" onSubmit={this.submitHandler}>
+                        <h1>Create category</h1>
+
+                        <Form.Group as={Col} controlId="formGridName">
+                            <Form.Label>Name of category</Form.Label>
+                            <Form.Control
+                                placeholder="Enter name"
+                                value={this.state.category.name}
+                                onChange={(event) =>
+                                    this.inputUpdateHandler(event, "name")
+                                }
+                            />
+                        </Form.Group>
+
+                        <Button variant="primary" type="submit">
+                            Submit
+                        </Button>
+                    </Form>
+                </Container>
+            );
+        }
+    }
+}
+
+export default Edit;
