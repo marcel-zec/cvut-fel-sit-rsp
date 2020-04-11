@@ -1,6 +1,5 @@
 import React from "react";
-import Form from "react-bootstrap/Form";
-import { Col, Button, Row, Table } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 import { Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Spinner from "react-bootstrap/Spinner";
@@ -9,18 +8,18 @@ import ButtonInRow from "../../SmartGadgets/ButtonInRow";
 
 class Index extends React.Component {
     state = {
-        achievements: null,
+        categories: null,
     };
 
     async componentDidMount() {
-        const response = await fetch(`http://localhost:8080/achievement`);
+        const response = await fetch(`http://localhost:8080/category`);
         const data = await response.json();
         console.log(data);
-        this.setState({ achievements: data });
+        this.setState({ categories: data });
     }
 
     render() {
-        if (this.state.achievements === null) {
+        if (this.state.categories === null) {
             return (
                 <Container className="mt-5 p-5">
                     <Spinner animation="border" role="status">
@@ -30,21 +29,15 @@ class Index extends React.Component {
             );
         } else {
             let tableRows = [];
-            if (this.state.achievements.length > 0) {
-                this.state.achievements.forEach((element) => {
+            if (this.state.categories.length > 0) {
+                this.state.categories.forEach((element) => {
                     tableRows.push(
                         <tr>
                             <td>{element.name}</td>
                             <td>
-                                <FontAwesomeIcon
-                                    icon={element.icon}
-                                    size="3x"
-                                />
-                            </td>
-                            <td>
                                 <Link
                                     className="p-3"
-                                    to={"achievement/" + element.id + "/edit"}
+                                    to={"category/" + element.id + "/edit"}
                                 >
                                     <FontAwesomeIcon icon="cog" />
                                 </Link>
@@ -62,16 +55,15 @@ class Index extends React.Component {
                 <Container>
                     <ButtonInRow
                         variant="success"
-                        link="/achievement/create"
+                        link="/category/create"
                         side="right"
-                        label="Add achievement"
+                        label="Add category"
                     />
 
                     <Table striped bordered hover>
                         <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>Icon</th>
                                 <th>Settings</th>
                             </tr>
                         </thead>

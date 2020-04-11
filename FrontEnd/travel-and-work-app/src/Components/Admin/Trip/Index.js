@@ -34,7 +34,7 @@ class Index extends React.Component {
                         <tr>
                             <td>{element.name}</td>
                             <td>{category}</td>
-                            <td>{element.requiered_level}</td>
+                            <td>{element.required_level}</td>
                             <td>{element.possible_xp_reward}</td>
                             <td>{element.deposit}</td>
                             <td>

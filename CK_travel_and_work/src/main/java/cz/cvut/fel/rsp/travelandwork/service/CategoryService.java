@@ -1,6 +1,7 @@
 package cz.cvut.fel.rsp.travelandwork.service;
 
 import cz.cvut.fel.rsp.travelandwork.dao.CategoryDao;
+import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
 import cz.cvut.fel.rsp.travelandwork.model.Category;
 import cz.cvut.fel.rsp.travelandwork.model.Trip;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class CategoryService {
@@ -18,15 +20,26 @@ public class CategoryService {
         this.categoryDao = categoryDao;
     }
 
-    /**
-     * adds trip to category
-     * @return true if successed
-     */
+
     @Transactional
-    public void add(Category category, Trip trip){
-        category.add(trip);
-        categoryDao.update(category);
-       // return categoryDao.add(category, trip);
+    public void create(Category category){
+        Objects.requireNonNull(category);
+        categoryDao.persist(category);
+    }
+
+    @Transactional
+    public void update(Long id, Category category) throws NotFoundException {
+        Objects.requireNonNull(category);
+        Category found = categoryDao.find(id);
+        if (found == null) throw new NotFoundException();
+        found.setName(category.getName());
+        categoryDao.update(found);
+    }
+
+    public Category find(Long id) throws NotFoundException {
+        Category found = categoryDao.find(id);
+        if (found == null) throw new NotFoundException();
+        return found;
     }
 
     public List<Category> findAll(){

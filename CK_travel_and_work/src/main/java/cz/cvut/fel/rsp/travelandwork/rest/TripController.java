@@ -43,13 +43,17 @@ public class TripController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
     public void create(@RequestBody Trip trip) throws BadDateException, MissingVariableException {
+        System.out.println(trip.getSessions().get(0).getFrom_date());
+        System.out.println(trip.getSessions().get(0).getTo_date());
+        System.out.println(trip.getSessions().get(0).getPrice());
         tripService.create(trip);
     }
 
     @PatchMapping(value = "/{identificator}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable String identificator, @RequestBody Trip trip) throws Exception {
+    public void update(@PathVariable String identificator, @RequestBody Trip trip) throws BadDateException, NotFoundException, MissingVariableException {
 
         tripService.update(identificator, trip);
         LOG.info("Trip {} updated.", identificator);

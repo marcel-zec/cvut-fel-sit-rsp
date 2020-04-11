@@ -4,14 +4,24 @@ import AchievementInput from "./AchievementInput";
 
 function AchievementFormGroup(props) {
     let itemsArray = [];
-    props.items.forEach((element) => {
-        itemsArray.push(
-            <AchievementInput
-                element={element}
-                onChangeMethod={(event) => props.onChangeMethod(event)}
-            />
-        );
-    });
+
+    console.log("ACHIEVEMENT FORM GROUP");
+    console.log(props);
+
+    if (props.selected != null) {
+        props.items.forEach((element) => {
+            let found = props.selected.find(
+                (item) => item.name == element.name
+            );
+            itemsArray.push(
+                <AchievementInput
+                    element={element}
+                    selected={found}
+                    onChangeMethod={(event) => props.onChangeMethod(event)}
+                />
+            );
+        });
+    }
 
     return (
         <Form.Group as={Col}>

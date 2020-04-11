@@ -77,7 +77,7 @@ class Edit extends React.Component {
     render() {
         if (this.state.achievement === null) {
             return (
-                <Container className="p-5">
+                <Container className="mt-5 p-5">
                     <Spinner animation="border" role="status">
                         <span className="sr-only">Loading...</span>
                     </Spinner>

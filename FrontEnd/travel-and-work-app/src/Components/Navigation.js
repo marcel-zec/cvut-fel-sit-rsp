@@ -66,26 +66,21 @@ class Navigation extends React.Component {
                                                 <FontAwesomeIcon icon="cog" />
                                             </NavLink>
                                         </NavDropdown.Item>
+                                        <NavDropdown.Divider />
                                         <NavDropdown.Item>
-                                            <NavLink to="/trip/create">
-                                                Create trip
-                                            </NavLink>
-                                        </NavDropdown.Item>
-                                        <NavDropdown.Item>
-                                            <NavLink to="/trip">
-                                                List of trips
-                                            </NavLink>
+                                            <NavLink to="/trip">Trips</NavLink>
                                         </NavDropdown.Item>
                                         <NavDropdown.Item>
                                             <NavLink to="/achievement">
-                                                List of achievements
+                                                Achievements
                                             </NavLink>
                                         </NavDropdown.Item>
                                         <NavDropdown.Item>
-                                            <NavLink to="/achievement/create">
-                                                Create achievement
+                                            <NavLink to="/category">
+                                                Categories
                                             </NavLink>
                                         </NavDropdown.Item>
+                                        <NavDropdown.Divider />
                                         <NavDropdown.Item>
                                             <NavLink to="/">
                                                 Log out
