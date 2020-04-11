@@ -109,8 +109,7 @@ public class TripService {
         //less new sessions
         if (newTrip.getSessions().size() < trip.getSessions().size()){
             for ( int i = newTrip.getSessions().size() ; i < trip.getSessions().size(); i++) {
-                trip.getSessions().get(i).softDelete();
-                tripSessionDao.update( trip.getSessions().get(i));
+                tripSessionDao.remove(trip.getSessions().get(i));
             }
         }
 
