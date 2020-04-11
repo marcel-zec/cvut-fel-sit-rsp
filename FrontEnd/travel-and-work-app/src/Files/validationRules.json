@@ -62,11 +62,6 @@
             "required": true,
             "minLength": 3,
             "maxLength": 5
-        },
-        "sessions": {
-            "required": true,
-            "minAmount": 1,
-            "maxAmount": 2
         }
     }
 }

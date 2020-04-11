@@ -5,6 +5,12 @@ import { Container } from "react-bootstrap";
 import Achievements from "./UI/Achievements";
 import SessionGroup from "./SessionGroup";
 import ButtonInRow from "../../SmartGadgets/ButtonInRow";
+import rules from "../../../Files/validationRules.json";
+import {
+    formValidation,
+    validationFeedback,
+    validationClassName,
+} from "../../../Validator";
 
 class Edit extends React.Component {
     state = {
@@ -16,52 +22,42 @@ class Edit extends React.Component {
                 name: {
                     touched: false,
                     valid: false,
-                    validationRules: [],
+                    validationRules: rules.trip.name,
                 },
                 short_name: {
                     touched: false,
                     valid: false,
-                    validationRules: [],
+                    validationRules: rules.trip.short_name,
                 },
                 deposit: {
                     touched: false,
                     valid: false,
-                    validationRules: [],
+                    validationRules: rules.trip.deposit,
                 },
                 required_level: {
                     touched: false,
                     valid: false,
-                    validationRules: [],
+                    validationRules: rules.trip.required_level,
                 },
                 possible_xp_reward: {
                     touched: false,
                     valid: false,
-                    validationRules: [],
+                    validationRules: rules.trip.possible_xp_reward,
                 },
                 category: {
                     touched: false,
                     valid: false,
-                    validationRules: [],
+                    validationRules: rules.trip.category,
                 },
                 location: {
                     touched: false,
                     valid: false,
-                    validationRules: [],
+                    validationRules: rules.trip.location,
                 },
                 description: {
                     touched: false,
                     valid: false,
-                    validationRules: [],
-                },
-                required_achievements: {
-                    touched: false,
-                    valid: false,
-                    validationRules: [],
-                },
-                gain_achievements: {
-                    touched: false,
-                    valid: false,
-                    validationRules: [],
+                    validationRules: rules.trip.description,
                 },
             },
         },
@@ -75,7 +71,7 @@ class Edit extends React.Component {
      * @param {Boolean} arrayToPush - if want push to array
      * @param {Boolean} checkbox
      */
-    inputUpdateHandler = (event, nameOfFormInput) => {
+    inputUpdateHandler = async (event, nameOfFormInput) => {
         const stringProperties = [
             "name",
             "short_name",
@@ -122,8 +118,10 @@ class Edit extends React.Component {
                 newState.category = this.state.categories[foundIndex];
             }
         }
-        this.setState({ trip: newState });
-        console.log(this.state.trip);
+        await this.setState({ trip: newState });
+        if (this.state.form.elements[nameOfFormInput].touched) {
+            this.validateForm();
+        }
     };
 
     sessionDeleteHandler = (session) => {
@@ -165,22 +163,28 @@ class Edit extends React.Component {
         console.log(this.state);
     };
 
-    submitHandler = (event) => {
-        event.preventDefault();
-        console.log(this.state.trip);
-        //this.validateForm(this.state.achievement);
+    validateForm = async () => {
+        const newState = { ...this.state.form };
+        formValidation(newState, this.state.trip);
+        await this.setState({ form: newState });
+    };
 
-        fetch("http://localhost:8080/trip/" + this.props.match.params.id, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(this.state.trip),
-        }).then((response) => {
-            if (response.ok) this.props.history.push("/trip");
-            //TODO - osetrenie vynimiek
-            else console.log("Error: somethhing goes wrong");
-        });
+    submitHandler = async (event) => {
+        event.preventDefault();
+        await this.validateForm();
+        if (this.state.form.isValid) {
+            fetch("http://localhost:8080/trip/" + this.props.match.params.id, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(this.state.trip),
+            }).then((response) => {
+                if (response.ok) this.props.history.push("/trip");
+                //TODO - osetrenie vynimiek
+                else console.log("Error: somethhing goes wrong");
+            });
+        }
     };
 
     async componentDidMount() {
@@ -247,8 +251,15 @@ class Edit extends React.Component {
                         onChange={(event) =>
                             this.inputUpdateHandler(event, "category")
                         }
+                        className={validationClassName(
+                            "category",
+                            this.state.form
+                        )}
                     >
                         {categoriesArray}
+                        <div class="invalid-feedback">
+                            {validationFeedback("category", this.state.form)}
+                        </div>
                     </Form.Control>
                 );
             }
@@ -274,7 +285,17 @@ class Edit extends React.Component {
                                     onChange={(event) =>
                                         this.inputUpdateHandler(event, "name")
                                     }
+                                    className={validationClassName(
+                                        "name",
+                                        this.state.form
+                                    )}
                                 />
+                                <div class="invalid-feedback">
+                                    {validationFeedback(
+                                        "name",
+                                        this.state.form
+                                    )}
+                                </div>
                             </Form.Group>
 
                             <Form.Group as={Col} controlId="formGridShortName">
@@ -288,7 +309,17 @@ class Edit extends React.Component {
                                             "short_name"
                                         )
                                     }
+                                    className={validationClassName(
+                                        "short_name",
+                                        this.state.form
+                                    )}
                                 />
+                                <div class="invalid-feedback">
+                                    {validationFeedback(
+                                        "short_name",
+                                        this.state.form
+                                    )}
+                                </div>
                             </Form.Group>
                         </Form.Row>
                         <Form.Row>
@@ -303,7 +334,17 @@ class Edit extends React.Component {
                                             "deposit"
                                         )
                                     }
+                                    className={validationClassName(
+                                        "deposit",
+                                        this.state.form
+                                    )}
                                 />
+                                <div class="invalid-feedback">
+                                    {validationFeedback(
+                                        "deposit",
+                                        this.state.form
+                                    )}
+                                </div>
                             </Form.Group>
 
                             <Form.Group as={Col} controlId="formGridExperience">
@@ -317,7 +358,17 @@ class Edit extends React.Component {
                                             "required_level"
                                         )
                                     }
+                                    className={validationClassName(
+                                        "required_level",
+                                        this.state.form
+                                    )}
                                 />
+                                <div class="invalid-feedback">
+                                    {validationFeedback(
+                                        "required_level",
+                                        this.state.form
+                                    )}
+                                </div>
                             </Form.Group>
                         </Form.Row>
                         <Form.Row>
@@ -334,9 +385,19 @@ class Edit extends React.Component {
                                             "possible_xp_reward"
                                         )
                                     }
+                                    className={validationClassName(
+                                        "possible_xp_reward",
+                                        this.state.form
+                                    )}
                                 >
                                     {possibleXPrewardOptions}
                                 </Form.Control>
+                                <div class="invalid-feedback">
+                                    {validationFeedback(
+                                        "possible_xp_reward",
+                                        this.state.form
+                                    )}
+                                </div>
                             </Form.Group>
 
                             <Form.Group
@@ -355,7 +416,17 @@ class Edit extends React.Component {
                                 onChange={(event) =>
                                     this.inputUpdateHandler(event, "location")
                                 }
+                                className={validationClassName(
+                                    "location",
+                                    this.state.form
+                                )}
                             />
+                            <div class="invalid-feedback">
+                                {validationFeedback(
+                                    "location",
+                                    this.state.form
+                                )}
+                            </div>
                         </Form.Group>
                         <Form.Group controlId="exampleForm.ControlTextarea1">
                             <Form.Label>Description</Form.Label>
@@ -369,7 +440,17 @@ class Edit extends React.Component {
                                         "description"
                                     )
                                 }
+                                className={validationClassName(
+                                    "description",
+                                    this.state.form
+                                )}
                             />
+                            <div class="invalid-feedback">
+                                {validationFeedback(
+                                    "description",
+                                    this.state.form
+                                )}
+                            </div>
                         </Form.Group>
 
                         <Achievements
