@@ -3,6 +3,12 @@ import Form from "react-bootstrap/Form";
 import { Col, Button, Spinner } from "react-bootstrap";
 import { Container } from "react-bootstrap";
 import ButtonInRow from "../../SmartGadgets/ButtonInRow";
+import rules from "../../../Files/validationRules.json";
+import {
+    formValidation,
+    validationFeedback,
+    validationClassName,
+} from "../../../Validator";
 
 class Edit extends React.Component {
     state = {
@@ -13,7 +19,7 @@ class Edit extends React.Component {
                 name: {
                     touched: false,
                     valid: false,
-                    validationRules: [],
+                    validationRules: rules.category.name,
                 },
             },
         },
@@ -28,53 +34,51 @@ class Edit extends React.Component {
         this.setState({ category: data });
     }
 
+    submitHandler = async (event) => {
+        event.preventDefault();
+        console.log(this.state.category);
+        await this.validateForm();
+        if (this.state.form.isValid) {
+            fetch(
+                "http://localhost:8080/category/" + this.props.match.params.id,
+                {
+                    method: "PATCH",
+                    mode: "cors",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(this.state.category),
+                }
+            ).then((response) => {
+                if (response.ok) this.props.history.push("/category");
+                //TODO - osetrenie vynimiek
+                else console.log("Error: somethhing goes wrong");
+            });
+        }
+    };
+
     /**
      * Update state from input.
      * @param {event} event
      * @param {String} nameOfFormInput,
      */
-    inputUpdateHandler(event, nameOfFormInput) {
+    inputUpdateHandler = async (event, nameOfFormInput, number = false) => {
         const newState = { ...this.state.category };
-        newState[nameOfFormInput] = event.target.value;
-        this.setState({ category: newState });
-    }
-    /*
-    validateForm(inputs = {}) {
-        console.log("in valdiation");
-        const formInputs = Object.keys(inputs);
-        formInputs.forEach((el, index) => {
-            let isValid = true;
-            let rules = this.state.form.element[index].validationRules;
-            console.log(rules);
-            if (rules.hasOwnProperty("required")) {
-                if (rules.required) {
-                    this.state.form.element[index].touched = true;
-                    console.log("bfr " + this.state.form.element[index].valid);
-                    this.state.form.element[index].valid = el.trim() !== "";
-                    console.log("aft " + this.state.form.element[index].valid);
-                }
-            }
-        });
-    }
-    */
+        let input = event.target.value;
+        if (number) {
+            input = event.target.value.replace(/,/g, ".");
+        }
+        newState[nameOfFormInput] = input;
+        await this.setState({ category: newState });
+        if (this.state.form.elements[nameOfFormInput].touched) {
+            this.validateForm();
+        }
+    };
 
-    submitHandler = (event) => {
-        event.preventDefault();
-        console.log(this.state.category);
-        //this.validateForm(this.state.achievement);
-
-        fetch("http://localhost:8080/category/" + this.props.match.params.id, {
-            method: "PATCH",
-            mode: "cors",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(this.state.category),
-        }).then((response) => {
-            if (response.ok) this.props.history.push("/category");
-            //TODO - osetrenie vynimiek
-            else console.log("Error: somethhing goes wrong");
-        });
+    validateForm = async () => {
+        const newState = { ...this.state.form };
+        formValidation(newState, this.state.category);
+        await this.setState({ form: newState });
     };
 
     render() {
@@ -98,17 +102,24 @@ class Edit extends React.Component {
                     />
 
                     <Form className="mt-3 mb-5" onSubmit={this.submitHandler}>
-                        <h1>Create category</h1>
+                        <h1>Edit category</h1>
 
                         <Form.Group as={Col} controlId="formGridName">
                             <Form.Label>Name of category</Form.Label>
                             <Form.Control
+                                className={validationClassName(
+                                    "name",
+                                    this.state.form
+                                )}
                                 placeholder="Enter name"
                                 value={this.state.category.name}
                                 onChange={(event) =>
-                                    this.inputUpdateHandler(event, "name")
+                                    this.inputUpdateHandler(event, "name", true)
                                 }
                             />
+                            <div class="invalid-feedback">
+                                {validationFeedback("name", this.state.form)}
+                            </div>
                         </Form.Group>
 
                         <Button variant="primary" type="submit">
