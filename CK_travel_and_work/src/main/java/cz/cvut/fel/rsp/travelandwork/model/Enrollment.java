@@ -110,4 +110,10 @@ public class Enrollment extends AbstractEntity {
 
         this.state = state;
     }
+
+
+    public List<Achievement> getRecieved_achievements() {
+
+        return recieved_achievements;
+    }
 }

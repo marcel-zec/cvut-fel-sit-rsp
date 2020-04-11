@@ -4,9 +4,14 @@ import javax.persistence.Basic;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 public class TripSessionDto {
+
+    @NotNull(message = "Id cannot be blank")
+    private Long id;
+
     @Basic(optional = false)
     @FutureOrPresent
     private LocalDate from_date;
@@ -24,10 +29,10 @@ public class TripSessionDto {
     private TripDto tripDto;
 
 
-    public TripSessionDto(@FutureOrPresent LocalDate from_date, @FutureOrPresent LocalDate to_date,
-                          @Min(value = 0, message = "Min 0") @Max(value = 99999, message = "Max 99999") double price,
+    public TripSessionDto(@NotNull(message = "Id cannot be blank") Long id, @FutureOrPresent LocalDate from_date, @FutureOrPresent LocalDate to_date, @Min(value = 0, message = "Min 0") @Max(value = 99999, message = "Max 99999") double price,
                           TripDto tripDto) {
 
+        this.id = id;
         this.from_date = from_date;
         this.to_date = to_date;
         this.price = price;
@@ -79,5 +84,17 @@ public class TripSessionDto {
     public void setTripDto(TripDto tripDto) {
 
         this.tripDto = tripDto;
+    }
+
+
+    public Long getId() {
+
+        return id;
+    }
+
+
+    public void setId(Long id) {
+
+        this.id = id;
     }
 }

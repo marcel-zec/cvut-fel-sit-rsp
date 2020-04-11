@@ -64,4 +64,16 @@ public class TripReview extends AbstractEntity {
     public void setRating(double rating) {
         this.rating = rating;
     }
+
+
+    public User getAuthor() {
+
+        return author;
+    }
+
+
+    public Trip getTrip() {
+
+        return trip;
+    }
 }

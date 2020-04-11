@@ -1,16 +1,14 @@
 package cz.cvut.fel.rsp.travelandwork.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import cz.cvut.fel.rsp.travelandwork.model.Address;
-import cz.cvut.fel.rsp.travelandwork.model.TravelJournal;
-import cz.cvut.fel.rsp.travelandwork.model.TripReview;
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
 
 public class UserDto  {
+
+    @NotNull(message = "Id cannot be blank")
+    private Long id;
 
     @Size(max = 30, min = 1, message = "First name is in incorrect format.")
     @NotNull(message = "First name cannot be blank")
@@ -27,20 +25,28 @@ public class UserDto  {
     @NotNull(message = "Email cannot be blank")
     private String email;
 
-    private Address address;
-    private TravelJournal travel_journal;
-    private List<TripReview> tripReviews;
+    private AddressDto address;
+    private TravelJournalDto travel_journal;
+    private List<TripReviewDto> tripReviews;
 
 
     public UserDto() {
     }
 
-    public UserDto(String username, String firstName, String lastName, String email){
-        this.username = username;
+
+    public UserDto(@NotNull(message = "Id cannot be blank") Long id, @Size(max = 30, min = 1, message = "First name is in incorrect format.") @NotNull(message = "First name cannot be blank") String firstName, @NotNull(message = "Last name cannot be blank") String lastName, @Size(max = 255, min = 3, message = "Username is in incorrect format.") @NotNull(message = "Username cannot be blank") String username, @Email(message = "Email should be valid") @NotNull(message = "Email cannot be blank") String email,
+                   AddressDto address, TravelJournalDto travel_journal, List<TripReviewDto> tripReviews) {
+
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.username = username;
         this.email = email;
+        this.address = address;
+        this.travel_journal = travel_journal;
+        this.tripReviews = tripReviews;
     }
+
 
     public String getFirstName() {
         return firstName;
@@ -74,30 +80,67 @@ public class UserDto  {
         return email;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
-    }
 
-    public void setTravel_journal(TravelJournal travel_journal) {
-        this.travel_journal = travel_journal;
-    }
-
-    public Address getAddress() {
+    public AddressDto getAddress() {
 
         return address;
     }
 
 
-    public TravelJournal getTravel_journal() {
+    public void setAddress(AddressDto address) {
+
+        this.address = address;
+    }
+
+
+    public TravelJournalDto getTravel_journal() {
 
         return travel_journal;
     }
 
 
-    public List<TripReview> getTripReviews() {
+    public void setTravel_journal(TravelJournalDto travel_journal) {
+
+        this.travel_journal = travel_journal;
+    }
+
+
+    public List<TripReviewDto> getTripReviewsDto() {
 
         return tripReviews;
     }
+
+
+    public void setTripReviewsDto(List<TripReviewDto> tripReviews) {
+
+        this.tripReviews = tripReviews;
+    }
+
+
+    public Long getId() {
+
+        return id;
+    }
+
+
+    public void setId(Long id) {
+
+        this.id = id;
+    }
+
+
+    public List<TripReviewDto> getTripReviews() {
+
+        return tripReviews;
+    }
+
+
+    public void setTripReviews(List<TripReviewDto> tripReviews) {
+
+        this.tripReviews = tripReviews;
+    }
+
+
 
     @Override
     public String toString() {
@@ -109,10 +152,6 @@ public class UserDto  {
                 ", address=" + address +
                 ", travel_journal=" + travel_journal +
                 '}';
-    }
-
-    public void setTripReviews(List<TripReview> tripReviews) {
-        this.tripReviews = tripReviews;
     }
 }
 
