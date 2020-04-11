@@ -2,8 +2,10 @@ package cz.cvut.fel.rsp.travelandwork.service;
 
 import cz.cvut.fel.rsp.travelandwork.dto.AddressDto;
 import cz.cvut.fel.rsp.travelandwork.dto.TripDto;
+import cz.cvut.fel.rsp.travelandwork.dto.TripSessionDto;
 import cz.cvut.fel.rsp.travelandwork.dto.UserDto;
 import cz.cvut.fel.rsp.travelandwork.model.Trip;
+import cz.cvut.fel.rsp.travelandwork.model.TripSession;
 import cz.cvut.fel.rsp.travelandwork.model.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,5 +46,12 @@ public class TranslateService {
         return new TripDto(trip.getName(),trip.getShort_name(),trip.getPossible_xp_reward(),
                 trip.getDescription(),trip.getRating(),trip.getDeposit(),trip.getLocation(), trip.getRequired_level(),
                 trip.getCategory(),trip.getRequired_achievements(),trip.getGain_achievements());
+    }
+
+    @Transactional
+    public TripSessionDto translateSession(TripSession tripSession) {
+        Objects.requireNonNull(tripSession);
+        TripDto tripDto = translateTrip(tripSession.getTrip());
+        return new TripSessionDto(tripSession.getFrom_date(),tripSession.getTo_date(),tripSession.getPrice(),tripDto);
     }
 }

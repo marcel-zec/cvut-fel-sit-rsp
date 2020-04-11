@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
+import javax.validation.constraints.PastOrPresent;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -15,6 +16,7 @@ public class Enrollment extends AbstractEntity {
     @Basic(optional = false)
     @Column(nullable = false)
     @JsonFormat(pattern = "yyyy-MM-dd")
+    @PastOrPresent
     private LocalDateTime enrollDate;
 
     @Basic(optional = false)
