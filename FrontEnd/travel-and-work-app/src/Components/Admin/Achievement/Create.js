@@ -5,6 +5,12 @@ import { Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import icons from "../../../Files/icons.json";
 import ButtonInRow from "../../SmartGadgets/ButtonInRow";
+import rules from "../../../Files/validationRules.json";
+import {
+    formValidation,
+    validationFeedback,
+    validationClassName,
+} from "../../../Validator";
 
 class Create extends React.Component {
     state = {
@@ -13,25 +19,20 @@ class Create extends React.Component {
             isValid: false,
             elements: {
                 icon: {
-                    keyForUpdate: "icon",
                     idForUpdate: true,
                     touched: false,
                     valid: false,
-                    validationRules: [],
+                    validationRules: rules.achievement.icon,
                 },
                 name: {
-                    keyForUpdate: "name",
-                    idForUpdate: false,
                     touched: false,
                     valid: false,
-                    validationRules: [],
+                    validationRules: rules.achievement.name,
                 },
                 description: {
-                    keyForUpdate: "description",
-                    idForUpdate: false,
                     touched: false,
                     valid: false,
-                    validationRules: [],
+                    validationRules: rules.achievement.description,
                 },
             },
         },
@@ -42,50 +43,42 @@ class Create extends React.Component {
      * @param {event} event
      * @param {String} nameOfFormInput,
      */
-    inputUpdateHandler(event, nameOfFormInput) {
+    inputUpdateHandler = async (event, nameOfFormInput) => {
         const newState = { ...this.state.achievement };
         if (this.state.form.elements[nameOfFormInput].idForUpdate)
             newState[nameOfFormInput] = event.target.id;
         else newState[nameOfFormInput] = event.target.value;
-        this.setState({ achievement: newState });
-    }
-    /*
-    validateForm(inputs = {}) {
-        console.log("in valdiation");
-        const formInputs = Object.keys(inputs);
-        formInputs.forEach((el, index) => {
-            let isValid = true;
-            let rules = this.state.form.element[index].validationRules;
-            console.log(rules);
-            if (rules.hasOwnProperty("required")) {
-                if (rules.required) {
-                    this.state.form.element[index].touched = true;
-                    console.log("bfr " + this.state.form.element[index].valid);
-                    this.state.form.element[index].valid = el.trim() !== "";
-                    console.log("aft " + this.state.form.element[index].valid);
-                }
-            }
-        });
-    }
-    */
+        await this.setState({ achievement: newState });
+        if (this.state.form.elements[nameOfFormInput].touched) {
+            this.validateForm();
+        }
+        console.log(this.state.achievement);
+    };
 
-    submitHandler = (event) => {
+    submitHandler = async (event) => {
         event.preventDefault();
         console.log(this.state.achievement);
-        //this.validateForm(this.state.achievement);
+        await this.validateForm();
+        if (this.state.form.isValid) {
+            fetch("http://localhost:8080/achievement", {
+                method: "POST",
+                mode: "cors",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(this.state.achievement),
+            }).then((response) => {
+                if (response.ok) this.props.history.push("/achievement");
+                //TODO - osetrenie vynimiek
+                else console.log("Error: somethhing goes wrong");
+            });
+        }
+    };
 
-        fetch("http://localhost:8080/achievement", {
-            method: "POST",
-            mode: "cors",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(this.state.achievement),
-        }).then((response) => {
-            if (response.ok) this.props.history.push("/achievement");
-            //TODO - osetrenie vynimiek
-            else console.log("Error: somethhing goes wrong");
-        });
+    validateForm = async () => {
+        const newState = { ...this.state.form };
+        formValidation(newState, this.state.achievement);
+        await this.setState({ form: newState });
     };
 
     render() {
@@ -132,11 +125,18 @@ class Create extends React.Component {
                     <Form.Group as={Col} controlId="formGridName">
                         <Form.Label>Name of trip</Form.Label>
                         <Form.Control
+                            className={validationClassName(
+                                "name",
+                                this.state.form
+                            )}
                             placeholder="Enter name"
                             onChange={(event) =>
                                 this.inputUpdateHandler(event, "name")
                             }
                         />
+                        <div class="invalid-feedback">
+                            {validationFeedback("name", this.state.form)}
+                        </div>
                     </Form.Group>
 
                     <Form.Group controlId="exampleForm.ControlTextarea1">
@@ -144,15 +144,30 @@ class Create extends React.Component {
                         <Form.Control
                             as="textarea"
                             rows="5"
+                            className={validationClassName(
+                                "description",
+                                this.state.form
+                            )}
                             onChange={(event) =>
                                 this.inputUpdateHandler(event, "description")
                             }
                         />
+                        <div class="invalid-feedback">
+                            {validationFeedback("description", this.state.form)}
+                        </div>
                     </Form.Group>
 
-                    <Form.Group className="d-flex flex-row flex-wrap">
+                    <Form.Group
+                        className={
+                            "d-flex flex-row flex-wrap " +
+                            validationClassName("icon", this.state.form)
+                        }
+                    >
                         {iconsToForm}
                     </Form.Group>
+                    <div class="invalid-feedback">
+                        {validationFeedback("icon", this.state.form)}
+                    </div>
 
                     <Button variant="primary" type="submit">
                         Submit
