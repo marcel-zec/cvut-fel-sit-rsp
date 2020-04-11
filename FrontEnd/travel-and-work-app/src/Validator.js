@@ -32,8 +32,10 @@ export const formValidation = (formStateObject, inputsObject) => {
                 formStateObject.elements[inputName].touched = true;
                 formStateObject.elements[inputName].valid = true;
                 formStateObject.valid = true;
+                console.log("I am validating..");
+                console.log(inputName);
                 if (rules.hasOwnProperty("required") && rules.required) {
-                    if (!input || input.trim() === "") {
+                    if (!input || (isNaN(input) && input.trim() == "")) {
                         formStateObject.elements[inputName].valid = false;
                         formStateObject.valid = false;
                         console.log("required check: INVALID");
