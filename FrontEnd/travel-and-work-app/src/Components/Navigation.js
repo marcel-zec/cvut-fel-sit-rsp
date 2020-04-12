@@ -9,15 +9,18 @@ import Container from "react-bootstrap/Container";
 import { Row, Col } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import logo from '../Files/images/logo.png'
 
 class Navigation extends React.Component {
     render() {
         return (
+            <header>
             <Container className="navigation">
-                <Navbar bg="light" expand="lg">
+                <Navbar expand="lg">
                     <Col>
                         <Navbar.Brand>
-                            <NavLink to="/">Travel&Work</NavLink>
+                        <img src={logo} className="logo"/>
+                            <NavLink to="/">Travel&Work</NavLink>                        
                         </Navbar.Brand>
                     </Col>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -92,6 +95,12 @@ class Navigation extends React.Component {
                                                 <FontAwesomeIcon icon="power-off" />
                                             </NavLink>
                                         </NavDropdown.Item>
+                                        <NavDropdown.Item>
+                                            <NavLink to="/register">
+                                                Register
+                                                <FontAwesomeIcon icon="user" />
+                                            </NavLink>
+                                        </NavDropdown.Item>
                                     </NavDropdown>
                                 </Col>
                             </Nav>
@@ -100,6 +109,7 @@ class Navigation extends React.Component {
                 </Navbar>
                 <Row></Row>
             </Container>
+            </header>
         );
     }
 }

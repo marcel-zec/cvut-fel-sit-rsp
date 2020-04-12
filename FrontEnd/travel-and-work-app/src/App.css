@@ -1,3 +1,54 @@
+/*generacl components style*/
+body{
+    background-color: #f7f7f7!important;
+}
+.window{
+    background: white;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, .1), 0 1px 10px rgba(0, 0, 0, .15);
+    padding: 8px 20px;
+    margin: 8px;
+}
+.window.radius{
+    border-radius: 10px;
+}
+button.submit{
+    margin: auto;
+    background-color: #ff6666;
+    border:0px solid white;
+    outline: none;
+}
+button.submit:hover{
+    background-color: #d85656;
+}
+button.submit:active,button.submit:focus{
+    outline: none;
+    border: none!important;
+    background-color: #d85656!important;
+}
+/*header*/
+header{
+    position: fixed;
+    z-index: 9999;
+    width: 100%;
+    background-color: white;
+    box-shadow: 0px 1px 7px 1px #bfbfbf;
+}
+header+div{
+    padding-top: 60px;
+}
+header img.logo{
+    width: 60px;
+}
+header .navbar {
+    padding: 0px;
+}
+header .navbar-brand a{
+    color: #ff6666;
+}
+header .navbar-brand a:hover{
+    text-decoration: none;
+}
+/*SANDRY CSS**/
 .App {
     text-align: center;
 }
@@ -74,4 +125,28 @@
 
 .choosen-icon {
     color: cornflowerblue;
+}
+
+/*register page*/
+.registerUserForm h3, .registerUserForm h5{
+    font-weight: 100;
+    color: #808080;
+    text-align: left;
+    margin-top: 10px;
+}
+.register_container h3{
+    color:#ff6666;
+    margin-top: 30px;
+}
+.registerUserForm .window{
+    margin-left: auto;
+}
+.registerUserForm button{
+    margin: auto;
+    background-color: #ff6666;
+    margin-bottom: 10px;
+}
+.registerUserForm label{
+    text-align: left;
+    display: block;
 }
