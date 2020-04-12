@@ -9,6 +9,9 @@ import java.util.List;
 
 public class TripDto {
 
+    @NotNull(message = "Id cannot be blank")
+    private Long id;
+
     @Basic(optional = false)
     @Size(max = 255, min = 3, message = "Name has to be from 3 to 255 characters.")
     @NotNull(message = "Name has to be from 3 to 255 characters.")
@@ -47,24 +50,22 @@ public class TripDto {
     @Min(value = 0, message = "Min 0")
     private int required_level;
 
-    private Category category;
-    private List<Achievement> required_achievements;
-    private List<Achievement> gain_achievements;
+    private Long categoryId;
+    private List<AchievementDto> required_achievements;
+    private List<AchievementDto> gain_achievements;
+    private List<Long> sessionsID;
 
 
     public TripDto() {
     }
 
 
-    public TripDto(@Size(max = 255, min = 3, message = "Name has to be from 3 to 255 characters.") @NotBlank(message = "Name has to be from 3 to 255 characters.") String name,
-                   @Size(max = 100, min = 3, message = "Short name has to be from 3 to 100 characters.") @NotBlank(message = "Short name has to be from 3 to 100 characters.") String short_name,
+    public TripDto(@NotNull(message = "Id cannot be blank") Long id, @Size(max = 255, min = 3, message = "Name has to be from 3 to 255 characters.") @NotNull(message = "Name has to be from 3 to 255 characters.") String name, @Size(max = 100, min = 3, message = "Short name has to be from 3 to 100 characters.") @NotNull(message = "Short name has to be from 3 to 100 characters.") String short_name,
                    @Min(value = 0, message = "Min 0") @Max(value = 20, message = "Max 20") int possible_xp_reward,
-                   @Size(max = 3000, min = 0, message = "Max 3000 characters.") String description,
-                   @Min(value = 0, message = "Min 0") @Max(value = 5, message = "Max 5") double rating,
-                   @Min(value = 0, message = "Min 0") @Max(value = 10000, message = "Max 10 000") double deposit,
-                   @Size(max = 200, min = 0, message = "Max 200 characters.") String location,
-                   @Min(value = 0, message = "Min 0") int required_level, Category category,
-                   List<Achievement> required_achievements, List<Achievement> gain_achievements) {
+                   @Size(max = 3000, min = 0, message = "Max 3000 characters.") String description, @Min(value = 0, message = "Min 0") @Max(value = 5, message = "Max 5") double rating, @Min(value = 0, message = "Min 0") @Max(value = 10000, message = "Max 10 000") double deposit, @Size(max = 200, min = 0, message = "Max 200 characters.") String location, @Min(value = 0, message = "Min 0") int required_level,
+                   Long categoryId, List<AchievementDto> required_achievements, List<AchievementDto> gain_achievements, List<Long> sessionsID) {
+
+        this.id = id;
         this.name = name;
         this.short_name = short_name;
         this.possible_xp_reward = possible_xp_reward;
@@ -73,9 +74,10 @@ public class TripDto {
         this.deposit = deposit;
         this.location = location;
         this.required_level = required_level;
-        this.category = category;
+        this.categoryId = categoryId;
         this.required_achievements = required_achievements;
         this.gain_achievements = gain_achievements;
+        this.sessionsID = sessionsID;
     }
 
 
@@ -175,38 +177,62 @@ public class TripDto {
     }
 
 
-    public Category getCategory() {
+    public Long getCategoryId() {
 
-        return category;
+        return categoryId;
     }
 
 
-    public void setCategory(Category category) {
+    public void setCategoryId(Long categoryId) {
 
-        this.category = category;
+        this.categoryId = categoryId;
     }
 
 
-    public List<Achievement> getRequired_achievements() {
+    public List<AchievementDto> getRequired_achievements() {
 
         return required_achievements;
     }
 
 
-    public void setRequired_achievements(List<Achievement> required_achievements) {
+    public void setRequired_achievements(List<AchievementDto> required_achievements) {
 
         this.required_achievements = required_achievements;
     }
 
 
-    public List<Achievement> getGain_achievements() {
+    public List<AchievementDto> getGain_achievements() {
 
         return gain_achievements;
     }
 
 
-    public void setGain_achievements(List<Achievement> gain_achievements) {
+    public void setGain_achievements(List<AchievementDto> gain_achievements) {
 
         this.gain_achievements = gain_achievements;
+    }
+
+
+    public List<Long> getSessionsID() {
+
+        return sessionsID;
+    }
+
+
+    public void setSessionsID(List<Long> sessionsID) {
+
+        this.sessionsID = sessionsID;
+    }
+
+
+    public Long getId() {
+
+        return id;
+    }
+
+
+    public void setId(Long id) {
+
+        this.id = id;
     }
 }

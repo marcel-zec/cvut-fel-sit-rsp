@@ -9,7 +9,7 @@ function ButtonInRow(props) {
     else if (props.side == "right") className += " flex-row-reverse";
     let backArrow = props.back ? <FontAwesomeIcon icon="chevron-left" /> : null;
 
-    return (
+    let button = props.link ? (
         <Row className={className}>
             <Link to={props.link}>
                 <Button variant={props.variant}>
@@ -18,6 +18,14 @@ function ButtonInRow(props) {
                 </Button>
             </Link>
         </Row>
+    ) : (
+        <Row className={className}>
+            <Button variant={props.variant} onClick={props.onClickMethod}>
+                {backArrow}
+                {props.label}
+            </Button>
+        </Row>
     );
+    return button;
 }
 export default ButtonInRow;

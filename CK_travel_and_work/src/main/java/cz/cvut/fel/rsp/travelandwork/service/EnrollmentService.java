@@ -24,4 +24,5 @@ public class EnrollmentService {
     public void create(Enrollment enrollment) throws BadDateException {
         if (enrollment.getEnrollDate().isBefore(LocalDateTime.now())) throw new BadDateException();
     }
+
 }

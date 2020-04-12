@@ -6,6 +6,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import icons from "../../../Files/icons.json";
 import Spinner from "react-bootstrap/Spinner";
 import ButtonInRow from "../../SmartGadgets/ButtonInRow";
+import rules from "../../../Files/validationRules.json";
+import {
+    formValidation,
+    validationFeedback,
+    validationClassName,
+} from "../../../Validator";
 
 class Edit extends React.Component {
     state = {
@@ -17,19 +23,17 @@ class Edit extends React.Component {
                     idForUpdate: true,
                     touched: false,
                     valid: false,
-                    validationRules: [],
+                    validationRules: rules.achievement.icon,
                 },
                 name: {
-                    idForUpdate: false,
                     touched: false,
                     valid: false,
-                    validationRules: [],
+                    validationRules: rules.achievement.name,
                 },
                 description: {
-                    idForUpdate: false,
                     touched: false,
                     valid: false,
-                    validationRules: [],
+                    validationRules: rules.achievement.description,
                 },
             },
         },
@@ -49,35 +53,47 @@ class Edit extends React.Component {
      * @param {event} event
      * @param {String} nameOfFormInput,
      */
-    inputUpdateHandler(event, nameOfFormInput) {
+    inputUpdateHandler = async (event, nameOfFormInput) => {
         const newState = { ...this.state.achievement };
         if (this.state.form.elements[nameOfFormInput].idForUpdate)
             newState[nameOfFormInput] = event.target.id;
         else newState[nameOfFormInput] = event.target.value;
-        this.setState({ achievement: newState });
-    }
+        await this.setState({ achievement: newState });
+        if (this.state.form.elements[nameOfFormInput].touched) {
+            this.validateForm();
+        }
+    };
 
     submitHandler = (event) => {
         event.preventDefault();
+        this.validateForm();
+        if (this.state.form.isValid) {
+            fetch(
+                "http://localhost:8080/achievement/" +
+                    this.props.match.params.id,
+                {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(this.state.achievement),
+                }
+            ).then((response) => {
+                if (response.ok) this.props.history.push("/achievement");
+            });
+        }
+    };
 
-        fetch(
-            "http://localhost:8080/achievement/" + this.props.match.params.id,
-            {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(this.state.achievement),
-            }
-        ).then((response) => {
-            if (response.ok) this.props.history.push("/achievement");
-        });
+    validateForm = async () => {
+        const newState = { ...this.state.form };
+        formValidation(newState, this.state.achievement);
+        await this.setState({ form: newState });
     };
 
     render() {
         if (this.state.achievement === null) {
             return (
-                <Container className="p-5">
+                <Container className="mt-5 p-5">
                     <Spinner animation="border" role="status">
                         <span className="sr-only">Loading...</span>
                     </Spinner>
@@ -137,7 +153,14 @@ class Edit extends React.Component {
                                 onChange={(event) =>
                                     this.inputUpdateHandler(event, "name")
                                 }
+                                className={validationClassName(
+                                    "name",
+                                    this.state.form
+                                )}
                             />
+                            <div class="invalid-feedback">
+                                {validationFeedback("name", this.state.form)}
+                            </div>
                         </Form.Group>
 
                         <Form.Group controlId="exampleForm.ControlTextarea1">
@@ -152,12 +175,30 @@ class Edit extends React.Component {
                                         "description"
                                     )
                                 }
+                                className={validationClassName(
+                                    "description",
+                                    this.state.form
+                                )}
                             />
+                            <div class="invalid-feedback">
+                                {validationFeedback(
+                                    "description",
+                                    this.state.form
+                                )}
+                            </div>
                         </Form.Group>
 
-                        <Form.Group className="d-flex flex-row flex-wrap">
+                        <Form.Group
+                            className={
+                                "d-flex flex-row flex-wrap " +
+                                validationClassName("icon", this.state.form)
+                            }
+                        >
                             {iconsToForm}
                         </Form.Group>
+                        <div class="invalid-feedback">
+                            {validationFeedback("icon", this.state.form)}
+                        </div>
 
                         <Button variant="primary" type="submit">
                             Submit

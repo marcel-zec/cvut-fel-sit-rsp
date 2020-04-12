@@ -5,6 +5,12 @@ import { Container } from "react-bootstrap";
 import Achievements from "./UI/Achievements";
 import SessionGroup from "./SessionGroup";
 import ButtonInRow from "../../SmartGadgets/ButtonInRow";
+import rules from "../../../Files/validationRules.json";
+import {
+    formValidation,
+    validationFeedback,
+    validationClassName,
+} from "../../../Validator";
 
 class Create extends React.Component {
     state = {
@@ -16,52 +22,42 @@ class Create extends React.Component {
                 name: {
                     touched: false,
                     valid: false,
-                    validationRules: [],
+                    validationRules: rules.trip.name,
                 },
                 short_name: {
                     touched: false,
                     valid: false,
-                    validationRules: [],
+                    validationRules: rules.trip.short_name,
                 },
                 deposit: {
                     touched: false,
                     valid: false,
-                    validationRules: [],
+                    validationRules: rules.trip.deposit,
                 },
                 required_level: {
                     touched: false,
                     valid: false,
-                    validationRules: [],
+                    validationRules: rules.trip.required_level,
                 },
                 possible_xp_reward: {
                     touched: false,
                     valid: false,
-                    validationRules: [],
+                    validationRules: rules.trip.possible_xp_reward,
                 },
                 category: {
                     touched: false,
                     valid: false,
-                    validationRules: [],
+                    validationRules: rules.trip.category,
                 },
                 location: {
                     touched: false,
                     valid: false,
-                    validationRules: [],
+                    validationRules: rules.trip.location,
                 },
                 description: {
                     touched: false,
                     valid: false,
-                    validationRules: [],
-                },
-                required_achievements: {
-                    touched: false,
-                    valid: false,
-                    validationRules: [],
-                },
-                gain_achievements: {
-                    touched: false,
-                    valid: false,
-                    validationRules: [],
+                    validationRules: rules.trip.description,
                 },
             },
         },
@@ -87,14 +83,13 @@ class Create extends React.Component {
      * @param {Boolean} arrayToPush - if want push to array
      * @param {Boolean} checkbox
      */
-    inputUpdateHandler = (event, nameOfFormInput) => {
+    inputUpdateHandler = async (event, nameOfFormInput) => {
         const stringProperties = [
             "name",
             "short_name",
             "deposit",
             "required_level",
             "possible_xp_reward",
-            "category",
             "location",
             "description",
         ];
@@ -116,13 +111,29 @@ class Create extends React.Component {
                 let index = newState[nameOfFormInput].indexOf(found);
                 newState[nameOfFormInput].splice(index, 1);
             }
-            //if not found element, that means user checked element
+            //push achievement
             else {
-                newState[nameOfFormInput].push({ id: event.target.id });
+                let found = this.state.achievements.find((object) => {
+                    return object.id == event.target.id;
+                });
+
+                if (found) {
+                    newState[nameOfFormInput].push(found);
+                }
+            }
+        } else if (nameOfFormInput == "category") {
+            console.log(event.target.value);
+            let foundIndex = this.state.categories.findIndex(
+                (category) => category.name == event.target.value
+            );
+            if (foundIndex > -1) {
+                newState.category = this.state.categories[foundIndex];
             }
         }
-        this.setState({ trip: newState });
-        console.log(this.state.trip);
+        await this.setState({ trip: newState });
+        if (this.state.form.elements[nameOfFormInput].touched) {
+            this.validateForm();
+        }
     };
 
     sessionDeleteHandler = (session) => {
@@ -145,6 +156,7 @@ class Create extends React.Component {
     inputSessionUpdateHandler = (session) => {
         console.log(this.state.trip);
         let newState = { ...this.state };
+
         const found = newState.trip.sessions.findIndex((element) => {
             return element.index == session.index;
         });
@@ -164,23 +176,30 @@ class Create extends React.Component {
         console.log(this.state);
     };
 
-    submitHandler = (event) => {
+    submitHandler = async (event) => {
         event.preventDefault();
-        console.log(this.state.trip);
-        //this.validateForm(this.state.achievement);
+        await this.validateForm();
+        if (this.state.form.isValid) {
+            fetch("http://localhost:8080/trip", {
+                method: "POST",
+                mode: "cors",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(this.state.trip),
+            }).then((response) => {
+                if (response.ok) this.props.history.push("/trip");
+                //TODO - osetrenie vynimiek
+                else console.log("Error: somethhing goes wrong");
+            });
+        }
+    };
 
-        fetch("http://localhost:8080/trip", {
-            method: "POST",
-            mode: "cors",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(this.state.trip),
-        }).then((response) => {
-            if (response.ok) this.props.history.push("/trip");
-            //TODO - osetrenie vynimiek
-            else console.log("Error: somethhing goes wrong");
-        });
+    validateForm = async () => {
+        console.log("in validation");
+        const newState = { ...this.state.form };
+        formValidation(newState, this.state.trip);
+        await this.setState({ form: newState });
     };
 
     async componentDidMount() {
@@ -207,6 +226,7 @@ class Create extends React.Component {
             );
         } else {
             let possibleXPrewardOptions = [];
+            possibleXPrewardOptions.push(<option>Select..</option>);
             for (let i = 0; i < 25; i++) {
                 possibleXPrewardOptions.push(<option>{i + 1}</option>);
             }
@@ -214,7 +234,7 @@ class Create extends React.Component {
             let categoryOptions = null;
             if (this.state.categories.length > 0) {
                 let categoriesArray = [];
-
+                categoriesArray.push(<option>Select category..</option>);
                 this.state.categories.forEach((element) => {
                     categoriesArray.push(<option>{element.name}</option>);
                 });
@@ -224,8 +244,15 @@ class Create extends React.Component {
                         onChange={(event) =>
                             this.inputUpdateHandler(event, "category")
                         }
+                        className={validationClassName(
+                            "category",
+                            this.state.form
+                        )}
                     >
                         {categoriesArray}
+                        <div class="invalid-feedback">
+                            {validationFeedback("category", this.state.form)}
+                        </div>
                     </Form.Control>
                 );
             }
@@ -250,7 +277,17 @@ class Create extends React.Component {
                                     onChange={(event) =>
                                         this.inputUpdateHandler(event, "name")
                                     }
+                                    className={validationClassName(
+                                        "name",
+                                        this.state.form
+                                    )}
                                 />
+                                <div class="invalid-feedback">
+                                    {validationFeedback(
+                                        "name",
+                                        this.state.form
+                                    )}
+                                </div>
                             </Form.Group>
 
                             <Form.Group as={Col} controlId="formGridShortName">
@@ -263,7 +300,17 @@ class Create extends React.Component {
                                             "short_name"
                                         )
                                     }
+                                    className={validationClassName(
+                                        "short_name",
+                                        this.state.form
+                                    )}
                                 />
+                                <div class="invalid-feedback">
+                                    {validationFeedback(
+                                        "short_name",
+                                        this.state.form
+                                    )}
+                                </div>
                             </Form.Group>
                         </Form.Row>
                         <Form.Row>
@@ -277,7 +324,17 @@ class Create extends React.Component {
                                             "deposit"
                                         )
                                     }
+                                    className={validationClassName(
+                                        "deposit",
+                                        this.state.form
+                                    )}
                                 />
+                                <div class="invalid-feedback">
+                                    {validationFeedback(
+                                        "deposit",
+                                        this.state.form
+                                    )}
+                                </div>
                             </Form.Group>
 
                             <Form.Group as={Col} controlId="formGridExperience">
@@ -290,7 +347,17 @@ class Create extends React.Component {
                                             "required_level"
                                         )
                                     }
+                                    className={validationClassName(
+                                        "required_level",
+                                        this.state.form
+                                    )}
                                 />
+                                <div class="invalid-feedback">
+                                    {validationFeedback(
+                                        "required_level",
+                                        this.state.form
+                                    )}
+                                </div>
                             </Form.Group>
                         </Form.Row>
                         <Form.Row>
@@ -307,9 +374,19 @@ class Create extends React.Component {
                                             "possible_xp_reward"
                                         )
                                     }
+                                    className={validationClassName(
+                                        "possible_xp_reward",
+                                        this.state.form
+                                    )}
                                 >
                                     {possibleXPrewardOptions}
                                 </Form.Control>
+                                <div class="invalid-feedback">
+                                    {validationFeedback(
+                                        "possible_xp_reward",
+                                        this.state.form
+                                    )}
+                                </div>
                             </Form.Group>
 
                             <Form.Group
@@ -327,7 +404,17 @@ class Create extends React.Component {
                                 onChange={(event) =>
                                     this.inputUpdateHandler(event, "location")
                                 }
+                                className={validationClassName(
+                                    "location",
+                                    this.state.form
+                                )}
                             />
+                            <div class="invalid-feedback">
+                                {validationFeedback(
+                                    "location",
+                                    this.state.form
+                                )}
+                            </div>
                         </Form.Group>
                         <Form.Group controlId="exampleForm.ControlTextarea1">
                             <Form.Label>Description</Form.Label>
@@ -340,12 +427,24 @@ class Create extends React.Component {
                                         "description"
                                     )
                                 }
+                                className={validationClassName(
+                                    "description",
+                                    this.state.form
+                                )}
                             />
+                            <div class="invalid-feedback">
+                                {validationFeedback(
+                                    "description",
+                                    this.state.form
+                                )}
+                            </div>
                         </Form.Group>
 
                         <Achievements
                             items={this.state.achievements}
                             onChangeMethod={this.inputUpdateHandler}
+                            selectedGain={[]}
+                            selectedRequired={[]}
                         />
 
                         <SessionGroup

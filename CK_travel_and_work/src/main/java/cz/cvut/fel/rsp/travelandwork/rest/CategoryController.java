@@ -1,10 +1,12 @@
 package cz.cvut.fel.rsp.travelandwork.rest;
 
+import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
 import cz.cvut.fel.rsp.travelandwork.model.Category;
 import cz.cvut.fel.rsp.travelandwork.service.CategoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,4 +29,26 @@ public class CategoryController {
     public List<Category> getAll() {
         return categoryService.findAll();
     }
+
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Category get(@PathVariable Long id) throws NotFoundException {
+        return categoryService.find(id);
+    }
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public void create(@RequestBody Category category){
+        categoryService.create(category);
+        LOG.info("Category with ID:{} and name '{}' created.", category.getId(), category.getName());
+    }
+
+    @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void update(@PathVariable Long id, @RequestBody Category category) throws NotFoundException {
+        categoryService.update(id,category);
+        LOG.info("Category with ID:{} and updated.", id);
+    }
+
+
+
 }

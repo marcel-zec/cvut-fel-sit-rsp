@@ -11,6 +11,7 @@ function AchievementInput(props) {
                     key={props.element.id}
                     id={props.element.id}
                     onChange={props.onChangeMethod}
+                    defaultChecked={props.selected}
                 />
                 <FontAwesomeIcon icon={props.element.icon} size="lg" />
                 {props.element.name}

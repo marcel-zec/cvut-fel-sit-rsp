@@ -4,6 +4,7 @@ import cz.cvut.fel.rsp.travelandwork.dao.TripDao;
 import cz.cvut.fel.rsp.travelandwork.dao.TripSessionDao;
 import cz.cvut.fel.rsp.travelandwork.dto.TripDto;
 import cz.cvut.fel.rsp.travelandwork.dto.TripSessionDto;
+import cz.cvut.fel.rsp.travelandwork.exception.MissingVariableException;
 import cz.cvut.fel.rsp.travelandwork.model.TripSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class TripSessionService {
         List<TripSessionDto> tripSessionDtos = new ArrayList<>();
 
         for (TripSession ts: tripSessions) {
-            tripSessionDtos.add(translate(ts));
+            tripSessionDtos.add(translateService.translateSession(ts));
         }
         return tripSessionDtos;
     }
@@ -46,9 +47,16 @@ public class TripSessionService {
         tripSessionDao.persist(tripSession);
     }
 
-    private TripSessionDto translate(TripSession tripSession) {
-        Objects.requireNonNull(tripSession);
-        TripDto tripDto = translateService.translateTrip(tripSession.getTrip());
-        return new TripSessionDto(tripSession.getFrom_date(),tripSession.getTo_date(),tripSession.getPrice(),tripDto);
+    @Transactional
+    public TripSession update(TripSession oldSession, TripSession newSession) throws Exception {
+        if (oldSession == null || newSession==null) throw new MissingVariableException();
+
+        oldSession.setFrom_date(newSession.getFrom_date());
+        oldSession.setPrice(newSession.getPrice());
+        oldSession.setTo_date(newSession.getTo_date());
+        oldSession.setTrip(newSession.getTrip());
+        tripSessionDao.update(oldSession);
+        return oldSession;
     }
+
 }
