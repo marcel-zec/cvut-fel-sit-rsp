@@ -43,7 +43,6 @@ public class TripController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
     public void create(@RequestBody Trip trip) throws BadDateException, MissingVariableException {
         tripService.create(trip);
     }
