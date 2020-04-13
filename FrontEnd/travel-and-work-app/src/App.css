@@ -34,7 +34,7 @@ header{
     box-shadow: 0px 1px 7px 1px #bfbfbf;
 }
 header+div{
-    padding-top: 60px;
+    padding-top: 67px;
 }
 header img.logo{
     width: 60px;
@@ -47,6 +47,10 @@ header .navbar-brand a{
 }
 header .navbar-brand a:hover{
     text-decoration: none;
+}
+header .nav-link a{
+    text-decoration: none;
+    color: #303030!important;
 }
 /*SANDRY CSS**/
 .App {
@@ -85,10 +89,9 @@ header .navbar-brand a:hover{
     font-weight: 700;
     color: white;
     margin: 0;
-    margin-top: 35%;
     text-align: left;
     left: 0px;
-    width: 187px;
+    width: 100%;
     transform-origin: 93.5px 21.5px;
 }
 
@@ -99,11 +102,14 @@ header .navbar-brand a:hover{
     font-size: 13px;
     background: rgb(255, 102, 102);
     padding: 7px;
-    margin-top: -5;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    margin-right: 15px;
 }
 
 .image-card {
-    filter: brightness(70%);
+    filter: brightness(100%);
 }
 
 .text {
@@ -112,6 +118,8 @@ header .navbar-brand a:hover{
     font-weight: 700;
     font-style: normal;
     font-size: 20px;
+    display: inline-block;
+    vertical-align: bottom;
 }
 
 @keyframes App-logo-spin {
@@ -126,7 +134,6 @@ header .navbar-brand a:hover{
 .choosen-icon {
     color: cornflowerblue;
 }
-
 /*register page*/
 .registerUserForm h3, .registerUserForm h5{
     font-weight: 100;
@@ -146,7 +153,93 @@ header .navbar-brand a:hover{
     background-color: #ff6666;
     margin-bottom: 10px;
 }
-.registerUserForm label{
+.registerUserForm label,.login_container label{
     text-align: left;
     display: block;
+}
+/*login_container*/
+.login_form{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px;
+    width: 500px;
+}
+.login_form .submit{
+    width: 140px;
+}
+.login_form label.checkbox{
+    text-align: center;
+    display: inline-block;
+}
+.login_form .form-check{
+    display: inline-block!important;
+}
+/*index*/
+.trip_info{
+    position: absolute;
+    height: 100%;
+    top: 0;
+    width: 100%;
+}
+.trip_info h4{
+    position: absolute;
+    bottom:0px;
+    width: 100%;
+    z-index: 99;
+    margin-left: 0!important;
+    padding: 8px;
+    padding-top: 45px;
+    font-size:14pt;
+    background: rgb(0,0,0);
+    background: linear-gradient(0deg, rgba(0,0,00,.75) 50%, rgba(80,80,80,0.4797269249496674) 87%, rgba(255,255,255,0) 100%);
+}
+.card-columns{
+    display: flex;
+    flex-flow: wrap;
+    align-items: top;
+    align-content: center;
+    justify-content: center;
+}
+.card-columns .card{
+    margin-bottom: 0px!important;
+    border:none!important;
+}
+.card-columns a{
+    width: 250px;
+    margin: 10px;
+    border-top-left-radius: calc(.25rem - 1px); 
+    border-top-right-radius: calc(.25rem - 1px);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, .1), 0 1px 10px rgba(0, 0, 0, .15);
+
+}
+.card .row{
+    padding: 7px;
+    margin: 0px!important
+}
+.card .price span{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: right;
+    right: 7px;
+    top: 1px;
+}
+.card .date_stars{
+    color:#363636;
+    padding: 0px;
+    font-size:11pt;
+}
+.card .trip_sessions{
+    color:#363636;
+    font-size: 10pt;
+    font-weight: 400;
+    padding-bottom: 0px;
+}
+.card .trip_sessions .col{
+    text-align: left;
+    margin-left: -5px;
+}
+.card .dateIcon{
+    margin-right: 5px;
+    color: #ff6666;
 }

@@ -27,7 +27,9 @@ class TripSmall extends React.Component {
         let dates = null;
         if (numberOfDates == 1) {
             const session = this.props.trip.sessions[0];
-            dates = session.from_date + " " + session.to_date;
+            var from = new Date(session.from_date);
+            var to = new Date(session.to_date);
+            dates = from.getDate() + "." + (from.getMonth()+1)+"."+from.getFullYear()+"-"+ to.getDate() + "." + (to.getMonth()+1)+"."+to.getFullYear();
         } else {
             dates = numberOfDates + " dates";
         }
@@ -42,37 +44,32 @@ class TripSmall extends React.Component {
 
         return (
             <Link to={"/trips/" + this.props.trip.short_name}>
-                <Card className="p-3">
+                <Card>
                     <div className="image-card">
                         <Card.Img
                             variant="top"
                             src="https://www.transparency.cz/wp-content/uploads/Jablonec-nad-Nisou-621x466.jpg"
                         />
+                        <div className="trip_info">
+                            <span className="image-text">
+                                {" "}{this.props.trip.possible_xp_reward} xp{" "}
+                            </span>
+                            <h4 className="ml-3" id="trip-title">
+                                {" "} {this.props.trip.name}
+                            </h4>
+                        </div>
                     </div>
-
-                    <Card.ImgOverlay className="d-flex flex-column justify-content-start align-items-start">
-                        <span className="image-text">
-                            {" "}
-                            {this.props.trip.possible_xp_reward} xp{" "}
-                        </span>
-                        <Card.Title className="ml-3" id="trip-title">
-                            <p>
-                                {" "}
-                                <span> {this.props.trip.name} </span>
-                            </p>
-                        </Card.Title>
-                    </Card.ImgOverlay>
-                    <Card.Body>
-                        <Row>
-                            <Col className="d-flex flex-column align-items-center">
-                                <Row>{dates}</Row>
-                                <Row>{reviewStars}</Row>
-                            </Col>
-                            <Col className="d-flex flex-column justify-content-center text">
+                    <Row className="trip_sessions"><Col className=""><span className="dateIcon"><FontAwesomeIcon icon="clock"/></span>{dates}</Col></Row>
+                    <Row>
+                        <Col className="d-flex flex-column date_stars">    
+                            <Row>{reviewStars}</Row>
+                        </Col>
+                        <Col className="text price">
+                            <span>
                                 {lowestPrice} Kč
-                            </Col>
-                        </Row>
-                    </Card.Body>
+                            </span>
+                        </Col>
+                    </Row>
                 </Card>
             </Link>
         );
