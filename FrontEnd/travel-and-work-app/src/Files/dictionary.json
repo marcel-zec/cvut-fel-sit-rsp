@@ -1,0 +1,6 @@
+{
+    "form": {
+        "first_option": "Please select.."
+    },
+    "countries": ["Czechia", "Slovakia", "Germany", "Italy"]
+}
