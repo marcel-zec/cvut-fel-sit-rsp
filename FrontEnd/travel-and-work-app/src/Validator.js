@@ -35,7 +35,11 @@ export const formValidation = (formStateObject, inputsObject) => {
                 console.log("I am validating..");
                 console.log(inputName);
                 if (rules.hasOwnProperty("required") && rules.required) {
-                    if (!input || (isNaN(input) && input.trim() == "")) {
+                    if (
+                        !input ||
+                        (isNaN(input) && input.trim() == "") ||
+                        input.length < 1
+                    ) {
                         formStateObject.elements[inputName].valid = false;
                         formStateObject.valid = false;
                         console.log("required check: INVALID");
@@ -128,6 +132,15 @@ export const formValidation = (formStateObject, inputsObject) => {
                                 );
                             }
                         }
+                    }
+                }
+                if (rules.hasOwnProperty("email") && rules.email) {
+                    if (!input.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)) {
+                        formStateObject.elements[inputName].valid = false;
+                        formStateObject.valid = false;
+                        console.log("email check: INVALID");
+                    } else {
+                        console.log("email check: valid");
                     }
                 }
 
