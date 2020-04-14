@@ -259,22 +259,22 @@ public class DatabaseSeeder implements
     }
 
     void createCategories(){
-        Category category = new Category("Bumbo");
+        Category category = new Category("Vaření");
         categoryDao.persist(category);
 
-        category = new Category("Santo");
+        category = new Category("Archeologie");
         categoryDao.persist(category);
 
-        category = new Category("Cholat");
+        category = new Category("Restaurování");
         categoryDao.persist(category);
 
-        category = new Category("Kufon");
+        category = new Category("Práce instruktora");
         categoryDao.persist(category);
 
-        category = new Category("Rokel");
+        category = new Category("Kurz");
         categoryDao.persist(category);
 
-        category = new Category("Balamoc");
+        category = new Category("Práce animátora");
         categoryDao.persist(category);
     }
 }
