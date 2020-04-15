@@ -229,32 +229,27 @@ public class DatabaseSeeder implements
         List<Achievement> achievements = achievementDao.findAll();
         List<Category> categories = categoryDao.findAll();
 
-        Trip trip = tripDao.find("casablanca_me_gusta");
+        Trip trip = tripDao.find("fugukurz");
+        trip.addRequiredAchievement(achievements.get(8));
+        trip.addGainAchievement(achievements.get(3));
+        trip.setCategory(categories.get(4));
+        tripDao.update(trip);
+
+        trip = tripDao.find("fuguvar");
+        achievements = achievementDao.findAll();
         trip.addRequiredAchievement(achievements.get(3));
-        trip.addRequiredAchievement(achievements.get(4));
-        trip.addGainAchievement(achievements.get(1));
         trip.setCategory(categories.get(0));
         tripDao.update(trip);
 
-        trip = tripDao.find("barcechef");
+        trip = tripDao.find("prahradvar");
         achievements = achievementDao.findAll();
-        trip.addRequiredAchievement(achievements.get(1));
-        trip.addGainAchievement(achievements.get(3));
-        trip.setCategory(categories.get(1));
+        trip.addRequiredAchievement(achievements.get(9));
+        trip.setCategory(categories.get(0));
         tripDao.update(trip);
 
-        trip = tripDao.find("londonchef");
+        trip = tripDao.find("studumkuch");
         achievements = achievementDao.findAll();
-        trip.addRequiredAchievement(achievements.get(1));
-        trip.addGainAchievement(achievements.get(3));
-        trip.setCategory(categories.get(1));
-        tripDao.update(trip);
-
-        trip = tripDao.find("zagreb_archeology");
-        achievements = achievementDao.findAll();
-        trip.addGainAchievement(achievements.get(2));
-        trip.addGainAchievement(achievements.get(1));
-        trip.setCategory(categories.get(2));
+        trip.setCategory(categories.get(0));
         tripDao.update(trip);
     }
 
