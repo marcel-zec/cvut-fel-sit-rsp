@@ -18,11 +18,11 @@ public class UserDetailsService implements org.springframework.security.core.use
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         //final User user = userDao.findByUsername(username);
-        final User user = userDao.findByEmail(username);
+        final User user = userDao.findByEmail(email);
         if (user == null) {
-            throw new UsernameNotFoundException("User with username " + username + " not found.");
+            throw new UsernameNotFoundException("User with username " + email + " not found.");
         }
         return new cz.cvut.fel.rsp.travelandwork.security.model.UserDetails(user);
     }
