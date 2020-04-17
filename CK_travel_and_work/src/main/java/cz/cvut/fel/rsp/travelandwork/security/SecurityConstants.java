@@ -10,7 +10,9 @@ public class SecurityConstants {
 
     public static final String REMEMBER_ME_COOKIE_NAME = "remember-me";
 
-    public static final String USERNAME_PARAM = "username";
+//    public static final String USERNAME_PARAM = "username";
+    public static final String USERNAME_PARAM = "email";
+
 
     public static final String PASSWORD_PARAM = "password";
 

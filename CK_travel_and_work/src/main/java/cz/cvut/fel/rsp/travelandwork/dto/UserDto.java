@@ -17,9 +17,9 @@ public class UserDto  {
     @NotNull(message = "Last name cannot be blank")
     private String lastName;
 
-    @Size(max = 255, min = 3, message = "Username is in incorrect format.")
-    @NotNull(message = "Username cannot be blank")
-    private String username;
+//    @Size(max = 255, min = 3, message = "Username is in incorrect format.")
+//    @NotNull(message = "Username cannot be blank")
+//    private String username;
 
     @Email(message = "Email should be valid")
     @NotNull(message = "Email cannot be blank")
@@ -34,13 +34,17 @@ public class UserDto  {
     }
 
 
-    public UserDto(@NotNull(message = "Id cannot be blank") Long id, @Size(max = 30, min = 1, message = "First name is in incorrect format.") @NotNull(message = "First name cannot be blank") String firstName, @NotNull(message = "Last name cannot be blank") String lastName, @Size(max = 255, min = 3, message = "Username is in incorrect format.") @NotNull(message = "Username cannot be blank") String username, @Email(message = "Email should be valid") @NotNull(message = "Email cannot be blank") String email,
+    public UserDto(@NotNull(message = "Id cannot be blank") Long id,
+                   @Size(max = 30, min = 1, message = "First name is in incorrect format.") @NotNull(message = "First name cannot be blank") String firstName,
+                   @NotNull(message = "Last name cannot be blank") String lastName,
+                   //@Size(max = 255, min = 3, message = "Username is in incorrect format.") @NotNull(message = "Username cannot be blank") String username,
+                   @Email(message = "Email should be valid") @NotNull(message = "Email cannot be blank") String email,
                    AddressDto address, TravelJournalDto travel_journal, List<TripReviewDto> tripReviews) {
 
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.username = username;
+//        this.username = username;
         this.email = email;
         this.address = address;
         this.travel_journal = travel_journal;
@@ -64,13 +68,13 @@ public class UserDto  {
         this.lastName = lastName;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
+//    public String getUsername() {
+//        return username;
+//    }
+//
+//    public void setUsername(String username) {
+//        this.username = username;
+//    }
 
     public void setEmail(String email) {
         this.email = email;
@@ -147,7 +151,7 @@ public class UserDto  {
         return "User{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", username='" + username + '\'' +
+//                ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", address=" + address +
                 ", travel_journal=" + travel_journal +

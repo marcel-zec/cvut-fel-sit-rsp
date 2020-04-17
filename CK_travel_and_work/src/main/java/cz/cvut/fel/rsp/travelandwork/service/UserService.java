@@ -55,13 +55,13 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public boolean exists(String login) {
-        return dao.findByUsername(login) != null;
+        return dao.findByEmail(login) != null;
     }
 
     @Transactional
     public void delete(String username) throws NotFoundException {
 
-        User user = dao.findByUsername(username);
+        User user = dao.findByEmail(username);
         if (user == null) throw new NotFoundException();
 
         user.getAddress().softDelete();
@@ -86,7 +86,7 @@ public class UserService {
     @Transactional
     public void update(User newUser) throws NotFoundException {
         Objects.requireNonNull(newUser);
-        User user = dao.findByUsername(newUser.getUsername());
+        User user = dao.findByEmail(newUser.getEmail());
         //todo vynimka len admin alebo prihlaseny
         if (user == null) throw new NotFoundException();
 
@@ -115,9 +115,9 @@ public class UserService {
         return translateService.translateUser(dao.find(id));
     }
     @Transactional
-    public UserDto findByUsername(String username) {
+    public UserDto findByEmail(String username) {
         Objects.requireNonNull(username);
-        return translateService.translateUser(dao.findByUsername(username));
+        return translateService.translateUser(dao.findByEmail(username));
     }
 
     @Transactional

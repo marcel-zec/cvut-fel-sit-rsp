@@ -39,6 +39,7 @@ public class DefaultAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("Not validated");
         }
         ud.eraseCredentials();
+        System.out.println("Wuhuuu " + ud.getUsername() + " is loggin with email");
         return SecurityUtils.setCurrentUser(ud);
     }
 

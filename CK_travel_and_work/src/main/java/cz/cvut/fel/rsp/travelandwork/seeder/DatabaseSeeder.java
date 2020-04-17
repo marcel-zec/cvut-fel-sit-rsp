@@ -1,16 +1,12 @@
 package cz.cvut.fel.rsp.travelandwork.seeder;
 
-import cz.cvut.fel.rsp.travelandwork.dao.AchievementDao;
-import cz.cvut.fel.rsp.travelandwork.dao.CategoryDao;
-import cz.cvut.fel.rsp.travelandwork.dao.TripDao;
-import cz.cvut.fel.rsp.travelandwork.dao.TripSessionDao;
-import cz.cvut.fel.rsp.travelandwork.model.Achievement;
-import cz.cvut.fel.rsp.travelandwork.model.Category;
-import cz.cvut.fel.rsp.travelandwork.model.Trip;
-import cz.cvut.fel.rsp.travelandwork.model.TripSession;
+import cz.cvut.fel.rsp.travelandwork.dao.*;
+import cz.cvut.fel.rsp.travelandwork.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
@@ -29,13 +25,15 @@ public class DatabaseSeeder implements
     private TripSessionDao tripSessionDao;
     private AchievementDao achievementDao;
     private CategoryDao categoryDao;
+    private UserDao userDao;
 
     @Autowired
-    public DatabaseSeeder(TripDao tripDao, TripSessionDao tripSessionDao, AchievementDao achievementDao, CategoryDao categoryDao) {
+    public DatabaseSeeder(TripDao tripDao, TripSessionDao tripSessionDao, AchievementDao achievementDao, CategoryDao categoryDao, UserDao userDao) {
         this.tripDao = tripDao;
         this.tripSessionDao = tripSessionDao;
         this.achievementDao = achievementDao;
         this.categoryDao = categoryDao;
+        this.userDao = userDao;
     }
     
     @Override
@@ -47,6 +45,7 @@ public class DatabaseSeeder implements
         createCategories();
         //setAchievementsAndCategories();
         createTrips();
+        createUsers();
     }
 
     @Transactional
@@ -271,5 +270,11 @@ public class DatabaseSeeder implements
 
         category = new Category("Práce animátora");
         categoryDao.persist(category);
+    }
+
+    void createUsers(){
+        User user = new User(BCrypt.hashpw("heslo",BCrypt.gensalt()),"Jan","Testovany","test@gmail.com",Role.USER);
+        userDao.persist(user);
+        System.out.println("Test user persist.");
     }
 }
