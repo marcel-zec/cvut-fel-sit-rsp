@@ -19,8 +19,14 @@ public class TranslateService {
         List<TripReviewDto> tripReviewDtos = new ArrayList<>();
         user.getTripReviews().forEach(review-> tripReviewDtos.add(translateTripReview(review)));
 
+        if (user.getTravel_journal() != null) {
+            TravelJournalDto travelJournalDto = translateTravelJournal(user.getTravel_journal());
+            return new UserDto(user.getId(),user.getFirstName(),user.getLastName(),user.getUsername(),user.getEmail(),
+                    translateAddress(user.getAddress()),travelJournalDto,tripReviewDtos);
+        }
+
        return new UserDto(user.getId(),user.getFirstName(),user.getLastName(),user.getUsername(),user.getEmail(),
-                translateAddress(user.getAddress()),translateTravelJournal(user.getTravel_journal()),tripReviewDtos);
+                translateAddress(user.getAddress()),null,tripReviewDtos);
     }
 
 

@@ -55,10 +55,8 @@ public class TripDto {
     private List<AchievementDto> gain_achievements;
     private List<Long> sessionsID;
 
-
     public TripDto() {
     }
-
 
     public TripDto(@NotNull(message = "Id cannot be blank") Long id, @Size(max = 255, min = 3, message = "Name has to be from 3 to 255 characters.") @NotNull(message = "Name has to be from 3 to 255 characters.") String name, @Size(max = 100, min = 3, message = "Short name has to be from 3 to 100 characters.") @NotNull(message = "Short name has to be from 3 to 100 characters.") String short_name,
                    @Min(value = 0, message = "Min 0") @Max(value = 20, message = "Max 20") int possible_xp_reward,
@@ -79,7 +77,6 @@ public class TripDto {
         this.gain_achievements = gain_achievements;
         this.sessionsID = sessionsID;
     }
-
 
     public String getName() {
 
