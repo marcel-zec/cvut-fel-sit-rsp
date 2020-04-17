@@ -51,10 +51,10 @@ public class DatabaseSeeder implements
 
     @Transactional
     void createTrips(){
-        String description = "Nullam gravida lectus tempus congue pretium. Nunc volutpat diam orci, a consectetur dui iaculis sollicitudin. Fusce varius nisi placerat turpis viverra pulvinar. Pellentesque vel commodo nibh, sed volutpat nunc. Duis congue enim malesuada sapien commodo egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum interdum, ante eu vehicula porttitor, libero purus consequat metus, quis aliquet lectus orci sit amet mi. Aenean libero sapien, tempus sit amet lorem in, cursus sodales erat. Vivamus suscipit felis et ex pulvinar, vitae rutrum diam tempus. ";
-        Trip trip = new Trip("Casablanca Me gusto",15,description,"casablanca_me_gusta",1000,"Casablan, Mexico",2);
+        String description;// = "Nullam gravida lectus tempus congue pretium. Nunc volutpat diam orci, a consectetur dui iaculis sollicitudin. Fusce varius nisi placerat turpis viverra pulvinar. Pellentesque vel commodo nibh, sed volutpat nunc. Duis congue enim malesuada sapien commodo egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum interdum, ante eu vehicula porttitor, libero purus consequat metus, quis aliquet lectus orci sit amet mi. Aenean libero sapien, tempus sit amet lorem in, cursus sodales erat. Vivamus suscipit felis et ex pulvinar, vitae rutrum diam tempus. ";
+        Trip trip;/* = new Trip("Casablanca Me gusto",15,description,"casablanca_me_gusta",1000,"Casablan, Mexico",2);
         tripDao.persist(trip);
-        TripSession tripSession = new TripSession(trip,LocalDate.parse("2020-09-12"), LocalDate.parse("2020-10-12"),2000);
+        */TripSession tripSession;/*= new TripSession(trip,LocalDate.parse("2020-09-12"), LocalDate.parse("2020-10-12"),2000);
         tripSessionDao.persist(tripSession);
         tripSession = new TripSession(trip,LocalDate.parse("2020-10-12"), LocalDate.parse("2020-11-12"),2500);
         tripSessionDao.persist(tripSession);
@@ -93,7 +93,7 @@ public class DatabaseSeeder implements
         trip = new Trip("Laster",8,description,"laster",500,"Laster, Lasterland",2);
         tripDao.persist(trip);
         tripSession = new TripSession(trip,LocalDate.parse("2021-01-14"), LocalDate.parse("2021-01-21"),2000);
-        tripSessionDao.persist(tripSession);
+        tripSessionDao.persist(tripSession);*/
 
         //priklady tripov a user progressu medzi nimi
         description = "Tento zajezd bude mit cenu za dopravu a kurz, po absolvování se odemkne achievement ´kuchař ryb fugu´, pro absolvování je potřeba mít achievement ´Kuchtík´." ;
@@ -229,32 +229,27 @@ public class DatabaseSeeder implements
         List<Achievement> achievements = achievementDao.findAll();
         List<Category> categories = categoryDao.findAll();
 
-        Trip trip = tripDao.find("casablanca_me_gusta");
+        Trip trip = tripDao.find("fugukurz");
+        trip.addRequiredAchievement(achievements.get(8));
+        trip.addGainAchievement(achievements.get(3));
+        trip.setCategory(categories.get(4));
+        tripDao.update(trip);
+
+        trip = tripDao.find("fuguvar");
+        achievements = achievementDao.findAll();
         trip.addRequiredAchievement(achievements.get(3));
-        trip.addRequiredAchievement(achievements.get(4));
-        trip.addGainAchievement(achievements.get(1));
         trip.setCategory(categories.get(0));
         tripDao.update(trip);
 
-        trip = tripDao.find("barcechef");
+        trip = tripDao.find("prahradvar");
         achievements = achievementDao.findAll();
-        trip.addRequiredAchievement(achievements.get(1));
-        trip.addGainAchievement(achievements.get(3));
-        trip.setCategory(categories.get(1));
+        trip.addRequiredAchievement(achievements.get(9));
+        trip.setCategory(categories.get(0));
         tripDao.update(trip);
 
-        trip = tripDao.find("londonchef");
+        trip = tripDao.find("studumkuch");
         achievements = achievementDao.findAll();
-        trip.addRequiredAchievement(achievements.get(1));
-        trip.addGainAchievement(achievements.get(3));
-        trip.setCategory(categories.get(1));
-        tripDao.update(trip);
-
-        trip = tripDao.find("zagreb_archeology");
-        achievements = achievementDao.findAll();
-        trip.addGainAchievement(achievements.get(2));
-        trip.addGainAchievement(achievements.get(1));
-        trip.setCategory(categories.get(2));
+        trip.setCategory(categories.get(0));
         tripDao.update(trip);
     }
 
