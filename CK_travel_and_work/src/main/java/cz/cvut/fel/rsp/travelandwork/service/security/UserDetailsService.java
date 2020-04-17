@@ -22,7 +22,7 @@ public class UserDetailsService implements org.springframework.security.core.use
         //final User user = userDao.findByUsername(username);
         final User user = userDao.findByEmail(email);
         if (user == null) {
-            throw new UsernameNotFoundException("User with username " + email + " not found.");
+            throw new UsernameNotFoundException("User with email " + email + " not found.");
         }
         return new cz.cvut.fel.rsp.travelandwork.security.model.UserDetails(user);
     }
