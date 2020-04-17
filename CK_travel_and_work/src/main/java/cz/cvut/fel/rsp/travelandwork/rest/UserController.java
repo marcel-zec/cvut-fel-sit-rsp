@@ -46,10 +46,18 @@ public class UserController {
 //
 //    }
 
+    //TODO - práva len pre admina
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<UserDto> showCurrentUser() {
+    public List<UserDto> showAll() {
         return userService.findAll();
     }
+
+    //TODO - dorobiť metodu v service a treba vymyslieť cestu aby sa nebila s getAll
+//    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+//    public List<UserDto> showCurrentUser() {
+//
+//        return ;
+//    }
 
     @PatchMapping(value = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody User user) {
