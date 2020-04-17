@@ -10,31 +10,13 @@
         }
     },
     "achievement": {
-        "name": {
-            "required": true,
-            "minLength": 3,
-            "maxLength": 5
-        },
-        "description": {
-            "required": true,
-            "minLength": 3,
-            "maxLength": 5
-        },
-        "icon": {
-            "required": true
-        }
+        "name": { "required": true, "minLength": 3, "maxLength": 5 },
+        "description": { "required": true, "minLength": 3, "maxLength": 5 },
+        "icon": { "required": true }
     },
     "trip": {
-        "name": {
-            "required": true,
-            "minLength": 3,
-            "maxLength": 5
-        },
-        "short_name": {
-            "required": true,
-            "minLength": 3,
-            "maxLength": 5
-        },
+        "name": { "required": true, "minLength": 3, "maxLength": 5 },
+        "short_name": { "required": true, "minLength": 3, "maxLength": 5 },
         "deposit": {
             "required": true,
             "number": true,
@@ -53,15 +35,18 @@
             "minValue": 3,
             "maxValue": 5
         },
-        "location": {
-            "required": true,
-            "minLength": 3,
-            "maxLength": 5
-        },
-        "description": {
-            "required": true,
-            "minLength": 3,
-            "maxLength": 5
-        }
+        "location": { "required": true, "minLength": 3, "maxLength": 5 },
+        "description": { "required": true, "minLength": 3, "maxLength": 5 }
+    },
+    "registration": {
+        "firstName": { "required": true, "minLength": 3, "maxLength": 5 },
+        "lastName": { "required": true, "minLength": 3, "maxLength": 5 },
+        "email": { "required": true, "email": true },
+        "password": { "required": true, "minLength": 3, "maxLength": 5 },
+        "city": { "required": true, "minLength": 3, "maxLength": 5 },
+        "street": { "required": true, "minLength": 3, "maxLength": 5 },
+        "houseNumber": { "required": true, "number": true },
+        "zipCode": { "required": true, "number": true },
+        "country": { "required": true }
     }
 }
