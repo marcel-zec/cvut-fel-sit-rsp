@@ -131,7 +131,7 @@ class Create extends React.Component {
             }
         }
         await this.setState({ trip: newState });
-        if (this.state.form.elements[nameOfFormInput].touched) {
+        if (this.state.form.elements.hasOwnProperty(nameOfFormInput) && this.state.form.elements[nameOfFormInput].touched) {
             this.validateForm();
         }
     };

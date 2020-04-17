@@ -135,7 +135,7 @@ export const formValidation = (formStateObject, inputsObject) => {
                     }
                 }
                 if (rules.hasOwnProperty("email") && rules.email) {
-                    if (!input.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)) {
+                    if (input && !input.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)) {
                         formStateObject.elements[inputName].valid = false;
                         formStateObject.valid = false;
                         console.log("email check: INVALID");

@@ -24,7 +24,7 @@ class Index extends React.Component {
             );
         } else {
             return (
-                <Container>
+                <Container className="trips">
                     <CardColumns>
                         {this.state.trips.map(trip => {
                             return (

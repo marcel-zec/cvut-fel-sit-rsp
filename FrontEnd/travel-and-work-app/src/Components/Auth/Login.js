@@ -1,5 +1,6 @@
 import React from "react";
 import Form from "react-bootstrap/Form";
+import image from "../../Files/images/background_login.jpg";
 import { Container,Col, Button, Row, Spinner } from "react-bootstrap";
 
 class Login extends React.Component {
@@ -51,7 +52,9 @@ class Login extends React.Component {
     };
     render() {
         return (
+
             <Container className="login_container">
+                    
                 <Row>
                     <Form className="window radius login_form" onSubmit={this.submitHandler}>
                         <Form.Group controlId="formBasicEmail">
@@ -74,6 +77,9 @@ class Login extends React.Component {
                         </Button>
                     </Form>
                 </Row>
+                <div className="login_background">
+                        <img src={image} />
+                    </div>
             </Container>
         );
     }
