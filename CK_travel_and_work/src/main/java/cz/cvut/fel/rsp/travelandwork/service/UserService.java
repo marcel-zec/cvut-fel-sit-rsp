@@ -59,9 +59,9 @@ public class UserService {
     }
 
     @Transactional
-    public void delete(String username) throws NotFoundException {
+    public void delete(String email) throws NotFoundException {
 
-        User user = dao.findByEmail(username);
+        User user = dao.findByEmail(email);
         if (user == null) throw new NotFoundException();
 
         user.getAddress().softDelete();
@@ -115,9 +115,9 @@ public class UserService {
         return translateService.translateUser(dao.find(id));
     }
     @Transactional
-    public UserDto findByEmail(String username) {
-        Objects.requireNonNull(username);
-        return translateService.translateUser(dao.findByEmail(username));
+    public UserDto findByEmail(String email) {
+        Objects.requireNonNull(email);
+        return translateService.translateUser(dao.findByEmail(email));
     }
 
     @Transactional

@@ -13,7 +13,6 @@ import java.util.List;
 @Entity
 @Table(name = "APP_USER")
 @NamedQueries({
-//        @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username AND u.deleted_at is null"),
         @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email AND u.deleted_at is null")
 })
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -29,12 +28,6 @@ public class User extends AbstractEntity {
     @Column(nullable = false)
     @NotBlank(message = "Last name cannot be blank")
     private String lastName;
-
-//    @Basic(optional = false)
-//    @Column(nullable = false, unique = true)
-//    @Size(max = 255, min = 3, message = "Username is in incorrect format.")
-//    @NotBlank(message = "Username cannot be blank")
-//    private String username;
 
     @Basic(optional = false)
     @Column(nullable = false)
@@ -64,8 +57,7 @@ public class User extends AbstractEntity {
     public User() {
     }
 
-    public User(/*String username,*/ String password, String firstName, String lastName, String email, Role role){
-//        this.username = username;
+    public User(String password, String firstName, String lastName, String email, Role role){
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -73,10 +65,9 @@ public class User extends AbstractEntity {
         this.role = role;
     }
 
-    public User(/*@Size(max = 255, min = 3, message = "Username is in incorrect format.") String username,*/
+    public User(
             @Email(message = "Email should be valid") String email,
                 @Size(max = 255, min = 6, message = "Password is in incorrect format.") String password) {
-        //this.username = username;
         this.email = email;
         this.password = password;
     }
@@ -104,14 +95,6 @@ public class User extends AbstractEntity {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-
-//    public String getUsername() {
-//        return username;
-//    }
-//
-//    public void setUsername(String username) {
-//        this.username = username;
-//    }
 
     public void setEmail(String email) {
         this.email = email;
@@ -182,7 +165,6 @@ public class User extends AbstractEntity {
         return "User{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-               // ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", role=" + role +

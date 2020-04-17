@@ -65,9 +65,9 @@ public class UserController {
     }
 
 
-    @DeleteMapping(value = "{username}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> delete(@PathVariable String username) throws NotFoundException {
-        userService.delete(username);
+    @DeleteMapping(value = "{email}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> delete(@PathVariable String email) throws NotFoundException {
+        userService.delete(email);
         //LOG.debug("User {} successfully removed.");
         //final HttpHeaders headers = RestUtils.createLocationHeaderFromCurrentUri("/current");
         //return new ResponseEntity<>(headers, HttpStatus.OK);
