@@ -34,12 +34,12 @@ public class DefaultAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+        //loadUserByUsername is overloaded in userDetailService for finding user by email
         UserDetails ud = (UserDetails) userDetailsService.loadUserByUsername(authentication.getPrincipal().toString());
         if (!passwordEncoder.matches(authentication.getCredentials().toString(), ud.getPassword())) {
             throw new BadCredentialsException("Not validated");
         }
         ud.eraseCredentials();
-        System.out.println("Wuhuuu " + ud.getUsername() + " is loggin with email");
         return SecurityUtils.setCurrentUser(ud);
     }
 
