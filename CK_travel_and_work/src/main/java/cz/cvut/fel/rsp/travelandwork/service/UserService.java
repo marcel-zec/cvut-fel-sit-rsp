@@ -46,9 +46,10 @@ public class UserService {
             user.getAddress().setUser(user);
             addressDao.persist(user.getAddress());
         }
-        if (user.getTravel_journal() != null) {
-            user.getTravel_journal().setUser(user);
-            travelJournalDao.persist(user.getTravel_journal());
+        if (user.getTravel_journal() == null) {
+            TravelJournal tj = new TravelJournal(user);
+            user.setTravel_journal(tj);
+            travelJournalDao.persist(tj);
         }
         dao.update(user);
     }
@@ -59,9 +60,9 @@ public class UserService {
     }
 
     @Transactional
-    public void delete(String email) throws NotFoundException {
+    public void delete(Long id) throws NotFoundException {
 
-        User user = dao.findByEmail(email);
+        User user = dao.find(id);
         if (user == null) throw new NotFoundException();
 
         user.getAddress().softDelete();
@@ -122,7 +123,6 @@ public class UserService {
 
     @Transactional
     public List<UserDto> findAll() {
-
         List<UserDto> userDtos = new ArrayList<>();
         for (User user:dao.findAll()) {
             userDtos.add(translateService.translateUser(user));

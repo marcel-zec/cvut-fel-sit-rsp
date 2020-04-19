@@ -1,7 +1,9 @@
 package cz.cvut.fel.rsp.travelandwork.dto;
 
+
 import javax.persistence.Basic;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -58,7 +60,7 @@ public class TravelJournalDto {
 
 
     public HashMap<CategoryDto, Integer> getTrip_counter() {
-
+        if (trip_counter==null) trip_counter = new HashMap<CategoryDto,Integer>();
         return trip_counter;
     }
 
@@ -83,6 +85,7 @@ public class TravelJournalDto {
 
     public List<AchievementDto> getEarnedAchievements() {
 
+        if (earnedAchievements==null) return earnedAchievements= new ArrayList<AchievementDto>();
         return earnedAchievements;
     }
 
@@ -94,7 +97,7 @@ public class TravelJournalDto {
 
 
     public List<EnrollmentDto> getEnrollments() {
-
+        if (enrollments==null) enrollments = new ArrayList<EnrollmentDto>();
         return enrollments;
     }
 

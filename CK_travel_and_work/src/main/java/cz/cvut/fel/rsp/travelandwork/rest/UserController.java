@@ -52,11 +52,11 @@ public class UserController {
         return userService.findAll();
     }
 
-    //TODO - dorobiť metodu v service a treba vymyslieť cestu aby sa nebila s getAll
+//    TODO - dorobiť metodu v service a treba vymyslieť cestu aby sa nebila s getAll
 //    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-//    public List<UserDto> showCurrentUser() {
+//    public UserDto userDto showCurrentUser() {
 //
-//        return ;
+//        return userService.find() ;
 //    }
 
     @PatchMapping(value = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -65,9 +65,9 @@ public class UserController {
     }
 
 
-    @DeleteMapping(value = "{email}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> delete(@PathVariable String email) throws NotFoundException {
-        userService.delete(email);
+    @DeleteMapping(value = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> delete(@PathVariable Long id) throws NotFoundException {
+        userService.delete(id);
         //LOG.debug("User {} successfully removed.");
         //final HttpHeaders headers = RestUtils.createLocationHeaderFromCurrentUri("/current");
         //return new ResponseEntity<>(headers, HttpStatus.OK);
