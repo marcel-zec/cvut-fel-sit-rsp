@@ -7,9 +7,12 @@ import {
     validationFeedback,
     validationClassName,
 } from "../../Validator";
+import MyAlert from "../SmartGadgets/MyAlert";
 class Login extends React.Component {
     state = {
         form: {
+            loginTry: false,
+            loginUnsuccess: false,
             isValid: false,
             elements: {
                 email: {
@@ -64,10 +67,18 @@ class Login extends React.Component {
                 if (response.ok) {
                     this.props.history.push("/");
                 } else {
+                    this.loginNotSuccessHandler();
                     console.log(response.status);
                 }
             });
         }
+    };
+
+    loginNotSuccessHandler = () => {
+        const newState = { ...this.state.form };
+        newState.loginTry = true;
+        newState.loginUnsuccess = true;
+        this.setState({ form: newState });
     };
 
     validateForm = async () => {
@@ -78,6 +89,18 @@ class Login extends React.Component {
     };
 
     render() {
+        let loginNotSuccess = null;
+        if (this.state.form.loginTry) {
+            if (this.state.form.loginUnsuccess) {
+                loginNotSuccess = (
+                    <MyAlert
+                        variant="danger"
+                        text="Email or password is invalid."
+                        heading="Login not successful!"
+                    />
+                );
+            }
+        }
         return (
             <Container className="login_container">
                 <Row>
@@ -135,6 +158,7 @@ class Login extends React.Component {
                         </Button>
                     </Form>
                 </Row>
+                {loginNotSuccess}
             </Container>
         );
     }
