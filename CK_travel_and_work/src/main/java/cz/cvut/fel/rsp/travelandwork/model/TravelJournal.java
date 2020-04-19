@@ -3,6 +3,7 @@ package cz.cvut.fel.rsp.travelandwork.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
 public class TravelJournal extends AbstractEntity{
     @Basic(optional = false)
     @Column(nullable = false)
-    private int xp_count;
+    private int xp_count = 0;
     @Basic(optional = false)
     @Column(nullable = false)
     private HashMap<Category, Integer> trip_counter;
@@ -26,6 +27,17 @@ public class TravelJournal extends AbstractEntity{
     @OneToMany(mappedBy = "travelJournal")
     private List<Enrollment> enrollments;
 
+
+    public TravelJournal(User user) {
+        this.user = user;
+        this.trip_counter = new HashMap<Category,Integer>();
+        this.enrollments = new ArrayList<Enrollment>();
+    }
+
+
+    public TravelJournal() {
+    }
+
     public int getXp_count() {
         return xp_count;
     }
@@ -39,6 +51,7 @@ public class TravelJournal extends AbstractEntity{
     }
 
     public List<Achievement> getEarnedAchievements() {
+        if (earnedAchievements==null) return earnedAchievements= new ArrayList<Achievement>();
         return earnedAchievements;
     }
 
@@ -59,7 +72,6 @@ public class TravelJournal extends AbstractEntity{
     }
 
     public List<Enrollment> getEnrollments() {
-
         return enrollments;
     }
 
