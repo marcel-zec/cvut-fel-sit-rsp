@@ -48,5 +48,9 @@
         "houseNumber": { "required": true, "number": true },
         "zipCode": { "required": true, "number": true },
         "country": { "required": true }
+    },
+    "login": {
+        "email": { "required": true, "email": true },
+        "password": { "required": true, "minLength": 3, "maxLength": 5 }
     }
 }
