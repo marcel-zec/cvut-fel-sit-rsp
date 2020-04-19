@@ -60,10 +60,12 @@ class Login extends React.Component {
                 },
                 body: JSON.stringify(this.state.user),
             }).then((response) => {
-                // if (response.ok) this.props.history.push("/trip");
                 //TODO - osetrenie vynimiek
-                //  else console.log("Error: somethhing goes wrong");
-                console.log(response);
+                if (response.ok) {
+                    this.props.history.push("/");
+                } else {
+                    console.log(response.status);
+                }
             });
         }
     };
