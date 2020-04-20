@@ -1,5 +1,9 @@
 package cz.cvut.fel.rsp.travelandwork.dto;
 
+import cz.cvut.fel.rsp.travelandwork.model.Role;
+
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -21,6 +25,9 @@ public class UserDto  {
     @NotNull(message = "Email cannot be blank")
     private String email;
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     private AddressDto address;
     private TravelJournalDto travel_journal;
     private List<TripReviewDto> tripReviews;
@@ -34,7 +41,7 @@ public class UserDto  {
                    @Size(max = 30, min = 1, message = "First name is in incorrect format.") @NotNull(message = "First name cannot be blank") String firstName,
                    @NotNull(message = "Last name cannot be blank") String lastName,
                    @Email(message = "Email should be valid") @NotNull(message = "Email cannot be blank") String email,
-                   AddressDto address, TravelJournalDto travel_journal, List<TripReviewDto> tripReviews) {
+                   AddressDto address, TravelJournalDto travel_journal, List<TripReviewDto> tripReviews, Role role) {
 
         this.id = id;
         this.firstName = firstName;
@@ -43,6 +50,7 @@ public class UserDto  {
         this.address = address;
         this.travel_journal = travel_journal;
         this.tripReviews = tripReviews;
+        this.role = role;
     }
 
 
@@ -131,15 +139,28 @@ public class UserDto  {
     }
 
 
+    public Role getRole() {
+        return role;
+    }
+
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
 
     @Override
     public String toString() {
-        return "User{" +
-                "firstName='" + firstName + '\'' +
+
+        return "UserDto{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
+                ", role=" + role +
                 ", address=" + address +
                 ", travel_journal=" + travel_journal +
+                ", tripReviews=" + tripReviews +
                 '}';
     }
 }
