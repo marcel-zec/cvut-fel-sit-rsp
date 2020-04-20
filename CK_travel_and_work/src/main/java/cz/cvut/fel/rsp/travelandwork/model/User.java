@@ -27,6 +27,7 @@ public class User extends AbstractEntity {
 
     @Basic(optional = false)
     @Column(nullable = false)
+    @Size(max = 30, min = 1, message = "Last name is in incorrect format.")
     @NotBlank(message = "Last name cannot be blank")
     private String lastName;
 

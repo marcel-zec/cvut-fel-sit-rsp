@@ -2,51 +2,57 @@
     "category": {
         "name": {
             "required": true,
-            "minLength": 3,
-            "maxLength": 255,
+            "minLength": 1,
+            "maxLength": 30,
             "number": true,
             "minValue": 0,
             "maxValue": 350
         }
     },
     "achievement": {
-        "name": { "required": true, "minLength": 3, "maxLength": 5 },
-        "description": { "required": true, "minLength": 3, "maxLength": 5 },
+        "name": { "required": true, "minLength": 3, "maxLength": 255 },
+        "description": { "required": true, "minLength": 5, "maxLength": 255 },
         "icon": { "required": true }
     },
     "trip": {
-        "name": { "required": true, "minLength": 3, "maxLength": 5 },
-        "short_name": { "required": true, "minLength": 3, "maxLength": 5 },
+        "name": { "required": true, "minLength": 3, "maxLength": 255 },
+        "short_name": { "required": true, "minLength": 3, "maxLength": 100 },
         "deposit": {
             "required": true,
             "number": true,
             "minValue": 0,
-            "maxValue": 250
+            "maxValue": 10000
         },
         "required_level": {
             "required": true,
             "number": true,
-            "minValue": 5,
-            "maxValue": 15
+            "minValue": 0,
+            "maxValue": 100
         },
         "possible_xp_reward": {
             "required": true,
             "number": true,
-            "minValue": 3,
-            "maxValue": 5
+            "minValue": 0,
+            "maxValue": 20
         },
-        "location": { "required": true, "minLength": 3, "maxLength": 5 },
-        "description": { "required": true, "minLength": 3, "maxLength": 5 }
+        "location": { "required": true, "minLength": 0, "maxLength": 200 },
+        "description": { "required": true, "minLength": 0, "maxLength": 3000 }
     },
     "registration": {
-        "firstName": { "required": true, "minLength": 3, "maxLength": 5 },
-        "lastName": { "required": true, "minLength": 3, "maxLength": 5 },
+        "firstName": { "required": true, "minLength": 1, "maxLength": 30 },
+        "lastName": { "required": true, "minLength": 1, "maxLength": 30 },
         "email": { "required": true, "email": true },
-        "password": { "required": true, "minLength": 3, "maxLength": 5 },
-        "city": { "required": true, "minLength": 3, "maxLength": 5 },
-        "street": { "required": true, "minLength": 3, "maxLength": 5 },
+        "password": { "required": true, "minLength": 6, "maxLength": 255 }
+    },
+    "address": {
+        "city": { "required": true, "minLength": 1, "maxLength": 100 },
+        "street": { "required": true, "minLength": 1, "maxLength": 100 },
         "houseNumber": { "required": true, "number": true },
         "zipCode": { "required": true, "number": true },
         "country": { "required": true }
+    },
+    "login": {
+        "email": { "required": true, "email": true },
+        "password": { "required": true, "minLength": 6, "maxLength": 255 }
     }
 }
