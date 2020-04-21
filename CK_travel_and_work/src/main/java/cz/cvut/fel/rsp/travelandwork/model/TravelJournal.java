@@ -14,7 +14,7 @@ public class TravelJournal extends AbstractEntity{
     @Column(nullable = false)
     private int xp_count = 0;
 
-    @Basic(optional = false)
+    //@Basic(optional = false)
     @Column(nullable = false)
     private HashMap<Category, Integer> trip_counter;
 
@@ -87,6 +87,10 @@ public class TravelJournal extends AbstractEntity{
 
     public void addCertificate(AchievementCertificate achievementCertificate) {
         this.certificates.add(achievementCertificate);
+    }
+
+    public boolean hasCertificate(AchievementCertificate achievementCertificate) {
+        return this.certificates.contains(achievementCertificate);
     }
 
     public List<Enrollment> getEnrollments() {
