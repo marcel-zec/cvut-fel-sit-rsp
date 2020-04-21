@@ -2,7 +2,6 @@ package cz.cvut.fel.rsp.travelandwork.rest;
 
 import cz.cvut.fel.rsp.travelandwork.model.AchievementCertificate;
 import cz.cvut.fel.rsp.travelandwork.service.AchievementCertificateService;
-import cz.cvut.fel.rsp.travelandwork.service.AchievementService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +14,13 @@ import java.util.List;
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/achievement/certificate")
-public class AchievementController {
+public class AchievementCertificateController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AchievementController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AchievementCertificateController.class);
     private final AchievementCertificateService achievementCertificateService;
 
     @Autowired
-    public AchievementController(AchievementCertificateService achievementCertificateService) {
+    public AchievementCertificateController(AchievementCertificateService achievementCertificateService) {
         this.achievementCertificateService = achievementCertificateService;
     }
 
