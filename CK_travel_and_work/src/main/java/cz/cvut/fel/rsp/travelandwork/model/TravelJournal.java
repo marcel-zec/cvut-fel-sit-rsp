@@ -13,6 +13,7 @@ public class TravelJournal extends AbstractEntity{
     @Basic(optional = false)
     @Column(nullable = false)
     private int xp_count = 0;
+
     @Basic(optional = false)
     @Column(nullable = false)
     private HashMap<Category, Integer> trip_counter;

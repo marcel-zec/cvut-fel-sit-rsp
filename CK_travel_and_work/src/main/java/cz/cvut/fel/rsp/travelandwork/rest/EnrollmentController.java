@@ -1,6 +1,7 @@
 package cz.cvut.fel.rsp.travelandwork.rest;
 
 import cz.cvut.fel.rsp.travelandwork.dto.EnrollmentDto;
+import cz.cvut.fel.rsp.travelandwork.exception.NotAllowedException;
 import cz.cvut.fel.rsp.travelandwork.security.SecurityUtils;
 import cz.cvut.fel.rsp.travelandwork.service.EnrollmentService;
 import org.slf4j.Logger;
@@ -26,12 +27,12 @@ public class EnrollmentController {
     }
 
     @GetMapping(value = "/complete", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<EnrollmentDto> getAllOfUserFinished(){
+    public List<EnrollmentDto> getAllOfUserFinished() throws NotAllowedException {
         return enrollmentService.findAllOfUserFinished(SecurityUtils.getCurrentUser());
     }
 
     @GetMapping(value = "/active", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<EnrollmentDto> getAllOfUserActiveAndCancel(){
+    public List<EnrollmentDto> getAllOfUserActiveAndCancel() throws NotAllowedException {
         return enrollmentService.findAllOfUserActive(SecurityUtils.getCurrentUser());
     }
 }
