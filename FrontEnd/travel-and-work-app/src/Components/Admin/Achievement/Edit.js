@@ -64,9 +64,9 @@ class Edit extends React.Component {
         }
     };
 
-    submitHandler = (event) => {
+    submitHandler = async (event) => {
         event.preventDefault();
-        this.validateForm();
+        await this.validateForm();
         if (this.state.form.isValid) {
             fetch(
                 "http://localhost:8080/achievement/" +

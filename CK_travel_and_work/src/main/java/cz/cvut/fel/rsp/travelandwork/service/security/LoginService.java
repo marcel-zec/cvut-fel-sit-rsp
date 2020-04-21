@@ -21,10 +21,10 @@ public class LoginService {
 
 
     @Transactional(readOnly = true)
-    public void login(String username, String password) throws AlreadyLoginException {
+    public void login(/*String username*/ String email, String password) throws AlreadyLoginException {
 
         if (SecurityUtils.getCurrentUserDetails() != null) throw new AlreadyLoginException();
-        Authentication auth = new UsernamePasswordAuthenticationToken(username, password);
+        Authentication auth = new UsernamePasswordAuthenticationToken(/*username*/ email, password);
         provider.authenticate(auth);
 
     }

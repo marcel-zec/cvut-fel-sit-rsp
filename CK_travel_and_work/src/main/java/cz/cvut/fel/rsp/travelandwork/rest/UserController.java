@@ -5,6 +5,7 @@ import cz.cvut.fel.rsp.travelandwork.dto.UserDto;
 import cz.cvut.fel.rsp.travelandwork.exception.BadPassword;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
 import cz.cvut.fel.rsp.travelandwork.model.User;
+import cz.cvut.fel.rsp.travelandwork.security.SecurityUtils;
 import cz.cvut.fel.rsp.travelandwork.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,9 +47,16 @@ public class UserController {
 //
 //    }
 
+    //TODO - práva len pre admina
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<UserDto> showCurrentUser() {
+    public List<UserDto> showAll() {
         return userService.findAll();
+    }
+
+//    TODO - dorobiť metodu v service a treba vymyslieť cestu aby sa nebila s getAll
+    @GetMapping(value = "/current", produces = MediaType.APPLICATION_JSON_VALUE)
+    public UserDto showCurrentUser() {
+        return userService.find(SecurityUtils.getCurrentUser().getId());
     }
 
     @PatchMapping(value = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -57,9 +65,9 @@ public class UserController {
     }
 
 
-    @DeleteMapping(value = "{username}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> delete(@PathVariable String username) throws NotFoundException {
-        userService.delete(username);
+    @DeleteMapping(value = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> delete(@PathVariable Long id) throws NotFoundException {
+        userService.delete(id);
         //LOG.debug("User {} successfully removed.");
         //final HttpHeaders headers = RestUtils.createLocationHeaderFromCurrentUri("/current");
         //return new ResponseEntity<>(headers, HttpStatus.OK);

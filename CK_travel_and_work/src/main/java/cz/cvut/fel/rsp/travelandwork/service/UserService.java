@@ -46,22 +46,23 @@ public class UserService {
             user.getAddress().setUser(user);
             addressDao.persist(user.getAddress());
         }
-        if (user.getTravel_journal() != null) {
-            user.getTravel_journal().setUser(user);
-            travelJournalDao.persist(user.getTravel_journal());
+        if (user.getTravel_journal() == null) {
+            TravelJournal tj = new TravelJournal(user);
+            user.setTravel_journal(tj);
+            travelJournalDao.persist(tj);
         }
         dao.update(user);
     }
 
     @Transactional(readOnly = true)
     public boolean exists(String login) {
-        return dao.findByUsername(login) != null;
+        return dao.findByEmail(login) != null;
     }
 
     @Transactional
-    public void delete(String username) throws NotFoundException {
+    public void delete(Long id) throws NotFoundException {
 
-        User user = dao.findByUsername(username);
+        User user = dao.find(id);
         if (user == null) throw new NotFoundException();
 
         user.getAddress().softDelete();
@@ -86,7 +87,7 @@ public class UserService {
     @Transactional
     public void update(User newUser) throws NotFoundException {
         Objects.requireNonNull(newUser);
-        User user = dao.findByUsername(newUser.getUsername());
+        User user = dao.findByEmail(newUser.getEmail());
         //todo vynimka len admin alebo prihlaseny
         if (user == null) throw new NotFoundException();
 
@@ -115,14 +116,13 @@ public class UserService {
         return translateService.translateUser(dao.find(id));
     }
     @Transactional
-    public UserDto findByUsername(String username) {
-        Objects.requireNonNull(username);
-        return translateService.translateUser(dao.findByUsername(username));
+    public UserDto findByEmail(String email) {
+        Objects.requireNonNull(email);
+        return translateService.translateUser(dao.findByEmail(email));
     }
 
     @Transactional
     public List<UserDto> findAll() {
-
         List<UserDto> userDtos = new ArrayList<>();
         for (User user:dao.findAll()) {
             userDtos.add(translateService.translateUser(user));
