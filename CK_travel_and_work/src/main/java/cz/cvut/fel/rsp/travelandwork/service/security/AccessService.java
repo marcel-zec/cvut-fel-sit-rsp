@@ -46,6 +46,11 @@ public class AccessService {
         }
     }
 
+    @Transactional
+    public User getUser(User currentUser){
+        return userDao.find(currentUser.getId());
+    }
+
 
     @Transactional
     public void changePassword(String oldPassword, String newPassword, String newPasswordAgain) throws BadPassword {
