@@ -22,11 +22,11 @@ public class TranslateService {
         if (user.getTravel_journal() != null) {
             TravelJournalDto travelJournalDto = translateTravelJournal(user.getTravel_journal());
             return new UserDto(user.getId(),user.getFirstName(),user.getLastName(),user.getEmail(),
-                    translateAddress(user.getAddress()),travelJournalDto,tripReviewDtos);
+                    translateAddress(user.getAddress()),travelJournalDto,tripReviewDtos, user.getRole());
         }
 
        return new UserDto(user.getId(),user.getFirstName(),user.getLastName(),user.getEmail(),
-                translateAddress(user.getAddress()),null ,tripReviewDtos);
+                translateAddress(user.getAddress()),null ,tripReviewDtos, user.getRole());
     }
 
 

@@ -1,4 +1,4 @@
-package cz.cvut.fel.rsp.travelandwork.environment;
+package cz.cvut.fel.rsp.travelandwork.environment.util;
 
 import cz.cvut.fel.rsp.travelandwork.model.Address;
 import cz.cvut.fel.rsp.travelandwork.model.Role;

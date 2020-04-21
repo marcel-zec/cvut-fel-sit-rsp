@@ -1,4 +1,4 @@
-package cz.cvut.fel.rsp.travelandwork.environment;
+package cz.cvut.fel.rsp.travelandwork.environment.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cz.cvut.fel.rsp.travelandwork.config.AppConfig;
