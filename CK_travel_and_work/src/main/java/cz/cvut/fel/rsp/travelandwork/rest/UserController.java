@@ -53,7 +53,7 @@ public class UserController {
     }
 
 //    TODO - dorobiť metodu v service a treba vymyslieť cestu aby sa nebila s getAll
-//    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 //    public UserDto userDto showCurrentUser() {
 //
 //        return userService.find() ;
