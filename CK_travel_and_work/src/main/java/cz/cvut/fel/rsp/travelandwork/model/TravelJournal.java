@@ -22,7 +22,7 @@ public class TravelJournal extends AbstractEntity{
     private User user;
 
     @ManyToMany
-    private List<Achievement> earnedAchievements;
+    private List<AchievementCertificate> earnedAchievements;
 
     @OneToMany(mappedBy = "travelJournal")
     private List<Enrollment> enrollments;
@@ -50,8 +50,8 @@ public class TravelJournal extends AbstractEntity{
         return user;
     }
 
-    public List<Achievement> getEarnedAchievements() {
-        if (earnedAchievements==null) return earnedAchievements= new ArrayList<Achievement>();
+    public List<AchievementCertificate> getEarnedAchievements() {
+        if (earnedAchievements==null) return earnedAchievements= new ArrayList<AchievementCertificate>();
         return earnedAchievements;
     }
 
@@ -67,7 +67,7 @@ public class TravelJournal extends AbstractEntity{
         this.user = user;
     }
 
-    public void setEarnedAchievements(List<Achievement> earnedAchievements) {
+    public void setEarnedAchievements(List<AchievementCertificate> earnedAchievements) {
         this.earnedAchievements = earnedAchievements;
     }
 

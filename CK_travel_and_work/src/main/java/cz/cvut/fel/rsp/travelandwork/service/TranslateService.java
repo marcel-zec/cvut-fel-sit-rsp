@@ -63,7 +63,7 @@ public class TranslateService {
     }
 
     @Transactional
-    public AchievementDto translateAchievement(Achievement achievement){
+    public AchievementDto translateAchievement(AchievementCertificate achievement){
         Objects.requireNonNull(achievement);
         List<Long> trips = new ArrayList<>();
         List<Long> owned_travel_journals = new ArrayList<>();

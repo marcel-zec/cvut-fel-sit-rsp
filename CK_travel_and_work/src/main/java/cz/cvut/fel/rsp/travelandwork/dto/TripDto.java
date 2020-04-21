@@ -1,8 +1,5 @@
 package cz.cvut.fel.rsp.travelandwork.dto;
 
-import cz.cvut.fel.rsp.travelandwork.model.Achievement;
-import cz.cvut.fel.rsp.travelandwork.model.Category;
-
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.List;

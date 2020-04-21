@@ -68,14 +68,14 @@ public class Trip extends AbstractEntity {
             name = "required_achievement_trip",
             joinColumns = @JoinColumn(name = "trip_id"),
             inverseJoinColumns = @JoinColumn(name = "achievement_id"))
-    private List<Achievement> required_achievements;
+    private List<AchievementCertificate> required_achievements;
 
     @ManyToMany
     @JoinTable(
             name = "gain_achievement_trip",
             joinColumns = @JoinColumn(name = "trip_id"),
             inverseJoinColumns = @JoinColumn(name = "achievement_id"))
-    private List<Achievement> gain_achievements;
+    private List<AchievementCertificate> gain_achievements;
 
     @OrderBy("from_date ASC")
     @OneToMany(mappedBy = "trip")
@@ -196,25 +196,25 @@ public class Trip extends AbstractEntity {
     }
 
 
-    public List<Achievement> getRequired_achievements() {
+    public List<AchievementCertificate> getRequired_achievements() {
 
         return required_achievements;
     }
 
 
-    public void setRequired_achievements(List<Achievement> required_achievements) {
+    public void setRequired_achievements(List<AchievementCertificate> required_achievements) {
 
         this.required_achievements = required_achievements;
     }
 
 
-    public List<Achievement> getGain_achievements() {
+    public List<AchievementCertificate> getGain_achievements() {
 
         return gain_achievements;
     }
 
 
-    public void setGain_achievements(List<Achievement> gain_achievements) {
+    public void setGain_achievements(List<AchievementCertificate> gain_achievements) {
 
         this.gain_achievements = gain_achievements;
     }
@@ -231,14 +231,14 @@ public class Trip extends AbstractEntity {
         this.reviews = reviews;
     }
 
-    public void addRequiredAchievement(Achievement achievement){
+    public void addRequiredAchievement(AchievementCertificate achievement){
         if (this.required_achievements == null) required_achievements = new ArrayList<>();
         if(!this.required_achievements.contains(achievement)){
             this.required_achievements.add(achievement);
         }
     }
 
-    public void addGainAchievement(Achievement achievement){
+    public void addGainAchievement(AchievementCertificate achievement){
         if (this.gain_achievements == null) gain_achievements = new ArrayList<>();
         if(!this.gain_achievements.contains(achievement)){
             this.gain_achievements.add(achievement);

@@ -1,6 +1,7 @@
 package cz.cvut.fel.rsp.travelandwork.rest;
 
-import cz.cvut.fel.rsp.travelandwork.model.Achievement;
+import cz.cvut.fel.rsp.travelandwork.model.AchievementCertificate;
+import cz.cvut.fel.rsp.travelandwork.service.AchievementCertificateService;
 import cz.cvut.fel.rsp.travelandwork.service.AchievementService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,37 +14,37 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping("/achievement")
+@RequestMapping("/achievement/certificate")
 public class AchievementController {
 
     private static final Logger LOG = LoggerFactory.getLogger(AchievementController.class);
-    private final AchievementService achievementService;
+    private final AchievementCertificateService achievementCertificateService;
 
     @Autowired
-    public AchievementController(AchievementService achievementService) {
-        this.achievementService = achievementService;
+    public AchievementController(AchievementCertificateService achievementCertificateService) {
+        this.achievementCertificateService = achievementCertificateService;
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Achievement get(@PathVariable Long id){
-        return achievementService.find(id);
+    public AchievementCertificate get(@PathVariable Long id){
+        return achievementCertificateService.find(id);
     }
 
     @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody Achievement achievement){
-        achievementService.update(achievement);
+    public void update(@RequestBody AchievementCertificate achievement){
+        achievementCertificateService.update(achievement);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Achievement> getAll() {
-        return achievementService.findAll();
+    public List<AchievementCertificate> getAll() {
+        return achievementCertificateService.findAll();
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody Achievement achievement){
-        achievementService.create(achievement);
+    public void create(@RequestBody AchievementCertificate achievement){
+        achievementCertificateService.create(achievement);
     }
 }
 
