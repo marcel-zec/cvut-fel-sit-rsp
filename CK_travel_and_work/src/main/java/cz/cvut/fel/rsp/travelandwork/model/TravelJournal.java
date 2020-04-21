@@ -13,6 +13,7 @@ public class TravelJournal extends AbstractEntity{
     @Basic(optional = false)
     @Column(nullable = false)
     private int xp_count = 0;
+
     @Basic(optional = false)
     @Column(nullable = false)
     private HashMap<Category, Integer> trip_counter;
@@ -22,7 +23,13 @@ public class TravelJournal extends AbstractEntity{
     private User user;
 
     @ManyToMany
-    private List<AchievementCertificate> earnedAchievements;
+    private List<AchievementCertificate> certificates;
+
+    @ManyToMany
+    private List<AchievementCategorized> earnedAchievementsCategorized;
+
+    @ManyToMany
+    private List<AchievementSpecial> earnedAchievementsSpecial;
 
     @OneToMany(mappedBy = "travelJournal")
     private List<Enrollment> enrollments;
@@ -50,9 +57,9 @@ public class TravelJournal extends AbstractEntity{
         return user;
     }
 
-    public List<AchievementCertificate> getEarnedAchievements() {
-        if (earnedAchievements==null) return earnedAchievements= new ArrayList<AchievementCertificate>();
-        return earnedAchievements;
+    public List<AchievementCertificate> getCertificates() {
+        if (certificates ==null) return certificates = new ArrayList<AchievementCertificate>();
+        return certificates;
     }
 
     public void setXp_count(int xp_count) {
@@ -67,8 +74,8 @@ public class TravelJournal extends AbstractEntity{
         this.user = user;
     }
 
-    public void setEarnedAchievements(List<AchievementCertificate> earnedAchievements) {
-        this.earnedAchievements = earnedAchievements;
+    public void setCertificates(List<AchievementCertificate> earnedAchievements) {
+        this.certificates = earnedAchievements;
     }
 
     public List<Enrollment> getEnrollments() {

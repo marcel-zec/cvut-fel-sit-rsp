@@ -287,8 +287,10 @@ public class Trip extends AbstractEntity {
                 ", location='" + location + '\'' +
                 ", required_level=" + required_level +
                 ", category=" + category +
-                ", required_achievements=" + required_achievements +
-                ", gain_achievements=" + gain_achievements +
+                ", required_certificates=" + required_certificates +
+                ", required_achievements_special=" + required_achievements_special +
+                ", required_achievements_categorized=" + required_achievements_categorized +
+                ", gain_achievements_special=" + gain_achievements_special +
                 ", sessions=" + sessions +
                 ", reviews=" + reviews +
                 '}';

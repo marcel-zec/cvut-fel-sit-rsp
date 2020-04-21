@@ -89,7 +89,7 @@ public class TranslateService {
 
 
         travelJournal.getEnrollments().forEach(enrollment -> enrollmentDtos.add(translateEnrollment(enrollment)));
-        travelJournal.getEarnedAchievements().forEach(achievement -> achievementDtos.add(translateAchievement(achievement)));
+        travelJournal.getCertificates().forEach(achievement -> achievementDtos.add(translateAchievement(achievement)));
 
         return new TravelJournalDto(travelJournal.getId(), travelJournal.getXp_count(), trip_counter,travelJournal.getUser().getId(),achievementDtos,enrollmentDtos);
     }
