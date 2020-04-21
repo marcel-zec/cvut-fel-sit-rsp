@@ -34,16 +34,24 @@ public class TravelJournal extends AbstractEntity{
     @OneToMany(mappedBy = "travelJournal")
     private List<Enrollment> enrollments;
 
+    public TravelJournal() {
+        this.user = new User();
+        this.trip_counter = new HashMap<Category,Integer>();
+        this.enrollments = new ArrayList<Enrollment>();
+        this.earnedAchievementsCategorized = new ArrayList<AchievementCategorized>();
+        this.earnedAchievementsSpecial = new ArrayList<AchievementSpecial>();
+        this.certificates = new ArrayList<AchievementCertificate>();
+    }
 
     public TravelJournal(User user) {
         this.user = user;
         this.trip_counter = new HashMap<Category,Integer>();
         this.enrollments = new ArrayList<Enrollment>();
+        this.earnedAchievementsCategorized = new ArrayList<AchievementCategorized>();
+        this.earnedAchievementsSpecial = new ArrayList<AchievementSpecial>();
+        this.certificates = new ArrayList<AchievementCertificate>();
     }
 
-
-    public TravelJournal() {
-    }
 
     public int getXp_count() {
         return xp_count;
@@ -55,11 +63,6 @@ public class TravelJournal extends AbstractEntity{
 
     public User getUser() {
         return user;
-    }
-
-    public List<AchievementCertificate> getCertificates() {
-        if (certificates ==null) return certificates = new ArrayList<AchievementCertificate>();
-        return certificates;
     }
 
     public void setXp_count(int xp_count) {
@@ -74,8 +77,16 @@ public class TravelJournal extends AbstractEntity{
         this.user = user;
     }
 
+    public List<AchievementCertificate> getCertificates() {
+        return certificates;
+    }
+
     public void setCertificates(List<AchievementCertificate> earnedAchievements) {
         this.certificates = earnedAchievements;
+    }
+
+    public void addCertificate(AchievementCertificate achievementCertificate) {
+        this.certificates.add(achievementCertificate);
     }
 
     public List<Enrollment> getEnrollments() {
@@ -88,7 +99,29 @@ public class TravelJournal extends AbstractEntity{
         this.enrollments = enrollments;
     }
 
+    public List<AchievementCategorized> getEarnedAchievementsCategorized() {
+        return earnedAchievementsCategorized;
+    }
 
+    public void setEarnedAchievementsCategorized(List<AchievementCategorized> earnedAchievementsCategorized) {
+        this.earnedAchievementsCategorized = earnedAchievementsCategorized;
+    }
+
+    public void addEarnedAchievementCategorized(AchievementCategorized achievementCategorized) {
+        this.earnedAchievementsCategorized.add(achievementCategorized);
+    }
+
+    public List<AchievementSpecial> getEarnedAchievementsSpecial() {
+        return earnedAchievementsSpecial;
+    }
+
+    public void setEarnedAchievementsSpecial(List<AchievementSpecial> earnedAchievementsSpecial) {
+        this.earnedAchievementsSpecial = earnedAchievementsSpecial;
+    }
+
+    public void addEarnedAchievementSpecial(AchievementSpecial achievementSpecial) {
+        this.earnedAchievementsSpecial.add(achievementSpecial);
+    }
     /**
      * Adds trip to travel journal
      * If travel journal already contains the category, adds one more.
