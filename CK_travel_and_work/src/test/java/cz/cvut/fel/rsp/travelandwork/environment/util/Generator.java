@@ -1,12 +1,10 @@
 package cz.cvut.fel.rsp.travelandwork.environment.util;
 
-import cz.cvut.fel.rsp.travelandwork.model.Address;
-import cz.cvut.fel.rsp.travelandwork.model.Role;
-import cz.cvut.fel.rsp.travelandwork.model.Trip;
-import cz.cvut.fel.rsp.travelandwork.model.User;
+import cz.cvut.fel.rsp.travelandwork.model.*;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -46,6 +44,7 @@ public class Generator {
         String email = username + "@imejl.cz";
         final User user = new User(generatePassword(), "Tester", "Testovany", email, Role.USER);
         user.setAddress(generateAddress(user));
+        //TODO: vygenerovat prazdny list reviewů ?
         return user;
     }
 

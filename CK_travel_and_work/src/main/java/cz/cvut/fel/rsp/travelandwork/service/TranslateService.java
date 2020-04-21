@@ -17,7 +17,10 @@ public class TranslateService {
     public UserDto translateUser(User user) {
         Objects.requireNonNull(user);
         List<TripReviewDto> tripReviewDtos = new ArrayList<>();
-        user.getTripReviews().forEach(review-> tripReviewDtos.add(translateTripReview(review)));
+        if(user.getTripReviews() != null) { // kdyz tripReviews neni definovane -> melo by to byt definovane, ale prazdne, pokud uzivatel zadne reviews este nema.
+            // Mozna dodefinovat ten list primo pri vytvoreni usera?    - Anicka
+            user.getTripReviews().forEach(review -> tripReviewDtos.add(translateTripReview(review)));
+        }
 
         if (user.getTravel_journal() != null) {
             TravelJournalDto travelJournalDto = translateTravelJournal(user.getTravel_journal());
