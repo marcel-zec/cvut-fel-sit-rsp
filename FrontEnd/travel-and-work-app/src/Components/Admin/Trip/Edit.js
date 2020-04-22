@@ -124,7 +124,7 @@ class Edit extends React.Component {
         }
     };
 
-    sessionDeleteHandler = (session) => {
+    sessionDeleteHandler = async (session) => {
         let newState = [...this.state.trip.sessions];
         const found = newState.findIndex((element) => {
             return element.index == session.index;
@@ -132,7 +132,7 @@ class Edit extends React.Component {
         if (found > -1) {
             newState.splice(found, 1);
         }
-        this.setState((oldState) => ({
+        await this.setState((oldState) => ({
             trip: {
                 ...oldState.trip,
                 sessions: newState,
@@ -141,7 +141,8 @@ class Edit extends React.Component {
         console.log(this.state.trip.sessions);
     };
 
-    inputSessionUpdateHandler = (session) => {
+    inputSessionUpdateHandler = async (session) => {
+        console.log("input session update, trip before update");
         console.log(this.state.trip);
         let newState = { ...this.state };
         const found = newState.trip.sessions.findIndex((element) => {
@@ -158,9 +159,9 @@ class Edit extends React.Component {
             console.log("new");
             console.log(newState);
         }
-        this.setState(newState);
-        console.log("bavi?");
-        console.log(this.state);
+        await this.setState(newState);
+        console.log("input session update, trip after update");
+        console.log(this.state.trip);
     };
 
     validateForm = async () => {
@@ -173,6 +174,8 @@ class Edit extends React.Component {
         event.preventDefault();
         await this.validateForm();
         if (this.state.form.isValid) {
+            console.log("before patch");
+            console.log(this.state.trip);
             fetch("http://localhost:8080/trip/" + this.props.match.params.id, {
                 method: "PATCH",
                 headers: {
