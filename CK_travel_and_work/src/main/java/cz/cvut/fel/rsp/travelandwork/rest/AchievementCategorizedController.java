@@ -1,7 +1,6 @@
 package cz.cvut.fel.rsp.travelandwork.rest;
 
 import cz.cvut.fel.rsp.travelandwork.model.AchievementCategorized;
-import cz.cvut.fel.rsp.travelandwork.model.AchievementCertificate;
 import cz.cvut.fel.rsp.travelandwork.service.AchievementCategorizedService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
