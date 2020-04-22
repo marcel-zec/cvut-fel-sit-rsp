@@ -1,13 +1,11 @@
 package cz.cvut.fel.rsp.travelandwork.rest;
 
-import com.google.api.client.util.SecurityUtils;
 import cz.cvut.fel.rsp.travelandwork.dto.RequestWrapper;
 import cz.cvut.fel.rsp.travelandwork.dto.UserDto;
 import cz.cvut.fel.rsp.travelandwork.exception.BadPassword;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
 import cz.cvut.fel.rsp.travelandwork.exception.UnauthorizedException;
 import cz.cvut.fel.rsp.travelandwork.model.User;
-import cz.cvut.fel.rsp.travelandwork.security.SecurityUtils;
 import cz.cvut.fel.rsp.travelandwork.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,15 +73,6 @@ public class UserController {
         //return new ResponseEntity<>(headers, HttpStatus.OK);
         return null;
     }
-
-
-
-
-
-
-
-
-
 
 }
 
