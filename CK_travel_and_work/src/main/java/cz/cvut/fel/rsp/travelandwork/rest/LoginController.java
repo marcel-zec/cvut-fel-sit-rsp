@@ -1,5 +1,6 @@
 package cz.cvut.fel.rsp.travelandwork.rest;
 
+import cz.cvut.fel.rsp.travelandwork.dto.UserDto;
 import cz.cvut.fel.rsp.travelandwork.exception.AlreadyLoginException;
 import cz.cvut.fel.rsp.travelandwork.service.security.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials="true", allowedHeaders = "*")
 public class LoginController {
 
     private LoginService service;
@@ -23,8 +24,8 @@ public class LoginController {
     }
 
     @PostMapping(value = "/login",produces = MediaType.APPLICATION_JSON_VALUE)
-    public void login(@RequestBody HashMap<String,String> request) throws AlreadyLoginException {
+    public UserDto login(@RequestBody HashMap<String,String> request) throws AlreadyLoginException {
 
-        service.login(request.get("email"),request.get("password"));
+        return service.login(request.get("email"),request.get("password"));
     }
 }

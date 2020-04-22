@@ -129,15 +129,6 @@ public class User extends AbstractEntity {
         this.travel_journal = travel_journal;
     }
 
-    //    public UserRole getUserRole() {
-//        return userRole;
-//    }
-//
-//    public void setUserRole(UserRole userRole) {
-//        this.userRole = userRole;
-//    }
-
-
     public Address getAddress() {
 
         return address;
@@ -150,15 +141,16 @@ public class User extends AbstractEntity {
 
 
     public List<TripReview> getTripReviews() {
-
+        if (tripReviews == null) tripReviews = new ArrayList<TripReview>();
         return tripReviews;
     }
 
     public void addReview(TripReview tripReview) {
 
-         if (tripReviews == null) tripReviews = new ArrayList<TripReview>();
-         tripReviews.add(tripReview);
+        if (tripReviews == null) tripReviews = new ArrayList<TripReview>();
+        tripReviews.add(tripReview);
     }
+
 
     @Override
     public String toString() {

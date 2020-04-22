@@ -1,11 +1,14 @@
 package cz.cvut.fel.rsp.travelandwork.rest;
 
+import com.google.api.client.util.SecurityUtils;
 import cz.cvut.fel.rsp.travelandwork.dto.RequestWrapper;
 import cz.cvut.fel.rsp.travelandwork.dto.UserDto;
 import cz.cvut.fel.rsp.travelandwork.exception.BadPassword;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
+import cz.cvut.fel.rsp.travelandwork.exception.UnauthorizedException;
 import cz.cvut.fel.rsp.travelandwork.model.User;
 import cz.cvut.fel.rsp.travelandwork.service.UserService;
+import org.apache.catalina.security.SecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +22,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials="true")
 public class UserController {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
@@ -52,12 +55,11 @@ public class UserController {
         return userService.findAll();
     }
 
-//    TODO - dorobiť metodu v service a treba vymyslieť cestu aby sa nebila s getAll
-//    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-//    public UserDto userDto showCurrentUser() {
-//
-//        return userService.find() ;
-//    }
+
+    @GetMapping(value= "current", produces = MediaType.APPLICATION_JSON_VALUE)
+    public UserDto showCurrentUser() throws UnauthorizedException {
+        return userService.showCurrentUser();
+    }
 
     @PatchMapping(value = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody User user) {
