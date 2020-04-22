@@ -13,6 +13,7 @@ public class TravelJournal extends AbstractEntity{
     @Basic(optional = false)
     @Column(nullable = false)
     private int xp_count = 0;
+
     @Basic(optional = false)
     @Column(nullable = false)
     private HashMap<Category, Integer> trip_counter;
@@ -110,5 +111,15 @@ public class TravelJournal extends AbstractEntity{
 
     private void addsXp(int xp){
         this.xp_count += xp;
+    }
+
+    @Override
+    public String toString() {
+        return "TravelJournal{" +
+                "xp_count=" + xp_count +
+                ", trip_counter=" + trip_counter +
+                ", earnedAchievements=" + earnedAchievements +
+                ", enrollments=" + enrollments +
+                '}';
     }
 }

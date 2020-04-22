@@ -38,15 +38,15 @@ public class Enrollment extends AbstractEntity {
             inverseJoinColumns = @JoinColumn(name = "achievement_id"))
     private List<Achievement> recieved_achievements;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne( optional = false)
     @JoinColumn(name = "travelJournal_id", nullable = false)
     private TravelJournal travelJournal;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne( optional = false)
     @JoinColumn(name = "trip_id", nullable = false)
     private Trip trip;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne( optional = false)
     @JoinColumn(name = "tripSession_id", nullable = false)
     private TripSession tripSession;
 
@@ -115,5 +115,19 @@ public class Enrollment extends AbstractEntity {
     public List<Achievement> getRecieved_achievements() {
 
         return recieved_achievements;
+    }
+
+    @Override
+    public String toString() {
+        return "Enrollment{" +
+                "enrollDate=" + enrollDate +
+                ", deposit_was_paid=" + deposit_was_paid +
+                ", actual_xp_reward=" + actual_xp_reward +
+                ", state=" + state +
+                ", recieved_achievements=" + recieved_achievements +
+                ", travelJournal=" + travelJournal +
+                ", trip=" + trip +
+                ", tripSession=" + tripSession +
+                '}';
     }
 }

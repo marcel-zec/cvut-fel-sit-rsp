@@ -13,11 +13,13 @@ public class Address extends AbstractEntity {
 
     @Basic(optional = false)
     @Column(nullable = false)
+    @Size(max = 100, min = 1)
     @NotBlank(message = "City cannot be blank")
     private String city;
 
     @Basic(optional = false)
     @Column(nullable = false)
+    @Size(max = 100, min = 1)
     @NotBlank(message = "Street cannot be blank")
     private String street;
 
@@ -103,5 +105,16 @@ public class Address extends AbstractEntity {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "city='" + city + '\'' +
+                ", street='" + street + '\'' +
+                ", houseNumber=" + houseNumber +
+                ", zipCode='" + zipCode + '\'' +
+                ", country='" + country + '\'' +
+                '}';
     }
 }

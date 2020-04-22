@@ -5,6 +5,7 @@ import cz.cvut.fel.rsp.travelandwork.exception.BadDateException;
 import cz.cvut.fel.rsp.travelandwork.exception.MissingVariableException;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
 import cz.cvut.fel.rsp.travelandwork.model.Trip;
+import cz.cvut.fel.rsp.travelandwork.security.SecurityUtils;
 import cz.cvut.fel.rsp.travelandwork.service.TripService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,11 +85,11 @@ public class TripController {
 
     @GetMapping(value = "/cannotAfford", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Trip> showAllTripsCantUserAfford() {
-        return tripService.findNotAfford();
+        return tripService.findNotAfford(SecurityUtils.getCurrentUser());
     }
 
     @GetMapping(value = "/canAfford", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Trip> showAllTripsCanUserAfford() {
-        return tripService.findAfford();
+        return tripService.findAfford(SecurityUtils.getCurrentUser());
     }
 }

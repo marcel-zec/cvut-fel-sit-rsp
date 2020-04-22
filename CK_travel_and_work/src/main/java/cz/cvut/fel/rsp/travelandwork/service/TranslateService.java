@@ -15,6 +15,7 @@ public class TranslateService {
 
     @Transactional
     public UserDto translateUser(User user) {
+        System.out.println(user.toString());
         Objects.requireNonNull(user);
         List<TripReviewDto> tripReviewDtos = new ArrayList<>();
         List<TripReview> tripReviews = user.getTripReviews();
@@ -25,11 +26,11 @@ public class TranslateService {
         if (user.getTravel_journal() != null) {
             TravelJournalDto travelJournalDto = translateTravelJournal(user.getTravel_journal());
             return new UserDto(user.getId(),user.getFirstName(),user.getLastName(),user.getEmail(),
-                    translateAddress(user.getAddress()),travelJournalDto,tripReviewDtos);
+                    translateAddress(user.getAddress()),travelJournalDto,tripReviewDtos, user.getRole());
         }
 
        return new UserDto(user.getId(),user.getFirstName(),user.getLastName(),user.getEmail(),
-                translateAddress(user.getAddress()),null ,tripReviewDtos);
+                translateAddress(user.getAddress()),null,tripReviewDtos, user.getRole());
     }
 
 

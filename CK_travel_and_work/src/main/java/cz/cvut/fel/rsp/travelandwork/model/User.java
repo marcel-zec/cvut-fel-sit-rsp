@@ -27,6 +27,7 @@ public class User extends AbstractEntity {
 
     @Basic(optional = false)
     @Column(nullable = false)
+    @Size(max = 30, min = 1, message = "Last name is in incorrect format.")
     @NotBlank(message = "Last name cannot be blank")
     private String lastName;
 
@@ -129,13 +130,15 @@ public class User extends AbstractEntity {
         this.travel_journal = travel_journal;
     }
 
+
     public Address getAddress() {
 
         return address;
     }
 
 
-    public TravelJournal getTravel_journal() {
+    public TravelJournal getTravel_journal()
+    {
         return travel_journal;
     }
 
@@ -147,10 +150,9 @@ public class User extends AbstractEntity {
 
     public void addReview(TripReview tripReview) {
 
-        if (tripReviews == null) tripReviews = new ArrayList<TripReview>();
-        tripReviews.add(tripReview);
+         if (tripReviews == null) tripReviews = new ArrayList<TripReview>();
+         tripReviews.add(tripReview);
     }
-
 
     @Override
     public String toString() {

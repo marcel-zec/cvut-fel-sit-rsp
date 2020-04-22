@@ -10,6 +10,8 @@ import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
 import cz.cvut.fel.rsp.travelandwork.model.Trip;
 import cz.cvut.fel.rsp.travelandwork.model.TripReview;
 import cz.cvut.fel.rsp.travelandwork.model.TripSession;
+import cz.cvut.fel.rsp.travelandwork.model.User;
+import cz.cvut.fel.rsp.travelandwork.service.security.AccessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,14 +27,15 @@ public class TripService {
     private final TripSessionDao tripSessionDao;
     private final TripReviewDao tripReviewDao;
     private final TranslateService translateService;
+    private final AccessService accessService;
 
     @Autowired
-    public TripService(TripDao tripDao, TripSessionDao tripSessionDao, TripReviewDao tripReviewDao, TranslateService translateService) {
+    public TripService(TripDao tripDao, TripSessionDao tripSessionDao, TripReviewDao tripReviewDao, TranslateService translateService, AccessService accessService) {
         this.tripDao = tripDao;
         this.tripSessionDao = tripSessionDao;
         this.tripReviewDao = tripReviewDao;
         this.translateService = translateService;
-
+        this.accessService = accessService;
     }
 
     @Transactional
@@ -83,13 +86,15 @@ public class TripService {
     }
 
     @Transactional
-    public List<Trip> findAfford() {
-        List<Trip> trips;
+    public List<Trip> findAfford(User current_user) {
+        User user = accessService.getUser(current_user);
+        //int level = user.getTravel_journal().
+        //List<Trip> trips ;
         return null;
     }
 
     @Transactional
-    public List<Trip> findNotAfford() {
+    public List<Trip> findNotAfford(User current_user) {
         List<Trip> trips;
         return null;
     }
