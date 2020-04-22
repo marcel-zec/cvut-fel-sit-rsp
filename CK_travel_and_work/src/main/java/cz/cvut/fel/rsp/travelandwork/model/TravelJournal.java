@@ -112,4 +112,14 @@ public class TravelJournal extends AbstractEntity{
     private void addsXp(int xp){
         this.xp_count += xp;
     }
+
+    @Override
+    public String toString() {
+        return "TravelJournal{" +
+                "xp_count=" + xp_count +
+                ", trip_counter=" + trip_counter +
+                ", earnedAchievements=" + earnedAchievements +
+                ", enrollments=" + enrollments +
+                '}';
+    }
 }

@@ -96,5 +96,14 @@ public class Achievement extends AbstractEntity{
         this.trips = trips;
     }
 
-
+    @Override
+    public String toString() {
+        return "Achievement{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", icon='" + icon + '\'' +
+                ", trips=" + trips +
+                ", owned_travel_journals=" + owned_travel_journals +
+                '}';
+    }
 }

@@ -106,4 +106,16 @@ public class TravelJournalDto {
 
         this.enrollments = enrollments;
     }
+
+    @Override
+    public String toString() {
+        return "TravelJournalDto{" +
+                "id=" + id +
+                ", xp_count=" + xp_count +
+                ", trip_counter=" + trip_counter +
+                ", userId=" + userId +
+                ", earnedAchievements=" + earnedAchievements +
+                ", enrollments=" + enrollments +
+                '}';
+    }
 }

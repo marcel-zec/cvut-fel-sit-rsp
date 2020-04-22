@@ -106,4 +106,15 @@ public class Address extends AbstractEntity {
     public void setUser(User user) {
         this.user = user;
     }
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "city='" + city + '\'' +
+                ", street='" + street + '\'' +
+                ", houseNumber=" + houseNumber +
+                ", zipCode='" + zipCode + '\'' +
+                ", country='" + country + '\'' +
+                '}';
+    }
 }

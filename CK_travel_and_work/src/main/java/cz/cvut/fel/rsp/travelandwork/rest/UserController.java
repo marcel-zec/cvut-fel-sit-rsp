@@ -4,8 +4,8 @@ import cz.cvut.fel.rsp.travelandwork.dto.RequestWrapper;
 import cz.cvut.fel.rsp.travelandwork.dto.UserDto;
 import cz.cvut.fel.rsp.travelandwork.exception.BadPassword;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
+import cz.cvut.fel.rsp.travelandwork.exception.UnauthorizedException;
 import cz.cvut.fel.rsp.travelandwork.model.User;
-import cz.cvut.fel.rsp.travelandwork.security.SecurityUtils;
 import cz.cvut.fel.rsp.travelandwork.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials="true")
 public class UserController {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
@@ -53,10 +53,10 @@ public class UserController {
         return userService.findAll();
     }
 
-//    TODO - dorobiť metodu v service a treba vymyslieť cestu aby sa nebila s getAll
-    @GetMapping(value = "/current", produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserDto showCurrentUser() {
-        return userService.find(SecurityUtils.getCurrentUser().getId());
+
+    @GetMapping(value= "current", produces = MediaType.APPLICATION_JSON_VALUE)
+    public UserDto showCurrentUser() throws UnauthorizedException {
+        return userService.showCurrentUser();
     }
 
     @PatchMapping(value = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -73,15 +73,6 @@ public class UserController {
         //return new ResponseEntity<>(headers, HttpStatus.OK);
         return null;
     }
-
-
-
-
-
-
-
-
-
 
 }
 

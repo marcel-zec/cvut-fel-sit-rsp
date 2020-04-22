@@ -10,96 +10,121 @@ import { Row, Col } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import logo from "../Files/images/logo.png";
+import { appContext } from "../appContext";
 
 class Navigation extends React.Component {
-  render() {
-    return (
-      <header>
-        <Container className="navigation">
-          <Navbar expand="lg">
-            <Col>
-              <Navbar.Brand>
-                <img src={logo} className="logo" />
-                <NavLink to="/">Travel&Work</NavLink>
-              </Navbar.Brand>
-            </Col>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-              <Col xs={9}>
-                <Form inline>
-                  <FormControl
-                    type="text"
-                    placeholder="Search"
-                    className="mr-sm-2"
-                  />
-                  <Button variant="outline-success">Search</Button>
-                </Form>
-              </Col>
-              <Col>
-                <Nav className="mr-auto">
-                  <Col>
+    static contextType = appContext;
+
+    render() {
+        let homeButton =
+            this.context.user === null ? null : (
+                <Col>
                     <Nav.Link>
-                      <NavLink to="/profile">Home</NavLink>
+                        <NavLink to="/profile">
+                            {this.context.user.email}
+                        </NavLink>
                     </Nav.Link>
-                  </Col>
-                  <Col>
-                    <NavDropdown title="" id="basic-nav-dropdown">
-                      <NavDropdown.Item>XP</NavDropdown.Item>
-                      <NavDropdown.Divider />
-                      <NavDropdown.Item>
-                        <NavLink to="/profile/achievments">
-                          My achievments <FontAwesomeIcon icon="trophy" />
-                        </NavLink>
-                      </NavDropdown.Item>
-                      <NavDropdown.Item>
-                        <NavLink to="/profile/trips">
-                          My trips
-                          <FontAwesomeIcon icon="suitcase" />
-                        </NavLink>
-                      </NavDropdown.Item>
-                      <NavDropdown.Item>
-                        <NavLink to="/profile/details">
-                          Settings
-                          <FontAwesomeIcon icon="cog" />
-                        </NavLink>
-                      </NavDropdown.Item>
-                      <NavDropdown.Divider />
-                      <NavDropdown.Item>
-                        <NavLink to="/trip">Trips</NavLink>
-                      </NavDropdown.Item>
-                      <NavDropdown.Item>
-                        <NavLink to="/user">Users</NavLink>
-                      </NavDropdown.Item>
-                      <NavDropdown.Item>
-                        <NavLink to="/achievement">Achievements</NavLink>
-                      </NavDropdown.Item>
-                      <NavDropdown.Item>
-                        <NavLink to="/category">Categories</NavLink>
-                      </NavDropdown.Item>
-                      <NavDropdown.Divider />
-                      <NavDropdown.Item>
-                        <NavLink to="/">
-                          Log out
-                          <FontAwesomeIcon icon="power-off" />
-                        </NavLink>
-                      </NavDropdown.Item>
-                      <NavDropdown.Item>
-                        <NavLink to="/register">
-                          Register
-                          <FontAwesomeIcon icon="user" />
-                        </NavLink>
-                      </NavDropdown.Item>
-                    </NavDropdown>
-                  </Col>
-                </Nav>
-              </Col>
-            </Navbar.Collapse>
-          </Navbar>
-          <Row></Row>
-        </Container>
-      </header>
-    );
-  }
+                </Col>
+            );
+        return (
+            <header>
+                <Container className="navigation">
+                    <Navbar expand="lg">
+                        <Col>
+                            <Navbar.Brand>
+                                <img src={logo} className="logo" />
+                                <NavLink to="/">Travel&Work</NavLink>
+                            </Navbar.Brand>
+                        </Col>
+                        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                        <Navbar.Collapse id="basic-navbar-nav">
+                            <Col xs={9}>
+                                <Form inline>
+                                    <FormControl
+                                        type="text"
+                                        placeholder="Search"
+                                        className="mr-sm-2"
+                                    />
+                                    <Button variant="outline-success">
+                                        Search
+                                    </Button>
+                                </Form>
+                            </Col>
+                            {homeButton}
+                            <Col>
+                                <Nav className="mr-auto">
+                                    <Col>
+                                        <NavDropdown
+                                            title=""
+                                            id="basic-nav-dropdown"
+                                        >
+                                            <NavDropdown.Item>
+                                                XP
+                                            </NavDropdown.Item>
+                                            <NavDropdown.Divider />
+                                            <NavDropdown.Item>
+                                                <NavLink to="/profile/achievments">
+                                                    My achievments{" "}
+                                                    <FontAwesomeIcon icon="trophy" />
+                                                </NavLink>
+                                            </NavDropdown.Item>
+                                            <NavDropdown.Item>
+                                                <NavLink to="/profile/trips">
+                                                    My trips
+                                                    <FontAwesomeIcon icon="suitcase" />
+                                                </NavLink>
+                                            </NavDropdown.Item>
+                                            <NavDropdown.Item>
+                                                <NavLink to="/profile/details">
+                                                    Settings
+                                                    <FontAwesomeIcon icon="cog" />
+                                                </NavLink>
+                                            </NavDropdown.Item>
+                                            <NavDropdown.Divider />
+                                            <NavDropdown.Item>
+                                                <NavLink to="/trip">
+                                                    Trips
+                                                </NavLink>
+                                            </NavDropdown.Item>
+                                            <NavDropdown.Item>
+                                                <NavLink to="/user">
+                                                    Users
+                                                </NavLink>
+                                            </NavDropdown.Item>
+                                            <NavDropdown.Item>
+                                                <NavLink to="/achievement">
+                                                    Achievements
+                                                </NavLink>
+                                            </NavDropdown.Item>
+                                            <NavDropdown.Item>
+                                                <NavLink to="/category">
+                                                    Categories
+                                                </NavLink>
+                                            </NavDropdown.Item>
+                                            <NavDropdown.Divider />
+                                            <NavDropdown.Item>
+                                                <NavLink to="/">
+                                                    Log out
+                                                    <FontAwesomeIcon icon="power-off" />
+                                                </NavLink>
+                                            </NavDropdown.Item>
+                                            <NavDropdown.Item>
+                                                <NavLink to="/register">
+                                                    Register
+                                                    <FontAwesomeIcon icon="user" />
+                                                </NavLink>
+                                            </NavDropdown.Item>
+                                        </NavDropdown>
+                                    </Col>
+                                </Nav>
+                            </Col>
+                        </Navbar.Collapse>
+                    </Navbar>
+                    <Row></Row>
+                </Container>
+            </header>
+        );
+    }
 }
 
 export default Navigation;

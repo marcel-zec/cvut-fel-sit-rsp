@@ -8,7 +8,13 @@ import {
     validationClassName,
 } from "../../Validator";
 import MyAlert from "../SmartGadgets/MyAlert";
+import { withRouter } from "react-router-dom";
+import { appContext } from "../../appContext";
+import Cookies from "js-cookie";
+
 class Login extends React.Component {
+    static contextType = appContext;
+
     state = {
         form: {
             loginTry: false,
@@ -58,19 +64,24 @@ class Login extends React.Component {
             fetch("http://localhost:8080/login", {
                 method: "POST",
                 mode: "cors",
+                credentials: "include",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(this.state.user),
-            }).then((response) => {
-                //TODO - osetrenie vynimiek
-                if (response.ok) {
-                    this.props.history.push("/");
-                } else {
-                    this.loginNotSuccessHandler();
-                    console.log(response.status);
-                }
-            });
+            })
+                .then((response) => {
+                    //TODO - osetrenie vynimiek
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        this.loginNotSuccessHandler();
+                        return null;
+                    }
+                })
+                .then((data) => {
+                    this.context.login(data);
+                });
         }
     };
 
@@ -164,4 +175,4 @@ class Login extends React.Component {
     }
 }
 
-export default Login;
+export default withRouter(Login);
