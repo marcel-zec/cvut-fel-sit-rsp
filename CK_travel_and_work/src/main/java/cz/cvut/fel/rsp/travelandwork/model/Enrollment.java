@@ -33,7 +33,7 @@ public class Enrollment extends AbstractEntity {
             name = "recieved_achievement_trip",
             joinColumns = @JoinColumn(name = "enrollment_id"),
             inverseJoinColumns = @JoinColumn(name = "achievement_id"))
-    private List<AchievementCertificate> recieved_achievements;
+    private List<AchievementSpecial> recieved_achievements_special;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "travelJournal_id", nullable = false)
@@ -109,8 +109,8 @@ public class Enrollment extends AbstractEntity {
     }
 
 
-    public List<AchievementCertificate> getRecieved_achievements() {
+    public List<AchievementSpecial> getRecieved_achievements() {
 
-        return recieved_achievements;
+        return recieved_achievements_special;
     }
 }
