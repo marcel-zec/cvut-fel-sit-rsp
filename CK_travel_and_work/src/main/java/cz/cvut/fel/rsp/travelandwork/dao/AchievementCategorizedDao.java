@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class AchievementCategorizedDao extends BaseDao<AchievementCategorized> {
-    protected AchievementCategorizedDao(Class<AchievementCategorized> type) {
-        super(type);
+    protected AchievementCategorizedDao() {
+        super(AchievementCategorized.class);
     }
 }

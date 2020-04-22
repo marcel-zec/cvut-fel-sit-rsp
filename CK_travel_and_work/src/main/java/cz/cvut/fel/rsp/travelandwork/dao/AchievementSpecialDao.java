@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class AchievementSpecialDao extends BaseDao<AchievementSpecial>{
-    protected AchievementSpecialDao(Class<AchievementSpecial> type) {
-        super(type);
+    protected AchievementSpecialDao() {
+        super(AchievementSpecial.class);
     }
 }
