@@ -39,10 +39,13 @@ import {
     faChessRook,
     faChevronLeft,
     faTimes,
-    faClock
+    faClock,
+    faMapMarkerAlt,
+    faMapSigns,
+    faCalendarAlt
+    
 } from "@fortawesome/free-solid-svg-icons";
 import { faStar as emptyStar } from "@fortawesome/free-regular-svg-icons";
-
 //allow use string names of icons from FontAwesome
 library.add(
     faTrophy,
@@ -78,7 +81,10 @@ library.add(
     faChessRook,
     faChevronLeft,
     faTimes,
-    faClock
+    faClock,
+    faMapMarkerAlt,
+    faMapSigns,
+    faCalendarAlt
 );
 
 class App extends React.Component {

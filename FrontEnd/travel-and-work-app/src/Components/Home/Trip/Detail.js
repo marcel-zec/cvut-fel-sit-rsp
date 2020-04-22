@@ -19,7 +19,13 @@ class Detail extends React.Component {
         console.log(data);
         this.setState({ trip: data });
     }
-
+    inputUpdateHandler = async (event, nameOfFormInput, select) => {
+        let dateSelect = document.getElementById("dateSessionSelect");
+        let opt = dateSelect.options[dateSelect.selectedIndex];
+        let newPrice = opt.getAttribute("sessionprice");
+        document.getElementById("tripPrice").innerHTML = newPrice;
+        //TODO: aktualizovat i state
+    }
     render() {
         if (this.state.trip === null) {
             return (
@@ -31,11 +37,14 @@ class Detail extends React.Component {
             );
         } else {
             //set correct date(s)
+            let price = null;
             let options = null;
             let dateTitle = "Date";
+
             if (this.state.trip.sessions.length == 1) {
                 //set one date when only one session
                 const session = this.state.trip.sessions[0];
+                price = session.price;
                 options = (
                     <Card.Text>
                         {session.from_date + " " + session.to_date}
@@ -43,18 +52,23 @@ class Detail extends React.Component {
                 );
             } else if (this.state.trip.sessions.length > 1) {
                 //create list of options for select when more sessions(dates)
+                price = this.state.trip.sessions[0].price;
                 let optionArray = [];
                 this.state.trip.sessions.forEach(element => {
                     optionArray.push(
-                        <option>
+                        <option sessionprice={element.price}>
                             {element.from_date + " " + element.to_date}
                         </option>
                     );
                 });
                 options = (
-                    <Form.Control as="select">{optionArray}</Form.Control>
+                    <Form.Control as="select" id="dateSessionSelect" onChange={(event) => this.inputUpdateHandler(event,"sessionSelect",true)}>
+                        {optionArray}
+                    </Form.Control>
                 );
                 dateTitle = "Dates";
+            }else{
+                price = "trip nema session";
             }
 
             //setting acheivments
@@ -92,48 +106,65 @@ class Detail extends React.Component {
             }
 
             return (
-                <Container>
-                    <Card className="mb-3">
+                <Container id="trip_detail">
+                    <Card className="mb-3 trip_main">
                         <Card.Body className="d-flex flex-row">
-                            <Col>
+                            <Col  xs={5} className="image">
                                 <Image
-                                    src="https://pbs.twimg.com/profile_images/617828221707513856/ygo8Rtr__400x400.jpg"
+                                    src="https://specials-images.forbesimg.com/imageserve/5db15891616a45000704761f/960x0.jpg?fit=scale"
                                     rounded
                                 />
                             </Col>
-                            <Col>
+                            <Col xs={7} className="trip_info">
                                 <Row className="d-flex flex-column">
-                                    <Card.Title>
-                                        {this.state.trip.name}
-                                    </Card.Title>
+                                    <Col>
+                                        <Card.Title className="trip_name">
+                                            {this.state.trip.name}
+                                        </Card.Title>
+                                    </Col>
                                 </Row>
+                                <Form>
                                 <Row>
                                     <Col>
                                         <Card.Title className="mb-2 text-muted">
-                                            Location
+                                           <FontAwesomeIcon icon="map-marker-alt" /> Location
                                         </Card.Title>
                                         <Card.Text>
+
                                             {this.state.trip.location}
                                         </Card.Text>
                                         <Card.Title className="mb-2 text-muted">
-                                            Points
+                                            <FontAwesomeIcon icon="map-signs" /> Points
                                         </Card.Title>
                                         <Card.Text>
-                                            {this.state.trip.possible_xp_reward}
+                                            {this.state.trip.possible_xp_reward} XP
                                         </Card.Text>
                                         <Card.Title className="mb-2 text-muted">
-                                            {dateTitle}
+                                           <FontAwesomeIcon icon="calendar-alt" /> {dateTitle}
                                         </Card.Title>
                                         {options}
                                     </Col>
-                                    <Col>dsadsa</Col>
+                                    <Col >
+                                    <div className="rev-price-buy">
+                                        <div className="trip_price">
+                                            <span id="tripPrice">
+                                            {price}
+                                            </span>
+                                            Kč
+                                        </div>
+                                        
+
+                                        <Button className="submit" variant="primary" type="submit"> Koupit </Button>
+                                        </div>
+                                    </Col>
                                 </Row>
+                                </Form>
                             </Col>
                         </Card.Body>
                     </Card>
                     <Row>
-                        <Col>
-                            <Card style={{ width: "18rem" }} className="mb-3">
+                        <Col className="col-4">
+                            <Card className="mb-3">
                                 <Card.Body>
                                     <Card.Title>
                                         Informations about trip
@@ -142,7 +173,7 @@ class Detail extends React.Component {
                                         Deposit
                                     </Card.Subtitle>
                                     <Card.Text>
-                                        {this.state.trip.deposit}
+                                        {this.state.trip.deposit} Kč
                                     </Card.Text>
                                     <Card.Subtitle className="mb-2 text-muted">
                                         Minimum level required
@@ -152,8 +183,7 @@ class Detail extends React.Component {
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
-
-                            <Card style={{ width: "18rem" }} className="mb-3">
+                            <Card className="mb-3">
                                 <Card.Body>
                                     <Card.Title>
                                         Required achievements
@@ -164,7 +194,7 @@ class Detail extends React.Component {
                                 </Card.Body>
                             </Card>
 
-                            <Card style={{ width: "18rem" }} className="mb-3">
+                            <Card className="mb-3">
                                 <Card.Body>
                                     <Card.Title>Gain achievements</Card.Title>
                                     <ListGroup variant="flush">
@@ -173,7 +203,7 @@ class Detail extends React.Component {
                                 </Card.Body>
                             </Card>
                         </Col>
-                        <Col>
+                        <Col className="col-8">
                             <Card className="mb-5">
                                 <Card.Body>
                                     <Card.Title>Description</Card.Title>
