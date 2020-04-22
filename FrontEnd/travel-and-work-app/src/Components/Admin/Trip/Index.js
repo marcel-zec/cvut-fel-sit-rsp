@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Spinner from "react-bootstrap/Spinner";
 import { Link } from "react-router-dom";
 import ButtonInRow from "../../SmartGadgets/ButtonInRow";
+import { appContext } from "../../../appContext";
 
 class Index extends React.Component {
     state = { trips: null };
@@ -14,6 +15,8 @@ class Index extends React.Component {
         const data = await response.json();
         console.log(data);
         this.setState({ trips: data });
+        console.log("cookieeeeeIndexAdmin");
+        console.log(document.cookie);
     }
 
     render() {
