@@ -1,6 +1,7 @@
 package cz.cvut.fel.rsp.travelandwork.rest;
 
 import cz.cvut.fel.rsp.travelandwork.dto.TripDto;
+import cz.cvut.fel.rsp.travelandwork.dto.TripSessionDto;
 import cz.cvut.fel.rsp.travelandwork.exception.BadDateException;
 import cz.cvut.fel.rsp.travelandwork.exception.MissingVariableException;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
@@ -66,10 +67,10 @@ public class TripController {
 
     @PostMapping(value = "/{identificator}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void signUpToTrip(@PathVariable String identificator) {
+    public void signUpToTrip(@RequestBody TripSessionDto tripSessionDto) {
         //ResponseEntity<Void>
         //return new ResponseEntity<>(headers, HttpStatus.SUCCESS);
-        tripService.signUpToTrip(identificator);
+        tripService.signUpToTrip(tripSessionDto, SecurityUtils.getCurrentUser());
     }
 
     @GetMapping(value = "/trips", produces = MediaType.APPLICATION_JSON_VALUE)
