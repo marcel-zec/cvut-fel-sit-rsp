@@ -48,8 +48,8 @@ public class TripDto {
     private int required_level;
 
     private Long categoryId;
-    private List<AchievementDto> required_achievements;
-    private List<AchievementDto> gain_achievements;
+    private List<AchievementCertificateDto> required_achievements;
+    private List<AchievementCertificateDto> gain_achievements;
     private List<Long> sessionsID;
 
     public TripDto() {
@@ -58,7 +58,7 @@ public class TripDto {
     public TripDto(@NotNull(message = "Id cannot be blank") Long id, @Size(max = 255, min = 3, message = "Name has to be from 3 to 255 characters.") @NotNull(message = "Name has to be from 3 to 255 characters.") String name, @Size(max = 100, min = 3, message = "Short name has to be from 3 to 100 characters.") @NotNull(message = "Short name has to be from 3 to 100 characters.") String short_name,
                    @Min(value = 0, message = "Min 0") @Max(value = 20, message = "Max 20") int possible_xp_reward,
                    @Size(max = 3000, min = 0, message = "Max 3000 characters.") String description, @Min(value = 0, message = "Min 0") @Max(value = 5, message = "Max 5") double rating, @Min(value = 0, message = "Min 0") @Max(value = 10000, message = "Max 10 000") double deposit, @Size(max = 200, min = 0, message = "Max 200 characters.") String location, @Min(value = 0, message = "Min 0") int required_level,
-                   Long categoryId, List<AchievementDto> required_achievements, List<AchievementDto> gain_achievements, List<Long> sessionsID) {
+                   Long categoryId, List<AchievementCertificateDto> required_achievements, List<AchievementCertificateDto> gain_achievements, List<Long> sessionsID) {
 
         this.id = id;
         this.name = name;
@@ -183,25 +183,25 @@ public class TripDto {
     }
 
 
-    public List<AchievementDto> getRequired_achievements() {
+    public List<AchievementCertificateDto> getRequired_achievements() {
 
         return required_achievements;
     }
 
 
-    public void setRequired_achievements(List<AchievementDto> required_achievements) {
+    public void setRequired_achievements(List<AchievementCertificateDto> required_achievements) {
 
         this.required_achievements = required_achievements;
     }
 
 
-    public List<AchievementDto> getGain_achievements() {
+    public List<AchievementCertificateDto> getGain_achievements() {
 
         return gain_achievements;
     }
 
 
-    public void setGain_achievements(List<AchievementDto> gain_achievements) {
+    public void setGain_achievements(List<AchievementCertificateDto> gain_achievements) {
 
         this.gain_achievements = gain_achievements;
     }

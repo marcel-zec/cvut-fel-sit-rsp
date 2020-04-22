@@ -42,8 +42,8 @@ public class TranslateService {
     public TripDto translateTrip(Trip trip) {
         Objects.requireNonNull(trip);
         List<Long> sessions = new ArrayList<>();
-        List<AchievementDto> required_achievements = new ArrayList<>();
-        List<AchievementDto> gain_achievements = new ArrayList<>();
+        List<AchievementCertificateDto> required_achievements = new ArrayList<>();
+        List<AchievementCertificateDto> gain_achievements = new ArrayList<>();
 
         trip.getRequired_achievements().forEach(achievement -> required_achievements.add(translateAchievement(achievement)));
         trip.getGain_achievements().forEach(achievement -> gain_achievements.add(translateAchievement(achievement)));
@@ -63,7 +63,7 @@ public class TranslateService {
     }
 
     @Transactional
-    public AchievementDto translateAchievement(AchievementCertificate achievement){
+    public AchievementCertificateDto translateAchievement(AchievementCertificate achievement){
         Objects.requireNonNull(achievement);
         List<Long> trips = new ArrayList<>();
         List<Long> owned_travel_journals = new ArrayList<>();
@@ -71,7 +71,7 @@ public class TranslateService {
         achievement.getTrips().forEach(trip -> trips.add(trip.getId()));
         achievement.getOwned_travel_journals().forEach(travelJournal -> owned_travel_journals.add(travelJournal.getId()));
 
-        return new AchievementDto(achievement.getId(),achievement.getName(),achievement.getDescription(),achievement.getIcon(),
+        return new AchievementCertificateDto(achievement.getId(),achievement.getName(),achievement.getDescription(),achievement.getIcon(),
                 trips,owned_travel_journals);
     }
 
@@ -79,7 +79,7 @@ public class TranslateService {
     public TravelJournalDto translateTravelJournal(TravelJournal travelJournal){
         Objects.requireNonNull(travelJournal);
         List<EnrollmentDto> enrollmentDtos = new ArrayList<>();
-        List<AchievementDto> achievementDtos = new ArrayList<>();
+        List<AchievementCertificateDto> achievementDtos = new ArrayList<>();
         HashMap<CategoryDto, Integer> trip_counter= new HashMap<CategoryDto, Integer>();
 
         for (Category category : travelJournal.getTrip_counter().keySet()) {
@@ -108,7 +108,7 @@ public class TranslateService {
     @Transactional
     public EnrollmentDto translateEnrollment(Enrollment enrollment){
         Objects.requireNonNull(enrollment);
-        List<AchievementDto> recieved_achievements = new ArrayList<>();
+        List<AchievementCertificateDto> recieved_achievements = new ArrayList<>();
 
         enrollment.getRecieved_achievements().forEach(achievement -> recieved_achievements.add(translateAchievement(achievement)));
 

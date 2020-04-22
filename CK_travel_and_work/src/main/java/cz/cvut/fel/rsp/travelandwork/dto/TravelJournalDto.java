@@ -19,12 +19,12 @@ public class TravelJournalDto {
     private HashMap<CategoryDto, Integer> trip_counter;
 
     private Long userId;
-    private List<AchievementDto> earnedAchievements;
+    private List<AchievementCertificateDto> earnedAchievements;
     private List<EnrollmentDto> enrollments;
 
 
     public TravelJournalDto(@NotNull(message = "Id cannot be blank") Long id, int xp_count, HashMap<CategoryDto, Integer> trip_counter,
-                            Long userId, List<AchievementDto> earnedAchievements, List<EnrollmentDto> enrollments) {
+                            Long userId, List<AchievementCertificateDto> earnedAchievements, List<EnrollmentDto> enrollments) {
 
         this.id = id;
         this.xp_count = xp_count;
@@ -83,14 +83,14 @@ public class TravelJournalDto {
     }
 
 
-    public List<AchievementDto> getEarnedAchievements() {
+    public List<AchievementCertificateDto> getEarnedAchievements() {
 
-        if (earnedAchievements==null) return earnedAchievements= new ArrayList<AchievementDto>();
+        if (earnedAchievements==null) return earnedAchievements= new ArrayList<AchievementCertificateDto>();
         return earnedAchievements;
     }
 
 
-    public void setEarnedAchievements(List<AchievementDto> earnedAchievements) {
+    public void setEarnedAchievements(List<AchievementCertificateDto> earnedAchievements) {
 
         this.earnedAchievements = earnedAchievements;
     }

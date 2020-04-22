@@ -5,7 +5,7 @@ import javax.persistence.Basic;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-public class AchievementDto {
+public class AchievementCertificateDto {
     @NotNull(message = "Id cannot be blank")
     private Long id;
 
@@ -22,8 +22,8 @@ public class AchievementDto {
     private List<Long> owned_travel_journals;
 
 
-    public AchievementDto(@NotNull(message = "Id cannot be blank") Long id, String name, String description, String icon,
-                          List<Long> trips, List<Long> owned_travel_journals) {
+    public AchievementCertificateDto(@NotNull(message = "Id cannot be blank") Long id, String name, String description, String icon,
+                                     List<Long> trips, List<Long> owned_travel_journals) {
 
         this.id = id;
         this.name = name;

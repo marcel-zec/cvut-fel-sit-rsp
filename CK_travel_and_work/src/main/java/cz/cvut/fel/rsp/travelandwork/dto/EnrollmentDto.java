@@ -30,13 +30,13 @@ public class EnrollmentDto {
     @Enumerated(EnumType.STRING)
     private EnrollmentState state;
 
-    private List<AchievementDto> recieved_achievements;
+    private List<AchievementCertificateDto> recieved_achievements;
     private Long travelJournalId;
     private TripDto trip;
     private TripSessionDto tripSession;
 
 
-    public EnrollmentDto(@NotNull(message = "Id cannot be blank") Long id, @PastOrPresent LocalDateTime enrollDate, boolean deposit_was_paid, int actual_xp_reward, EnrollmentState state, List<AchievementDto> recieved_achievements,
+    public EnrollmentDto(@NotNull(message = "Id cannot be blank") Long id, @PastOrPresent LocalDateTime enrollDate, boolean deposit_was_paid, int actual_xp_reward, EnrollmentState state, List<AchievementCertificateDto> recieved_achievements,
                          Long travelJournalId, TripDto trip, TripSessionDto tripSession) {
 
         this.id = id;
@@ -111,13 +111,13 @@ public class EnrollmentDto {
     }
 
 
-    public List<AchievementDto> getRecieved_achievements() {
+    public List<AchievementCertificateDto> getRecieved_achievements() {
 
         return recieved_achievements;
     }
 
 
-    public void setRecieved_achievements(List<AchievementDto> recieved_achievements) {
+    public void setRecieved_achievements(List<AchievementCertificateDto> recieved_achievements) {
 
         this.recieved_achievements = recieved_achievements;
     }
