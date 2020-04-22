@@ -1,0 +1,17 @@
+package cz.cvut.fel.rsp.travelandwork.rest;
+
+import cz.cvut.fel.rsp.travelandwork.model.AchievementCategorized;
+import cz.cvut.fel.rsp.travelandwork.service.AchievementCategorizedService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("/achievement/categorized")
+public class AchievementCategorizedController {
+    private static final Logger LOG = LoggerFactory.getLogger(AchievementCertificateController.class);
+    private final AchievementCategorizedService achievementCategorizedService;
+}
