@@ -30,9 +30,9 @@ public class Enrollment extends AbstractEntity {
 
     @ManyToMany
     @JoinTable(
-            name = "recieved_achievement_trip",
+            name = "recieved_achievement_special_trip",
             joinColumns = @JoinColumn(name = "enrollment_id"),
-            inverseJoinColumns = @JoinColumn(name = "achievement_id"))
+            inverseJoinColumns = @JoinColumn(name = "achievement_special_id"))
     private List<AchievementSpecial> recieved_achievements_special;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.util.List;
 
+@MappedSuperclass
 public abstract class Achievement extends AbstractEntity{
 
     @Basic(optional = false)
@@ -22,14 +23,6 @@ public abstract class Achievement extends AbstractEntity{
     @JsonIgnore
     @ManyToMany
     private List<Trip> trips;
-
-    @JsonIgnore
-    @ManyToMany
-    @JoinTable(
-            name = "achievement_owned_travel_journals",
-            joinColumns = @JoinColumn(name = "achievement_id"),
-            inverseJoinColumns = @JoinColumn(name = "traveljournal_id"))
-    private List<TravelJournal> owned_travel_journals;
 
     public Achievement() {
     }
@@ -78,21 +71,5 @@ public abstract class Achievement extends AbstractEntity{
 
     public void removeTrips(Trip trip) {
         this.trips.remove(trip);
-    }
-
-    public List<TravelJournal> getOwned_travel_journals() {
-        return owned_travel_journals;
-    }
-
-    public void setOwned_travel_journals(List<TravelJournal> owned_travel_journals) {
-        this.owned_travel_journals = owned_travel_journals;
-    }
-
-    public void addOwned_travel_journals(TravelJournal journal) {
-        this.owned_travel_journals.add(journal);
-    }
-
-    public void removeOwned_travel_journal(TravelJournal journal) {
-        this.owned_travel_journals.remove(journal);
     }
 }
