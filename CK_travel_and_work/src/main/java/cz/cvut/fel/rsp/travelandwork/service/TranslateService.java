@@ -15,6 +15,7 @@ public class TranslateService {
 
     @Transactional
     public UserDto translateUser(User user) {
+        System.out.println(user.toString());
         Objects.requireNonNull(user);
         List<TripReviewDto> tripReviewDtos = new ArrayList<>();
         user.getTripReviews().forEach(review-> tripReviewDtos.add(translateTripReview(review)));

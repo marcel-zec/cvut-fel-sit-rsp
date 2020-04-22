@@ -116,4 +116,18 @@ public class Enrollment extends AbstractEntity {
 
         return recieved_achievements;
     }
+
+    @Override
+    public String toString() {
+        return "Enrollment{" +
+                "enrollDate=" + enrollDate +
+                ", deposit_was_paid=" + deposit_was_paid +
+                ", actual_xp_reward=" + actual_xp_reward +
+                ", state=" + state +
+                ", recieved_achievements=" + recieved_achievements +
+                ", travelJournal=" + travelJournal +
+                ", trip=" + trip +
+                ", tripSession=" + tripSession +
+                '}';
+    }
 }

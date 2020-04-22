@@ -2,11 +2,18 @@ package cz.cvut.fel.rsp.travelandwork.environment.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cz.cvut.fel.rsp.travelandwork.config.AppConfig;
+import cz.cvut.fel.rsp.travelandwork.model.User;
+import cz.cvut.fel.rsp.travelandwork.security.model.AuthenticationToken;
+import cz.cvut.fel.rsp.travelandwork.security.model.UserDetails;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
 
 import java.nio.charset.StandardCharsets;
+import java.util.HashSet;
 
 public class Environment {
 
@@ -31,4 +38,12 @@ public class Environment {
     public static HttpMessageConverter<?> createStringEncodingMessageConverter() {
         return new StringHttpMessageConverter(StandardCharsets.UTF_8);
     }
+
+    public static void setCurrentUser(User user) {
+        final UserDetails userDetails = new UserDetails(user, new HashSet<>());
+        SecurityContext context = new SecurityContextImpl();
+        context.setAuthentication(new AuthenticationToken(userDetails.getAuthorities(), userDetails));
+        SecurityContextHolder.setContext(context);
+    }
+
 }
