@@ -42,11 +42,13 @@ public class TranslateService {
     public TripDto translateTrip(Trip trip) {
         Objects.requireNonNull(trip);
         List<Long> sessions = new ArrayList<>();
-        List<AchievementCertificateDto> required_achievements = new ArrayList<>();
-        List<AchievementCertificateDto> gain_achievements = new ArrayList<>();
+        List<AchievementCertificateDto> required_certificates = new ArrayList<>();
+        List<AchievementCategorized> required_achievements_categorized = new ArrayList<>();
+        List<AchievementSpecial> required_achievements_special = new ArrayList<>();
+        List<AchievementSpecialDto> gain_achievements = new ArrayList<>();
 
-        trip.getRequired_achievements().forEach(achievement -> required_achievements.add(translateAchievement(achievement)));
-        trip.getGain_achievements().forEach(achievement -> gain_achievements.add(translateAchievement(achievement)));
+        trip.getRequired_certificates().forEach(achievementCertificate -> required_certificates.add(translateAchievementCertificate(achievementCertificate)));
+        trip.getGain_achievements().forEach(achievementSpecial -> gain_achievements.add(translateAchievementSpecial(achievementSpecial)));
         trip.getSessions().forEach(session-> sessions.add(session.getId()));
 
 
@@ -63,16 +65,42 @@ public class TranslateService {
     }
 
     @Transactional
-    public AchievementCertificateDto translateAchievement(AchievementCertificate achievement){
-        Objects.requireNonNull(achievement);
+    public AchievementCertificateDto translateAchievementCertificate(AchievementCertificate achievementCertificate){
+        Objects.requireNonNull(achievementCertificate);
         List<Long> trips = new ArrayList<>();
         List<Long> owned_travel_journals = new ArrayList<>();
 
-        achievement.getTrips().forEach(trip -> trips.add(trip.getId()));
-        achievement.getOwned_travel_journals().forEach(travelJournal -> owned_travel_journals.add(travelJournal.getId()));
+        achievementCertificate.getTrips().forEach(trip -> trips.add(trip.getId()));
+        achievementCertificate.getOwned_travel_journals().forEach(travelJournal -> owned_travel_journals.add(travelJournal.getId()));
 
-        return new AchievementCertificateDto(achievement.getId(),achievement.getName(),achievement.getDescription(),achievement.getIcon(),
+        return new AchievementCertificateDto(achievementCertificate.getId(),achievementCertificate.getName(),achievementCertificate.getDescription(),achievementCertificate.getIcon(),
                 trips,owned_travel_journals);
+    }
+
+    @Transactional
+    public AchievementSpecialDto translateAchievementSpecial(AchievementSpecial achievementSpecial){
+        Objects.requireNonNull(achievementSpecial);
+        List<Long> trips = new ArrayList<>();
+        List<Long> owned_travel_journals = new ArrayList<>();
+
+        achievementSpecial.getTrips().forEach(trip -> trips.add(trip.getId()));
+        achievementSpecial.getOwned_travel_journals().forEach(travelJournal -> owned_travel_journals.add(travelJournal.getId()));
+
+        return new AchievementSpecialDto(achievementSpecial.getId(),achievementSpecial.getName(),achievementSpecial.getDescription(),achievementSpecial.getIcon(),
+                trips,owned_travel_journals);
+    }
+
+    @Transactional
+    public AchievementCategorizedDto translateAchievementCategorized(AchievementCategorized achievementCategorized){
+        Objects.requireNonNull(achievementCategorized);
+        List<Long> trips = new ArrayList<>();
+        List<Long> owned_travel_journals = new ArrayList<>();
+
+        achievementCategorized.getTrips().forEach(trip -> trips.add(trip.getId()));
+        achievementCategorized.getOwned_travel_journals().forEach(travelJournal -> owned_travel_journals.add(travelJournal.getId()));
+
+        return new AchievementCategorizedDto(achievementCategorized.getId(),achievementCategorized.getName(),achievementCategorized.getDescription(),achievementCategorized.getIcon(),
+                trips,owned_travel_journals, achievementCategorized.getLimit(), achievementCategorized.getCategory().getId());
     }
 
     @Transactional
