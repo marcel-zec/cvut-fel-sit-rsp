@@ -103,7 +103,7 @@ class Navigation extends React.Component {
                                             </NavDropdown.Item>
                                             <NavDropdown.Divider />
                                             <NavDropdown.Item>
-                                                <NavLink to="/">
+                                                <NavLink to="/logout">
                                                     Log out
                                                     <FontAwesomeIcon icon="power-off" />
                                                 </NavLink>

@@ -76,6 +76,7 @@ class Login extends React.Component {
                         return response.json();
                     } else {
                         this.loginNotSuccessHandler();
+                        this.context.logout();
                         return null;
                     }
                 })
