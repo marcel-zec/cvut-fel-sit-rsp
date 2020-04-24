@@ -82,6 +82,11 @@ public class TravelJournal extends AbstractEntity{
         this.enrollments = enrollments;
     }
 
+    public void addEnrollment(Enrollment enrollment){
+        if (enrollments == null) enrollments = new ArrayList<Enrollment>();
+        enrollments.add(enrollment);
+    }
+
 
     /**
      * Adds trip to travel journal

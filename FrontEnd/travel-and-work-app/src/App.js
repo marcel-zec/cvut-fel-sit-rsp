@@ -41,6 +41,9 @@ import {
     faChevronLeft,
     faTimes,
     faClock,
+    faMapMarkerAlt,
+    faMapSigns,
+    faCalendarAlt
 } from "@fortawesome/free-solid-svg-icons";
 import { faStar as emptyStar } from "@fortawesome/free-regular-svg-icons";
 import { appContext } from "./appContext";
@@ -81,7 +84,10 @@ library.add(
     faChessRook,
     faChevronLeft,
     faTimes,
-    faClock
+    faClock,
+    faMapMarkerAlt,
+    faMapSigns,
+    faCalendarAlt
 );
 
 class App extends React.Component {

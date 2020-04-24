@@ -6,6 +6,7 @@ import cz.cvut.fel.rsp.travelandwork.exception.BadPassword;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
 import cz.cvut.fel.rsp.travelandwork.exception.UnauthorizedException;
 import cz.cvut.fel.rsp.travelandwork.model.User;
+import cz.cvut.fel.rsp.travelandwork.security.SecurityUtils;
 import cz.cvut.fel.rsp.travelandwork.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,7 +61,8 @@ public class UserController {
     }
 
     @PatchMapping(value = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody User user) {
+    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody User user) throws NotFoundException {
+        userService.update(user, SecurityUtils.getCurrentUser());
         return null;
     }
 
