@@ -21,12 +21,12 @@ public class MockServiceConfig {
     public TripService tripService() {
         return mock(TripService.class);
     }
-
+/*
     @Bean
     public AchievementService achievementService() {
         return mock(AchievementService.class);
     }
-
+*/
     @Bean
     public EnrollmentService enrollmentService() {
         return mock(EnrollmentService.class);
