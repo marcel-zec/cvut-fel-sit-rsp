@@ -1,20 +1,23 @@
 package cz.cvut.fel.rsp.travelandwork.model;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import cz.cvut.fel.rsp.travelandwork.dto.AddressDto;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "APP_USER")
 @NamedQueries({
-        @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username AND u.deleted_at is null")
+        @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email AND u.deleted_at is null")
 })
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class User extends AbstractEntity {
+public class User extends AbstractEntity {
 
     @Basic(optional = false)
     @Column(nullable = false, length = 30)
@@ -24,19 +27,14 @@ public abstract class User extends AbstractEntity {
 
     @Basic(optional = false)
     @Column(nullable = false)
+    @Size(max = 30, min = 1, message = "Last name is in incorrect format.")
     @NotBlank(message = "Last name cannot be blank")
     private String lastName;
 
     @Basic(optional = false)
-    @Column(nullable = false, unique = true)
-    @Size(max = 255, min = 3, message = "Username is in incorrect format.")
-    @NotBlank(message = "Username cannot be blank")
-    private String username;
-
-    @Basic(optional = false)
     @Column(nullable = false)
     @Size(max = 255, min = 6, message = "Password is in incorrect format.")
-    @JsonIgnore
+    @NotBlank(message = "Password cannot be blank")
     private String password;
 
     @Email(message = "Email should be valid")
@@ -49,12 +47,30 @@ public abstract class User extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private Address address;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private TravelJournal travel_journal;
+
+    @OneToMany(mappedBy = "author")
+    private List<TripReview> tripReviews;
+
     public User() {
     }
 
-    public User(@Size(max = 255, min = 3, message = "Username is in incorrect format.") String username,
+    public User(String password, String firstName, String lastName, String email, Role role){
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.role = role;
+    }
+
+    public User(
+            @Email(message = "Email should be valid") String email,
                 @Size(max = 255, min = 6, message = "Password is in incorrect format.") String password) {
-        this.username = username;
+        this.email = email;
         this.password = password;
     }
 
@@ -82,14 +98,6 @@ public abstract class User extends AbstractEntity {
         this.lastName = lastName;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public void setEmail(String email) {
         this.email = email;
     }
@@ -110,11 +118,56 @@ public abstract class User extends AbstractEntity {
         return email;
     }
 
-//    public UserRole getUserRole() {
-//        return userRole;
-//    }
-//
-//    public void setUserRole(UserRole userRole) {
-//        this.userRole = userRole;
-//    }
+    public void encodePassword() {
+        this.password = new BCryptPasswordEncoder().encode(password);
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public void setTravel_journal(TravelJournal travel_journal) {
+        this.travel_journal = travel_journal;
+    }
+
+
+    public Address getAddress() {
+
+        return address;
+    }
+
+
+    public TravelJournal getTravel_journal()
+    {
+        return travel_journal;
+    }
+
+
+    public List<TripReview> getTripReviews() {
+        if (tripReviews == null) tripReviews = new ArrayList<TripReview>();
+        return tripReviews;
+    }
+
+    public void addReview(TripReview tripReview) {
+
+         if (tripReviews == null) tripReviews = new ArrayList<TripReview>();
+         tripReviews.add(tripReview);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", role=" + role +
+                ", address=" + address +
+                ", travel_journal=" + travel_journal +
+                '}';
+    }
+
+    public void setTripReviews(List<TripReview> tripReviews) {
+        this.tripReviews = tripReviews;
+    }
 }

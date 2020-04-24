@@ -1,7 +1,7 @@
 package cz.cvut.fel.rsp.travelandwork.model;
 
 public enum Role {
-    STUDENT("ROLE_STUDENT"), MANAGER("ROLE_MANAGER"),SUPERUSER("ROLE_SUPERUSER");
+    USER("ROLE_USER"), ADMIN("ROLE_ADMIN"), SUPERUSER("ROLE_SUPERUSER");
 
     private final String role;
 

@@ -1,0 +1,259 @@
+/*generacl components style*/
+body{
+    background-color: #f7f7f7!important;
+}
+.window{
+    background: white;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, .1), 0 1px 10px rgba(0, 0, 0, .15);
+    padding: 8px 20px;
+    margin: 8px;
+}
+.window.radius{
+    border-radius: 10px;
+}
+button.submit{
+    margin: auto;
+    background-color: #ff6666;
+    border:0px solid white;
+    outline: none;
+}
+button.submit:hover{
+    background-color: #d85656;
+}
+button.submit:active,button.submit:focus{
+    outline: none;
+    border: none!important;
+    background-color: #d85656!important;
+}
+/*header*/
+header{
+    position: fixed;
+    z-index: 9999;
+    width: 100%;
+    background-color: white;
+    box-shadow: 0px 1px 7px 1px #bfbfbf;
+}
+header+div{
+    padding-top: 67px;
+}
+header img.logo{
+    width: 60px;
+}
+header .navbar {
+    padding: 0px;
+}
+header .navbar-brand a{
+    color: #ff6666;
+}
+header .navbar-brand a:hover{
+    text-decoration: none;
+}
+header .nav-link a{
+    text-decoration: none;
+    color: #303030!important;
+}
+/*SANDRY CSS**/
+.App {
+    text-align: center;
+}
+
+.App-logo {
+    height: 40vmin;
+    pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .App-logo {
+        animation: App-logo-spin infinite 20s linear;
+    }
+}
+
+.App-header {
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+}
+
+.App-link {
+    color: #61dafb;
+}
+
+#trip-title {
+    font-family: "Candara Bold", "Candara Regular", "Candara";
+    -webkit-font-smoothing: antialiased;
+    font-weight: 700;
+    color: white;
+    margin: 0;
+    text-align: left;
+    left: 0px;
+    width: 100%;
+    transform-origin: 93.5px 21.5px;
+}
+
+.image-text {
+    font-family: "Arial tučné", "Arial obyčejné", Arial;
+    color: #e1f7d5;
+    font-weight: 700;
+    font-size: 13px;
+    background: rgb(255, 102, 102);
+    padding: 7px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    margin-right: 15px;
+}
+
+.image-card {
+    filter: brightness(100%);
+}
+
+.text {
+    font-family: "Arial tučné", "Arial obyčejné", Arial;
+    color: rgb(255, 102, 102);
+    font-weight: 700;
+    font-style: normal;
+    font-size: 20px;
+    display: inline-block;
+    vertical-align: bottom;
+}
+
+@keyframes App-logo-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.choosen-icon {
+    color: cornflowerblue;
+}
+/*register page*/
+.registerUserForm h3, .registerUserForm h5{
+    font-weight: 100;
+    color: #808080;
+    text-align: left;
+    margin-top: 10px;
+}
+.register_container h3{
+    color:#ff6666;
+    margin-top: 30px;
+}
+.registerUserForm .window{
+    margin-left: auto;
+}
+.registerUserForm button{
+    margin: auto;
+    background-color: #ff6666;
+    margin-bottom: 10px;
+}
+.registerUserForm label,.login_container label{
+    text-align: left;
+    display: block;
+}
+/*login_container*/
+.login_form{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px;
+    width: 500px;
+    z-index: 100;
+}
+.login_form .submit{
+    width: 140px;
+}
+.login_form label.checkbox{
+    text-align: center;
+    display: inline-block;
+}
+.login_form .form-check{
+    display: inline-block!important;
+}
+.login_background{
+    position: absolute;
+    left: 0px;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    top: 0px;
+    z-index: 0;
+}
+/*index*/
+.trips{
+    margin-top:80px;
+}
+.trip_info{
+    position: absolute;
+    height: 100%;
+    top: 0;
+    width: 100%;
+}
+.trip_info h4{
+    position: absolute;
+    bottom:0px;
+    width: 100%;
+    z-index: 99;
+    margin-left: 0!important;
+    padding: 8px;
+    padding-top: 45px;
+    font-size:14pt;
+    background: rgb(0,0,0);
+    background: linear-gradient(0deg, rgba(0,0,00,.75) 50%, rgba(80,80,80,0.4797269249496674) 87%, rgba(255,255,255,0) 100%);
+}
+.card-columns{
+    display: flex;
+    flex-flow: wrap;
+    align-items: top;
+    align-content: center;
+    justify-content: center;
+}
+.card-columns .card{
+    margin-bottom: 0px!important;
+    border:none!important;
+}
+.card-columns a{
+    width: 250px;
+    margin: 10px;
+    border-top-left-radius: calc(.25rem - 1px); 
+    border-top-right-radius: calc(.25rem - 1px);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, .1), 0 1px 10px rgba(0, 0, 0, .15);
+
+}
+.card .row{
+    padding: 7px;
+    margin: 0px!important
+}
+.card .price span{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: right;
+    right: 7px;
+    top: 1px;
+}
+.card .date_stars{
+    color:#363636;
+    padding: 0px;
+    font-size:11pt;
+}
+.card .trip_sessions{
+    color:#363636;
+    font-size: 10pt;
+    font-weight: 400;
+    padding-bottom: 0px;
+}
+.card .trip_sessions .col{
+    text-align: left;
+    margin-left: -5px;
+}
+.card .dateIcon{
+    margin-right: 5px;
+    color: #ff6666;
+}

@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 public class ExampleTest {
+    /*
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -14,4 +15,6 @@ public class ExampleTest {
     public void example_AlreadyExistException() throws AlreadyExistsException {
         thrown.expect(AlreadyExistsException.class);
     }
+
+     */
 }
