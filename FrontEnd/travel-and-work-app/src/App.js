@@ -96,6 +96,7 @@ class App extends React.Component {
     };
 
     logout = () => {
+        Cookies.remove("JSESSIONID");
         this.setState({ user: null });
     };
 
@@ -118,20 +119,14 @@ class App extends React.Component {
                 .then((response) => {
                     if (response.ok) return response.json();
                     else {
-                        Cookies.remove("JSESSIONID");
+                        this.logout();
                         return null;
                     }
                 })
                 .then((data) => {
+                    console.log(data);
                     this.login(data);
                 });
-            /*
-            const data = await response.json();
-            console.log(data);
-            this.setState({ user: data });
-            console.log("cookieeeeeIndexAdmin");
-            console.log(document.cookie);
-            */
         }
     }
 
