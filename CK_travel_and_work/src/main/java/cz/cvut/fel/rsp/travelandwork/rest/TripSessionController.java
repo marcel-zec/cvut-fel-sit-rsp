@@ -7,6 +7,7 @@ import cz.cvut.fel.rsp.travelandwork.service.TripSessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,6 +29,7 @@ public class TripSessionController {
         return tripSessionService.findAllInTrip(trip_short_name);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN')")
     @PostMapping(value = "/{trip_short_name}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void create(@PathVariable String trip_short_name, @RequestBody TripSession tripSession) throws Exception {
         tripSessionService.create(trip_short_name, tripSession);
