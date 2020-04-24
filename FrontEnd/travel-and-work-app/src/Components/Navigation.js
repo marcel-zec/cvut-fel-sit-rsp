@@ -16,6 +16,10 @@ class Navigation extends React.Component {
     static contextType = appContext;
 
     render() {
+        const ROLE_SUPERUSER = "SUPERUSER";
+        const ROLE_ADMIN = "ADMIN";
+        const ROLE_USER = "USER";
+
         let homeButton =
             this.context.user === null ? null : (
                 <Col>
@@ -26,6 +30,86 @@ class Navigation extends React.Component {
                     </Nav.Link>
                 </Col>
             );
+
+        const logoutItem = (
+            <NavDropdown.Item>
+                <NavLink to="/logout">
+                    Log out
+                    <FontAwesomeIcon icon="power-off" />
+                </NavLink>
+            </NavDropdown.Item>
+        );
+
+        const userNavigation = (
+            <>
+                <NavDropdown.Item>XP</NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item>
+                    <NavLink to="/profile/achievments">
+                        My achievments <FontAwesomeIcon icon="trophy" />
+                    </NavLink>
+                </NavDropdown.Item>
+                <NavDropdown.Item>
+                    <NavLink to="/profile/trips">
+                        My trips
+                        <FontAwesomeIcon icon="suitcase" />
+                    </NavLink>
+                </NavDropdown.Item>
+                <NavDropdown.Item>
+                    <NavLink to="/profile/details">
+                        Settings
+                        <FontAwesomeIcon icon="cog" />
+                    </NavLink>
+                </NavDropdown.Item>
+                <NavDropdown.Divider />
+                {logoutItem}
+            </>
+        );
+
+        const adminNavigation = (
+            <>
+                <NavDropdown.Item>
+                    <NavLink to="/trip">Trips</NavLink>
+                </NavDropdown.Item>
+                <NavDropdown.Item>
+                    <NavLink to="/user">Users</NavLink>
+                </NavDropdown.Item>
+                <NavDropdown.Item>
+                    <NavLink to="/achievement">Achievements</NavLink>
+                </NavDropdown.Item>
+                <NavDropdown.Item>
+                    <NavLink to="/category">Categories</NavLink>
+                </NavDropdown.Item>
+                <NavDropdown.Divider />
+                {logoutItem}
+            </>
+        );
+
+        const guestNavigation = (
+            <>
+                <NavDropdown.Item>
+                    <NavLink to="/login">
+                        Login
+                        <FontAwesomeIcon icon="user" />
+                    </NavLink>
+                </NavDropdown.Item>
+                <NavDropdown.Item>
+                    <NavLink to="/register">
+                        Register
+                        <FontAwesomeIcon icon="user" />
+                    </NavLink>
+                </NavDropdown.Item>
+            </>
+        );
+
+        let navigationItems = guestNavigation;
+        if (this.context.user != null) {
+            if (this.context.user.role === ROLE_USER)
+                navigationItems = userNavigation;
+            else if (this.context.user.role === ROLE_ADMIN)
+                navigationItems = adminNavigation;
+        }
+
         return (
             <header>
                 <Container className="navigation">
@@ -58,62 +142,7 @@ class Navigation extends React.Component {
                                             title=""
                                             id="basic-nav-dropdown"
                                         >
-                                            <NavDropdown.Item>
-                                                XP
-                                            </NavDropdown.Item>
-                                            <NavDropdown.Divider />
-                                            <NavDropdown.Item>
-                                                <NavLink to="/profile/achievments">
-                                                    My achievments{" "}
-                                                    <FontAwesomeIcon icon="trophy" />
-                                                </NavLink>
-                                            </NavDropdown.Item>
-                                            <NavDropdown.Item>
-                                                <NavLink to="/profile/trips">
-                                                    My trips
-                                                    <FontAwesomeIcon icon="suitcase" />
-                                                </NavLink>
-                                            </NavDropdown.Item>
-                                            <NavDropdown.Item>
-                                                <NavLink to="/profile/details">
-                                                    Settings
-                                                    <FontAwesomeIcon icon="cog" />
-                                                </NavLink>
-                                            </NavDropdown.Item>
-                                            <NavDropdown.Divider />
-                                            <NavDropdown.Item>
-                                                <NavLink to="/trip">
-                                                    Trips
-                                                </NavLink>
-                                            </NavDropdown.Item>
-                                            <NavDropdown.Item>
-                                                <NavLink to="/user">
-                                                    Users
-                                                </NavLink>
-                                            </NavDropdown.Item>
-                                            <NavDropdown.Item>
-                                                <NavLink to="/achievement">
-                                                    Achievements
-                                                </NavLink>
-                                            </NavDropdown.Item>
-                                            <NavDropdown.Item>
-                                                <NavLink to="/category">
-                                                    Categories
-                                                </NavLink>
-                                            </NavDropdown.Item>
-                                            <NavDropdown.Divider />
-                                            <NavDropdown.Item>
-                                                <NavLink to="/logout">
-                                                    Log out
-                                                    <FontAwesomeIcon icon="power-off" />
-                                                </NavLink>
-                                            </NavDropdown.Item>
-                                            <NavDropdown.Item>
-                                                <NavLink to="/register">
-                                                    Register
-                                                    <FontAwesomeIcon icon="user" />
-                                                </NavLink>
-                                            </NavDropdown.Item>
+                                            {navigationItems}
                                         </NavDropdown>
                                     </Col>
                                 </Nav>
