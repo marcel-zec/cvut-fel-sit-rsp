@@ -40,11 +40,6 @@ public class EnrollmentService {
     }
 
     @Transactional
-    public void create(Enrollment enrollment) throws BadDateException {
-        if (enrollment.getEnrollDate().isBefore(LocalDateTime.now())) throw new BadDateException();
-    }
-
-    @Transactional
     public List<EnrollmentDto> findAllOfUser(User current_user) throws NotAllowedException {
 
         User user = accessService.getUser(current_user);
