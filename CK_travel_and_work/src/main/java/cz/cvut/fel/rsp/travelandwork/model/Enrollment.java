@@ -1,13 +1,10 @@
 package cz.cvut.fel.rsp.travelandwork.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import javax.validation.constraints.PastOrPresent;
-import java.sql.Date;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
 
 @Entity
@@ -33,10 +30,10 @@ public class Enrollment extends AbstractEntity {
 
     @ManyToMany
     @JoinTable(
-            name = "recieved_achievement_trip",
+            name = "recieved_achievement_special_trip",
             joinColumns = @JoinColumn(name = "enrollment_id"),
-            inverseJoinColumns = @JoinColumn(name = "achievement_id"))
-    private List<Achievement> recieved_achievements;
+            inverseJoinColumns = @JoinColumn(name = "achievement_special_id"))
+    private List<AchievementSpecial> recieved_achievements_special;
 
     @ManyToOne( optional = false)
     @JoinColumn(name = "travelJournal_id", nullable = false)
@@ -112,9 +109,9 @@ public class Enrollment extends AbstractEntity {
     }
 
 
-    public List<Achievement> getRecieved_achievements() {
+    public List<AchievementSpecial> getRecieved_achievements() {
 
-        return recieved_achievements;
+        return recieved_achievements_special;
     }
 
     @Override

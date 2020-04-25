@@ -24,7 +24,7 @@ public abstract class BaseDao<T extends AbstractEntity> implements GenericDao<T>
     public T find(Long id) {
         Objects.requireNonNull(id);
         T object = em.find(type, id);
-        if (object != null && object.isNotDeleted()) return object;
+        if (object !=   null && object.isNotDeleted()) return object;
         return null;
     }
 

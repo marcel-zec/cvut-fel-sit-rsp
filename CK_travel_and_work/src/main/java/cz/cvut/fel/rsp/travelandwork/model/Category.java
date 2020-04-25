@@ -16,19 +16,23 @@ public class Category extends AbstractEntity{
     @NotBlank(message = "Name of category cannot be blank")
     private String name;
 
-    public Category(@NotBlank(message = "Name of category cannot be blank") String name) {
-        this.name = name;
-    }
-
     @JsonIgnore
     @OneToMany(mappedBy = "category")
     private List<Trip> trips;
 
-    public boolean add(Trip trip){
-        return trips.add(trip);
-    }
+    @JsonIgnore
+    @OneToMany(mappedBy = "category")
+    private List<AchievementCategorized> achievementsWithCategory;
 
     public Category() {
+    }
+
+    public Category(@NotBlank(message = "Name of category cannot be blank") String name) {
+        this.name = name;
+    }
+
+    public boolean add(Trip trip){
+        return trips.add(trip);
     }
 
     public String getName() {
@@ -48,6 +52,22 @@ public class Category extends AbstractEntity{
         if (!this.trips.contains(trip)){
             this.trips.add(trip);
         }
+    }
+
+    public void setTrips(List<Trip> trips) {
+        this.trips = trips;
+    }
+
+    public List<AchievementCategorized> getAchievementsWithCategory() {
+        return achievementsWithCategory;
+    }
+
+    public void setAchievementsWithCategory(List<AchievementCategorized> achievementsWithCategory) {
+        this.achievementsWithCategory = achievementsWithCategory;
+    }
+
+    public void addAchievementsWithCategory(AchievementCategorized achvm) {
+        this.achievementsWithCategory.add(achvm);
     }
 }
 

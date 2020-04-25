@@ -65,17 +65,31 @@ public class Trip extends AbstractEntity {
 
     @ManyToMany
     @JoinTable(
-            name = "required_achievement_trip",
+            name = "required_achievement_certificate_trip",
             joinColumns = @JoinColumn(name = "trip_id"),
-            inverseJoinColumns = @JoinColumn(name = "achievement_id"))
-    private List<Achievement> required_achievements;
+            inverseJoinColumns = @JoinColumn(name = "achievement_certificate_id"))
+    private List<AchievementCertificate> required_certificates;
+
+    @ManyToMany
+    @JoinTable(
+            name = "required_achievement_special_trip",
+            joinColumns = @JoinColumn(name = "trip_id"),
+            inverseJoinColumns = @JoinColumn(name = "achievement_special_id"))
+    private List<AchievementSpecial> required_achievements_special;
+
+    @ManyToMany
+    @JoinTable(
+            name = "required_achievement_categorized_trip",
+            joinColumns = @JoinColumn(name = "trip_id"),
+            inverseJoinColumns = @JoinColumn(name = "achievement_categorized_id"))
+    private List<AchievementCategorized> required_achievements_categorized;
 
     @ManyToMany
     @JoinTable(
             name = "gain_achievement_trip",
             joinColumns = @JoinColumn(name = "trip_id"),
             inverseJoinColumns = @JoinColumn(name = "achievement_id"))
-    private List<Achievement> gain_achievements;
+    private List<AchievementSpecial> gain_achievements_special;
 
     @OrderBy("from_date ASC")
     @OneToMany(mappedBy = "trip")
@@ -196,30 +210,6 @@ public class Trip extends AbstractEntity {
     }
 
 
-    public List<Achievement> getRequired_achievements() {
-
-        return required_achievements;
-    }
-
-
-    public void setRequired_achievements(List<Achievement> required_achievements) {
-
-        this.required_achievements = required_achievements;
-    }
-
-
-    public List<Achievement> getGain_achievements() {
-
-        return gain_achievements;
-    }
-
-
-    public void setGain_achievements(List<Achievement> gain_achievements) {
-
-        this.gain_achievements = gain_achievements;
-    }
-
-
     public List<TripReview> getReviews() {
 
         return reviews;
@@ -231,20 +221,58 @@ public class Trip extends AbstractEntity {
         this.reviews = reviews;
     }
 
-    public void addRequiredAchievement(Achievement achievement){
-        if (this.required_achievements == null) required_achievements = new ArrayList<>();
-        if(!this.required_achievements.contains(achievement)){
-            this.required_achievements.add(achievement);
-        }
+    public void setPossible_xp_reward(int possible_xp_reward) {
+        this.possible_xp_reward = possible_xp_reward;
     }
 
-    public void addGainAchievement(Achievement achievement){
-        if (this.gain_achievements == null) gain_achievements = new ArrayList<>();
-        if(!this.gain_achievements.contains(achievement)){
-            this.gain_achievements.add(achievement);
-        }
+    public List<AchievementCertificate> getRequired_certificates() {
+        return required_certificates;
     }
 
+    public void setRequired_certificates(List<AchievementCertificate> required_certificates) {
+        this.required_certificates = required_certificates;
+    }
+
+
+    public void addRequired_certificates(AchievementCertificate achievementCertificate) {
+        this.required_certificates.add(achievementCertificate);
+    }
+
+    public List<AchievementSpecial> getRequired_achievements_special() {
+        return required_achievements_special;
+    }
+
+    public void setRequired_achievements_special(List<AchievementSpecial> required_achievements_special) {
+        this.required_achievements_special = required_achievements_special;
+    }
+
+    public void addRequired_achievements_special(AchievementSpecial achievementSpecial) {
+        this.required_achievements_special.add(achievementSpecial);
+    }
+
+    public List<AchievementCategorized> getRequired_achievements_categorized() {
+        return required_achievements_categorized;
+    }
+
+    public void setRequired_achievements_categorized(List<AchievementCategorized> required_achievements_categorized) {
+        this.required_achievements_categorized = required_achievements_categorized;
+    }
+
+    public void addRequired_achievements_categorized(AchievementCategorized achievementCategorized) {
+        this.required_achievements_categorized.add(achievementCategorized);
+    }
+
+    public List<AchievementSpecial> getGain_achievements_special() {
+        return gain_achievements_special;
+    }
+
+    public void setGain_achievements_special(List<AchievementSpecial> gain_achievements_special) {
+        this.gain_achievements_special = gain_achievements_special;
+    }
+
+    public void addGain_achievements_special(AchievementSpecial achievementSpecial) {
+        this.gain_achievements_special.add(achievementSpecial);
+    }
 
     @Override
     public String toString() {
@@ -259,8 +287,10 @@ public class Trip extends AbstractEntity {
                 ", location='" + location + '\'' +
                 ", required_level=" + required_level +
                 ", category=" + category +
-                ", required_achievements=" + required_achievements +
-                ", gain_achievements=" + gain_achievements +
+                ", required_certificates=" + required_certificates +
+                ", required_achievements_special=" + required_achievements_special +
+                ", required_achievements_categorized=" + required_achievements_categorized +
+                ", gain_achievements_special=" + gain_achievements_special +
                 ", sessions=" + sessions +
                 ", reviews=" + reviews +
                 '}';
