@@ -36,10 +36,9 @@ public class TripSessionServiceTest {
 
     @Autowired
     private TripSessionService tripSessionService;
-    @Autowired
     private TripService tripService;
-    @Autowired
-    private AchievementService achievementService;
+//    @Autowired
+//    private AchievementService achievementService;
 
 
     @Before

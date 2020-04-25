@@ -36,7 +36,6 @@ public class TravelJournal extends AbstractEntity{
     private List<Enrollment> enrollments;
 
     public TravelJournal() {
-        this.user = new User();
         this.trip_counter = new HashMap<Category,Integer>();
         this.enrollments = new ArrayList<Enrollment>();
         this.earnedAchievementsCategorized = new ArrayList<AchievementCategorized>();
@@ -53,9 +52,6 @@ public class TravelJournal extends AbstractEntity{
         this.certificates = new ArrayList<AchievementCertificate>();
     }
 
-
-    public TravelJournal() {
-    }
 
     public int getXp_count() {
         return xp_count;
