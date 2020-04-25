@@ -19,8 +19,8 @@ class Detail extends React.Component {
         console.log(data);
         this.setState({ trip: data });
     }
-    inputUpdateHandler = async (event, nameOfFormInput, select) => {
-        let dateSelect = document.getElementById("dateSessionSelect");
+    sessionTripChange = async (event, selectElement) => {
+        const dateSelect = document.getElementById("dateSessionSelect");
         let opt = dateSelect.options[dateSelect.selectedIndex];
         let newPrice = opt.getAttribute("sessionprice");
         document.getElementById("tripPrice").innerHTML = newPrice;
@@ -40,6 +40,7 @@ class Detail extends React.Component {
             let price = null;
             let options = null;
             let dateTitle = "Date";
+            
 
             if (this.state.trip.sessions.length == 1) {
                 //set one date when only one session
@@ -56,13 +57,13 @@ class Detail extends React.Component {
                 let optionArray = [];
                 this.state.trip.sessions.forEach(element => {
                     optionArray.push(
-                        <option sessionprice={element.price}>
+                        <option key={element.id} sessionid={element.id} sessionprice={element.price}>
                             {element.from_date + " " + element.to_date}
                         </option>
                     );
                 });
                 options = (
-                    <Form.Control as="select" id="dateSessionSelect" onChange={(event) => this.inputUpdateHandler(event,"sessionSelect",true)}>
+                    <Form.Control as="select" id="dateSessionSelect" onChange={(event) => this.sessionTripChange(event)}>
                         {optionArray}
                     </Form.Control>
                 );
