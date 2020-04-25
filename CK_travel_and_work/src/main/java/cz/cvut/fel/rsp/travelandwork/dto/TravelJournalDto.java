@@ -1,6 +1,8 @@
 package cz.cvut.fel.rsp.travelandwork.dto;
 
 
+import cz.cvut.fel.rsp.travelandwork.model.AchievementSpecial;
+
 import javax.persistence.Basic;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -19,21 +21,22 @@ public class TravelJournalDto {
     private HashMap<CategoryDto, Integer> trip_counter;
 
     private Long userId;
-    private List<AchievementDto> earnedAchievements;
+    private List<AchievementCertificateDto> certificates;
+    private List<AchievementCategorizedDto> categorized;
+    private List<AchievementSpecialDto> special;
     private List<EnrollmentDto> enrollments;
 
 
-    public TravelJournalDto(@NotNull(message = "Id cannot be blank") Long id, int xp_count, HashMap<CategoryDto, Integer> trip_counter,
-                            Long userId, List<AchievementDto> earnedAchievements, List<EnrollmentDto> enrollments) {
-
+    public TravelJournalDto(@NotNull(message = "Id cannot be blank") Long id, int xp_count, HashMap<CategoryDto, Integer> trip_counter, Long userId, List<AchievementCertificateDto> certificates, List<AchievementCategorizedDto> categorized, List<AchievementSpecialDto> special, List<EnrollmentDto> enrollments) {
         this.id = id;
         this.xp_count = xp_count;
         this.trip_counter = trip_counter;
         this.userId = userId;
-        this.earnedAchievements = earnedAchievements;
+        this.certificates = certificates;
+        this.categorized = categorized;
+        this.special = special;
         this.enrollments = enrollments;
     }
-
 
     public Long getId() {
 
@@ -83,18 +86,29 @@ public class TravelJournalDto {
     }
 
 
-    public List<AchievementDto> getEarnedAchievements() {
-
-        if (earnedAchievements==null) return earnedAchievements= new ArrayList<AchievementDto>();
-        return earnedAchievements;
+    public List<AchievementCertificateDto> getCertificates() {
+        return certificates;
     }
 
-
-    public void setEarnedAchievements(List<AchievementDto> earnedAchievements) {
-
-        this.earnedAchievements = earnedAchievements;
+    public void setCertificates(List<AchievementCertificateDto> certificates) {
+        this.certificates = certificates;
     }
 
+    public List<AchievementCategorizedDto> getCategorized() {
+        return categorized;
+    }
+
+    public void setCategorized(List<AchievementCategorizedDto> categorized) {
+        this.categorized = categorized;
+    }
+
+    public List<AchievementSpecialDto> getSpecial() {
+        return special;
+    }
+
+    public void setSpecial(List<AchievementSpecialDto> special) {
+        this.special = special;
+    }
 
     public List<EnrollmentDto> getEnrollments() {
         if (enrollments==null) enrollments = new ArrayList<EnrollmentDto>();
@@ -105,17 +119,5 @@ public class TravelJournalDto {
     public void setEnrollments(List<EnrollmentDto> enrollments) {
 
         this.enrollments = enrollments;
-    }
-
-    @Override
-    public String toString() {
-        return "TravelJournalDto{" +
-                "id=" + id +
-                ", xp_count=" + xp_count +
-                ", trip_counter=" + trip_counter +
-                ", userId=" + userId +
-                ", earnedAchievements=" + earnedAchievements +
-                ", enrollments=" + enrollments +
-                '}';
     }
 }

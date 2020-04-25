@@ -103,9 +103,10 @@ public class Generator {
     /**
      * Generates Achievement
      */
-    public static Achievement generateAchievement(){
-        return new Achievement("Achievement no." + randomInt(), "Really good achiev.", "icon");
-    }
+//    public static Achievement generateAchievement(){
+//        //TODO - opravit ak je potrebne
+////        return new Achievement("Achievement no." + randomInt(), "Really good achiev.", "icon");
+//    }
 
     /**
      * Generates Category

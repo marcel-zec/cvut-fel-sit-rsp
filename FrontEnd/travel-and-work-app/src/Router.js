@@ -22,8 +22,11 @@ import IndexUser from "./Components/Admin/User/Index";
 import { appContext } from "./appContext";
 
 function Router(props) {
-    //const { auth } = props;
     const context = useContext(appContext);
+
+    const ROLE_SUPERUSER = "SUPERUSER";
+    const ROLE_ADMIN = "ADMIN";
+    const ROLE_USER = "USER";
 
     const allowAuth = (component) => {
         if (context.user != null) {
@@ -33,9 +36,12 @@ function Router(props) {
         }
     };
 
-    const allowAuthAdmin = (component) => {
+    const allowAuthWithRole = (component, role) => {
         if (context.user != null) {
-            if (context.user.role == "ADMIN") {
+            if (
+                context.user.role === role ||
+                (role === ROLE_ADMIN && context.user.role === ROLE_SUPERUSER)
+            ) {
                 return component;
             } else {
                 return <Redirect to={{ pathname: "/" }} />;
@@ -47,7 +53,6 @@ function Router(props) {
 
     const allowGuest = (component) => {
         if (context.user === null) {
-            console.log(context.user);
             return component;
         } else {
             return <Redirect to={{ pathname: "/" }} />;
@@ -59,7 +64,7 @@ function Router(props) {
             <Route
                 path="/profile"
                 render={() => {
-                    return allowAuth(<Profile />);
+                    return allowAuthWithRole(<Profile />, ROLE_USER);
                 }}
             />
             <Route path="/profile/details" component={ProfileDetails} />
@@ -89,58 +94,39 @@ function Router(props) {
                     }}
                 />
                 <Route path="/" exact={true} component={Home} />
-
                 <Route path="/trips/:id" component={TripDetail} />
 
                 {/*Admin*/}
-                <Route path="/trip" exact component={IndexTrip} />
-                <Route path="/trip/create" exact component={CreateTrip} />
-                <Route path="/trip/:id/edit" exact component={EditTrip} />
-
-                {/*
                 <Route
                     path="/trip"
-                    exact={true}
+                    exact
                     render={() => {
-                        return allowAuthAdmin(<IndexTrip />);
+                        return allowAuthWithRole(<IndexTrip />, ROLE_ADMIN);
                     }}
                 />
-
                 <Route
                     path="/trip/create"
-                    exact={true}
+                    exact
                     render={() => {
-                        return allowAuthAdmin(<CreateTrip />);
+                        return allowAuthWithRole(<CreateTrip />, ROLE_ADMIN);
                     }}
                 />
-
                 <Route
                     path="/trip/:id/edit"
-                    exact={true}
+                    exact
                     render={() => {
-                        return allowAuthAdmin(<EditTrip />);
+                        return allowAuthWithRole(<EditTrip />, ROLE_ADMIN);
                     }}
                 />
-                */}
 
-                <Route path="/achievement" exact component={IndexAchievement} />
-                <Route
-                    path="/achievement/create"
-                    exact
-                    component={CreateAchievement}
-                />
-                <Route
-                    path="/achievement/:id/edit"
-                    exact
-                    component={EditAchievement}
-                />
-
-                {/*
                 <Route
                     path="/achievement"
                     exact={true}
                     render={() => {
-                        return allowAuthAdmin(<IndexAchievement />);
+                        return allowAuthWithRole(
+                            <IndexAchievement />,
+                            ROLE_ADMIN
+                        );
                     }}
                 />
 
@@ -148,7 +134,10 @@ function Router(props) {
                     path="/achievement/create"
                     exact={true}
                     render={() => {
-                        return allowAuthAdmin(<CreateAchievement />);
+                        return allowAuthWithRole(
+                            <CreateAchievement />,
+                            ROLE_ADMIN
+                        );
                     }}
                 />
 
@@ -156,29 +145,18 @@ function Router(props) {
                     path="/achievement/:id/edit"
                     exact={true}
                     render={() => {
-                        return allowAuthAdmin(<EditAchievement />);
+                        return allowAuthWithRole(
+                            <EditAchievement />,
+                            ROLE_ADMIN
+                        );
                     }}
                 />
-                */}
 
-                <Route path="/category" exact component={IndexCategory} />
-                <Route
-                    path="/category/create"
-                    exact
-                    component={CreateCategory}
-                />
-                <Route
-                    path="/category/:id/edit"
-                    exact
-                    component={EditCategory}
-                />
-
-                {/*
                 <Route
                     path="/category"
                     exact={true}
                     render={() => {
-                        return allowAuthAdmin(<IndexCategory />);
+                        return allowAuthWithRole(<IndexCategory />, ROLE_ADMIN);
                     }}
                 />
 
@@ -186,7 +164,10 @@ function Router(props) {
                     path="/category/create"
                     exact={true}
                     render={() => {
-                        return allowAuthAdmin(<CreateCategory />);
+                        return allowAuthWithRole(
+                            <CreateCategory />,
+                            ROLE_ADMIN
+                        );
                     }}
                 />
 
@@ -194,12 +175,17 @@ function Router(props) {
                     path="/category/:id/edit"
                     exact={true}
                     render={() => {
-                        return allowAuthAdmin(<EditCategory />);
+                        return allowAuthWithRole(<EditCategory />, ROLE_ADMIN);
                     }}
                 />
-                */}
 
-                <Route path="/user" exact component={IndexUser} />
+                <Route
+                    path="/user"
+                    exact
+                    render={() => {
+                        return allowAuthWithRole(<IndexUser />, ROLE_ADMIN);
+                    }}
+                />
             </Switch>
         </div>
     );

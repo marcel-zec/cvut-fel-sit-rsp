@@ -30,13 +30,13 @@ public class EnrollmentDto {
     @Enumerated(EnumType.STRING)
     private EnrollmentState state;
 
-    private List<AchievementDto> recieved_achievements;
+    private List<AchievementSpecialDto> recieved_achievements_special;
     private Long travelJournalId;
     private TripDto trip;
     private TripSessionDto tripSession;
 
 
-    public EnrollmentDto(@NotNull(message = "Id cannot be blank") Long id, @PastOrPresent LocalDateTime enrollDate, boolean deposit_was_paid, int actual_xp_reward, EnrollmentState state, List<AchievementDto> recieved_achievements,
+    public EnrollmentDto(@NotNull(message = "Id cannot be blank") Long id, @PastOrPresent LocalDateTime enrollDate, boolean deposit_was_paid, int actual_xp_reward, EnrollmentState state, List<AchievementSpecialDto> recieved_achievements_special,
                          Long travelJournalId, TripDto trip, TripSessionDto tripSession) {
 
         this.id = id;
@@ -44,7 +44,7 @@ public class EnrollmentDto {
         this.deposit_was_paid = deposit_was_paid;
         this.actual_xp_reward = actual_xp_reward;
         this.state = state;
-        this.recieved_achievements = recieved_achievements;
+        this.recieved_achievements_special = recieved_achievements_special;
         this.travelJournalId = travelJournalId;
         this.trip = trip;
         this.tripSession = tripSession;
@@ -111,17 +111,13 @@ public class EnrollmentDto {
     }
 
 
-    public List<AchievementDto> getRecieved_achievements() {
-
-        return recieved_achievements;
+    public List<AchievementSpecialDto> getRecieved_achievements_special() {
+        return recieved_achievements_special;
     }
 
-
-    public void setRecieved_achievements(List<AchievementDto> recieved_achievements) {
-
-        this.recieved_achievements = recieved_achievements;
+    public void setRecieved_achievements_special(List<AchievementSpecialDto> recieved_achievements_special) {
+        this.recieved_achievements_special = recieved_achievements_special;
     }
-
 
     public Long getTravelJournalId() {
 

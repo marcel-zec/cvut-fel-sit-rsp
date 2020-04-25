@@ -1,21 +1,18 @@
 package cz.cvut.fel.rsp.travelandwork.service;
 
-import cz.cvut.fel.rsp.travelandwork.dao.TripDao;
-import cz.cvut.fel.rsp.travelandwork.dao.TripReviewDao;
-import cz.cvut.fel.rsp.travelandwork.dao.TripSessionDao;
+import cz.cvut.fel.rsp.travelandwork.dao.*;
 import cz.cvut.fel.rsp.travelandwork.dto.TripDto;
+import cz.cvut.fel.rsp.travelandwork.dto.TripSessionDto;
 import cz.cvut.fel.rsp.travelandwork.exception.BadDateException;
 import cz.cvut.fel.rsp.travelandwork.exception.MissingVariableException;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
-import cz.cvut.fel.rsp.travelandwork.model.Trip;
-import cz.cvut.fel.rsp.travelandwork.model.TripReview;
-import cz.cvut.fel.rsp.travelandwork.model.TripSession;
-import cz.cvut.fel.rsp.travelandwork.model.User;
+import cz.cvut.fel.rsp.travelandwork.model.*;
 import cz.cvut.fel.rsp.travelandwork.service.security.AccessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -28,14 +25,20 @@ public class TripService {
     private final TripReviewDao tripReviewDao;
     private final TranslateService translateService;
     private final AccessService accessService;
+    private final UserDao userDao;
+    private final EnrollmentDao enrollmentDao;
+    private final TravelJournalDao travelJournalDao;
 
     @Autowired
-    public TripService(TripDao tripDao, TripSessionDao tripSessionDao, TripReviewDao tripReviewDao, TranslateService translateService, AccessService accessService) {
+    public TripService(TripDao tripDao, TripSessionDao tripSessionDao, TripReviewDao tripReviewDao, TranslateService translateService, AccessService accessService, UserDao userDao, EnrollmentDao enrollmentDao, TravelJournalDao travelJournalDao) {
         this.tripDao = tripDao;
         this.tripSessionDao = tripSessionDao;
         this.tripReviewDao = tripReviewDao;
         this.translateService = translateService;
         this.accessService = accessService;
+        this.userDao = userDao;
+        this.enrollmentDao = enrollmentDao;
+        this.travelJournalDao = travelJournalDao;
     }
 
     @Transactional
@@ -81,8 +84,22 @@ public class TripService {
     }
 
     @Transactional
-    public void signUpToTrip(String stringId) {
-        Trip trip = tripDao.find(stringId);
+    public void signUpToTrip(TripSessionDto tripSessionDto, User current_user) {
+        TripSession tripSession = tripSessionDao.find(tripSessionDto.getId());
+        User user = userDao.find(current_user.getId());
+        Enrollment enrollment = new Enrollment();
+
+        enrollment.setDeposit_was_paid(false);
+        enrollment.setEnrollDate(LocalDateTime.now());
+        enrollment.setActual_xp_reward(0);
+        enrollment.setTrip(tripSession.getTrip());
+        enrollment.setState(EnrollmentState.ACTIVE);
+        enrollment.setTripSession(tripSession);
+        enrollment.setTravelJournal(user.getTravel_journal());
+
+        enrollmentDao.persist(enrollment);
+        user.getTravel_journal().addEnrollment(enrollment);
+        travelJournalDao.update(user.getTravel_journal());
     }
 
     @Transactional

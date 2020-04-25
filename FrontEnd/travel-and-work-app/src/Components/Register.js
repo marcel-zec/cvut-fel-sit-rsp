@@ -250,11 +250,34 @@ class Home extends React.Component {
                                     <Form.Group as={Col}>
                                         <Form.Label>Password</Form.Label>
                                         <Form.Control
-                                            maxLength="30"
-                                            minLength="8"
-                                            maxLength="16"
                                             type="password"
                                             placeholder="Password"
+                                            onChange={(event) =>
+                                                this.inputUpdateHandler(
+                                                    event,
+                                                    "password"
+                                                )
+                                            }
+                                            className={validationClassName(
+                                                "password",
+                                                this.state.form
+                                            )}
+                                        />
+                                        <div class="invalid-feedback">
+                                            {validationFeedback(
+                                                "password",
+                                                this.state.form
+                                            )}
+                                        </div>
+                                    </Form.Group>
+                                </Form.Row>
+                                <Form.Row>
+                                    <Form.Group as={Col}></Form.Group>
+                                    <Form.Group as={Col}>
+                                        <Form.Label>Password again</Form.Label>
+                                        <Form.Control
+                                            type="password"
+                                            placeholder="Password again"
                                             onChange={(event) =>
                                                 this.inputUpdateHandler(
                                                     event,

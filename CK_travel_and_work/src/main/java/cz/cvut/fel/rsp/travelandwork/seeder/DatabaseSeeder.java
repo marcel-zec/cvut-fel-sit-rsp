@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
@@ -23,28 +22,33 @@ public class DatabaseSeeder implements
     private Logger LOGGER = Logger.getLogger(DatabaseSeeder.class.getName());
     private TripDao tripDao;
     private TripSessionDao tripSessionDao;
-    private AchievementDao achievementDao;
+    private AchievementCertificateDao achievementCertificateDao;
+    private AchievementCategorizedDao achievementCategorizedDao;
+    private AchievementSpecialDao achievementSpecialDao;
     private CategoryDao categoryDao;
     private UserDao userDao;
     private AddressDao addressDao;
 
     @Autowired
-    public DatabaseSeeder(TripDao tripDao, TripSessionDao tripSessionDao, AchievementDao achievementDao, CategoryDao categoryDao, UserDao userDao, AddressDao addressDao) {
+    public DatabaseSeeder(TripDao tripDao, TripSessionDao tripSessionDao, AchievementCertificateDao achievementCertificateDao, AchievementCategorizedDao achievementCategorizedDao, AchievementSpecialDao achievementSpecialDao, CategoryDao categoryDao, UserDao userDao, AddressDao addressDao) {
         this.tripDao = tripDao;
         this.tripSessionDao = tripSessionDao;
-        this.achievementDao = achievementDao;
+        this.achievementCertificateDao = achievementCertificateDao;
+        this.achievementCategorizedDao = achievementCategorizedDao;
+        this.achievementSpecialDao = achievementSpecialDao;
         this.categoryDao = categoryDao;
         this.userDao = userDao;
         this.addressDao = addressDao;
     }
-    
+
     @Override
     @Transactional
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         //TODO - vykona sa hned po spusteni
         System.out.println("Vypis po stupusteni aplikacie.");
-        createAchievement();
+
         createCategories();
+        createAchievement();
         //setAchievementsAndCategories();
         createTrips();
         createUsers();
@@ -55,46 +59,7 @@ public class DatabaseSeeder implements
         String description;// = "Nullam gravida lectus tempus congue pretium. Nunc volutpat diam orci, a consectetur dui iaculis sollicitudin. Fusce varius nisi placerat turpis viverra pulvinar. Pellentesque vel commodo nibh, sed volutpat nunc. Duis congue enim malesuada sapien commodo egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum interdum, ante eu vehicula porttitor, libero purus consequat metus, quis aliquet lectus orci sit amet mi. Aenean libero sapien, tempus sit amet lorem in, cursus sodales erat. Vivamus suscipit felis et ex pulvinar, vitae rutrum diam tempus. ";
         Trip trip;/* = new Trip("Casablanca Me gusto",15,description,"casablanca_me_gusta",1000,"Casablan, Mexico",2);
         tripDao.persist(trip);
-        */TripSession tripSession;/*= new TripSession(trip,LocalDate.parse("2020-09-12"), LocalDate.parse("2020-10-12"),2000);
-        tripSessionDao.persist(tripSession);
-        tripSession = new TripSession(trip,LocalDate.parse("2020-10-12"), LocalDate.parse("2020-11-12"),2500);
-        tripSessionDao.persist(tripSession);
-        tripSession = new TripSession(trip,LocalDate.parse("2020-12-12"), LocalDate.parse("2020-12-20"),1800);
-        tripSessionDao.persist(tripSession);
-
-        description = "Sed nec scelerisque metus. Etiam volutpat ipsum id ullamcorper viverra. Nunc ultrices odio odio, quis rutrum lacus pharetra sit amet. Phasellus in eleifend dolor. Sed et nisi massa. Vestibulum suscipit vel leo condimentum varius. Ut in augue quis eros aliquet egestas sed nec augue. Pellentesque vel neque eget nisi sodales porta eget quis orci. Maecenas nisi quam, vulputate et imperdiet id, finibus eget lacus. Cras et metus odio. Donec posuere ac nisi eget semper. Nunc sit amet lectus vitae est ornare semper id rutrum odio. Sed eu lectus odio. Fusce mattis nulla massa, in pellentesque arcu tincidunt sed. Nulla facilisi. ";
-        trip = new Trip("Chef in Barca",20,description,"barcechef",1000,"Barcelona, Spain",10);
-        tripDao.persist(trip);
-        tripSession = new TripSession(trip,LocalDate.parse("2022-02-14"), LocalDate.parse("2022-02-21"),2000);
-        tripSessionDao.persist(tripSession);
-        tripSession = new TripSession(trip,LocalDate.parse("2020-12-12"), LocalDate.parse("2020-12-20"),1000);
-        tripSessionDao.persist(tripSession);
-
-        description = "Etiam a sem odio. Cras congue a odio vitae convallis. Nullam volutpat in eros eget aliquet. Maecenas congue finibus purus, non bibendum dolor finibus vel. Sed a molestie odio, vitae pharetra nisl. Integer quis velit sit amet augue sagittis tincidunt eu quis est. Sed ultricies fringilla ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris vestibulum tincidunt pretium. Donec a lobortis enim, quis malesuada ipsum. Vestibulum egestas erat pulvinar orci posuere, id pharetra arcu scelerisque. Vestibulum sed ultrices magna, dictum tristique lorem. ";
-        trip = new Trip("Chef in London",20,description,"londonchef",1000,"London, England",9);
-        tripDao.persist(trip);
-        tripSession = new TripSession(trip,LocalDate.parse("2021-02-14"), LocalDate.parse("2021-03-21"),2000);
-        tripSessionDao.persist(tripSession);
-        tripSession = new TripSession(trip,LocalDate.parse("2021-04-14"), LocalDate.parse("2021-05-21"),2000);
-        tripSessionDao.persist(tripSession);
-
-        description = "Nullam gravida lectus tempus congue pretium. Nunc volutpat diam orci, a consectetur dui iaculis sollicitudin. Fusce varius nisi placerat turpis viverra pulvinar. Pellentesque vel commodo nibh, sed volutpat nunc. Duis congue enim malesuada sapien commodo egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum interdum, ante eu vehicula porttitor, libero purus consequat metus, quis aliquet lectus orci sit amet mi. Aenean libero sapien, tempus sit amet lorem in, cursus sodales erat. Vivamus suscipit felis et ex pulvinar, vitae rutrum diam tempus. ";
-        trip = new Trip("Archeology of Zabgre",10,description,"zagreb_archeology",1000,"Zagreb, Croatia",4);
-        tripDao.persist(trip);
-        tripSession = new TripSession(trip,LocalDate.parse("2021-07-14"), LocalDate.parse("2021-08-21"),2000);
-        tripSessionDao.persist(tripSession);
-
-        description = "Sed nec scelerisque metus. Etiam volutpat ipsum id ullamcorper viverra. Nunc ultrices odio odio, quis rutrum lacus pharetra sit amet. Phasellus in eleifend dolor. Sed et nisi massa. Vestibulum suscipit vel leo condimentum varius. Ut in augue quis eros aliquet egestas sed nec augue. Pellentesque vel neque eget nisi sodales porta eget quis orci. Maecenas nisi quam, vulputate et imperdiet id, finibus eget lacus. Cras et metus odio. Donec posuere ac nisi eget semper. Nunc sit amet lectus vitae est ornare semper id rutrum odio. Sed eu lectus odio. Fusce mattis nulla massa, in pellentesque arcu tincidunt sed. Nulla facilisi. ";
-        trip = new Trip("LoLoLo",5,description,"lololo",800,"Lololo, Lololo island",2);
-        tripDao.persist(trip);
-        tripSession = new TripSession(trip,LocalDate.parse("2021-07-14"), LocalDate.parse("2021-08-21"),2000);
-        tripSessionDao.persist(tripSession);
-
-        description = "Etiam a sem odio. Cras congue a odio vitae convallis. Nullam volutpat in eros eget aliquet. Maecenas congue finibus purus, non bibendum dolor finibus vel. Sed a molestie odio, vitae pharetra nisl. Integer quis velit sit amet augue sagittis tincidunt eu quis est. Sed ultricies fringilla ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris vestibulum tincidunt pretium. Donec a lobortis enim, quis malesuada ipsum. Vestibulum egestas erat pulvinar orci posuere, id pharetra arcu scelerisque. Vestibulum sed ultrices magna, dictum tristique lorem. ";
-        trip = new Trip("Laster",8,description,"laster",500,"Laster, Lasterland",2);
-        tripDao.persist(trip);
-        tripSession = new TripSession(trip,LocalDate.parse("2021-01-14"), LocalDate.parse("2021-01-21"),2000);
-        tripSessionDao.persist(tripSession);*/
+        */TripSession tripSession;
 
         //priklady tripov a user progressu medzi nimi
         description = "Tento zajezd bude mit cenu za dopravu a kurz, po absolvování se odemkne achievement ´kuchař ryb fugu´, pro absolvování je potřeba mít achievement ´Kuchtík´." ;
@@ -142,114 +107,70 @@ public class DatabaseSeeder implements
 
     @Transactional
     void createAchievement(){
-        Achievement achievement; /* = new Achievement("Habamalo","Habamalo is balabo con mambo.","location-arrow");
-        achievementDao.persist(achievement);
-
-        achievement = new Achievement("Kalomone","Kalomone is bumbalo fon lucato.","swimmer");
-        achievementDao.persist(achievement);
-
-        achievement = new Achievement("Swamino","Momone con valuta meta so Swamino.","swimming-pool");
-        achievementDao.persist(achievement);
-
-        achievement = new Achievement("Wanoko","Wanoko der muliko fon gelono","water");
-        achievementDao.persist(achievement);
-
-        achievement = new Achievement("Supero bumbo","Supero bumbo con muplito fongo.","award");
-        achievementDao.persist(achievement);
-
-        achievement = new Achievement("Kingonelo","Richardo con mucho la despacito Kingo.","crown");
-        achievementDao.persist(achievement);
-
-        achievement = new Achievement("Schampiono luscato","Le schapmiono luscato con rumba de la noche.","trophy");
-        achievementDao.persist(achievement);
-
-        achievement = new Achievement("Securito pronto","Los securitos prostos de la salsa.","shield-alt");
-        achievementDao.persist(achievement);
-
-        achievement = new Achievement("Medalo","Picholino de la noche con vuelta macho medalo.","medal");
-        achievementDao.persist(achievement);
-*/
+        AchievementCertificate achievementCertificate;
+        AchievementSpecial achievementSpecial;
+        AchievementCategorized achievementCategorized;
         //ACHIEVEMENTY ZAJEZDOVE
 
         //Certifikáty
-        achievement = new Achievement("Certifikát Angličtina B2", "Uživatel má certifikát B2 v anglickém jazyku.", "graduation-cap");
-        achievementDao.persist(achievement);
-        achievement = new Achievement("Certifikát Španěličina C1", "Uživatel má certifikát C1 v španělském jazyku.", "graduation-cap");
-        achievementDao.persist(achievement);
+        achievementCertificate = new AchievementCertificate("Certifikát Angličtina B2", "Uživatel má certifikát B2 v anglickém jazyku.", "graduation-cap"); //0
+        achievementCertificateDao.persist(achievementCertificate);
+        achievementCertificate = new AchievementCertificate("Certifikát Španěličina C1", "Uživatel má certifikát C1 v španělském jazyku.", "graduation-cap"); //1
+        achievementCertificateDao.persist(achievementCertificate);
 
         //Specifické achievementy
-        achievement = new Achievement("Kuchař sushi", "Uživatel má zkušenosti s přípravou sushi.", "fish");
-        achievementDao.persist(achievement);
-        achievement = new Achievement("Kuchař ryby fugu", "Uživatel má zkušenosti s přípravou jedovatých ryb fugu.", "fish");
-        achievementDao.persist(achievement);
-        achievement = new Achievement("Horolezec", "Uživatel má zkušenosti s lezením po skalách.", "mountain");
-        achievementDao.persist(achievement);
-        achievement = new Achievement("Restaurátor hradů", "Uživatel má zkušenosti s restaurací starých památek.", "chess-rook");
-        achievementDao.persist(achievement);
+        achievementSpecial = new AchievementSpecial("Kuchař sushi", "Uživatel má zkušenosti s přípravou sushi.", "fish"); //0
+        achievementSpecialDao.persist(achievementSpecial);
 
-        //Achievementy za počet zájezdů do určité krajiny
-        achievement = new Achievement("Skoro Ital!", "Uživatel byl už 5-krát v Itálii.", "flag");
-        achievementDao.persist(achievement);
-        achievement = new Achievement("Poprve do Ruska.", "Uživatel byl jednou v Rusku.", "snowflake");
-        achievementDao.persist(achievement);
+        achievementSpecial = new AchievementSpecial("Kuchař ryby fugu", "Uživatel má zkušenosti s přípravou jedovatých ryb fugu.", "fish"); //1
+        achievementSpecialDao.persist(achievementSpecial);
+
+        achievementSpecial = new AchievementSpecial("Horolezec", "Uživatel má zkušenosti s lezením po skalách.", "mountain"); //2
+        achievementSpecialDao.persist(achievementSpecial);
+
+        achievementSpecial = new AchievementSpecial("Restaurátor hradů", "Uživatel má zkušenosti s restaurací starých památek.", "chess-rook"); //3
+        achievementSpecialDao.persist(achievementSpecial);
 
         //Achievementy za počet zájezdů v konkrétních kategoriích
-        achievement = new Achievement("Kuchtík", "Uživatel byl jednou vařit.", "hamburger");
-        achievementDao.persist(achievement);
-        achievement = new Achievement("Kuchař", "Uživatel vařil už na 5-ti zájezdech.", "pizza-slice");
-        achievementDao.persist(achievement);
-        achievement = new Achievement("Pohl v Reichu", "Uživatel vařil už na 15-ti zájezdech.", "glass-cheers");
-        achievementDao.persist(achievement);
+        achievementCategorized = new AchievementCategorized("Kuchtík", "Uživatel byl jednou vařit.", "hamburger"); //0
+        achievementCategorized.setCategory(categoryDao.findAll().get(0));
+        achievementCategorized.setLimit(1);
+        achievementCategorizedDao.persist(achievementCategorized);
 
-        //ACHIEVEMENTY PROFILOVE
+        achievementCategorized = new AchievementCategorized("Kuchař", "Uživatel vařil už na 5-ti zájezdech.", "pizza-slice"); //1
+        achievementCategorized.setCategory(categoryDao.findAll().get(0));
+        achievementCategorized.setLimit(5);
+        achievementCategorizedDao.persist(achievementCategorized);
 
-        //Achievementy za počty achievementů
-        achievement = new Achievement("Do třetice všechno dobré!", "Uživatel získal svůj třetí achievement.", "trophy");
-        achievementDao.persist(achievement);
-        achievement = new Achievement("Kopa achievementů", "Uživatel získal svůj 60-tý achievement.", "crown");
-        achievementDao.persist(achievement);
-
-        //Achievementy za různorodost tripů achievementů
-        achievement = new Achievement("Švýcarák", "Uživatel má za sebou více než 5 tripů z různých kategorii.", "pastafarianism");
-        achievementDao.persist(achievement);
-        achievement = new Achievement("Světoběžník", "Uživatel navštívil už 10 různých zemí.", "compass");
-        achievementDao.persist(achievement);
-
-        //Achievementy za délku registrace
-        achievement = new Achievement("Už tři roky s námi", "Uživatel byl zaregistrován po dobu 3 let.", "glass-cheers");
-        achievementDao.persist(achievement);
-
-        //Achievementy za počet dní strávených na cestách
-        achievement = new Achievement("Turista", "Uživatel procestoval 10 dní.", "running");
-        achievementDao.persist(achievement);
-        achievement = new Achievement("Poutník", "Uživatel procestoval 60 dní.", "campground");
-        achievementDao.persist(achievement);
+        achievementCategorized = new AchievementCategorized("Pohl v Reichu", "Uživatel vařil už na 15-ti zájezdech.", "glass-cheers"); //2
+        achievementCategorized.setCategory(categoryDao.findAll().get(0));
+        achievementCategorized.setLimit(15);
+        achievementCategorizedDao.persist(achievementCategorized);
     }
 
     void setAchievementsAndCategories(){
-        List<Achievement> achievements = achievementDao.findAll();
+        List<AchievementCertificate> certificates = achievementCertificateDao.findAll();
+        List<AchievementCategorized> categorized =achievementCategorizedDao.findAll();
+        List<AchievementSpecial> special = achievementSpecialDao.findAll();
         List<Category> categories = categoryDao.findAll();
 
         Trip trip = tripDao.find("fugukurz");
-        trip.addRequiredAchievement(achievements.get(8));
-        trip.addGainAchievement(achievements.get(3));
+        trip.addRequired_achievements_categorized(categorized.get(0));
+        trip.addGain_achievements_special(special.get(1));
         trip.setCategory(categories.get(4));
         tripDao.update(trip);
 
         trip = tripDao.find("fuguvar");
-        achievements = achievementDao.findAll();
-        trip.addRequiredAchievement(achievements.get(3));
+        trip.addRequired_achievements_special(special.get(1));
         trip.setCategory(categories.get(0));
         tripDao.update(trip);
 
         trip = tripDao.find("prahradvar");
-        achievements = achievementDao.findAll();
-        trip.addRequiredAchievement(achievements.get(9));
+        trip.addRequired_achievements_categorized(categorized.get(1));
         trip.setCategory(categories.get(0));
         tripDao.update(trip);
 
         trip = tripDao.find("studumkuch");
-        achievements = achievementDao.findAll();
         trip.setCategory(categories.get(0));
         tripDao.update(trip);
     }
@@ -275,7 +196,7 @@ public class DatabaseSeeder implements
     }
 
     void createUsers(){
-        User user = new User(BCrypt.hashpw("heslo",BCrypt.gensalt()),"Jan","Testovany","test@gmail.com",Role.USER);
+        User user = new User(BCrypt.hashpw("hesloo",BCrypt.gensalt()),"Jan","Testovany","user@gmail.com",Role.USER);
         userDao.persist(user);
         Address address = new Address();
         address.setUser(user);
@@ -288,5 +209,19 @@ public class DatabaseSeeder implements
         user.setAddress(address);
         userDao.update(user);
         System.out.println("Test user persist.");
+
+        user = new User(BCrypt.hashpw("hesloo",BCrypt.gensalt()),"Peter","Testovany","admin@gmail.com",Role.ADMIN);
+        userDao.persist(user);
+        address = new Address();
+        address.setUser(user);
+        address.setCountry("Slovakia");
+        address.setCity("Licartovce");
+        address.setStreet("Vranovska");
+        address.setHouseNumber(20);
+        address.setZipCode("05175");
+        addressDao.persist(address);
+        user.setAddress(address);
+        userDao.update(user);
+        System.out.println("Test admin persist.");
     }
 }
