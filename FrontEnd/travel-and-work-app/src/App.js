@@ -43,7 +43,10 @@ import {
     faClock,
     faMapMarkerAlt,
     faMapSigns,
-    faCalendarAlt
+    faCalendarAlt,
+    faUserAlt,
+    faMoneyBill,
+    faMinusCircle
 } from "@fortawesome/free-solid-svg-icons";
 import { faStar as emptyStar } from "@fortawesome/free-regular-svg-icons";
 import { appContext } from "./appContext";
@@ -87,7 +90,10 @@ library.add(
     faClock,
     faMapMarkerAlt,
     faMapSigns,
-    faCalendarAlt
+    faCalendarAlt,
+    faUserAlt,
+    faMoneyBill,
+    faMinusCircle
 );
 
 class App extends React.Component {
