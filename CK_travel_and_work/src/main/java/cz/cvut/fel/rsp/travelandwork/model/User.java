@@ -78,7 +78,7 @@ public class User extends AbstractEntity {
         return role;
     }
 
-    protected void setRole(Role role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
