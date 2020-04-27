@@ -57,6 +57,7 @@ public class User extends AbstractEntity {
     private List<TripReview> tripReviews;
 
     public User() {
+        this.role = Role.USER;
     }
 
     public User(String password, String firstName, String lastName, String email, Role role){

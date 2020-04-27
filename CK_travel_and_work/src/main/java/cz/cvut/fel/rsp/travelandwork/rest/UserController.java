@@ -35,7 +35,7 @@ public class UserController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> register(@RequestBody RequestWrapper requestWrapper) throws BadPassword {
-        userService.create(requestWrapper.getUser(), requestWrapper.getPassword_control());
+        userService.createUser(requestWrapper.getUser(), requestWrapper.getPassword_control());
         //LOG.debug("User {} successfully registered.", user);
         //final HttpHeaders headers = RestUtils.createLocationHeaderFromCurrentUri("/current");
         //return new ResponseEntity<>(headers, HttpStatus.CREATED);

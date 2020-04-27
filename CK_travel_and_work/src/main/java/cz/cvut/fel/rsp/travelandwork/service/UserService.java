@@ -40,7 +40,7 @@ public class UserService {
     }
 
     @Transactional
-    public void create(User user, String passwordAgain) throws BadPassword {
+    public void createUser(User user, String passwordAgain) throws BadPassword {
         Objects.requireNonNull(user);
         if (!user.getPassword().equals(passwordAgain)) throw new BadPassword();
         user.encodePassword();
