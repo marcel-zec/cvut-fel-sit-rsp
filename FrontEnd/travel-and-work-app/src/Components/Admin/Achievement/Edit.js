@@ -7,6 +7,7 @@ import icons from "../../../Files/icons.json";
 import Spinner from "react-bootstrap/Spinner";
 import ButtonInRow from "../../SmartGadgets/ButtonInRow";
 import rules from "../../../Files/validationRules.json";
+import { withRouter } from "react-router-dom";
 import {
     formValidation,
     validationFeedback,
@@ -210,4 +211,4 @@ class Edit extends React.Component {
     }
 }
 
-export default Edit;
+export default withRouter(Edit);
