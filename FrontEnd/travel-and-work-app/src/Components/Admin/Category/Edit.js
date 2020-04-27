@@ -4,6 +4,7 @@ import { Col, Button, Spinner } from "react-bootstrap";
 import { Container } from "react-bootstrap";
 import ButtonInRow from "../../SmartGadgets/ButtonInRow";
 import rules from "../../../Files/validationRules.json";
+import { withRouter } from "react-router-dom";
 import {
     formValidation,
     validationFeedback,
@@ -44,6 +45,7 @@ class Edit extends React.Component {
                 {
                     method: "PATCH",
                     mode: "cors",
+                    credentials: "include",
                     headers: {
                         "Content-Type": "application/json",
                     },
@@ -132,4 +134,4 @@ class Edit extends React.Component {
     }
 }
 
-export default Edit;
+export default withRouter(Edit);

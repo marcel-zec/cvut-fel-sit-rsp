@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import icons from "../../../Files/icons.json";
 import ButtonInRow from "../../SmartGadgets/ButtonInRow";
 import rules from "../../../Files/validationRules.json";
+import { withRouter } from "react-router-dom";
 import {
     formValidation,
     validationFeedback,
@@ -178,4 +179,4 @@ class Create extends React.Component {
     }
 }
 
-export default Create;
+export default withRouter(Create);

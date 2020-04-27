@@ -10,7 +10,6 @@ import {
 import MyAlert from "../SmartGadgets/MyAlert";
 import { withRouter } from "react-router-dom";
 import { appContext } from "../../appContext";
-import Cookies from "js-cookie";
 
 class Login extends React.Component {
     static contextType = appContext;
