@@ -46,7 +46,7 @@ public class EnrollmentServiceTest {
         enrollment.setTravelJournal(new TravelJournal());
         enrollment.setTripSession(new TripSession());
         user = Generator.generateUser();
-        userService.create(user,user.getPassword());
+        userService.createUser(user,user.getPassword());
     }
 
 

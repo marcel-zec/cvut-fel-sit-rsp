@@ -110,7 +110,7 @@ public class TripServiceTest {
         user.addReview(tripReview);
         trip.setReviews(user.getTripReviews());
 
-        userService.create(user,user.getPassword());
+        userService.createUser(user,user.getPassword());
         tripReviewService.persist(tripReview);
 
         tripService.delete(trip.getShort_name());

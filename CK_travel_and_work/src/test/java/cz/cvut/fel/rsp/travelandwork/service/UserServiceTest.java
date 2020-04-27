@@ -45,9 +45,9 @@ public class UserServiceTest {
 
     @Before
     public void init() throws BadPassword {
-        sut.create(testUser, testUser.getPassword());
+        sut.createUser(testUser, testUser.getPassword());
         for (User us: list) {
-            sut.create(us, us.getPassword());
+            sut.createUser(us, us.getPassword());
             System.out.println(us.toString());
         }
     }
