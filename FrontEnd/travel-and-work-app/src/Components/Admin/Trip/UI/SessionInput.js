@@ -38,7 +38,8 @@ class SessionInput extends React.Component {
         console.log([nameOfInput] + ":" + event.target.value);
         await this.setState(newState);
         console.log(this.state);
-        this.props.onChangeMethod(this.state);
+        await this.props.onChangeMethod(this.state);
+        console.log("update session in session input");
     };
 
     dateChangeHandler = async (date, stateName) => {
@@ -57,6 +58,9 @@ class SessionInput extends React.Component {
         });
         console.log("after setState");
         console.log(this.state);
+
+        await this.props.onChangeMethod(this.state);
+        console.log("update date in session input");
     };
 
     render() {

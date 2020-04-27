@@ -7,11 +7,14 @@ import cz.cvut.fel.rsp.travelandwork.dao.UserDao;
 import cz.cvut.fel.rsp.travelandwork.dto.UserDto;
 import cz.cvut.fel.rsp.travelandwork.exception.BadPassword;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
+import cz.cvut.fel.rsp.travelandwork.exception.UnauthorizedException;
 import cz.cvut.fel.rsp.travelandwork.model.*;
+import cz.cvut.fel.rsp.travelandwork.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +40,7 @@ public class UserService {
     }
 
     @Transactional
-    public void create(User user, String passwordAgain) throws BadPassword {
+    public void createUser(User user, String passwordAgain) throws BadPassword {
         Objects.requireNonNull(user);
         if (!user.getPassword().equals(passwordAgain)) throw new BadPassword();
         user.encodePassword();
@@ -57,6 +60,12 @@ public class UserService {
     @Transactional(readOnly = true)
     public boolean exists(String login) {
         return dao.findByEmail(login) != null;
+    }
+
+    @Transactional
+    public UserDto showCurrentUser() throws UnauthorizedException {
+        if (SecurityUtils.isAuthenticatedAnonymously()) throw new UnauthorizedException();
+            return translateService.translateUser(dao.find(SecurityUtils.getCurrentUser().getId()));
     }
 
     @Transactional
@@ -85,11 +94,13 @@ public class UserService {
     }
 
     @Transactional
-    public void update(User newUser) throws NotFoundException {
+    public void update(User newUser, User current_user) throws NotFoundException {
         Objects.requireNonNull(newUser);
+        current_user = dao.find(current_user.getId());
         User user = dao.findByEmail(newUser.getEmail());
-        //todo vynimka len admin alebo prihlaseny
+
         if (user == null) throw new NotFoundException();
+        if (current_user.getRole() == Role.USER ) user = current_user;
 
         newUser.setId(user.getId());
         newUser.setTripReviews(user.getTripReviews());

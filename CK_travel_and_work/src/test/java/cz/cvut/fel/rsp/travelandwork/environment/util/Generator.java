@@ -4,6 +4,7 @@ import cz.cvut.fel.rsp.travelandwork.model.*;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -44,6 +45,8 @@ public class Generator {
         String email = username + "@imejl.cz";
         final User user = new User(generatePassword(), "Tester", "Testovany", email, Role.USER);
         user.setAddress(generateAddress(user));
+        List<TripReview> tripReviews = new ArrayList<>();
+        user.setTripReviews(tripReviews);
         //TODO: vygenerovat prazdny list reviewů ?
         return user;
     }
@@ -95,6 +98,21 @@ public class Generator {
     public static Time generateTime(){
         final int millisInDay = 24*60*60*1000;
         return new Time((long)RAND.nextInt(millisInDay));
+    }
+
+    /**
+     * Generates Achievement
+     */
+//    public static Achievement generateAchievement(){
+//        //TODO - opravit ak je potrebne
+////        return new Achievement("Achievement no." + randomInt(), "Really good achiev.", "icon");
+//    }
+
+    /**
+     * Generates Category
+     */
+    public static Category generateCategory(){
+        return new Category("Category no." + randomInt());
     }
 
 }

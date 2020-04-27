@@ -257,3 +257,80 @@ header .nav-link a{
     margin-right: 5px;
     color: #ff6666;
 }
+/*trip detail*/
+#trip_detail{
+    margin-top: 50px;
+}
+#trip_detail .trip_main .image{
+    width: 100%;
+    padding: 0px;
+}
+#trip_detail .trip_main .image img{
+    width: 100%;
+}
+.trip_main .trip_info{
+    text-align: left;
+}
+.trip_info .card-title{
+    font-size: 14px;
+}
+.trip_info .card-title svg{
+    color: #ff6666!important;
+}
+.trip_info .card-title.trip_name{
+    font-size: 20px;
+}
+.trip_info .card-text{
+    margin-left: 15px;
+}
+.trip_info .trip_price{
+    color: #ff6666;
+    font-size: 25px;
+    font-weight: 500;
+}
+.trip_info .rev-price-buy{
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    text-align: right;
+}
+.trip_info button.submit{
+    width: 130px;
+    padding: 10px 15px;
+}
+.trip_info .review_element{
+    color: #fce23a;
+}
+/*tripDetail reviews*/
+#trip_detail .trip_reviews .review{
+    text-align: left;
+    margin-top: 20px;
+}
+#trip_detail .trip_reviews .rev_author svg{
+    color:#ff6666;
+}
+#trip_detail .trip_reviews .rev_author span{
+    margin-left: 10px;
+}
+#trip_detail .trip_reviews .rev_rating{
+    text-align: right;
+    color:#fce23a;
+}
+#trip_detail .trip_reviews p.note{
+    margin: 0px 20px;
+    color:#363636
+}
+/*trip detail deposit and minimum level*/
+#trip_detail .trip_restriction svg{
+    color:#ff6666;
+    margin-right: 5px;
+}
+#trip_detail .trip_restriction p.card-text{
+    font-weight: 500;
+    font-size: 20px;
+}
+#trip_detail .trip_restriction .subtitle{
+    text-align: left;
+    margin-top: 15px;
+    margin-left: 15px;
+}

@@ -15,9 +15,13 @@ public class TranslateService {
 
     @Transactional
     public UserDto translateUser(User user) {
+        System.out.println(user.toString());
         Objects.requireNonNull(user);
         List<TripReviewDto> tripReviewDtos = new ArrayList<>();
-        user.getTripReviews().forEach(review-> tripReviewDtos.add(translateTripReview(review)));
+        List<TripReview> tripReviews = user.getTripReviews();
+        if (tripReviews.size() > 0){
+            tripReviews.forEach(review-> tripReviewDtos.add(translateTripReview(review)));
+        }
 
         if (user.getTravel_journal() != null) {
             TravelJournalDto travelJournalDto = translateTravelJournal(user.getTravel_journal());
@@ -42,17 +46,21 @@ public class TranslateService {
     public TripDto translateTrip(Trip trip) {
         Objects.requireNonNull(trip);
         List<Long> sessions = new ArrayList<>();
-        List<AchievementDto> required_achievements = new ArrayList<>();
-        List<AchievementDto> gain_achievements = new ArrayList<>();
+        List<AchievementCertificateDto> required_certificates = new ArrayList<>();
+        List<AchievementCategorizedDto> required_achievements_categorized = new ArrayList<>();
+        List<AchievementSpecialDto> required_achievements_special = new ArrayList<>();
+        List<AchievementSpecialDto> gain_achievements = new ArrayList<>();
 
-        trip.getRequired_achievements().forEach(achievement -> required_achievements.add(translateAchievement(achievement)));
-        trip.getGain_achievements().forEach(achievement -> gain_achievements.add(translateAchievement(achievement)));
+        trip.getRequired_certificates().forEach(achievementCertificate -> required_certificates.add(translateAchievementCertificate(achievementCertificate)));
+        trip.getRequired_achievements_categorized().forEach(achievementCategorized -> required_achievements_categorized.add(translateAchievementCategorized(achievementCategorized)));
+        trip.getRequired_achievements_special().forEach(achievementSpecial -> required_achievements_special.add(translateAchievementSpecial(achievementSpecial)));
+        trip.getGain_achievements_special().forEach(achievementSpecial -> gain_achievements.add(translateAchievementSpecial(achievementSpecial)));
         trip.getSessions().forEach(session-> sessions.add(session.getId()));
 
 
         return new TripDto(trip.getId(),trip.getName(),trip.getShort_name(),trip.getPossible_xp_reward(),
                 trip.getDescription(),trip.getRating(),trip.getDeposit(),trip.getLocation(), trip.getRequired_level(),
-                trip.getCategory().getId(),required_achievements,gain_achievements,sessions);
+                trip.getCategory().getId(), required_certificates, required_achievements_categorized, required_achievements_special, gain_achievements,sessions);
     }
 
     @Transactional
@@ -63,23 +71,51 @@ public class TranslateService {
     }
 
     @Transactional
-    public AchievementDto translateAchievement(Achievement achievement){
-        Objects.requireNonNull(achievement);
+    public AchievementCertificateDto translateAchievementCertificate(AchievementCertificate achievementCertificate){
+        Objects.requireNonNull(achievementCertificate);
         List<Long> trips = new ArrayList<>();
         List<Long> owned_travel_journals = new ArrayList<>();
 
-        achievement.getTrips().forEach(trip -> trips.add(trip.getId()));
-        achievement.getOwned_travel_journals().forEach(travelJournal -> owned_travel_journals.add(travelJournal.getId()));
+        achievementCertificate.getTrips().forEach(trip -> trips.add(trip.getId()));
+        achievementCertificate.getOwned_travel_journals().forEach(travelJournal -> owned_travel_journals.add(travelJournal.getId()));
 
-        return new AchievementDto(achievement.getId(),achievement.getName(),achievement.getDescription(),achievement.getIcon(),
+        return new AchievementCertificateDto(achievementCertificate.getId(),achievementCertificate.getName(),achievementCertificate.getDescription(),achievementCertificate.getIcon(),
                 trips,owned_travel_journals);
+    }
+
+    @Transactional
+    public AchievementSpecialDto translateAchievementSpecial(AchievementSpecial achievementSpecial){
+        Objects.requireNonNull(achievementSpecial);
+        List<Long> trips = new ArrayList<>();
+        List<Long> owned_travel_journals = new ArrayList<>();
+
+        achievementSpecial.getTrips().forEach(trip -> trips.add(trip.getId()));
+        achievementSpecial.getOwned_travel_journals().forEach(travelJournal -> owned_travel_journals.add(travelJournal.getId()));
+
+        return new AchievementSpecialDto(achievementSpecial.getId(),achievementSpecial.getName(),achievementSpecial.getDescription(),achievementSpecial.getIcon(),
+                trips,owned_travel_journals);
+    }
+
+    @Transactional
+    public AchievementCategorizedDto translateAchievementCategorized(AchievementCategorized achievementCategorized){
+        Objects.requireNonNull(achievementCategorized);
+        List<Long> trips = new ArrayList<>();
+        List<Long> owned_travel_journals = new ArrayList<>();
+
+        achievementCategorized.getTrips().forEach(trip -> trips.add(trip.getId()));
+        achievementCategorized.getOwned_travel_journals().forEach(travelJournal -> owned_travel_journals.add(travelJournal.getId()));
+
+        return new AchievementCategorizedDto(achievementCategorized.getId(),achievementCategorized.getName(),achievementCategorized.getDescription(),achievementCategorized.getIcon(),
+                trips,owned_travel_journals, achievementCategorized.getLimit(), achievementCategorized.getCategory().getId());
     }
 
     @Transactional
     public TravelJournalDto translateTravelJournal(TravelJournal travelJournal){
         Objects.requireNonNull(travelJournal);
         List<EnrollmentDto> enrollmentDtos = new ArrayList<>();
-        List<AchievementDto> achievementDtos = new ArrayList<>();
+        List<AchievementCertificateDto> certificateDtos = new ArrayList<>();
+        List<AchievementCategorizedDto> categorizedDtos = new ArrayList<>();
+        List<AchievementSpecialDto> specialDtos = new ArrayList<>();
         HashMap<CategoryDto, Integer> trip_counter= new HashMap<CategoryDto, Integer>();
 
         for (Category category : travelJournal.getTrip_counter().keySet()) {
@@ -89,9 +125,11 @@ public class TranslateService {
 
 
         travelJournal.getEnrollments().forEach(enrollment -> enrollmentDtos.add(translateEnrollment(enrollment)));
-        travelJournal.getEarnedAchievements().forEach(achievement -> achievementDtos.add(translateAchievement(achievement)));
+        travelJournal.getCertificates().forEach(certificate -> certificateDtos.add(translateAchievementCertificate(certificate)));
+        travelJournal.getEarnedAchievementsCategorized().forEach(categorized -> categorizedDtos.add(translateAchievementCategorized(categorized)));
+        travelJournal.getEarnedAchievementsSpecial().forEach(special -> specialDtos.add(translateAchievementSpecial(special)));
 
-        return new TravelJournalDto(travelJournal.getId(), travelJournal.getXp_count(), trip_counter,travelJournal.getUser().getId(),achievementDtos,enrollmentDtos);
+        return new TravelJournalDto(travelJournal.getId(), travelJournal.getXp_count(), trip_counter,travelJournal.getUser().getId(), certificateDtos, categorizedDtos, specialDtos,enrollmentDtos);
     }
 
     @Transactional
@@ -108,12 +146,12 @@ public class TranslateService {
     @Transactional
     public EnrollmentDto translateEnrollment(Enrollment enrollment){
         Objects.requireNonNull(enrollment);
-        List<AchievementDto> recieved_achievements = new ArrayList<>();
+        List<AchievementSpecialDto> recieved_achievements_special = new ArrayList<>();
 
-        enrollment.getRecieved_achievements().forEach(achievement -> recieved_achievements.add(translateAchievement(achievement)));
+        enrollment.getRecieved_achievements().forEach(achievement_special -> recieved_achievements_special.add(translateAchievementSpecial(achievement_special)));
 
         return new EnrollmentDto(enrollment.getId(),enrollment.getEnrollDate(),enrollment.isDeposit_was_paid(),enrollment.getActual_xp_reward(),enrollment.getState(),
-                recieved_achievements,enrollment.getTravelJournal().getId(),translateTrip(enrollment.getTrip()),translateSession(enrollment.getTripSession()));
+                recieved_achievements_special,enrollment.getTravelJournal().getId(),translateTrip(enrollment.getTrip()),translateSession(enrollment.getTripSession()));
     }
 
     @Transactional

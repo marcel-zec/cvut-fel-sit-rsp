@@ -129,4 +129,17 @@ public class AddressDto {
 
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "AddressDto{" +
+                "id=" + id +
+                ", city='" + city + '\'' +
+                ", street='" + street + '\'' +
+                ", houseNumber=" + houseNumber +
+                ", zipCode='" + zipCode + '\'' +
+                ", country='" + country + '\'' +
+                ", userId=" + userId +
+                '}';
+    }
 }

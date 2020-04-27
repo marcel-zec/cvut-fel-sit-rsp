@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Home from "./Components/Home/Trip/Index";
 import Logout from "./Components/Auth/Logout";
 import Login from "./Components/Auth/Login";
@@ -19,85 +19,184 @@ import IndexCategory from "./Components/Admin/Category/Index";
 import CreateCategory from "./Components/Admin/Category/Create";
 import EditCategory from "./Components/Admin/Category/Edit";
 import IndexUser from "./Components/Admin/User/Index";
+import { appContext } from "./appContext";
 
 function Router(props) {
-  const { auth } = props;
+    const context = useContext(appContext);
 
-  const allowAuth = (component) => {
-    /* if (auth.authenticated) {
+    const ROLE_SUPERUSER = "SUPERUSER";
+    const ROLE_ADMIN = "ADMIN";
+    const ROLE_USER = "USER";
+
+    const allowAuth = (component) => {
+        if (context.user != null) {
             return component;
         } else {
-            return (
-                <Redirect to={{pathname: "/login"}}/>
-            )
-        }*/
-    return component;
-  };
+            return <Redirect to={{ pathname: "/login" }} />;
+        }
+    };
 
-  const allowGuest = (component) => {
-    /* if (!auth.authenticated) {
+    const allowAuthWithRole = (component, role) => {
+        if (context.user != null) {
+            if (
+                context.user.role === role ||
+                (role === ROLE_ADMIN && context.user.role === ROLE_SUPERUSER)
+            ) {
+                return component;
+            } else {
+                return <Redirect to={{ pathname: "/" }} />;
+            }
+        } else {
+            return <Redirect to={{ pathname: "/login" }} />;
+        }
+    };
+
+    const allowGuest = (component) => {
+        if (context.user === null) {
             return component;
         } else {
-            return (
-                <Redirect to={{pathname: "/"}}/>
-            )
-        }*/
-    return component;
-  };
+            return <Redirect to={{ pathname: "/" }} />;
+        }
+    };
 
-  return (
-    <div>
-      <Route path="/profile" component={Profile} />
-      <Route path="/profile/details" component={ProfileDetails} />
-      <Route path="/profile/achievments" component={ProfileAchievments} />
-      <Route path="/profile/trips" component={ProfileTrips} />
-      <Switch>
-        {/*Global*/}
-        <Route
-          path="/login"
-          exact={true}
-          render={() => {
-            return allowGuest(<Login />);
-          }}
-        />
-        <Route path="/logout" exact component={Logout} />
-        {/*User*/}
-        <Route path="/register" exact component={Register} />
-        <Route
-          path="/"
-          exact={true}
-          render={() => {
-            return allowAuth(<Home />);
-          }}
-        />
-        <Route path="/trips" exact component={Home} />
-        <Route path="/trips/:id" component={TripDetail} />
+    return (
+        <div>
+            <Route
+                path="/profile"
+                render={() => {
+                    return allowAuthWithRole(<Profile />, ROLE_USER);
+                }}
+            />
+            <Route path="/profile/details" component={ProfileDetails} />
+            <Route path="/profile/achievments" component={ProfileAchievments} />
+            <Route path="/profile/trips" component={ProfileTrips} />
+            <Switch>
+                {/*Global*/}
+                <Route
+                    path="/login"
+                    exact={true}
+                    render={() => {
+                        return allowGuest(<Login />);
+                    }}
+                />
+                <Route
+                    path="/logout"
+                    render={() => {
+                        return allowAuth(<Logout />);
+                    }}
+                />
+                {/*User*/}
+                <Route
+                    path="/register"
+                    exact={true}
+                    render={() => {
+                        return allowGuest(<Register />);
+                    }}
+                />
+                <Route path="/" exact={true} component={Home} />
+                <Route path="/trips/:id" component={TripDetail} />
 
-        {/*Admin*/}
-        <Route path="/trip" exact component={IndexTrip} />
-        <Route path="/trip/create" exact component={CreateTrip} />
-        <Route path="/trip/:id/edit" exact component={EditTrip} />
+                {/*Admin*/}
+                <Route
+                    path="/trip"
+                    exact
+                    render={() => {
+                        return allowAuthWithRole(<IndexTrip />, ROLE_ADMIN);
+                    }}
+                />
+                <Route
+                    path="/trip/create"
+                    exact
+                    render={() => {
+                        return allowAuthWithRole(<CreateTrip />, ROLE_ADMIN);
+                    }}
+                />
+                <Route
+                    path="/trip/:id/edit"
+                    exact
+                    render={() => {
+                        return allowAuthWithRole(<EditTrip />, ROLE_ADMIN);
+                    }}
+                />
 
-        <Route path="/achievement" exact component={IndexAchievement} />
-        <Route path="/achievement/create" exact component={CreateAchievement} />
-        <Route path="/achievement/:id/edit" exact component={EditAchievement} />
+                <Route
+                    path="/achievement"
+                    exact={true}
+                    render={() => {
+                        return allowAuthWithRole(
+                            <IndexAchievement />,
+                            ROLE_ADMIN
+                        );
+                    }}
+                />
 
-        <Route path="/category" exact component={IndexCategory} />
-        <Route path="/category/create" exact component={CreateCategory} />
-        <Route path="/category/:id/edit" exact component={EditCategory} />
+                <Route
+                    path="/achievement/create"
+                    exact={true}
+                    render={() => {
+                        return allowAuthWithRole(
+                            <CreateAchievement />,
+                            ROLE_ADMIN
+                        );
+                    }}
+                />
 
-        <Route path="/user" exact component={IndexUser} />
-      </Switch>
-    </div>
-  );
+                <Route
+                    path="/achievement/:id/edit"
+                    exact={true}
+                    render={() => {
+                        return allowAuthWithRole(
+                            <EditAchievement />,
+                            ROLE_ADMIN
+                        );
+                    }}
+                />
+
+                <Route
+                    path="/category"
+                    exact={true}
+                    render={() => {
+                        return allowAuthWithRole(<IndexCategory />, ROLE_ADMIN);
+                    }}
+                />
+
+                <Route
+                    path="/category/create"
+                    exact={true}
+                    render={() => {
+                        return allowAuthWithRole(
+                            <CreateCategory />,
+                            ROLE_ADMIN
+                        );
+                    }}
+                />
+
+                <Route
+                    path="/category/:id/edit"
+                    exact={true}
+                    render={() => {
+                        return allowAuthWithRole(<EditCategory />, ROLE_ADMIN);
+                    }}
+                />
+
+                <Route
+                    path="/user"
+                    exact
+                    render={() => {
+                        return allowAuthWithRole(<IndexUser />, ROLE_ADMIN);
+                    }}
+                />
+            </Switch>
+        </div>
+    );
 }
 
 function mapStateToProps(state) {
-  const { auth } = state;
+    const { auth } = state;
 
-  return {
-    auth,
-  };
+    return {
+        auth,
+    };
 }
 /*
 export default connect(
