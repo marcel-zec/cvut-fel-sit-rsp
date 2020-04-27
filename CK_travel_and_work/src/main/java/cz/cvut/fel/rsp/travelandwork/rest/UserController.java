@@ -49,14 +49,15 @@ public class UserController {
     }
 
 
-    @GetMapping(value= "current", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value= "/current", produces = MediaType.APPLICATION_JSON_VALUE)
     public UserDto showCurrentUser() throws UnauthorizedException {
         return userService.showCurrentUser();
     }
 
-    @PatchMapping(value = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody User user) throws NotFoundException {
-        userService.update(user, SecurityUtils.getCurrentUser());
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @PatchMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> update(@RequestBody UserDto userDto) throws NotFoundException {
+        userService.update(userDto, SecurityUtils.getCurrentUser());
         return null;
     }
 
