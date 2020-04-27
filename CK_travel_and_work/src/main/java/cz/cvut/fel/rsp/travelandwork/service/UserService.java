@@ -39,12 +39,6 @@ public class UserService {
         this.translateBackService = translateBackService;
     }
 
-//    @Transactional
-//    public void create(UserDto userDto) throws NotFoundException {
-//        User user = translateBackService.translateUser(userDto);
-//        System.out.println(user.getFirstName());
-//    }
-
     @Transactional
     public void createUser(User user, String passwordAgain) throws BadPassword {
         Objects.requireNonNull(user);
@@ -96,7 +90,6 @@ public class UserService {
 
         user.softDelete();
         dao.update(user);
-        //TODO osetrenie na prihlaseneho usera {admin}
     }
 
     @Transactional
