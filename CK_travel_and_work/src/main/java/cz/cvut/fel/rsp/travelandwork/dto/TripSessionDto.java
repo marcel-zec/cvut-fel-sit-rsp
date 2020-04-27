@@ -40,6 +40,11 @@ public class TripSessionDto {
     }
 
 
+    public TripSessionDto() {
+
+    }
+
+
     public LocalDate getFrom_date() {
         return from_date;
     }

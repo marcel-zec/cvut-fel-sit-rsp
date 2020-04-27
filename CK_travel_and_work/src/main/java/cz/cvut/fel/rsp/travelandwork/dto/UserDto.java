@@ -7,6 +7,7 @@ import javax.persistence.Enumerated;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDto  {
@@ -34,6 +35,7 @@ public class UserDto  {
 
 
     public UserDto() {
+        this.tripReviews = new ArrayList<>();
     }
 
 
@@ -54,28 +56,63 @@ public class UserDto  {
     }
 
 
+    public Long getId() {
+
+        return id;
+    }
+
+
+    public void setId(Long id) {
+
+        this.id = id;
+    }
+
+
     public String getFirstName() {
+
         return firstName;
     }
 
+
     public void setFirstName(String firstName) {
+
         this.firstName = firstName;
     }
 
+
     public String getLastName() {
+
         return lastName;
     }
 
+
     public void setLastName(String lastName) {
+
         this.lastName = lastName;
     }
 
+
+    public String getEmail() {
+
+        return email;
+    }
+
+
     public void setEmail(String email) {
+
         this.email = email;
     }
 
-    public String getEmail() {
-        return email;
+
+    public Role getRole() {
+
+        return role;
+    }
+
+
+    public void setRole(Role role) {
+
+        this.role = role;
     }
 
 
@@ -103,30 +140,6 @@ public class UserDto  {
     }
 
 
-    public List<TripReviewDto> getTripReviewsDto() {
-
-        return tripReviews;
-    }
-
-
-    public void setTripReviewsDto(List<TripReviewDto> tripReviews) {
-
-        this.tripReviews = tripReviews;
-    }
-
-
-    public Long getId() {
-
-        return id;
-    }
-
-
-    public void setId(Long id) {
-
-        this.id = id;
-    }
-
-
     public List<TripReviewDto> getTripReviews() {
 
         return tripReviews;
@@ -136,32 +149,6 @@ public class UserDto  {
     public void setTripReviews(List<TripReviewDto> tripReviews) {
 
         this.tripReviews = tripReviews;
-    }
-
-
-    public Role getRole() {
-        return role;
-    }
-
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-
-    @Override
-    public String toString() {
-
-        return "UserDto{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", role=" + role +
-                ", address=" + address +
-                ", travel_journal=" + travel_journal +
-                ", tripReviews=" + tripReviews +
-                '}';
     }
 }
 

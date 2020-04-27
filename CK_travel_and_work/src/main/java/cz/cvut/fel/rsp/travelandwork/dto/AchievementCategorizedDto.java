@@ -37,6 +37,11 @@ public class AchievementCategorizedDto {
         this.categoryId = categoryId;
     }
 
+
+    public AchievementCategorizedDto() {
+
+    }
+
     public Long getId() {
         return id;
     }

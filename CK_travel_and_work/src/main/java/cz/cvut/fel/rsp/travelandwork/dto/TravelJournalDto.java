@@ -1,7 +1,6 @@
 package cz.cvut.fel.rsp.travelandwork.dto;
 
-
-import cz.cvut.fel.rsp.travelandwork.model.AchievementSpecial;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.Basic;
 import javax.validation.constraints.NotNull;
@@ -17,6 +16,7 @@ public class TravelJournalDto {
     @Basic(optional = false)
     private int xp_count;
 
+    @JsonIgnore
     @Basic(optional = false)
     private HashMap<CategoryDto, Integer> trip_counter;
 
@@ -37,6 +37,11 @@ public class TravelJournalDto {
         this.special = special;
         this.enrollments = enrollments;
     }
+
+
+    public TravelJournalDto() {
+    }
+
 
     public Long getId() {
 
