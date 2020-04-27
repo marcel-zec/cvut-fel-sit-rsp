@@ -45,6 +45,7 @@ class Edit extends React.Component {
                 {
                     method: "PATCH",
                     mode: "cors",
+                    credentials: "include",
                     headers: {
                         "Content-Type": "application/json",
                     },
