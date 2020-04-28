@@ -64,6 +64,8 @@ public class User extends AbstractEntity {
 
     public User() {
         this.role = Role.USER;
+        this.userReviews = new ArrayList<>();
+        this.userReviewsAuthor = new ArrayList<>();
     }
 
     public User(String password, String firstName, String lastName, String email, Role role){
@@ -72,6 +74,8 @@ public class User extends AbstractEntity {
         this.lastName = lastName;
         this.email = email;
         this.role = role;
+        this.userReviews = new ArrayList<>();
+        this.userReviewsAuthor = new ArrayList<>();
     }
 
     public User(
@@ -200,5 +204,13 @@ public class User extends AbstractEntity {
     public void setUserReviewsAuthor(List<UserReview> userReviewsAuthor) {
 
         this.userReviewsAuthor = userReviewsAuthor;
+    }
+
+    public void addUserReview(UserReview userReview){
+        this.userReviews.add(userReview);
+    }
+
+    public void addUserReviewAuthor(UserReview userReview){
+        this.userReviewsAuthor.add(userReview);
     }
 }
