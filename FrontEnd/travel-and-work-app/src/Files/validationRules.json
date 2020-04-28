@@ -12,7 +12,20 @@
     "achievement": {
         "name": { "required": true, "minLength": 3, "maxLength": 255 },
         "description": { "required": true, "minLength": 5, "maxLength": 255 },
-        "icon": { "required": true }
+        "icon": { "required": true },
+        "type": {
+            "required": true,
+            "inArray": ["special", "categorized", "certificate"]
+        },
+        "limit": {
+            "required": true,
+            "number": true,
+            "minValue": 0,
+            "maxValue": 100
+        },
+        "category": {
+            "required": true
+        }
     },
     "trip": {
         "name": { "required": true, "minLength": 3, "maxLength": 255 },
