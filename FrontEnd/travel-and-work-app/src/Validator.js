@@ -166,10 +166,24 @@ export const formValidation = (formStateObject, inputsObject) => {
  */
 export const validationClassName = (inputName, formStateObject) => {
     const elements = formStateObject.elements;
-    if (elements[inputName].touched) {
-        if (elements[inputName].valid) return "is-valid";
-        return "is-invalid";
+    let errorMsg = "ValidationClassName error: ";
+    if (elements[inputName]) {
+        if (elements[inputName].hasOwnProperty("touched")) {
+            if (elements[inputName].touched) {
+                if (elements[inputName].valid) return "is-valid";
+                return "is-invalid";
+            } else {
+                return "";
+            }
+        } else {
+            errorMsg +=
+                "Element '" + inputName + "' has not parameter 'touched'.";
+            console.error(errorMsg);
+            return "";
+        }
     } else {
+        errorMsg += "Element '" + inputName + "' not found in formStateObject.";
+        console.error(errorMsg);
         return "";
     }
 };
