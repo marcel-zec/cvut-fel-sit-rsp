@@ -94,6 +94,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/logout", config);
         source.registerCorsConfiguration("/*", config);
         source.registerCorsConfiguration("/*/*", config);
+        source.registerCorsConfiguration("/*/*/*", config);
         return new CorsFilter(source);
     }
 }

@@ -1,26 +1,57 @@
 import React from "react";
 import Form from "react-bootstrap/Form";
-import { Col, Button, Row, Table } from "react-bootstrap";
+import { Col, Button, Row, Table, Tab, Tabs } from "react-bootstrap";
 import { Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Spinner from "react-bootstrap/Spinner";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import ButtonInRow from "../../SmartGadgets/ButtonInRow";
 
 class Index extends React.Component {
     state = {
-        achievements: null,
+        categorized: null,
+        certificate: null,
+        special: null,
+        type: null,
     };
 
     async componentDidMount() {
-        const response = await fetch(`http://localhost:8080/achievement`);
+        console.log("location");
+        console.log(this.props.location);
+
+        if (this.props.location) {
+            if (this.props.location.hasOwnProperty("type"))
+                this.setState({ type: this.props.location.type });
+        }
+
+        const response = await fetch(
+            `http://localhost:8080/achievement/categorized`
+        );
         const data = await response.json();
         console.log(data);
-        this.setState({ achievements: data });
+        this.setState({ categorized: data });
+
+        const response1 = await fetch(
+            `http://localhost:8080/achievement/certificate`
+        );
+        const data1 = await response1.json();
+        console.log(data1);
+        this.setState({ certificate: data1 });
+
+        const response2 = await fetch(
+            `http://localhost:8080/achievement/special`
+        );
+        const data2 = await response2.json();
+        console.log(data2);
+        this.setState({ special: data2 });
     }
 
     render() {
-        if (this.state.achievements === null) {
+        if (
+            this.state.categorized === null ||
+            this.state.certificate === null ||
+            this.state.special === null
+        ) {
             return (
                 <Container className="mt-5 p-5">
                     <Spinner animation="border" role="status">
@@ -29,10 +60,47 @@ class Index extends React.Component {
                 </Container>
             );
         } else {
-            let tableRows = [];
-            if (this.state.achievements.length > 0) {
-                this.state.achievements.forEach((element) => {
-                    tableRows.push(
+            let categorizedRows = [];
+            if (this.state.categorized.length > 0) {
+                this.state.categorized.forEach((element) => {
+                    categorizedRows.push(
+                        <tr>
+                            <td>{element.name}</td>
+                            <td>
+                                <FontAwesomeIcon
+                                    icon={element.icon}
+                                    size="3x"
+                                />
+                            </td>
+                            <td>{element.category.name}</td>
+                            <td>{element.limit}</td>
+                            <td>
+                                <Link
+                                    className="p-3"
+                                    to={{
+                                        pathname:
+                                            "achievement/" +
+                                            element.id +
+                                            "/edit",
+                                        type: "categorized",
+                                    }}
+                                >
+                                    <FontAwesomeIcon icon="cog" />
+                                </Link>
+
+                                <Link className="p-3">
+                                    <FontAwesomeIcon icon="trash-alt" />
+                                </Link>
+                            </td>
+                        </tr>
+                    );
+                });
+            }
+
+            let specialRows = [];
+            if (this.state.special.length > 0) {
+                this.state.special.forEach((element) => {
+                    specialRows.push(
                         <tr>
                             <td>{element.name}</td>
                             <td>
@@ -44,7 +112,48 @@ class Index extends React.Component {
                             <td>
                                 <Link
                                     className="p-3"
-                                    to={"achievement/" + element.id + "/edit"}
+                                    to={{
+                                        pathname:
+                                            "achievement/" +
+                                            element.id +
+                                            "/edit",
+                                        type: "special",
+                                    }}
+                                >
+                                    <FontAwesomeIcon icon="cog" />
+                                </Link>
+
+                                <Link className="p-3">
+                                    <FontAwesomeIcon icon="trash-alt" />
+                                </Link>
+                            </td>
+                        </tr>
+                    );
+                });
+            }
+
+            let certificateRows = [];
+            if (this.state.certificate.length > 0) {
+                this.state.certificate.forEach((element) => {
+                    certificateRows.push(
+                        <tr>
+                            <td>{element.name}</td>
+                            <td>
+                                <FontAwesomeIcon
+                                    icon={element.icon}
+                                    size="3x"
+                                />
+                            </td>
+                            <td>
+                                <Link
+                                    className="p-3"
+                                    to={{
+                                        pathname:
+                                            "achievement/" +
+                                            element.id +
+                                            "/edit",
+                                        type: "certificate",
+                                    }}
                                 >
                                     <FontAwesomeIcon icon="cog" />
                                 </Link>
@@ -67,20 +176,55 @@ class Index extends React.Component {
                         label="Add achievement"
                     />
 
-                    <Table striped bordered hover>
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Icon</th>
-                                <th>Settings</th>
-                            </tr>
-                        </thead>
-                        <tbody>{tableRows}</tbody>
-                    </Table>
+                    <Tabs
+                        defaultActiveKey={
+                            this.state.type ? this.state.type : "special"
+                        }
+                        id="uncontrolled-tab-example"
+                    >
+                        <Tab eventKey="special" title="Special">
+                            <Table striped bordered hover>
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Icon</th>
+                                        <th>Settings</th>
+                                    </tr>
+                                </thead>
+                                <tbody>{specialRows}</tbody>
+                            </Table>
+                        </Tab>
+                        <Tab eventKey="categorized" title="Categories">
+                            <Table striped bordered hover>
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Icon</th>
+                                        <th>Category</th>
+                                        <th>Limit level</th>
+                                        <th>Settings</th>
+                                    </tr>
+                                </thead>
+                                <tbody>{categorizedRows}</tbody>
+                            </Table>
+                        </Tab>
+                        <Tab eventKey="certificate" title="Certificate">
+                            <Table striped bordered hover>
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Icon</th>
+                                        <th>Settings</th>
+                                    </tr>
+                                </thead>
+                                <tbody>{certificateRows}</tbody>
+                            </Table>
+                        </Tab>
+                    </Tabs>
                 </Container>
             );
         }
     }
 }
 
-export default Index;
+export default withRouter(Index);

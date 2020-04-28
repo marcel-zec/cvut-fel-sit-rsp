@@ -45,7 +45,7 @@ public class TravelJournalServiceTest {
     @Before
     public void prepare() throws BadPassword, BadDateException, MissingVariableException {
         user = Generator.generateUser();
-        userService.create(user,user.getPassword());
+        userService.createUser(user,user.getPassword());
 
         category = new Category("TestCat");
         trip = new Trip("test1",10,"Description","shortName",2000,"Hawaii",3);

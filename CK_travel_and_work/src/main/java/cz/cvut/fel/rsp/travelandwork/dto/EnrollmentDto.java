@@ -51,6 +51,11 @@ public class EnrollmentDto {
     }
 
 
+    public EnrollmentDto() {
+
+    }
+
+
     public Long getId() {
 
         return id;

@@ -10,8 +10,9 @@ import {
     validationFeedback,
     validationClassName,
 } from "../Validator";
+import { withRouter } from "react-router-dom";
 
-class Home extends React.Component {
+class Register extends React.Component {
     state = {
         form: {
             isValid: false,
@@ -401,4 +402,4 @@ class Home extends React.Component {
     }
 }
 
-export default Home;
+export default withRouter(Register);

@@ -11,10 +11,8 @@ import cz.cvut.fel.rsp.travelandwork.exception.UnauthorizedException;
 import cz.cvut.fel.rsp.travelandwork.model.*;
 import cz.cvut.fel.rsp.travelandwork.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,19 +26,21 @@ public class UserService {
     private final TravelJournalDao travelJournalDao;
     private final AddressDao addressDao;
     private final TranslateService translateService;
+    private final TranslateBackService translateBackService;
 
 
     @Autowired
-    public UserService(UserDao dao, TripReviewDao tripReviewDao, TravelJournalDao travelJournalDao, AddressDao addressDao, TranslateService translateService) {
+    public UserService(UserDao dao, TripReviewDao tripReviewDao, TravelJournalDao travelJournalDao, AddressDao addressDao, TranslateService translateService, TranslateBackService translateBackService) {
         this.dao = dao;
         this.tripReviewDao = tripReviewDao;
         this.travelJournalDao = travelJournalDao;
         this.addressDao = addressDao;
         this.translateService = translateService;
+        this.translateBackService = translateBackService;
     }
 
     @Transactional
-    public void create(User user, String passwordAgain) throws BadPassword {
+    public void createUser(User user, String passwordAgain) throws BadPassword {
         Objects.requireNonNull(user);
         if (!user.getPassword().equals(passwordAgain)) throw new BadPassword();
         user.encodePassword();
@@ -90,35 +90,36 @@ public class UserService {
 
         user.softDelete();
         dao.update(user);
-        //TODO osetrenie na prihlaseneho usera {admin}
     }
 
     @Transactional
-    public void update(User newUser, User current_user) throws NotFoundException {
-        Objects.requireNonNull(newUser);
+    public void update(UserDto userDto, User current_user) throws NotFoundException {
+        Objects.requireNonNull(userDto);
         current_user = dao.find(current_user.getId());
-        User user = dao.findByEmail(newUser.getEmail());
 
-        if (user == null) throw new NotFoundException();
-        if (current_user.getRole() == Role.USER ) user = current_user;
+        if (current_user == null) throw new NotFoundException();
 
-        newUser.setId(user.getId());
-        newUser.setTripReviews(user.getTripReviews());
+        User newUser = translateBackService.translateUser(userDto);
+
+        newUser.setId(current_user.getId());
+        newUser.setRole(current_user.getRole());
+        newUser.setTripReviews(current_user.getTripReviews());
+
         if (newUser.getAddress() != null ) {
-            Address oldAddress = user.getAddress();
+            Address oldAddress = current_user.getAddress();
             newUser.getAddress().setId(oldAddress.getId());
             oldAddress = newUser.getAddress();
             addressDao.update(oldAddress);
         }
         if (newUser.getTravel_journal() != null){
-            TravelJournal oldTravelJournal = user.getTravel_journal();
+            TravelJournal oldTravelJournal = current_user.getTravel_journal();
             newUser.getTravel_journal().setId(oldTravelJournal.getId());
             oldTravelJournal = newUser.getTravel_journal();
             travelJournalDao.update(oldTravelJournal);
         }
 
-        user=newUser;
-        dao.update(user);
+        current_user=newUser;
+        dao.update(current_user);
     }
 
     @Transactional

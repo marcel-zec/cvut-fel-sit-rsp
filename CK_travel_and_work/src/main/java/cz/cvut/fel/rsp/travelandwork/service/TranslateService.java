@@ -19,18 +19,25 @@ public class TranslateService {
         Objects.requireNonNull(user);
         List<TripReviewDto> tripReviewDtos = new ArrayList<>();
         List<TripReview> tripReviews = user.getTripReviews();
+        List<UserReviewDto> userReviewDtos = new ArrayList<>();
+        List<UserReview> userReviews =  user.getUserReviews();
+
         if (tripReviews.size() > 0){
             tripReviews.forEach(review-> tripReviewDtos.add(translateTripReview(review)));
+        }
+
+        if (userReviews.size() > 0){
+            userReviews.forEach(review-> userReviewDtos.add(translateUserReview(review)));
         }
 
         if (user.getTravel_journal() != null) {
             TravelJournalDto travelJournalDto = translateTravelJournal(user.getTravel_journal());
             return new UserDto(user.getId(),user.getFirstName(),user.getLastName(),user.getEmail(),
-                    translateAddress(user.getAddress()),travelJournalDto,tripReviewDtos, user.getRole());
+                    translateAddress(user.getAddress()),travelJournalDto,tripReviewDtos, user.getRole(),userReviewDtos);
         }
 
        return new UserDto(user.getId(),user.getFirstName(),user.getLastName(),user.getEmail(),
-                translateAddress(user.getAddress()),null,tripReviewDtos, user.getRole());
+                translateAddress(user.getAddress()),null,tripReviewDtos, user.getRole(),userReviewDtos);
     }
 
 
@@ -160,5 +167,13 @@ public class TranslateService {
 
         return new TripReviewDto(tripReview.getId(),tripReview.getNote(),tripReview.getDate(),
                 tripReview.getRating(),tripReview.getAuthor().getId(),tripReview.getTrip().getId());
+    }
+
+    @Transactional
+    public UserReviewDto translateUserReview(UserReview userReview){
+        Objects.requireNonNull(userReview);
+
+        return new UserReviewDto(userReview.getId(),userReview.getNote(),userReview.getDate(),
+                userReview.getRating(),userReview.getUser().getId(),userReview.getAuthor().getId(),translateSession(userReview.getTripSession()));
     }
 }

@@ -7,6 +7,7 @@ import icons from "../../../Files/icons.json";
 import Spinner from "react-bootstrap/Spinner";
 import ButtonInRow from "../../SmartGadgets/ButtonInRow";
 import rules from "../../../Files/validationRules.json";
+import { withRouter } from "react-router-dom";
 import {
     formValidation,
     validationFeedback,
@@ -15,12 +16,18 @@ import {
 
 class Edit extends React.Component {
     state = {
-        achievement: { name: null, description: null, icon: null },
+        type: null,
+        achievement: {
+            name: null,
+            description: null,
+            icon: null,
+            category: null,
+        },
+        categories: null,
         form: {
             isValid: false,
             elements: {
                 icon: {
-                    idForUpdate: true,
                     touched: false,
                     valid: false,
                     validationRules: rules.achievement.icon,
@@ -35,17 +42,59 @@ class Edit extends React.Component {
                     valid: false,
                     validationRules: rules.achievement.description,
                 },
+                limit: {
+                    touched: false,
+                    valid: false,
+                    validationRules: {},
+                },
+                category: {
+                    touched: false,
+                    valid: false,
+                    validationRules: {},
+                },
             },
         },
     };
 
     async componentDidMount() {
-        const response = await fetch(
+        const type = this.props.location.type;
+        if (type == "categorized") {
+            const response = await fetch(
+                `http://localhost:8080/achievement/categorized/` +
+                    this.props.match.params.id
+            );
+            const data = await response.json();
+            const dataCopy = { ...data };
+            dataCopy.category = data.category.id;
+            this.setState({ achievement: dataCopy });
+
+            const response1 = await fetch(`http://localhost:8080/category`);
+            const data1 = await response1.json();
+            this.setState({ categories: data1 });
+        } else if (type == "certificate") {
+            const response = await fetch(
+                `http://localhost:8080/achievement/certificate/` +
+                    this.props.match.params.id
+            );
+            const data = await response.json();
+            this.setState({ achievement: data });
+        } else if (type == "special") {
+            const response = await fetch(
+                `http://localhost:8080/achievement/special/` +
+                    this.props.match.params.id
+            );
+            const data = await response.json();
+            this.setState({ achievement: data });
+        }
+        /*const response = await fetch(
             `http://localhost:8080/achievement/` + this.props.match.params.id
         );
         const data = await response.json();
         console.log(data);
-        this.setState({ achievement: data });
+        this.setState({ achievement: data });*/
+        console.log(this.state.achievement);
+        console.log(this.state.categories);
+        await this.setState({ type: type });
     }
 
     /**
@@ -55,9 +104,7 @@ class Edit extends React.Component {
      */
     inputUpdateHandler = async (event, nameOfFormInput) => {
         const newState = { ...this.state.achievement };
-        if (this.state.form.elements[nameOfFormInput].idForUpdate)
-            newState[nameOfFormInput] = event.target.id;
-        else newState[nameOfFormInput] = event.target.value;
+        newState[nameOfFormInput] = event.target.value;
         await this.setState({ achievement: newState });
         if (this.state.form.elements[nameOfFormInput].touched) {
             this.validateForm();
@@ -66,26 +113,62 @@ class Edit extends React.Component {
 
     submitHandler = async (event) => {
         event.preventDefault();
+        console.log(this.state);
         await this.validateForm();
         if (this.state.form.isValid) {
-            fetch(
-                "http://localhost:8080/achievement/" +
-                    this.props.match.params.id,
-                {
-                    method: "PATCH",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(this.state.achievement),
+            if (this.state.type == "categorized") {
+                let foundIndex = this.state.categories.findIndex(
+                    (element) => element.id == this.state.achievement.category
+                );
+                if (foundIndex > -1) {
+                    const newState = { ...this.state };
+                    newState.achievement.category = this.state.categories[
+                        foundIndex
+                    ];
+                    await this.setState(newState);
                 }
-            ).then((response) => {
-                if (response.ok) this.props.history.push("/achievement");
-            });
+                this.fetchToBackend("categorized");
+            } else if (this.state.type == "certificate") {
+                this.fetchToBackend("certificate");
+            } else if (this.state.type == "special") {
+                this.fetchToBackend("special");
+            }
         }
+    };
+
+    fetchToBackend = (type) => {
+        fetch(
+            "http://localhost:8080/achievement/" +
+                type +
+                "/" +
+                this.props.match.params.id,
+            {
+                method: "PATCH",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(this.state.achievement),
+            }
+        ).then((response) => {
+            if (response.ok)
+                this.props.history.push({
+                    pathname: "/achievement",
+                    type: type,
+                });
+        });
     };
 
     validateForm = async () => {
         const newState = { ...this.state.form };
+        if (this.state.type == "categorized") {
+            newState.elements.limit.validationRules = rules.achievement.limit;
+            newState.elements.category.validationRules =
+                rules.achievement.category;
+        } else {
+            newState.elements.limit.validationRules = {};
+            newState.elements.category.validationRules = {};
+        }
         formValidation(newState, this.state.achievement);
         await this.setState({ form: newState });
     };
@@ -100,16 +183,84 @@ class Edit extends React.Component {
                 </Container>
             );
         } else {
+            let categorizedForm = null;
+            if (this.state.type == "categorized") {
+                let categoryOptions = [];
+                if (this.state.categories && this.state.categories.length > 0) {
+                    this.state.categories.forEach((element) => {
+                        if (element.id == this.state.achievement.category) {
+                            categoryOptions.push(
+                                <option value={element.id} selected>
+                                    {element.name}
+                                </option>
+                            );
+                        } else {
+                            categoryOptions.push(
+                                <option value={element.id}>
+                                    {element.name}
+                                </option>
+                            );
+                        }
+                    });
+                }
+                categorizedForm = (
+                    <Form.Row>
+                        <Form.Group
+                            as={Col}
+                            controlId="exampleForm.ControlSelect1"
+                        >
+                            <Form.Label>Category</Form.Label>
+                            <Form.Control
+                                as="select"
+                                onChange={(event) =>
+                                    this.inputUpdateHandler(event, "category")
+                                }
+                                className={validationClassName(
+                                    "category",
+                                    this.state.form
+                                )}
+                            >
+                                {categoryOptions}
+                            </Form.Control>
+                            <span className="invalid-feedback">
+                                {validationFeedback(
+                                    "category",
+                                    this.state.form
+                                )}
+                            </span>
+                        </Form.Group>
+
+                        <Form.Group as={Col} controlId="formGridName">
+                            <Form.Label>Level limit</Form.Label>
+                            <Form.Control
+                                placeholder="Enter limit"
+                                onChange={(event) =>
+                                    this.inputUpdateHandler(event, "limit")
+                                }
+                                className={validationClassName(
+                                    "limit",
+                                    this.state.form
+                                )}
+                                value={this.state.achievement.limit}
+                            />
+                            <span className="invalid-feedback">
+                                {validationFeedback("limit", this.state.form)}
+                            </span>
+                        </Form.Group>
+                    </Form.Row>
+                );
+            }
+
             let iconsToForm = [];
 
             icons.icons.forEach((element) => {
                 iconsToForm.push(
-                    <div className="m-5">
+                    <div className="m-3">
                         <Form.Check.Label>
                             <Form.Check
                                 type="radio"
                                 name="formHorizontalRadios"
-                                id={element.icon}
+                                value={element.icon}
                                 checked={
                                     this.state.achievement.icon == element.icon
                                         ? "checked"
@@ -137,7 +288,10 @@ class Edit extends React.Component {
                 <Container>
                     <ButtonInRow
                         variant="danger"
-                        link="/achievement"
+                        link={{
+                            pathname: "/achievement",
+                            type: this.state.type,
+                        }}
                         side="left"
                         label=""
                         back={true}
@@ -200,6 +354,8 @@ class Edit extends React.Component {
                             {validationFeedback("icon", this.state.form)}
                         </div>
 
+                        {categorizedForm}
+
                         <Button variant="primary" type="submit">
                             Submit
                         </Button>
@@ -210,4 +366,4 @@ class Edit extends React.Component {
     }
 }
 
-export default Edit;
+export default withRouter(Edit);
