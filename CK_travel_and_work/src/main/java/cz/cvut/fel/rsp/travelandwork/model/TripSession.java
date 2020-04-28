@@ -8,6 +8,7 @@ import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.time.LocalDate;
+import java.util.List;
 
 
 @Entity
@@ -37,6 +38,9 @@ public class TripSession extends AbstractEntity {
     @ManyToOne
     @JoinColumn(name = "trip_id", nullable = false)
     private Trip trip;
+
+    @OneToMany(mappedBy = "tripSession")
+    private List<UserReview> userReviews;
 
     public TripSession() {
     }
@@ -81,4 +85,14 @@ public class TripSession extends AbstractEntity {
     }
 
 
+    public List<UserReview> getUserReviews() {
+
+        return userReviews;
+    }
+
+
+    public void setUserReviews(List<UserReview> userReviews) {
+
+        this.userReviews = userReviews;
+    }
 }

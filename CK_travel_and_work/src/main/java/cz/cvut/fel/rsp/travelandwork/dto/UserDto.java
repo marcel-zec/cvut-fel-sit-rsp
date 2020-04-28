@@ -32,6 +32,7 @@ public class UserDto  {
     private AddressDto address;
     private TravelJournalDto travel_journal;
     private List<TripReviewDto> tripReviews;
+    private List<UserReviewDto> userReviewDtos;
 
 
     public UserDto() {
@@ -43,7 +44,7 @@ public class UserDto  {
                    @Size(max = 30, min = 1, message = "First name is in incorrect format.") @NotNull(message = "First name cannot be blank") String firstName,
                    @NotNull(message = "Last name cannot be blank") String lastName,
                    @Email(message = "Email should be valid") @NotNull(message = "Email cannot be blank") String email,
-                   AddressDto address, TravelJournalDto travel_journal, List<TripReviewDto> tripReviews, Role role) {
+                   AddressDto address, TravelJournalDto travel_journal, List<TripReviewDto> tripReviews, Role role,  List<UserReviewDto> userReviewDtos) {
 
         this.id = id;
         this.firstName = firstName;
@@ -53,6 +54,7 @@ public class UserDto  {
         this.travel_journal = travel_journal;
         this.tripReviews = tripReviews;
         this.role = role;
+        this.userReviewDtos = userReviewDtos;
     }
 
 
@@ -149,6 +151,18 @@ public class UserDto  {
     public void setTripReviews(List<TripReviewDto> tripReviews) {
 
         this.tripReviews = tripReviews;
+    }
+
+
+    public List<UserReviewDto> getUserReviewDtos() {
+
+        return userReviewDtos;
+    }
+
+
+    public void setUserReviewDtos(List<UserReviewDto> userReviewDtos) {
+
+        this.userReviewDtos = userReviewDtos;
     }
 }
 
