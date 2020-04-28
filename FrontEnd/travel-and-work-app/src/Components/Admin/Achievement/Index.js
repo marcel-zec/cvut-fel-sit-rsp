@@ -4,7 +4,7 @@ import { Col, Button, Row, Table, Tab, Tabs } from "react-bootstrap";
 import { Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Spinner from "react-bootstrap/Spinner";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import ButtonInRow from "../../SmartGadgets/ButtonInRow";
 
 class Index extends React.Component {
@@ -12,9 +12,18 @@ class Index extends React.Component {
         categorized: null,
         certificate: null,
         special: null,
+        type: null,
     };
 
     async componentDidMount() {
+        console.log("location");
+        console.log(this.props.location);
+
+        if (this.props.location) {
+            if (this.props.location.hasOwnProperty("type"))
+                this.setState({ type: this.props.location.type });
+        }
+
         const response = await fetch(
             `http://localhost:8080/achievement/categorized`
         );
@@ -68,7 +77,13 @@ class Index extends React.Component {
                             <td>
                                 <Link
                                     className="p-3"
-                                    to={"achievement/" + element.id + "/edit"}
+                                    to={{
+                                        pathname:
+                                            "achievement/" +
+                                            element.id +
+                                            "/edit",
+                                        type: "categorized",
+                                    }}
                                 >
                                     <FontAwesomeIcon icon="cog" />
                                 </Link>
@@ -97,7 +112,13 @@ class Index extends React.Component {
                             <td>
                                 <Link
                                     className="p-3"
-                                    to={"achievement/" + element.id + "/edit"}
+                                    to={{
+                                        pathname:
+                                            "achievement/" +
+                                            element.id +
+                                            "/edit",
+                                        type: "special",
+                                    }}
                                 >
                                     <FontAwesomeIcon icon="cog" />
                                 </Link>
@@ -126,7 +147,13 @@ class Index extends React.Component {
                             <td>
                                 <Link
                                     className="p-3"
-                                    to={"achievement/" + element.id + "/edit"}
+                                    to={{
+                                        pathname:
+                                            "achievement/" +
+                                            element.id +
+                                            "/edit",
+                                        type: "certificate",
+                                    }}
                                 >
                                     <FontAwesomeIcon icon="cog" />
                                 </Link>
@@ -150,7 +177,9 @@ class Index extends React.Component {
                     />
 
                     <Tabs
-                        defaultActiveKey="special"
+                        defaultActiveKey={
+                            this.state.type ? this.state.type : "special"
+                        }
                         id="uncontrolled-tab-example"
                     >
                         <Tab eventKey="special" title="Special">
@@ -165,7 +194,7 @@ class Index extends React.Component {
                                 <tbody>{specialRows}</tbody>
                             </Table>
                         </Tab>
-                        <Tab eventKey="categories" title="Categories">
+                        <Tab eventKey="categorized" title="Categories">
                             <Table striped bordered hover>
                                 <thead>
                                     <tr>
@@ -198,4 +227,4 @@ class Index extends React.Component {
     }
 }
 
-export default Index;
+export default withRouter(Index);
