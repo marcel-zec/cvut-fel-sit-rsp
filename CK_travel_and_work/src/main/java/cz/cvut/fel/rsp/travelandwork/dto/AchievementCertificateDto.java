@@ -34,6 +34,11 @@ public class AchievementCertificateDto {
     }
 
 
+    public AchievementCertificateDto() {
+
+    }
+
+
     public String getName() {
 
         return name;

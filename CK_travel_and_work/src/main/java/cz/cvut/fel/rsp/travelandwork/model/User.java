@@ -56,6 +56,12 @@ public class User extends AbstractEntity {
     @OneToMany(mappedBy = "author")
     private List<TripReview> tripReviews;
 
+    @OneToMany(mappedBy = "user")
+    private List<UserReview> userReviews;
+
+    @OneToMany(mappedBy = "author")
+    private List<UserReview> userReviewsAuthor;
+
     public User() {
         this.role = Role.USER;
     }
@@ -170,5 +176,29 @@ public class User extends AbstractEntity {
 
     public void setTripReviews(List<TripReview> tripReviews) {
         this.tripReviews = tripReviews;
+    }
+
+
+    public List<UserReview> getUserReviews() {
+
+        return userReviews;
+    }
+
+
+    public void setUserReviews(List<UserReview> userReviews) {
+
+        this.userReviews = userReviews;
+    }
+
+
+    public List<UserReview> getUserReviewsAuthor() {
+
+        return userReviewsAuthor;
+    }
+
+
+    public void setUserReviewsAuthor(List<UserReview> userReviewsAuthor) {
+
+        this.userReviewsAuthor = userReviewsAuthor;
     }
 }

@@ -17,6 +17,7 @@ public class AchievementSpecial extends Achievement {
         inverseJoinColumns = @JoinColumn(name = "traveljournal_id"))
     private List<TravelJournal> owned_travel_journals;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "recieved_achievement_special_trip",

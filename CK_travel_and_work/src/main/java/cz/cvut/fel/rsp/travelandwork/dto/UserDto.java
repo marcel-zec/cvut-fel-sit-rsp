@@ -7,6 +7,7 @@ import javax.persistence.Enumerated;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDto  {
@@ -31,9 +32,11 @@ public class UserDto  {
     private AddressDto address;
     private TravelJournalDto travel_journal;
     private List<TripReviewDto> tripReviews;
+    private List<UserReviewDto> userReviewDtos;
 
 
     public UserDto() {
+        this.tripReviews = new ArrayList<>();
     }
 
 
@@ -41,7 +44,7 @@ public class UserDto  {
                    @Size(max = 30, min = 1, message = "First name is in incorrect format.") @NotNull(message = "First name cannot be blank") String firstName,
                    @NotNull(message = "Last name cannot be blank") String lastName,
                    @Email(message = "Email should be valid") @NotNull(message = "Email cannot be blank") String email,
-                   AddressDto address, TravelJournalDto travel_journal, List<TripReviewDto> tripReviews, Role role) {
+                   AddressDto address, TravelJournalDto travel_journal, List<TripReviewDto> tripReviews, Role role,  List<UserReviewDto> userReviewDtos) {
 
         this.id = id;
         this.firstName = firstName;
@@ -51,31 +54,67 @@ public class UserDto  {
         this.travel_journal = travel_journal;
         this.tripReviews = tripReviews;
         this.role = role;
+        this.userReviewDtos = userReviewDtos;
+    }
+
+
+    public Long getId() {
+
+        return id;
+    }
+
+
+    public void setId(Long id) {
+
+        this.id = id;
     }
 
 
     public String getFirstName() {
+
         return firstName;
     }
 
+
     public void setFirstName(String firstName) {
+
         this.firstName = firstName;
     }
 
+
     public String getLastName() {
+
         return lastName;
     }
 
+
     public void setLastName(String lastName) {
+
         this.lastName = lastName;
     }
 
+
+    public String getEmail() {
+
+        return email;
+    }
+
+
     public void setEmail(String email) {
+
         this.email = email;
     }
 
-    public String getEmail() {
-        return email;
+
+    public Role getRole() {
+
+        return role;
+    }
+
+
+    public void setRole(Role role) {
+
+        this.role = role;
     }
 
 
@@ -103,30 +142,6 @@ public class UserDto  {
     }
 
 
-    public List<TripReviewDto> getTripReviewsDto() {
-
-        return tripReviews;
-    }
-
-
-    public void setTripReviewsDto(List<TripReviewDto> tripReviews) {
-
-        this.tripReviews = tripReviews;
-    }
-
-
-    public Long getId() {
-
-        return id;
-    }
-
-
-    public void setId(Long id) {
-
-        this.id = id;
-    }
-
-
     public List<TripReviewDto> getTripReviews() {
 
         return tripReviews;
@@ -139,29 +154,15 @@ public class UserDto  {
     }
 
 
-    public Role getRole() {
-        return role;
+    public List<UserReviewDto> getUserReviewDtos() {
+
+        return userReviewDtos;
     }
 
 
-    public void setRole(Role role) {
-        this.role = role;
-    }
+    public void setUserReviewDtos(List<UserReviewDto> userReviewDtos) {
 
-
-    @Override
-    public String toString() {
-
-        return "UserDto{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", role=" + role +
-                ", address=" + address +
-                ", travel_journal=" + travel_journal +
-                ", tripReviews=" + tripReviews +
-                '}';
+        this.userReviewDtos = userReviewDtos;
     }
 }
 
