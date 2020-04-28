@@ -38,7 +38,7 @@ public class UserReviewService {
     }
 
     @Transactional
-    public UserReviewDto find(long id) {
+    public UserReviewDto find(Long id) {
         Objects.requireNonNull(id);
         return translateService.translateUserReview(userReviewDao.find(id));
     }
@@ -54,7 +54,7 @@ public class UserReviewService {
     }
 
     @Transactional
-    public List<UserReviewDto> findAllOfUser(long userId) throws NotFoundException {
+    public List<UserReviewDto> findAllOfUser(Long userId) throws NotFoundException {
         User user = userDao.find(userId);
         if (user == null) throw new NotFoundException();
         if (user.getUserReviews() == null) throw new NotFoundException();
@@ -83,7 +83,7 @@ public class UserReviewService {
     }
 
     @Transactional
-    public void create(long userId, User currentUser, long tripSessionId, UserReview userReview) throws Exception {
+    public void create(Long userId, User currentUser, Long tripSessionId, UserReview userReview) throws Exception {
 
         User user = userDao.find(userId);
         User current_user = userDao.find(currentUser.getId());
