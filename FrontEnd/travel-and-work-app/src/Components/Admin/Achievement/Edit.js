@@ -151,7 +151,11 @@ class Edit extends React.Component {
                 body: JSON.stringify(this.state.achievement),
             }
         ).then((response) => {
-            if (response.ok) this.props.history.push("/achievement");
+            if (response.ok)
+                this.props.history.push({
+                    pathname: "/achievement",
+                    type: type,
+                });
         });
     };
 
