@@ -8,6 +8,7 @@ import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -43,6 +44,7 @@ public class TripSession extends AbstractEntity {
     private List<UserReview> userReviews;
 
     public TripSession() {
+        this.userReviews = new ArrayList<>();
     }
 
     public TripSession(Trip trip, LocalDate from_date, LocalDate to_date, double price) {
@@ -50,6 +52,7 @@ public class TripSession extends AbstractEntity {
         this.from_date = from_date;
         this.to_date = to_date;
         this.price = price;
+        this.userReviews = new ArrayList<>();
     }
 
     public LocalDate getFrom_date() {
@@ -94,5 +97,9 @@ public class TripSession extends AbstractEntity {
     public void setUserReviews(List<UserReview> userReviews) {
 
         this.userReviews = userReviews;
+    }
+
+    public void addUserReview(UserReview userReview){
+        this.userReviews.add(userReview);
     }
 }
