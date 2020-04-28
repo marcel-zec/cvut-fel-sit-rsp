@@ -1,5 +1,6 @@
 package cz.cvut.fel.rsp.travelandwork.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import cz.cvut.fel.rsp.travelandwork.dto.AddressDto;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -68,14 +69,14 @@ public class User extends AbstractEntity {
         this.userReviewsAuthor = new ArrayList<>();
     }
 
-    public User(String password, String firstName, String lastName, String email, Role role){
+    public User(String password, String firstName, String lastName, String email){
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.role = role;
         this.userReviews = new ArrayList<>();
         this.userReviewsAuthor = new ArrayList<>();
+        this.role = Role.USER;
     }
 
     public User(
