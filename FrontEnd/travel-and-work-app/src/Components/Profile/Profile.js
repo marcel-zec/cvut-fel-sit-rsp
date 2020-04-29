@@ -8,11 +8,10 @@ import Image from "react-bootstrap/Image";
 class Profile extends React.Component {
     render() {
         const flexRow = "d-flex justify-content-center";
-        const marginBt = "mb-5";
         const marginTop = "mt-5";
-        const flexRowWithMgBtn = flexRow + " " + marginBt;
+        const flexRowWithMgBtn = flexRow;
 
-        const now = 60;
+        const now = 50;
         const progressInstance = (
             <ProgressBar now={now} label="Just 15 more XP to next level!" />
         );
@@ -20,45 +19,71 @@ class Profile extends React.Component {
         console.log("profile");
 
         return (
-            <Container>
+            <Container id="userProfileMain">
                 <Row className={[flexRowWithMgBtn, marginTop]}>
-                    <h1>Travel Journal</h1>
+                    <h3>Your travel Journal</h3>
                 </Row>
-
                 <Row className={flexRowWithMgBtn}>
-                    <Col>
-                        <Image
-                            src="https://blog.pravda.sk/avatar/blog-1166-256.png"
-                            roundedCircle
-                        />
-                        <h4>2. level</h4>
+                    <Col xs={4}>
+                        <div className="userPhoto window radius">
+                            <Image src="https://blog.pravda.sk/avatar/blog-1166-256.png" className="radius"/>
+                        </div>
+                        <div className="userLevel">
+                            <h4>2. level</h4>
+                        </div>
                     </Col>
                     <Col>
-                        <h2>The Work-Traveler</h2>
-                        <h2>Mike Peterson</h2>
+                        <div className="window radius">
+                            <Row>
+                                <Col className="user_info">
+                                    <div>
+                                        <label>Name</label>
+                                        <h5>Mike Peterson</h5>
+                                    </div>
+                                    <div>
+                                        <label>Nationality</label>
+                                        <h5>Slovakia</h5>
+                                    </div>
+                                </Col>
+                                <Col className="user_adress">
+                                    <div>
+                                        <label>Adress</label>
+                                        <p>Svätoplukova 3232/10</p>
+                                        <p>080 01 Prešov</p>
+                                    </div>
+                                    <div>
+                                        <label>Registrate from</label>
+                                        <p>24.4.2020</p>
+                                    </div>
+                                </Col>
+                            </Row>
+                            <h5>Your progress</h5>
+                            <Row>
+                                <Col xs={2}><h6>2.Level</h6></Col>
+                                <Col><div className="progressInstance">{progressInstance}</div></Col>
+                                <Col xs={2}><h6>3.Level</h6></Col>
+                            </Row>
+                        
+                        </div>
+                        
                     </Col>
                 </Row>
-                <Container fluid className={marginBt}>
-                    <Row>
-                        <Col>{progressInstance}</Col>
-                    </Row>
-                </Container>
-                <Row className={flexRowWithMgBtn}>
+                <Row className="userMenu">
                     <Col>
                         <Link to="/profile/details">
-                            <FontAwesomeIcon icon="cog" size="4x" />
-                            <h4>Profile</h4>
+                            <FontAwesomeIcon icon="cog" size="3x" />
+                            <h4>User settings</h4>
                         </Link>
                     </Col>
                     <Col>
                         <Link to="/profile/achievments">
-                            <FontAwesomeIcon icon="trophy" size="4x" />
+                            <FontAwesomeIcon icon="trophy" size="3x" />
                             <h4>My acheievments</h4>
                         </Link>
                     </Col>
                     <Col>
                         <Link to="/profile/trips">
-                            <FontAwesomeIcon icon="suitcase" size="4x" />
+                            <FontAwesomeIcon icon="suitcase" size="3x" />
                             <h4>My trips</h4>
                         </Link>
                     </Col>

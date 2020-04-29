@@ -7,8 +7,8 @@ class ProfileDetails extends React.Component {
     render() {
         console.log("working");
         return (
-            <Container>
-                <Form>
+            <Container className="window radius" style={{width:"750px"}}>
+                <Form style={{padding:"15px"}}>
                     <Form.Row>
                         <Form.Group as={Col} controlId="formGridEmail">
                             <Form.Label>Email</Form.Label>
@@ -57,7 +57,7 @@ class ProfileDetails extends React.Component {
                         </Form.Group>
                     </Form.Row>
 
-                    <Button variant="primary" type="submit">
+                    <Button variant="primary" type="submit" className="submit">
                         Submit
                     </Button>
                 </Form>

@@ -551,3 +551,112 @@ header .nav-link a{
 .trip_validation input:not(:checked) ~ .validate_error{
     display: block;
 }
+/*userProfile*/
+#userProfileMain{
+    margin-bottom: 30px;
+}
+#userProfileMain .userPhoto{
+    width: 250px;
+    padding: 15px!important;
+    margin: auto;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, .1), 0 1px 10px rgba(0, 0, 0, .15);
+}
+#userProfileMain .userPhoto img{
+    width: 100%;
+    border-radius: 8px;
+}
+#userProfileMain .userLevel{
+    color: white;
+    /*border-bottom: 35px solid #ff6666;
+    border-left: 25px solid transparent;
+    border-right: 25px solid transparent;*/
+    /*height: 0;*/
+    position: relative;
+    top: -20px;
+    width: 285px;
+    background-color: #ff6666;
+    margin: auto;
+    padding: 3px;
+}
+#userProfileMain .userLevel::after{
+    width: 0;
+    height: 0;
+    border-bottom: 17px solid #d14f4f;
+    border-right: 17px solid transparent;
+    content: '';
+    position: absolute;
+    right: 0;
+    top: -17px;
+}
+#userProfileMain .userLevel::before{
+    width: 0;
+    height: 0;
+    border-bottom: 17px solid #d14f4f;
+    border-left: 17px solid transparent;
+    content: '';
+    position: absolute;
+    left: 0;
+    top: -17px;
+}
+#userProfileMain .progress-bar{
+    background-color: #ff6666;
+}
+#userProfileMain .progress{
+    height: 2em;
+    font-size: 14px;
+    border-radius: 10px;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, .1), 0 1px 10px rgba(0, 0, 0, .15);
+}
+#userProfileMain .user_info, #userProfileMain .user_adress{
+    text-align: left;
+}
+#userProfileMain .user_info h5, #userProfileMain .user_adress h5{
+    margin-top: 2px;
+    margin-bottom: 15px;
+    margin-left: 5px;
+}
+#userProfileMain .user_info label,#userProfileMain .user_adress label{
+    margin-bottom: 0px;
+    margin-top: 10px;
+}
+#userProfileMain .window .row{
+    padding: 10px 15px;
+}
+#userProfileMain .user_adress p{
+    font-weight: 500;
+    margin-bottom: 0px;
+    margin-left: 5px;
+}
+#userProfileMain .userMenu{
+    margin-top: 35px;
+    margin-bottom: 25px;
+}
+#userProfileMain .userMenu svg{
+    color: #ff6666;
+}
+#userProfileMain .userMenu a{
+    color: #525252;
+    transition: .3s all;
+    cursor: pointer;
+    text-decoration: none;
+}
+#userProfileMain .userMenu a:focus:after { 
+    width: 100%; 
+    left: 0; 
+  }
+#userProfileMain .userMenu a:after {    
+    background: none repeat scroll 0 0 transparent;
+    bottom: 0;
+    content: "";
+    display: block;
+    height: 2px;
+    left: 50%;
+    position: absolute;
+    background: #ff6666;
+    transition: width 0.3s ease 0s, left 0.3s ease 0s;
+    width: 0;
+  }
+#userProfileMain .userMenu a:hover:after { 
+    width: 100%; 
+    left: 0; 
+  }
