@@ -55,7 +55,8 @@
         "firstName": { "required": true, "minLength": 1, "maxLength": 30 },
         "lastName": { "required": true, "minLength": 1, "maxLength": 30 },
         "email": { "required": true, "email": true },
-        "password": { "required": true, "minLength": 6, "maxLength": 255 }
+        "password": { "required": true, "minLength": 6, "maxLength": 255 },
+        "password_control": { "required": true, "sameAs": "password" }
     },
     "address": {
         "city": { "required": true, "minLength": 1, "maxLength": 100 },
