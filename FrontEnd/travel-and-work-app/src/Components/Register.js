@@ -10,8 +10,9 @@ import {
     validationFeedback,
     validationClassName,
 } from "../Validator";
+import { withRouter } from "react-router-dom";
 
-class Home extends React.Component {
+class Register extends React.Component {
     state = {
         form: {
             isValid: false,
@@ -36,94 +37,119 @@ class Home extends React.Component {
                     valid: false,
                     validationRules: rules.registration.password,
                 },
+                password_control: {
+                    touched: false,
+                    valid: false,
+                    validationRules: rules.registration.password,
+                },
                 city: {
                     touched: false,
                     valid: false,
-                    validationRules: rules.registration.city,
+                    validationRules: rules.address.city,
                 },
                 street: {
                     touched: false,
                     valid: false,
-                    validationRules: rules.registration.street,
+                    validationRules: rules.address.street,
                 },
                 houseNumber: {
                     touched: false,
                     valid: false,
-                    validationRules: rules.registration.houseNumber,
+                    validationRules: rules.address.houseNumber,
                 },
                 zipCode: {
                     touched: false,
                     valid: false,
-                    validationRules: rules.registration.zipCode,
+                    validationRules: rules.address.zipCode,
                 },
                 country: {
                     touched: false,
                     valid: false,
-                    validationRules: rules.registration.country,
+                    validationRules: rules.address.country,
                 },
             },
         },
         user: {
             firstName: null,
             lastName: null,
-            username: "stylishslave",
             email: null,
             password: null,
             city: null,
             street: null,
             houseNumber: null,
-            zipCode: [],
-            country: [],
-            role: "ROLE_USER",
+            zipCode: null,
+            country: null,
+            password_control: null,
         },
     };
-    inputUpdateHandler = async (event, nameOfFormInput, select) => {
-        let newState = { ...this.state.user };
 
-        //string inputs
-        if (Object.keys(newState).includes(nameOfFormInput)) {
+    inputUpdateHandler = async (event, nameOfFormInput, select) => {
+        let newStateUser = { ...this.state.user };
+        let newStateAddress = { ...this.state.address };
+
+        if (Object.keys(newStateAddress).includes(nameOfFormInput)) {
+            newStateAddress[nameOfFormInput] = event.target.value;
+            await this.setState({ address: newStateAddress });
+        } else if (Object.keys(newStateUser).includes(nameOfFormInput)) {
             if (select && event.target.value == 0) {
-                newState[nameOfFormInput] = null;
+                newStateUser[nameOfFormInput] = null;
             } else {
-                newState[nameOfFormInput] = event.target.value;
+                newStateUser[nameOfFormInput] = event.target.value;
             }
+            await this.setState({ user: newStateUser });
+        } else if (nameOfFormInput == "password_control") {
+            await this.setState({ password_control: event.target.value });
         }
-        //TODO: zjistit proc to trva o interval vic
-        //problem je s console.log() ten vraj nema aktualny state ale ten pred jeho aktualizaciou
-        //natrafil som ale aj tak na problemy ked som nieco z formularu posielal do rodicovkeho komponentu
-        //a vyriesil som to tak ze pred atributy metody dopises async cize ...handler = async (event,...
-        //a ked this.setState dopises await
-        //console.log(newState);
-        await this.setState({ user: newState });
+
         if (this.state.form.elements[nameOfFormInput].touched) {
             this.validateForm();
         }
-        console.log(this.state.user);
+        console.log(this.state);
     };
 
     validateForm = async () => {
-        const newState = { ...this.state.form };
+        let newState = { ...this.state.form };
         formValidation(newState, this.state.user);
         await this.setState({ form: newState });
+        /* newState = { ...this.state.form };
+        formValidation(newState, this.state.address);
+        await this.setState({ form: newState });*/
     };
 
     submitHandler = async (event) => {
         event.preventDefault();
         console.log(this.state.user);
         this.validateForm();
-
-        /*fetch("http://localhost:8080/trip", {
+        let user = {
+            firstName: this.state.user.firstName,
+            lastName: this.state.user.lastName,
+            email: this.state.user.email,
+            password: this.state.user.password,
+            address: {
+                city: this.state.user.city,
+                street: this.state.user.street,
+                houseNumber: this.state.user.houseNumber,
+                zipCode: this.state.user.zipCode,
+                country: this.state.user.country,
+            },
+        };
+        let objectToSend = {
+            user: user,
+            password_control: this.state.user.password_control,
+        };
+        console.log(objectToSend);
+        fetch("http://localhost:8080/user", {
             method: "POST",
             mode: "cors",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(this.state.trip),
+            body: JSON.stringify(objectToSend),
         }).then((response) => {
-            if (response.ok) this.props.history.push("/trip");
+            if (response.ok) this.props.history.push("/login");
             //TODO - osetrenie vynimiek
             else console.log("Error: somethhing goes wrong");
-        });*/
+        });
     };
     render() {
         let countryOptions = null;
@@ -142,19 +168,24 @@ class Home extends React.Component {
                 );
             }
             countryOptions = (
-                <Form.Control
-                    as="select"
-                    placeholder="Enter name"
-                    onChange={(event) =>
-                        this.inputUpdateHandler(event, "country", true)
-                    }
-                    className={validationClassName("country", this.state.form)}
-                >
-                    {countriesArray}
+                <>
+                    <Form.Control
+                        as="select"
+                        placeholder="Enter name"
+                        onChange={(event) =>
+                            this.inputUpdateHandler(event, "country", true)
+                        }
+                        className={validationClassName(
+                            "country",
+                            this.state.form
+                        )}
+                    >
+                        {countriesArray}
+                    </Form.Control>
                     <div class="invalid-feedback">
                         {validationFeedback("country", this.state.form)}
                     </div>
-                </Form.Control>
+                </>
             );
         }
         return (
@@ -281,17 +312,17 @@ class Home extends React.Component {
                                             onChange={(event) =>
                                                 this.inputUpdateHandler(
                                                     event,
-                                                    "password"
+                                                    "password_control"
                                                 )
                                             }
                                             className={validationClassName(
-                                                "password",
+                                                "password_control",
                                                 this.state.form
                                             )}
                                         />
                                         <div class="invalid-feedback">
                                             {validationFeedback(
-                                                "password",
+                                                "password_control",
                                                 this.state.form
                                             )}
                                         </div>
@@ -300,7 +331,56 @@ class Home extends React.Component {
                             </div>
                             <br />
                             <div className="window radius">
-                                <h5>Adress</h5>
+                                <h5>Address</h5>
+
+                                <Form.Row>
+                                    <Form.Group as={Col}>
+                                        <Form.Label>Street</Form.Label>
+                                        <Form.Control
+                                            maxLength="50"
+                                            placeholder="Street"
+                                            onChange={(event) =>
+                                                this.inputUpdateHandler(
+                                                    event,
+                                                    "street"
+                                                )
+                                            }
+                                            className={validationClassName(
+                                                "street",
+                                                this.state.form
+                                            )}
+                                        />
+                                        <div class="invalid-feedback">
+                                            {validationFeedback(
+                                                "street",
+                                                this.state.form
+                                            )}
+                                        </div>
+                                    </Form.Group>
+                                    <Form.Group as={Col}>
+                                        <Form.Label>House number</Form.Label>
+                                        <Form.Control
+                                            placeholder="House number"
+                                            onChange={(event) =>
+                                                this.inputUpdateHandler(
+                                                    event,
+                                                    "houseNumber"
+                                                )
+                                            }
+                                            className={validationClassName(
+                                                "houseNumber",
+                                                this.state.form
+                                            )}
+                                        />
+                                        <div class="invalid-feedback">
+                                            {validationFeedback(
+                                                "houseNumber",
+                                                this.state.form
+                                            )}
+                                        </div>
+                                    </Form.Group>
+                                </Form.Row>
+
                                 <Form.Row>
                                     <Form.Group as={Col}>
                                         <Form.Label>City</Form.Label>
@@ -325,38 +405,13 @@ class Home extends React.Component {
                                             )}
                                         </div>
                                     </Form.Group>
-                                    <Form.Group as={Col}>
-                                        <Form.Label>Street</Form.Label>
-                                        <Form.Control
-                                            maxLength="50"
-                                            placeholder="Street"
-                                            onChange={(event) =>
-                                                this.inputUpdateHandler(
-                                                    event,
-                                                    "street"
-                                                )
-                                            }
-                                            className={validationClassName(
-                                                "street",
-                                                this.state.form
-                                            )}
-                                        />
-                                        <div class="invalid-feedback">
-                                            {validationFeedback(
-                                                "street",
-                                                this.state.form
-                                            )}
-                                        </div>
-                                    </Form.Group>
                                 </Form.Row>
+
                                 <Form.Row>
                                     <Form.Group as={Col}></Form.Group>
                                     <Form.Group as={Col}>
                                         <Form.Label>ZIP code</Form.Label>
                                         <Form.Control
-                                            min="10000"
-                                            max="99999"
-                                            maxLength="5"
                                             type="number"
                                             placeholder="ZIP code"
                                             onChange={(event) =>
@@ -401,4 +456,4 @@ class Home extends React.Component {
     }
 }
 
-export default Home;
+export default withRouter(Register);

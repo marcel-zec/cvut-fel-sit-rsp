@@ -1,8 +1,9 @@
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
 import ModalCentered from "./ModalCentered";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./Modal.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 
 function AchievementModal(props) {
     const [modalShow, setModalShow] = React.useState(false);

@@ -1,5 +1,6 @@
 package cz.cvut.fel.rsp.travelandwork.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import cz.cvut.fel.rsp.travelandwork.dto.AddressDto;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -56,16 +57,26 @@ public class User extends AbstractEntity {
     @OneToMany(mappedBy = "author")
     private List<TripReview> tripReviews;
 
+    @OneToMany(mappedBy = "user")
+    private List<UserReview> userReviews;
+
+    @OneToMany(mappedBy = "author")
+    private List<UserReview> userReviewsAuthor;
+
     public User() {
         this.role = Role.USER;
+        this.userReviews = new ArrayList<>();
+        this.userReviewsAuthor = new ArrayList<>();
     }
 
-    public User(String password, String firstName, String lastName, String email, Role role){
+    public User(String password, String firstName, String lastName, String email){
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.role = role;
+        this.userReviews = new ArrayList<>();
+        this.userReviewsAuthor = new ArrayList<>();
+        this.role = Role.USER;
     }
 
     public User(
@@ -170,5 +181,37 @@ public class User extends AbstractEntity {
 
     public void setTripReviews(List<TripReview> tripReviews) {
         this.tripReviews = tripReviews;
+    }
+
+
+    public List<UserReview> getUserReviews() {
+
+        return userReviews;
+    }
+
+
+    public void setUserReviews(List<UserReview> userReviews) {
+
+        this.userReviews = userReviews;
+    }
+
+
+    public List<UserReview> getUserReviewsAuthor() {
+
+        return userReviewsAuthor;
+    }
+
+
+    public void setUserReviewsAuthor(List<UserReview> userReviewsAuthor) {
+
+        this.userReviewsAuthor = userReviewsAuthor;
+    }
+
+    public void addUserReview(UserReview userReview){
+        this.userReviews.add(userReview);
+    }
+
+    public void addUserReviewAuthor(UserReview userReview){
+        this.userReviewsAuthor.add(userReview);
     }
 }

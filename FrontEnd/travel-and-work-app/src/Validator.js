@@ -15,6 +15,7 @@ import React from "react";
  */
 export const formValidation = (formStateObject, inputsObject) => {
     console.log("in validation");
+    formStateObject.isValid = true;
     for (let inputName in formStateObject.elements) {
         const input = inputsObject[inputName];
         if (
@@ -31,7 +32,7 @@ export const formValidation = (formStateObject, inputsObject) => {
                     formStateObject.elements[inputName].validationRules;
                 formStateObject.elements[inputName].touched = true;
                 formStateObject.elements[inputName].valid = true;
-                formStateObject.valid = true;
+
                 console.log("I am validating..");
                 console.log(inputName);
                 if (rules.hasOwnProperty("required") && rules.required) {
@@ -41,7 +42,7 @@ export const formValidation = (formStateObject, inputsObject) => {
                         input.length < 1
                     ) {
                         formStateObject.elements[inputName].valid = false;
-                        formStateObject.valid = false;
+
                         console.log("required check: INVALID");
                     } else {
                         console.log("required check:  valid");
@@ -50,7 +51,7 @@ export const formValidation = (formStateObject, inputsObject) => {
                 if (rules.hasOwnProperty("minLength")) {
                     if (!input || input.trim().length < rules.minLength) {
                         formStateObject.elements[inputName].valid = false;
-                        formStateObject.valid = false;
+
                         console.log(
                             "min length (" +
                                 rules.minLength +
@@ -65,7 +66,7 @@ export const formValidation = (formStateObject, inputsObject) => {
                 if (rules.hasOwnProperty("maxLength")) {
                     if (!input || input.trim().length > rules.maxLength) {
                         formStateObject.elements[inputName].valid = false;
-                        formStateObject.valid = false;
+
                         console.log(
                             "max length (" +
                                 rules.maxLength +
@@ -77,21 +78,12 @@ export const formValidation = (formStateObject, inputsObject) => {
                         );
                     }
                 }
+
                 if (rules.hasOwnProperty("number") && rules.number) {
                     let parsed = parseFloat(input);
                     if (isNaN(parsed)) {
                         formStateObject.elements[inputName].valid = false;
-                        formStateObject.valid = false;
-                        console.log("is number check: INVALID");
-                    } else {
-                        console.log("is number check: valid");
-                    }
-                }
-                if (rules.hasOwnProperty("number") && rules.number) {
-                    let parsed = parseFloat(input);
-                    if (isNaN(parsed)) {
-                        formStateObject.elements[inputName].valid = false;
-                        formStateObject.valid = false;
+
                         console.log("is number check: INVALID");
                     } else {
                         console.log("is number check: valid");
@@ -101,7 +93,7 @@ export const formValidation = (formStateObject, inputsObject) => {
                                 formStateObject.elements[
                                     inputName
                                 ].valid = false;
-                                formStateObject.valid = false;
+
                                 console.log(
                                     "min " +
                                         rules.minValue +
@@ -118,7 +110,7 @@ export const formValidation = (formStateObject, inputsObject) => {
                                 formStateObject.elements[
                                     inputName
                                 ].valid = false;
-                                formStateObject.valid = false;
+
                                 console.log(
                                     "max " +
                                         rules.maxValue +
@@ -140,15 +132,30 @@ export const formValidation = (formStateObject, inputsObject) => {
                         !input.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)
                     ) {
                         formStateObject.elements[inputName].valid = false;
-                        formStateObject.valid = false;
+
                         console.log("email check: INVALID");
                     } else {
                         console.log("email check: valid");
                     }
                 }
+                if (
+                    rules.hasOwnProperty("inArray") &&
+                    Array.isArray(rules.inArray)
+                ) {
+                    if (!rules.inArray.includes(input)) {
+                        formStateObject.elements[inputName].valid = false;
 
-                formStateObject.isValid =
-                    formStateObject.elements[inputName].valid;
+                        console.log("in array check: INVALID");
+                    } else {
+                        console.log("in array check:  valid");
+                    }
+                }
+
+                if (!formStateObject.elements[inputName].valid)
+                    formStateObject.isValid = false;
+
+                console.log("form is");
+                console.log(formStateObject.isValid);
             }
         }
     }
@@ -159,10 +166,24 @@ export const formValidation = (formStateObject, inputsObject) => {
  */
 export const validationClassName = (inputName, formStateObject) => {
     const elements = formStateObject.elements;
-    if (elements[inputName].touched) {
-        if (elements[inputName].valid) return "is-valid";
-        return "is-invalid";
+    let errorMsg = "ValidationClassName error: ";
+    if (elements[inputName]) {
+        if (elements[inputName].hasOwnProperty("touched")) {
+            if (elements[inputName].touched) {
+                if (elements[inputName].valid) return "is-valid";
+                return "is-invalid";
+            } else {
+                return "";
+            }
+        } else {
+            errorMsg +=
+                "Element '" + inputName + "' has not parameter 'touched'.";
+            console.error(errorMsg);
+            return "";
+        }
     } else {
+        errorMsg += "Element '" + inputName + "' not found in formStateObject.";
+        console.error(errorMsg);
         return "";
     }
 };
@@ -200,6 +221,18 @@ export const validationFeedback = (inputName, formStateObject) => {
                         capitalizeFirstLetter(inputName) +
                         " is " +
                         rules.maxLength +
+                        ". ";
+                }
+            }
+
+            if (rules.hasOwnProperty("inArray")) {
+                if (text.length > 0) {
+                    text += "Must be from " + rules.inArray.toString() + ". ";
+                } else {
+                    text +=
+                        capitalizeFirstLetter(inputName) +
+                        " must be from " +
+                        rules.inArray.toString() +
                         ". ";
                 }
             }

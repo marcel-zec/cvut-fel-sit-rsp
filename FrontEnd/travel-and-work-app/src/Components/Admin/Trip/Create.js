@@ -6,6 +6,7 @@ import Achievements from "./UI/Achievements";
 import SessionGroup from "./SessionGroup";
 import ButtonInRow from "../../SmartGadgets/ButtonInRow";
 import rules from "../../../Files/validationRules.json";
+import { withRouter } from "react-router-dom";
 import {
     formValidation,
     validationFeedback,
@@ -14,7 +15,8 @@ import {
 
 class Create extends React.Component {
     state = {
-        achievements: null,
+        achievements_required: null,
+        achievements_gain: null,
         categories: null,
         form: {
             isValid: false,
@@ -214,12 +216,22 @@ class Create extends React.Component {
         const response2 = await fetch(`http://localhost:8080/achievement`);
         const data2 = await response2.json();
         console.log(data2);
-        //show: false -> add class name to button and hide it
-        this.setState({ achievements: data2 });
+        this.setState({ achievements_required: data2 });
+
+        const response3 = await fetch(
+            `http://localhost:8080/achievement/special`
+        );
+        const data3 = await response3.json();
+        console.log(data3);
+        this.setState({ achievements_gain: data3 });
     }
 
     render() {
-        if (this.state.achievements == null && this.state.categories == null) {
+        if (
+            this.state.achievements_required == null &&
+            this.state.achievements_gain == null &&
+            this.state.categories == null
+        ) {
             return (
                 <Container className="p-5 mt-5">
                     <Spinner animation="border" role="status">
@@ -444,7 +456,8 @@ class Create extends React.Component {
                         </Form.Group>
 
                         <Achievements
-                            items={this.state.achievements}
+                            itemsGain={this.state.achievements_gain}
+                            itemsRequired={this.state.achievements_required}
                             onChangeMethod={this.inputUpdateHandler}
                             selectedGain={[]}
                             selectedRequired={[]}
@@ -465,4 +478,4 @@ class Create extends React.Component {
     }
 }
 
-export default Create;
+export default withRouter(Create);

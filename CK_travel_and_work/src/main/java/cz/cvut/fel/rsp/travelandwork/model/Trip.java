@@ -100,6 +100,7 @@ public class Trip extends AbstractEntity {
     private List<TripReview> reviews;
 
     public Trip() {
+
     }
 
     public Trip(@Size(max = 255, min = 3, message = "Name has to be from 3 to 255 characters.")  @NotBlank(message = "Name has to be from 3 to 255 characters.") String name,
@@ -117,6 +118,10 @@ public class Trip extends AbstractEntity {
         this.location= location;
         this.required_level = required_level;
         this.short_name = short_name;
+        this.required_achievements_categorized = new ArrayList<>();
+        this.required_achievements_special = new ArrayList<>();
+        this.required_certificates = new ArrayList<>();
+        this.gain_achievements_special = new ArrayList<>();
     }
 
     public void setCategory(Category category) {

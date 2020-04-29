@@ -9,6 +9,7 @@ import {
     validationFeedback,
     validationClassName,
 } from "../../../Validator";
+import { withRouter } from "react-router-dom";
 
 class Create extends React.Component {
     state = {
@@ -32,6 +33,7 @@ class Create extends React.Component {
             fetch("http://localhost:8080/category", {
                 method: "POST",
                 mode: "cors",
+                credentials: "include",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -108,4 +110,4 @@ class Create extends React.Component {
     }
 }
 
-export default Create;
+export default withRouter(Create);

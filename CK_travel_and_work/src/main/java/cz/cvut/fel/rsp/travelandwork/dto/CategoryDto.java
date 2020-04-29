@@ -25,6 +25,11 @@ public class CategoryDto {
     }
 
 
+    public CategoryDto() {
+
+    }
+
+
     public String getName() {
 
         return name;

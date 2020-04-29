@@ -29,6 +29,12 @@ public class AchievementSpecialDto {
         this.owned_travel_journals = owned_travel_journals;
     }
 
+
+    public AchievementSpecialDto() {
+
+    }
+
+
     public Long getId() {
         return id;
     }
