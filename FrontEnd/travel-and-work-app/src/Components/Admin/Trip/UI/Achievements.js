@@ -14,11 +14,11 @@ function Achievements(props) {
         props.selectedGain !== null &&
         props.selectedRequired !== null
     ) {
-        if (props.items.length > 0) {
+        if (props.itemsRequired && props.itemsGain) {
             requiredAchievements = (
                 <AchievementFormGroup
                     label="Required achievements"
-                    items={props.items}
+                    items={props.itemsRequired}
                     formInputName="requeired_achievements"
                     selected={props.selectedRequired}
                     onChangeMethod={(event) =>
@@ -29,7 +29,7 @@ function Achievements(props) {
             gainAchievements = (
                 <AchievementFormGroup
                     label="Gain achievements"
-                    items={props.items}
+                    items={props.itemsGain}
                     formInputName="gain_achievements"
                     selected={props.selectedGain}
                     onChangeMethod={(event) =>

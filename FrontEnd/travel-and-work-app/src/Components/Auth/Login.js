@@ -74,22 +74,37 @@ class Login extends React.Component {
                     if (response.ok) {
                         return response.json();
                     } else {
-                        this.loginNotSuccessHandler();
+                        this.props.history.push({
+                            alert: null,
+                        });
+                        this.props.history.push({
+                            alert: (
+                                <MyAlert
+                                    variant="danger"
+                                    heading="Incorrect credentials"
+                                    text="Email or password is incorect. Try again."
+                                />
+                            ),
+                        });
                         this.context.logout();
                         return null;
                     }
                 })
                 .then((data) => {
                     this.context.login(data);
+                })
+                .catch(() => {
+                    this.props.history.push({
+                        alert: (
+                            <MyAlert
+                                variant="danger"
+                                heading="Something goes wrong"
+                                text="There is a small problem. Please try again in a few minutes."
+                            />
+                        ),
+                    });
                 });
         }
-    };
-
-    loginNotSuccessHandler = () => {
-        const newState = { ...this.state.form };
-        newState.loginTry = true;
-        newState.loginUnsuccess = true;
-        this.setState({ form: newState });
     };
 
     validateForm = async () => {
@@ -112,6 +127,18 @@ class Login extends React.Component {
                 );
             }
         }
+
+        /**
+         * Alert (flash message) from this.props.location.alert
+         */
+        let alert = null;
+        if (
+            this.props.location &&
+            this.props.location.hasOwnProperty("alert")
+        ) {
+            alert = this.props.location.alert;
+        }
+
         return (
             <Container className="login_container">
                 <Row>
@@ -169,7 +196,7 @@ class Login extends React.Component {
                         </Button>
                     </Form>
                 </Row>
-                {loginNotSuccess}
+                {alert}
             </Container>
         );
     }
