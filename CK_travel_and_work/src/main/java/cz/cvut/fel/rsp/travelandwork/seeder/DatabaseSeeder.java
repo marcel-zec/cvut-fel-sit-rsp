@@ -196,8 +196,10 @@ public class DatabaseSeeder implements
     }
 
     void createUsers(){
+
         User user = new User(BCrypt.hashpw("hesloo",BCrypt.gensalt()),"Jan","Testovany","user@gmail.com");
         user.setRole(Role.USER);
+
         userDao.persist(user);
         Address address = new Address();
         address.setUser(user);

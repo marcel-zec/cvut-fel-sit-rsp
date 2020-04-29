@@ -4,6 +4,7 @@ import cz.cvut.fel.rsp.travelandwork.model.Achievement;
 import cz.cvut.fel.rsp.travelandwork.service.AchievementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class AchievementController {
         this.achievementService = achievementService;
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN')")
     @GetMapping( produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Achievement> getAll(){
         return achievementService.findAll();
