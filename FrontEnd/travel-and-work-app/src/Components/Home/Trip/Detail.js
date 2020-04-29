@@ -5,13 +5,19 @@ import { Button, Row, Col, Container, Image, ListGroup } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Spinner from "react-bootstrap/Spinner";
-import { Form } from "react-bootstrap";
+import { Form,Modal } from "react-bootstrap";
 import AchievmentModal from "../../SmartGadgets/AchievementModal";
+import AchievementListInline from "../../SmartGadgets/AchievementListInline";
+import { appContext } from "../../../appContext"
 
 class Detail extends React.Component {
     state = { trip: null, selectedSession : {id:null, from_date:null,to_date:null, price:null}};
+    user = null;
+    formIsValid = false;
+    static contextType = appContext;
+    userDTO = {achievements_special:null,certifications:null,achievements_categorized:null,level:1};
     sessionsIds = [];
-
+    
     async componentDidMount() {
         const response = await fetch(
             `http://localhost:8080/trip/` + this.props.match.params.id
@@ -20,6 +26,12 @@ class Detail extends React.Component {
         //data.sessions = [{id:2, from_date:"5.cerva",to_date:"7.zari", price:1999}];
         //data.sessions = [];
         console.log(data);
+        this.user = this.context.user;
+        this.userDTO.achievements_special = [{id: 2, name: "Kuchař ryby fugu", description: "Uživatel má zkušenosti s přípravou jedovatých ryb fugu.", icon: "fish", recieved_via_enrollments: Array(0)}
+        ,{id: 3, name: "Kuchař ryby fugu", description: "Uživatel má zkušenosti s přípravou jedovatých ryb fugu.", icon: "fish", recieved_via_enrollments: Array(0)}
+                                            ,{id: 4, name: "Horolezec", description: "Uživatel má zkušenosti s lezením po skalách.", icon: "mountain", recieved_via_enrollments: Array(0)}];
+        this.userDTO.certifications = [{id: 2, name: "Certifikát Angličtina B2", description: "Uživatel má certifikát B2 v anglickém jazyku.", icon: "graduation-cap"}];
+        this.userDTO.achievements_categorized = [{id: 3, name: "Kuchtík", description: "Uživatel byl jednou vařit.", icon: "hamburger"}];
         //data.rating = 4.7;
         //data.reviews = [{author:"František Omáčka",rating:3.5,date:"7.srpna 2020",note:"Venenatis quis, ante. Maecenas fermentum, sem in pharetra pellentesque, velit turpis volutpat ante, in pharetra metus odio a lectus. Sed vel lectus. Donec odio tempus molestie, porttitor ut, iaculis quis, sem. Pellentesque sapien. Duis pulvinar. Nulla accumsan, elit sit amet varius semper, nulla mauris mollis quam, tempor suscipit diam nulla vel leo. Mauris tincidunt sem sed arcu."},{author:"Tomáš Omáčka",rating:4.0,date:"7.zari 2020",note:"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Etiam quis quam. Donec iaculis gravida nulla. Etiam sapien elit, consequat eget, tristique non, venenatis quis, ante. Maecenas fermentum, sem in pharetra pellentesque, velit turpis volutpat ante, in pharetra metus odio a lectus. Sed vel lectus. Donec odio tempus molestie, porttitor ut, iaculis quis, sem. Pellentesque sapien. Duis pulvinar. Nulla accumsan, elit sit amet varius semper, nulla mauris mollis quam, tempor suscipit diam nulla vel leo. Mauris tincidunt sem sed arcu."}]
         this.setState({ trip: data});
@@ -42,16 +54,56 @@ class Detail extends React.Component {
     setSelectedSession(session){
         this.setState({selectedSession : session});
     }
-    submitTrip(event){
+    submitTrip(event,formElement){
         event.preventDefault();
         console.log(this.state.selectedSession);
-        //validate user and trip
+        //check checbox is checked
+        let checboxIsChecked = false;
+        checboxIsChecked = document.querySelector("#checkboxAgreement input").checked;
+        if(checboxIsChecked&&this.formIsValid){
+            console.log("READY K ODESLANI");
+        }
+    }
+    validateUserAchievement(achievement,userList){
+        return userList.some(item => item.id == achievement.id);
+    }
+    validatePurchase(event){
+        event.preventDefault();
+        document.querySelector(".popup_background").classList.remove("hidden");
+        let specialValidate = false;
+        let certificateslValidate = false;
+        let categorizedValidate = false;
+        let levelPassed = false;
 
+
+        const req_ach_special = this.state.trip.required_achievements_special;
+        const req_ach_categorized = this.state.trip.required_achievements_categorized;
+        const req_cerf = this.state.trip.required_certificates;
+        const minlevel = this.state.trip.required_level;
+
+        specialValidate = req_ach_special.every(val => this.validateUserAchievement(val,this.userDTO.achievements_special));
+        categorizedValidate = req_ach_categorized.every(val => this.validateUserAchievement(val,this.userDTO.achievements_categorized));
+        certificateslValidate = req_cerf.every(val => this.validateUserAchievement(val,this.userDTO.certifications));
+        levelPassed = this.userDTO.level >= minlevel;
+
+
+        if(specialValidate&&categorizedValidate&&certificateslValidate&&levelPassed){
+            console.log("je to validdni");
+            this.formIsValid = true;
+        }else{
+            console.log("neni to validni");
+            document.querySelector("#confirmPurchase").style.display = "none";
+            document.querySelector("#checkboxAgreement").style.display = "none";
+            document.querySelector("#validationFalse").style.display = "block";
+        }
+    }
+    closeValidateWindow(element){
+        document.querySelector(".popup_background").classList.add("hidden");
     }
     renderRating(rating){
         let starsElement=[];
         if(rating == 0){
-            return <span style={{color: 'black'}}>Trip zatím nemá žádné hodnocení</span>;
+            return <span style={{color: 'black'}}>Trip has not any review</span>;
         }
         for (var i = 1; i <= rating; i++) {
             starsElement.push(<FontAwesomeIcon key={i} icon="star" />);
@@ -61,8 +113,14 @@ class Detail extends React.Component {
         }
         return starsElement;
     }
+    validLevel(){
+        if (this.userDTO.level >= this.state.trip.required_level){
+            return <FontAwesomeIcon className="checked" icon="check-circle"/>;
+        }
+        return <FontAwesomeIcon className="false" icon="minus-circle"/>;
+    }
     renderAchievements(achievements, message="No achievements are required"){
-        if (achievements.length==0){
+        if (achievements.length == 0){
             return message;
         }
         let toReturn = [];
@@ -111,7 +169,7 @@ class Detail extends React.Component {
                         Trip nemá žádnou session
                     </div>
                 );
-                sessionBlock = <div className="trip_price">Nelze zakoupit</div>
+                sessionBlock = <div className="trip_price">Cannot be purchased</div>
             }else{
                 options = (
                     <Form.Control as="select" id="dateSessionSelect" onChange={(event) => this.sessionTripChange(event.target)}>
@@ -123,7 +181,7 @@ class Detail extends React.Component {
                                         <span id="tripPrice"> {this.state.selectedSession.price}</span>
                                         Kč
                                     </div>
-                                    <Button className="submit" variant="primary" type="submit" onClick={(event) => this.submitTrip(event)}> Koupit </Button>
+                                    <Button className="submit" variant="primary" type="submit" onClick={(event) => this.validatePurchase(event)}> Purchase </Button>
                                 </div>);
             }
             //set correct date(s)
@@ -214,6 +272,7 @@ class Detail extends React.Component {
                                     </Card.Subtitle>
                                     <Card.Text>
                                         {this.state.trip.required_level}
+                                       
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
@@ -223,7 +282,7 @@ class Detail extends React.Component {
                                         Required certifications
                                     </Card.Title>
                                     <ListGroup variant="flush">
-                                        
+                                        {this.renderAchievements(this.state.trip.required_certificates,"No certifications are required")}
                                     </ListGroup>
                                 </Card.Body>
                             </Card>
@@ -233,8 +292,10 @@ class Detail extends React.Component {
                                         Required achievements
                                     </Card.Title>
                                     <ListGroup variant="flush">
-                                        {this.renderAchievements(this.state.trip.required_achievements_special)}
-                                        <Card.Subtitle className="subtitle">Categorized:</Card.Subtitle>
+                                        {this.renderAchievements(this.state.trip.required_achievements_special,"No achievements are required")}
+                                    </ListGroup>
+                                    <Card.Subtitle className="subtitle">Categorized:</Card.Subtitle>
+                                    <ListGroup variant="flush">
                                         {this.renderAchievements(this.state.trip.required_achievements_categorized)}
                                     </ListGroup>
                                 </Card.Body>
@@ -265,6 +326,93 @@ class Detail extends React.Component {
                             </Card>
                         </Col>
                     </Row>
+                    <div className="popup_background hidden">
+                        <div className="window radius trip_validation customScroll">
+                            <span className="close" onClick={event => this.closeValidateWindow(event.target)}><FontAwesomeIcon icon="times"></FontAwesomeIcon></span>
+                            <h5>Trip validation summary</h5>
+                            <Row>
+                                <Col className="alignLeft">
+                                    <Card.Title>Trip name</Card.Title>
+                                    <Card.Body>{this.state.trip.name}</Card.Body>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col className="alignLeft">
+                                    <Card.Title>Location</Card.Title>
+                                    <Card.Body>{this.state.trip.location}</Card.Body>
+                                </Col>
+                                <Col>
+                                    <Card.Title>Reward</Card.Title>
+                                    <Card.Body>{this.state.trip.possible_xp_reward} XP</Card.Body>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col xs={6} className="alignLeft">
+                                    <Card.Title>Selected trip session</Card.Title>
+                                    <Card.Body>{this.state.selectedSession.from_date+" - "+this.state.selectedSession.to_date}</Card.Body>
+                                </Col>
+                                <Col>
+                                    <Card.Title>Price</Card.Title>
+                                    <Card.Body>{this.state.selectedSession.price} Kč</Card.Body>
+                                </Col>
+                                <Col>
+                                    <Card.Title>Deposit</Card.Title>
+                                    <Card.Body>{this.state.trip.deposit} Kč</Card.Body>
+                                </Col>
+                            </Row>
+                            <div className="achievements">
+                            <h5 >Requirements</h5>
+                            <Row>
+                                <Col className="alignLeft">
+                                    <Card.Title>Required certifications</Card.Title>
+                                    <Card.Body className="flex">
+                                        <AchievementListInline achievements={this.state.trip.required_certificates} userList={this.userDTO.certifications} message={"No certifications are required"}/>
+                                    </Card.Body>
+                                </Col>
+                                <Col xs={4}>
+                                    <Card.Title>Minimum level</Card.Title>
+                                    <Card.Body><span style={{display:"inline-block",verticalAlign:"middle",marginRight:"10px",marginTop:"-5px"}}>{this.state.trip.required_level}</span>  {this.validLevel()}</Card.Body>
+                                </Col>
+                            </Row>
+                            <Row>
+                                
+                            </Row>
+                            <Row>
+                                <Col className="alignLeft">
+                                    <Card.Title>Required achievements</Card.Title>
+
+                                    <Card.Body>
+                                        <AchievementListInline achievements={this.state.trip.required_achievements_special} userList={this.userDTO.achievements_special} message={"No achievements are required"}/>
+                                    </Card.Body>
+                                    <Card.Body>
+                                        <AchievementListInline achievements={this.state.trip.required_achievements_categorized} userList={this.userDTO.achievements_categorized} message={"No categorized achievements are required"}/>
+                                    </Card.Body>
+                                </Col>
+                            </Row>
+                            <form onSubmit={(event) => this.submitTrip(event,event.target)}>
+                            <Row>
+                                <Col className="alignLeft">
+                                    <label id="checkboxAgreement" className="containerInput">I agree with GDPR conditions and Travel&amp;Work&copy; conditions
+                                        <input type="checkbox"/>
+                                        <span className="checkmark"></span>
+                                        <div className="validate_error">You have to agreed with conditions!</div>
+                                    </label>
+                                    <div id="validationFalse">We are sorry, you don't meet conditions for purchase this trip.</div>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col></Col>
+                                <Col xs={6}>
+                                    <Button id="confirmPurchase" className="submit" variant="primary" type="submit">
+                                        Confirm purchase
+                                    </Button>
+                                </Col>
+                                <Col></Col>
+                            </Row>
+                            </form>
+                            </div>
+                        </div>
+                        </div>
                 </Container>
             );
         }
