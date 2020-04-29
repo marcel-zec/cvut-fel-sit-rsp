@@ -197,7 +197,11 @@ class Create extends React.Component {
                     },
                     body: JSON.stringify(this.state.achievement),
                 }).then((response) => {
-                    if (response.ok) this.props.history.push("/achievement");
+                    if (response.ok)
+                        this.props.history.push({
+                            pathname: "/achievement",
+                            type: this.state.achievement.type,
+                        });
                     //TODO - osetrenie vynimiek
                     else console.log("Error: somethhing goes wrong");
                 });
@@ -211,7 +215,11 @@ class Create extends React.Component {
                     },
                     body: JSON.stringify(this.state.achievement),
                 }).then((response) => {
-                    if (response.ok) this.props.history.push("/achievement");
+                    if (response.ok)
+                        this.props.history.push({
+                            pathname: "/achievement",
+                            type: this.state.achievement.type,
+                        });
                     //TODO - osetrenie vynimiek
                     else console.log("Error: somethhing goes wrong");
                 });
@@ -225,7 +233,11 @@ class Create extends React.Component {
                     },
                     body: JSON.stringify(this.state.achievement),
                 }).then((response) => {
-                    if (response.ok) this.props.history.push("/achievement");
+                    if (response.ok)
+                        this.props.history.push({
+                            pathname: "/achievement",
+                            type: this.state.achievement.type,
+                        });
                     //TODO - osetrenie vynimiek
                     else console.log("Error: somethhing goes wrong");
                 });
