@@ -44,7 +44,10 @@ public class UserService {
         Objects.requireNonNull(user);
         if (!user.getPassword().equals(passwordAgain)) throw new BadPassword();
         user.encodePassword();
+
+        if (user.getRole() != Role.USER) user.setRole(Role.USER);
         dao.persist(user);
+
         if (user.getAddress() != null){
             user.getAddress().setUser(user);
             addressDao.persist(user.getAddress());

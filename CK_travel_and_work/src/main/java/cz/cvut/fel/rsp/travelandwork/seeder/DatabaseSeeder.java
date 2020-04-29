@@ -196,7 +196,10 @@ public class DatabaseSeeder implements
     }
 
     void createUsers(){
-        User user = new User(BCrypt.hashpw("hesloo",BCrypt.gensalt()),"Jan","Testovany","test@gmail.com",Role.USER);
+
+        User user = new User(BCrypt.hashpw("hesloo",BCrypt.gensalt()),"Jan","Testovany","user@gmail.com");
+        user.setRole(Role.USER);
+
         userDao.persist(user);
         Address address = new Address();
         address.setUser(user);
@@ -209,5 +212,20 @@ public class DatabaseSeeder implements
         user.setAddress(address);
         userDao.update(user);
         System.out.println("Test user persist.");
+
+        user = new User(BCrypt.hashpw("hesloo",BCrypt.gensalt()),"Peter","Testovany","admin@gmail.com");
+        user.setRole(Role.ADMIN);
+        userDao.persist(user);
+        address = new Address();
+        address.setUser(user);
+        address.setCountry("Slovakia");
+        address.setCity("Licartovce");
+        address.setStreet("Vranovska");
+        address.setHouseNumber(20);
+        address.setZipCode("05175");
+        addressDao.persist(address);
+        user.setAddress(address);
+        userDao.update(user);
+        System.out.println("Test admin persist.");
     }
 }
