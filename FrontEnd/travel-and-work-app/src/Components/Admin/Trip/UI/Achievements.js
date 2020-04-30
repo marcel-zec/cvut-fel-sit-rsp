@@ -9,35 +9,44 @@ function Achievements(props) {
     console.log("ACHIEVEMENTS");
     console.log(props);
 
-    if (
-        props.items !== null &&
-        props.selectedGain !== null &&
-        props.selectedRequired !== null
-    ) {
-        if (props.itemsRequired && props.itemsGain) {
-            requiredAchievements = (
-                <AchievementFormGroup
-                    label="Required achievements"
-                    items={props.itemsRequired}
-                    formInputName="requeired_achievements"
-                    selected={props.selectedRequired}
-                    onChangeMethod={(event) =>
-                        props.onChangeMethod(event, "required_achievements")
-                    }
-                />
-            );
-            gainAchievements = (
-                <AchievementFormGroup
-                    label="Gain achievements"
-                    items={props.itemsGain}
-                    formInputName="gain_achievements"
-                    selected={props.selectedGain}
-                    onChangeMethod={(event) =>
-                        props.onChangeMethod(event, "gain_achievements")
-                    }
-                />
-            );
-        }
+    if (props.itemsRequired && props.itemsGain) {
+        requiredAchievements = (
+            <AchievementFormGroup
+                label="Required achievements"
+                items={props.itemsRequired}
+                multiple={true}
+                formInputName="requeired_achievements"
+                selected={props.selectedRequired}
+                onChangeMethod={{
+                    special: (event) =>
+                        props.onChangeMethod(
+                            event,
+                            "required_achievements_special"
+                        ),
+                    categorized: (event) =>
+                        props.onChangeMethod(
+                            event,
+                            "required_achievements_categorized"
+                        ),
+                    certificate: (event) =>
+                        props.onChangeMethod(
+                            event,
+                            "required_achievements_certificate"
+                        ),
+                }}
+            />
+        );
+        gainAchievements = (
+            <AchievementFormGroup
+                label="Gain achievements"
+                items={props.itemsGain}
+                formInputName="gain_achievements_special"
+                selected={props.selectedGain}
+                onChangeMethod={(event) =>
+                    props.onChangeMethod(event, "gain_achievements_special")
+                }
+            />
+        );
     }
 
     return (

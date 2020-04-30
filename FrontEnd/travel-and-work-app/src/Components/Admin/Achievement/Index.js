@@ -167,6 +167,17 @@ class Index extends React.Component {
                 });
             }
 
+            /**
+             * Alert (flash message) from this.props.location.alert
+             */
+            let alert = null;
+            if (
+                this.props.location &&
+                this.props.location.hasOwnProperty("alert")
+            ) {
+                alert = this.props.location.alert;
+            }
+
             return (
                 <Container>
                     <ButtonInRow
@@ -175,6 +186,8 @@ class Index extends React.Component {
                         side="right"
                         label="Add achievement"
                     />
+
+                    {alert}
 
                     <Tabs
                         defaultActiveKey={
