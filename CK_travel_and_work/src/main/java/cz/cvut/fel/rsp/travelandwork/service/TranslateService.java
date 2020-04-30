@@ -136,7 +136,7 @@ public class TranslateService {
         travelJournal.getEarnedAchievementsCategorized().forEach(categorized -> categorizedDtos.add(translateAchievementCategorized(categorized)));
         travelJournal.getEarnedAchievementsSpecial().forEach(special -> specialDtos.add(translateAchievementSpecial(special)));
 
-        return new TravelJournalDto(travelJournal.getId(), travelJournal.getXp_count(), trip_counter,travelJournal.getUser().getId(), certificateDtos, categorizedDtos, specialDtos,enrollmentDtos);
+        return new TravelJournalDto(travelJournal.getId(), travelJournal.getXp_count(), trip_counter,travelJournal.getUser().getId(), certificateDtos, categorizedDtos, specialDtos,enrollmentDtos, countLevel(travelJournal.getXp_count()));
     }
 
     @Transactional
@@ -175,5 +175,10 @@ public class TranslateService {
 
         return new UserReviewDto(userReview.getId(),userReview.getNote(),userReview.getDate(),
                 userReview.getRating(),userReview.getUser().getId(),userReview.getAuthor().getId(),translateSession(userReview.getTripSession()));
+    }
+
+    @Transactional
+    public int countLevel(int xp){
+        return xp/10 ;
     }
 }
