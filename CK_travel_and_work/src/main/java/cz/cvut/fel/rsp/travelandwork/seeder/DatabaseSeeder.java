@@ -158,10 +158,10 @@ public class DatabaseSeeder implements
         achievementSpecialDao.persist(achievementSpecial);
 
         //Achievementy za počet zájezdů v konkrétních kategoriích
-        achievementCategorized = new AchievementCategorized("Kuchtík", "Uživatel byl jednou vařit.", "hamburger"); //0
+        /*achievementCategorized = new AchievementCategorized("Kuchtík", "Uživatel byl jednou vařit.", "hamburger"); //0
         achievementCategorized.setCategory(categoryDao.findAll().get(0));
         achievementCategorized.setLimit(1);
-        achievementCategorizedDao.persist(achievementCategorized);
+        achievementCategorizedDao.persist(achievementCategorized);*/
 
         achievementCategorized = new AchievementCategorized("Kuchař", "Uživatel vařil už na 5-ti zájezdech.", "pizza-slice"); //1
         achievementCategorized.setCategory(categoryDao.findAll().get(0));

@@ -19,6 +19,7 @@ import IndexCategory from "./Components/Admin/Category/Index";
 import CreateCategory from "./Components/Admin/Category/Create";
 import EditCategory from "./Components/Admin/Category/Edit";
 import IndexUser from "./Components/Admin/User/Index";
+import CloseEnrollment from "./Components/Admin/Enrollment/Close";
 import { appContext } from "./appContext";
 
 function Router(props) {
@@ -176,6 +177,17 @@ function Router(props) {
                     exact={true}
                     render={() => {
                         return allowAuthWithRole(<EditCategory />, ROLE_ADMIN);
+                    }}
+                />
+
+                <Route
+                    path="/close"
+                    exact={true}
+                    render={() => {
+                        return allowAuthWithRole(
+                            <CloseEnrollment />,
+                            ROLE_ADMIN
+                        );
                     }}
                 />
 
