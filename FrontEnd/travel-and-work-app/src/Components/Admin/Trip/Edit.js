@@ -110,12 +110,6 @@ class Edit extends React.Component {
         if (stringProperties.includes(nameOfFormInput)) {
             newState[nameOfFormInput] = event.target.value;
         } else if (checkboxProperties.includes(nameOfFormInput)) {
-            console.log(checkboxProperties.includes(nameOfFormInput));
-            console.log(nameOfFormInput);
-            console.log(event.target.value);
-            console.log("state before");
-            console.log(newState[nameOfFormInput]);
-
             //if already checked
             let foundIndex = newState[nameOfFormInput].findIndex((object) => {
                 return object.id == event.target.value;
