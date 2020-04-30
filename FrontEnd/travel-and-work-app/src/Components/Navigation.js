@@ -69,6 +69,9 @@ class Navigation extends React.Component {
         const adminNavigation = (
             <>
                 <NavDropdown.Item>
+                    <NavLink to="/close">Close</NavLink>
+                </NavDropdown.Item>
+                <NavDropdown.Item>
                     <NavLink to="/trip">Trips</NavLink>
                 </NavDropdown.Item>
                 <NavDropdown.Item>
