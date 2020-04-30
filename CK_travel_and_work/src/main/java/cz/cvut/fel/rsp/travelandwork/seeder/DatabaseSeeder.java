@@ -31,8 +31,8 @@ public class DatabaseSeeder implements
     private CategoryDao categoryDao;
     private UserDao userDao;
     private AddressDao addressDao;
-    private TripService tripService;
-    private TranslateService translateService;
+   // private TripService tripService;
+   // private TranslateService translateService;
 
     @Autowired
     public DatabaseSeeder(TripDao tripDao, TripSessionDao tripSessionDao, AchievementCertificateDao achievementCertificateDao, AchievementCategorizedDao achievementCategorizedDao, AchievementSpecialDao achievementSpecialDao, CategoryDao categoryDao, UserDao userDao, AddressDao addressDao, TripService tripService, TranslateService translateService) {
@@ -44,8 +44,8 @@ public class DatabaseSeeder implements
         this.categoryDao = categoryDao;
         this.userDao = userDao;
         this.addressDao = addressDao;
-        this.tripService = tripService;
-        this.translateService = translateService;
+        //this.tripService = tripService;
+        //this.translateService = translateService;
     }
 
     @Override
@@ -59,7 +59,7 @@ public class DatabaseSeeder implements
         //setAchievementsAndCategories();
         createTrips();
         createUsers();
-        signUsersToTrips();
+        //signUsersToTrips();
 
     }
 
@@ -256,7 +256,7 @@ public class DatabaseSeeder implements
         userDao.update(user);
         System.out.println("Test admin persist.");
     }
-
+/*
     void signUsersToTrips() {
         User user = userDao.findAll().get(0);
         Trip trip = tripDao.findAll().get(0);
@@ -283,5 +283,5 @@ public class DatabaseSeeder implements
         TripSessionDto tripSessionDto;
         tripSessionDto = translateService.translateSession(tripSession);
         tripService.signUpToTrip(tripSessionDto, user);
-    }
+    }*/
 }
