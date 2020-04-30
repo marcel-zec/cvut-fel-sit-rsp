@@ -122,6 +122,8 @@ public class Trip extends AbstractEntity {
         this.required_achievements_special = new ArrayList<>();
         this.required_achievements_certificate = new ArrayList<>();
         this.gain_achievements_special = new ArrayList<>();
+        this.sessions = new ArrayList<>();
+        this.reviews = new ArrayList<>();
     }
 
     public void setCategory(Category category) {
@@ -277,6 +279,10 @@ public class Trip extends AbstractEntity {
 
     public void addGain_achievements_special(AchievementSpecial achievementSpecial) {
         this.gain_achievements_special.add(achievementSpecial);
+    }
+
+    public void addSession(TripSession tripSession) {
+        this.sessions.add(tripSession);
     }
 
     @Override

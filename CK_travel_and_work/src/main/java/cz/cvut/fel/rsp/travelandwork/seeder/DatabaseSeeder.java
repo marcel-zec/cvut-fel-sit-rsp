@@ -5,6 +5,7 @@ import cz.cvut.fel.rsp.travelandwork.dto.TripSessionDto;
 import cz.cvut.fel.rsp.travelandwork.model.*;
 import cz.cvut.fel.rsp.travelandwork.service.TranslateService;
 import cz.cvut.fel.rsp.travelandwork.service.TripService;
+import cz.cvut.fel.rsp.travelandwork.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -31,8 +32,8 @@ public class DatabaseSeeder implements
     private CategoryDao categoryDao;
     private UserDao userDao;
     private AddressDao addressDao;
-   // private TripService tripService;
-   // private TranslateService translateService;
+    private TripService tripService;
+    private TranslateService translateService;
 
     @Autowired
     public DatabaseSeeder(TripDao tripDao, TripSessionDao tripSessionDao, AchievementCertificateDao achievementCertificateDao, AchievementCategorizedDao achievementCategorizedDao, AchievementSpecialDao achievementSpecialDao, CategoryDao categoryDao, UserDao userDao, AddressDao addressDao, TripService tripService, TranslateService translateService) {
@@ -44,8 +45,8 @@ public class DatabaseSeeder implements
         this.categoryDao = categoryDao;
         this.userDao = userDao;
         this.addressDao = addressDao;
-        //this.tripService = tripService;
-        //this.translateService = translateService;
+        this.tripService = tripService;
+        this.translateService = translateService;
     }
 
     @Override
@@ -56,10 +57,10 @@ public class DatabaseSeeder implements
 
         createCategories();
         createAchievement();
-        //setAchievementsAndCategories();
         createTrips();
+        setAchievementsAndCategories();
         createUsers();
-        //signUsersToTrips();
+        signUsersToTrips();
 
     }
 
@@ -78,40 +79,56 @@ public class DatabaseSeeder implements
         tripDao.persist(trip);
         tripSession = new TripSession(trip, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 3000);
         tripSessionDao.persist(tripSession);
+        trip.addSession(tripSession);
         tripSession = new TripSession(trip, LocalDate.parse("2020-06-12"), LocalDate.parse("2020-06-18"), 3000);
         tripSessionDao.persist(tripSession);
+        trip.addSession(tripSession);
         tripSession = new TripSession(trip, LocalDate.parse("2020-06-18"), LocalDate.parse("2020-06-24"), 3000);
         tripSessionDao.persist(tripSession);
+        trip.addSession(tripSession);
+        tripDao.update(trip);
 
         description = "Tento zajezd bude mit zalohu, pro absolvování je potřeba mít achievement ´Kuchař ryb fugu´." ;
         trip = new Trip("Vaření ryb Fugu, Praha",10,description,"fuguvar",3459,"Praha, Česká republika",1);
         tripDao.persist(trip);
         tripSession = new TripSession(trip, LocalDate.parse("2020-07-06"), LocalDate.parse("2020-07-12"), 0);
         tripSessionDao.persist(tripSession);
+        trip.addSession(tripSession);
         tripSession = new TripSession(trip, LocalDate.parse("2020-07-12"), LocalDate.parse("2020-07-18"), 0);
         tripSessionDao.persist(tripSession);
+        trip.addSession(tripSession);
         tripSession = new TripSession(trip, LocalDate.parse("2020-07-18"), LocalDate.parse("2020-07-24"), 0);
         tripSessionDao.persist(tripSession);
+        trip.addSession(tripSession);
+        tripDao.update(trip);
 
         description = "Tento zajezd bude mit zalohu, pro absolvování je potřeba mít achievement ´Kuchař´." ;
         trip = new Trip("Kuchař na Pražském hradě",8,description,"prahradvar",1000,"Praha, Česká republika",3);
         tripDao.persist(trip);
         tripSession = new TripSession(trip, LocalDate.parse("2020-07-06"), LocalDate.parse("2020-07-12"), 0);
         tripSessionDao.persist(tripSession);
+        trip.addSession(tripSession);
         tripSession = new TripSession(trip, LocalDate.parse("2020-07-12"), LocalDate.parse("2020-07-18"), 0);
         tripSessionDao.persist(tripSession);
+        trip.addSession(tripSession);
         tripSession = new TripSession(trip, LocalDate.parse("2020-07-18"), LocalDate.parse("2020-07-24"), 0);
         tripSessionDao.persist(tripSession);
+        trip.addSession(tripSession);
+        tripDao.update(trip);
 
         description = "Tento zajezd nevyzaduje zadne achievementy a po nem se nedaji ziskat specialni achievementy ale daji se ziskat achievementy jako jsou např. ´Kuchtík´, ´Kuchař´ apod. Odměna Xp je dost nízká aby se nedalo jednoduše dostat za tuhle práci na prestižnější místa jako pražský hrad, ale zároveň je možno si dopomoct s touto lehčí a dostupnější práci nahnat achievement kuchař, jestliže xp grind mám za sebou z jiných zájezdů." ;
         trip = new Trip("Kuchař menza Studentský dům, Praha",3,description,"studumkuch",50,"Praha, Česká republika",1);
         tripDao.persist(trip);
         tripSession = new TripSession(trip, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 0);
         tripSessionDao.persist(tripSession);
+        trip.addSession(tripSession);
         tripSession = new TripSession(trip, LocalDate.parse("2020-06-12"), LocalDate.parse("2020-06-18"), 0);
         tripSessionDao.persist(tripSession);
+        trip.addSession(tripSession);
         tripSession = new TripSession(trip, LocalDate.parse("2020-06-18"), LocalDate.parse("2020-06-24"), 0);
         tripSessionDao.persist(tripSession);
+        trip.addSession(tripSession);
+        tripDao.update(trip);
     }
 
     @Transactional
@@ -162,26 +179,53 @@ public class DatabaseSeeder implements
         List<AchievementCategorized> categorized =achievementCategorizedDao.findAll();
         List<AchievementSpecial> special = achievementSpecialDao.findAll();
         List<Category> categories = categoryDao.findAll();
+        List<Trip> trips = tripDao.findAll();
 
-        Trip trip = tripDao.find("fugukurz");
+        //IT IS DONE THE HARD WAY BECAUSE AUTHOR (ME) IS LITERALLY BRAINDED RETARD
+        //ak budete mat problem sa orientovat v tejto casti nemam vam to za zle je to humus...
+        //O.S.
+
+        Trip trip = trips.get(0);
         trip.addRequired_achievements_categorized(categorized.get(0));
+        categorized.get(0).addTrips(trip);
         trip.addGain_achievements_special(special.get(1));
+        special.get(1).addTrips(trip);
         trip.setCategory(categories.get(4));
-        tripDao.update(trip);
+        categories.get(4).add(trip);
 
-        trip = tripDao.find("fuguvar");
+        trip =  trips.get(1);
         trip.addRequired_achievements_special(special.get(1));
+        special.get(1).addTrips(trip);
         trip.setCategory(categories.get(0));
-        tripDao.update(trip);
+        categories.get(0).add(trip);
 
-        trip = tripDao.find("prahradvar");
+        trip =  trips.get(2);
         trip.addRequired_achievements_categorized(categorized.get(1));
+        categorized.get(1).addTrips(trip);
         trip.setCategory(categories.get(0));
-        tripDao.update(trip);
+        categories.get(0).add(trip);
 
-        trip = tripDao.find("studumkuch");
+        trip =  trips.get(3);
         trip.setCategory(categories.get(0));
-        tripDao.update(trip);
+        categories.get(0).add(trip);
+
+        //jediny zlepsovak co tu je aj ked by to but ani nemusel...
+        for(Trip t : trips) {
+            tripDao.update(t);
+        }
+        for(AchievementCategorized ac : categorized) {
+            achievementCategorizedDao.update(ac);
+        }
+        for(AchievementCertificate cert : certificates) {
+            achievementCertificateDao.update(cert);
+        }
+        for(AchievementSpecial spec : special) {
+            achievementSpecialDao.update(spec);
+        }
+        for(Category category : categories) {
+            categoryDao.update(category);
+        }
+
     }
 
     void createCategories(){
@@ -256,12 +300,26 @@ public class DatabaseSeeder implements
         userDao.update(user);
         System.out.println("Test admin persist.");
     }
-/*
+
     void signUsersToTrips() {
         User user = userDao.findAll().get(0);
         Trip trip = tripDao.findAll().get(0);
-        TripSession tripSession = trip.getSessions().get(1);
-        signUserToTrip(user, tripSession);
+        TripSession tripSession = trip.getSessions().get(0);
+
+/*
+        //test
+        System.out.println("SESSION: " + tripSession.toString());
+        System.out.println("TRIP IN SESSION: " + tripSession.getTrip().toString());
+        System.out.println("CATEGORIZED IN TRIP: " + trip.getRequired_achievements_categorized().toString());
+        System.out.println("CAT IN TRIP DTO: " + translateService.translateAchievementCategorized(trip.getRequired_achievements_categorized().get(0)));
+        System.out.println("TRIP DTO: " + translateService.translateTrip(trip).toString());
+        System.out.println("TRIP DTO: " + translateService.translateTrip(tripSession.getTrip()).toString());
+        System.out.println("SESSION DTO: " + translateService.translateSession(tripSession));
+*/
+
+        if(tripSession != null && tripSession.getTrip() != null) {
+            signUserToTrip(user, tripSession);
+        }
 
         user = userDao.findAll().get(0);
         trip = tripDao.findAll().get(1);
@@ -281,7 +339,8 @@ public class DatabaseSeeder implements
 
     void signUserToTrip(User user, TripSession tripSession) {
         TripSessionDto tripSessionDto;
+
         tripSessionDto = translateService.translateSession(tripSession);
         tripService.signUpToTrip(tripSessionDto, user);
-    }*/
+    }
 }

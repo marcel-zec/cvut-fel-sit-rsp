@@ -77,6 +77,7 @@ public class User extends AbstractEntity {
         this.userReviews = new ArrayList<>();
         this.userReviewsAuthor = new ArrayList<>();
         this.role = Role.USER;
+        this.travel_journal = new TravelJournal();
     }
 
     public User(

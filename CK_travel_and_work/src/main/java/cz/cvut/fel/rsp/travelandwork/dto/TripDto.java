@@ -236,4 +236,25 @@ public class TripDto {
 
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "TripDto{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", short_name='" + short_name + '\'' +
+                ", possible_xp_reward=" + possible_xp_reward +
+                ", description='" + description + '\'' +
+                ", rating=" + rating +
+                ", deposit=" + deposit +
+                ", location='" + location + '\'' +
+                ", required_level=" + required_level +
+                ", categoryId=" + categoryId +
+                ", required_certificates=" + required_certificates +
+                ", required_achievements_categorized=" + required_achievements_categorized +
+                ", required_achievements_special=" + required_achievements_special +
+                ", gain_achievements=" + gain_achievements +
+                ", sessionsID=" + sessionsID +
+                '}';
+    }
 }
