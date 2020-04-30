@@ -69,9 +69,9 @@ public class DatabaseSeeder implements
         tripDao.persist(trip);
         tripSession = new TripSession(trip, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 3000);
         tripSessionDao.persist(tripSession);
-        tripSession = new TripSession(trip, LocalDate.parse("2020-06-12"), LocalDate.parse("2020-06-18"), 3000);
+        tripSession = new TripSession(trip, LocalDate.parse("2020-06-12"), LocalDate.parse("2020-06-18"), 3500);
         tripSessionDao.persist(tripSession);
-        tripSession = new TripSession(trip, LocalDate.parse("2020-06-18"), LocalDate.parse("2020-06-24"), 3000);
+        tripSession = new TripSession(trip, LocalDate.parse("2020-06-18"), LocalDate.parse("2020-06-24"), 4000);
         tripSessionDao.persist(tripSession);
 
         description = "Tento zajezd bude mit zalohu, pro absolvování je potřeba mít achievement ´Kuchař ryb fugu´." ;
@@ -132,10 +132,10 @@ public class DatabaseSeeder implements
         achievementSpecialDao.persist(achievementSpecial);
 
         //Achievementy za počet zájezdů v konkrétních kategoriích
-        achievementCategorized = new AchievementCategorized("Kuchtík", "Uživatel byl jednou vařit.", "hamburger"); //0
+        /*achievementCategorized = new AchievementCategorized("Kuchtík", "Uživatel byl jednou vařit.", "hamburger"); //0
         achievementCategorized.setCategory(categoryDao.findAll().get(0));
         achievementCategorized.setLimit(1);
-        achievementCategorizedDao.persist(achievementCategorized);
+        achievementCategorizedDao.persist(achievementCategorized);*/
 
         achievementCategorized = new AchievementCategorized("Kuchař", "Uživatel vařil už na 5-ti zájezdech.", "pizza-slice"); //1
         achievementCategorized.setCategory(categoryDao.findAll().get(0));
