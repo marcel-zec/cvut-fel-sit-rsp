@@ -12,6 +12,7 @@ import {
     validationFeedback,
     validationClassName,
 } from "../../../Validator";
+import MyAlert from "../../SmartGadgets/MyAlert";
 
 class Create extends React.Component {
     state = {
@@ -201,6 +202,12 @@ class Create extends React.Component {
                         this.props.history.push({
                             pathname: "/achievement",
                             type: this.state.achievement.type,
+                            alert: (
+                                <MyAlert
+                                    text="Achievement created"
+                                    flash={true}
+                                />
+                            ),
                         });
                     //TODO - osetrenie vynimiek
                     else console.log("Error: somethhing goes wrong");
@@ -219,6 +226,12 @@ class Create extends React.Component {
                         this.props.history.push({
                             pathname: "/achievement",
                             type: this.state.achievement.type,
+                            alert: (
+                                <MyAlert
+                                    text="Achievement created"
+                                    flash={true}
+                                />
+                            ),
                         });
                     //TODO - osetrenie vynimiek
                     else console.log("Error: somethhing goes wrong");
@@ -237,6 +250,12 @@ class Create extends React.Component {
                         this.props.history.push({
                             pathname: "/achievement",
                             type: this.state.achievement.type,
+                            alert: (
+                                <MyAlert
+                                    text="Achievement created"
+                                    flash={true}
+                                />
+                            ),
                         });
                     //TODO - osetrenie vynimiek
                     else console.log("Error: somethhing goes wrong");

@@ -138,6 +138,23 @@ export const formValidation = (formStateObject, inputsObject) => {
                         console.log("email check: valid");
                     }
                 }
+                if (rules.hasOwnProperty("sameAs")) {
+                    if (
+                        input &&
+                        (!formStateObject.elements.hasOwnProperty(
+                            rules.sameAs
+                        ) ||
+                            inputsObject[rules.sameAs] != input)
+                    ) {
+                        formStateObject.elements[inputName].valid = false;
+
+                        console.log("same as " + rules.sameAs + ": INVALID");
+                    } else {
+                        console.log(
+                            "same as " + rules.sameAs + " check: valid"
+                        );
+                    }
+                }
                 if (
                     rules.hasOwnProperty("inArray") &&
                     Array.isArray(rules.inArray)
@@ -200,6 +217,19 @@ export const validationFeedback = (inputName, formStateObject) => {
             if (rules.hasOwnProperty("required") && rules.required) {
                 text += capitalizeFirstLetter(inputName) + " is required. ";
             }
+
+            if (rules.hasOwnProperty("sameAs")) {
+                if (text.length > 0) {
+                    text += "Must be same as " + rules.sameAs + ". ";
+                } else {
+                    text +=
+                        capitalizeFirstLetter(inputName) +
+                        " must be same as " +
+                        rules.sameAs +
+                        ". ";
+                }
+            }
+
             if (rules.hasOwnProperty("minLength")) {
                 if (text.length > 0) {
                     text += "Minimal length is " + rules.minLength + ". ";

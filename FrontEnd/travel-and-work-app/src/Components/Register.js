@@ -11,6 +11,7 @@ import {
     validationClassName,
 } from "../Validator";
 import { withRouter } from "react-router-dom";
+import MyAlert from "./SmartGadgets/MyAlert";
 
 class Register extends React.Component {
     state = {
@@ -40,7 +41,7 @@ class Register extends React.Component {
                 password_control: {
                     touched: false,
                     valid: false,
-                    validationRules: rules.registration.password,
+                    validationRules: rules.registration.password_control,
                 },
                 city: {
                     touched: false,
@@ -146,7 +147,17 @@ class Register extends React.Component {
             },
             body: JSON.stringify(objectToSend),
         }).then((response) => {
-            if (response.ok) this.props.history.push("/login");
+            if (response.ok)
+                this.props.history.push({
+                    pathname: "/login",
+                    alert: (
+                        <MyAlert
+                            heading="Successful registration"
+                            text="Continue by logging in."
+                            flash={true}
+                        />
+                    ),
+                });
             //TODO - osetrenie vynimiek
             else console.log("Error: somethhing goes wrong");
         });
