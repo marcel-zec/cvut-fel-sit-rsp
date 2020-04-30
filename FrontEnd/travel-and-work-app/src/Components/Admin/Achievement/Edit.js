@@ -13,6 +13,7 @@ import {
     validationFeedback,
     validationClassName,
 } from "../../../Validator";
+import MyAlert from "../../SmartGadgets/MyAlert";
 
 class Edit extends React.Component {
     state = {
@@ -155,6 +156,7 @@ class Edit extends React.Component {
                 this.props.history.push({
                     pathname: "/achievement",
                     type: type,
+                    alert: <MyAlert text="Achievement updated" flash={true} />,
                 });
         });
     };

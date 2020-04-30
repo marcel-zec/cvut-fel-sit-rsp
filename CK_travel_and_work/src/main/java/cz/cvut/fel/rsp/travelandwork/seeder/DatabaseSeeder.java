@@ -1,7 +1,10 @@
 package cz.cvut.fel.rsp.travelandwork.seeder;
 
 import cz.cvut.fel.rsp.travelandwork.dao.*;
+import cz.cvut.fel.rsp.travelandwork.dto.TripSessionDto;
 import cz.cvut.fel.rsp.travelandwork.model.*;
+import cz.cvut.fel.rsp.travelandwork.service.TranslateService;
+import cz.cvut.fel.rsp.travelandwork.service.TripService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -28,9 +31,11 @@ public class DatabaseSeeder implements
     private CategoryDao categoryDao;
     private UserDao userDao;
     private AddressDao addressDao;
+    private TripService tripService;
+    private TranslateService translateService;
 
     @Autowired
-    public DatabaseSeeder(TripDao tripDao, TripSessionDao tripSessionDao, AchievementCertificateDao achievementCertificateDao, AchievementCategorizedDao achievementCategorizedDao, AchievementSpecialDao achievementSpecialDao, CategoryDao categoryDao, UserDao userDao, AddressDao addressDao) {
+    public DatabaseSeeder(TripDao tripDao, TripSessionDao tripSessionDao, AchievementCertificateDao achievementCertificateDao, AchievementCategorizedDao achievementCategorizedDao, AchievementSpecialDao achievementSpecialDao, CategoryDao categoryDao, UserDao userDao, AddressDao addressDao, TripService tripService, TranslateService translateService) {
         this.tripDao = tripDao;
         this.tripSessionDao = tripSessionDao;
         this.achievementCertificateDao = achievementCertificateDao;
@@ -39,6 +44,8 @@ public class DatabaseSeeder implements
         this.categoryDao = categoryDao;
         this.userDao = userDao;
         this.addressDao = addressDao;
+        this.tripService = tripService;
+        this.translateService = translateService;
     }
 
     @Override
@@ -52,6 +59,8 @@ public class DatabaseSeeder implements
         //setAchievementsAndCategories();
         createTrips();
         createUsers();
+        signUsersToTrips();
+
     }
 
     @Transactional
@@ -197,6 +206,7 @@ public class DatabaseSeeder implements
 
     void createUsers(){
 
+        //user Jan
         User user = new User(BCrypt.hashpw("hesloo",BCrypt.gensalt()),"Jan","Testovany","user@gmail.com");
         user.setRole(Role.USER);
 
@@ -213,6 +223,24 @@ public class DatabaseSeeder implements
         userDao.update(user);
         System.out.println("Test user persist.");
 
+        //user Milan
+        user = new User(BCrypt.hashpw("hesloo",BCrypt.gensalt()),"Milan","Netestovany","milan@gmail.com");
+        user.setRole(Role.USER);
+
+        userDao.persist(user);
+        address = new Address();
+        address.setUser(user);
+        address.setCountry("Slovakia");
+        address.setCity("Kapusany");
+        address.setStreet("Presovska");
+        address.setHouseNumber(20);
+        address.setZipCode("08001");
+        addressDao.persist(address);
+        user.setAddress(address);
+        userDao.update(user);
+        System.out.println("Test user persist.");
+
+        //admin Peter
         user = new User(BCrypt.hashpw("hesloo",BCrypt.gensalt()),"Peter","Testovany","admin@gmail.com");
         user.setRole(Role.ADMIN);
         userDao.persist(user);
@@ -227,5 +255,33 @@ public class DatabaseSeeder implements
         user.setAddress(address);
         userDao.update(user);
         System.out.println("Test admin persist.");
+    }
+
+    void signUsersToTrips() {
+        User user = userDao.findAll().get(0);
+        Trip trip = tripDao.findAll().get(0);
+        TripSession tripSession = trip.getSessions().get(1);
+        signUserToTrip(user, tripSession);
+
+        user = userDao.findAll().get(0);
+        trip = tripDao.findAll().get(1);
+        tripSession = trip.getSessions().get(0);
+        signUserToTrip(user, tripSession);
+
+        user = userDao.findAll().get(1);
+        trip = tripDao.findAll().get(0);
+        tripSession = trip.getSessions().get(1);
+        signUserToTrip(user, tripSession);
+
+        user = userDao.findAll().get(1);
+        trip = tripDao.findAll().get(1);
+        tripSession = trip.getSessions().get(1);
+        signUserToTrip(user, tripSession);
+    }
+
+    void signUserToTrip(User user, TripSession tripSession) {
+        TripSessionDto tripSessionDto;
+        tripSessionDto = translateService.translateSession(tripSession);
+        tripService.signUpToTrip(tripSessionDto, user);
     }
 }

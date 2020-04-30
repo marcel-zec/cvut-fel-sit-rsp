@@ -16,6 +16,8 @@ public class TravelJournalDto {
     @Basic(optional = false)
     private int xp_count;
 
+    private int level;
+
     @JsonIgnore
     @Basic(optional = false)
     private HashMap<CategoryDto, Integer> trip_counter;
@@ -27,7 +29,8 @@ public class TravelJournalDto {
     private List<EnrollmentDto> enrollments;
 
 
-    public TravelJournalDto(@NotNull(message = "Id cannot be blank") Long id, int xp_count, HashMap<CategoryDto, Integer> trip_counter, Long userId, List<AchievementCertificateDto> certificates, List<AchievementCategorizedDto> categorized, List<AchievementSpecialDto> special, List<EnrollmentDto> enrollments) {
+    public TravelJournalDto(@NotNull(message = "Id cannot be blank") Long id, int xp_count, HashMap<CategoryDto, Integer> trip_counter, Long userId, List<AchievementCertificateDto> certificates, List<AchievementCategorizedDto> categorized,
+                            List<AchievementSpecialDto> special, List<EnrollmentDto> enrollments, int level) {
         this.id = id;
         this.xp_count = xp_count;
         this.trip_counter = trip_counter;
@@ -36,6 +39,7 @@ public class TravelJournalDto {
         this.categorized = categorized;
         this.special = special;
         this.enrollments = enrollments;
+        this.level = level;
     }
 
 
@@ -124,5 +128,17 @@ public class TravelJournalDto {
     public void setEnrollments(List<EnrollmentDto> enrollments) {
 
         this.enrollments = enrollments;
+    }
+
+
+    public int getLevel() {
+
+        return level;
+    }
+
+
+    public void setLevel(int level) {
+
+        this.level = level;
     }
 }

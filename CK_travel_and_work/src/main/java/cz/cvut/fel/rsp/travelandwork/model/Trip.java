@@ -68,7 +68,7 @@ public class Trip extends AbstractEntity {
             name = "required_achievement_certificate_trip",
             joinColumns = @JoinColumn(name = "trip_id"),
             inverseJoinColumns = @JoinColumn(name = "achievement_certificate_id"))
-    private List<AchievementCertificate> required_certificates;
+    private List<AchievementCertificate> required_achievements_certificate;
 
     @ManyToMany
     @JoinTable(
@@ -120,7 +120,7 @@ public class Trip extends AbstractEntity {
         this.short_name = short_name;
         this.required_achievements_categorized = new ArrayList<>();
         this.required_achievements_special = new ArrayList<>();
-        this.required_certificates = new ArrayList<>();
+        this.required_achievements_certificate = new ArrayList<>();
         this.gain_achievements_special = new ArrayList<>();
     }
 
@@ -230,17 +230,17 @@ public class Trip extends AbstractEntity {
         this.possible_xp_reward = possible_xp_reward;
     }
 
-    public List<AchievementCertificate> getRequired_certificates() {
-        return required_certificates;
+    public List<AchievementCertificate> getRequired_achievements_certificate() {
+        return required_achievements_certificate;
     }
 
-    public void setRequired_certificates(List<AchievementCertificate> required_certificates) {
-        this.required_certificates = required_certificates;
+    public void setRequired_achievements_certificate(List<AchievementCertificate> required_achievements_certificate) {
+        this.required_achievements_certificate = required_achievements_certificate;
     }
 
 
-    public void addRequired_certificates(AchievementCertificate achievementCertificate) {
-        this.required_certificates.add(achievementCertificate);
+    public void addRequired_achievements_certificate(AchievementCertificate achievementCertificate) {
+        this.required_achievements_certificate.add(achievementCertificate);
     }
 
     public List<AchievementSpecial> getRequired_achievements_special() {
@@ -292,7 +292,7 @@ public class Trip extends AbstractEntity {
                 ", location='" + location + '\'' +
                 ", required_level=" + required_level +
                 ", category=" + category +
-                ", required_certificates=" + required_certificates +
+                ", required_achievements_certificate=" + required_achievements_certificate +
                 ", required_achievements_special=" + required_achievements_special +
                 ", required_achievements_categorized=" + required_achievements_categorized +
                 ", gain_achievements_special=" + gain_achievements_special +

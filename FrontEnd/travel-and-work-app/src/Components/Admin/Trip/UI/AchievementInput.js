@@ -9,9 +9,9 @@ function AchievementInput(props) {
                 <Form.Check.Input
                     type="checkbox"
                     key={props.element.id}
-                    id={props.element.id}
+                    defaultValue={props.element.id}
                     onChange={props.onChangeMethod}
-                    defaultChecked={props.selected}
+                    checked={props.selected}
                 />
                 <FontAwesomeIcon icon={props.element.icon} size="lg" />
                 {props.element.name}

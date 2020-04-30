@@ -15,7 +15,9 @@ import {
 
 class Create extends React.Component {
     state = {
-        achievements: null,
+        achievements_special: null,
+        achievements_categorized: null,
+        achievements_certificate: null,
         categories: null,
         form: {
             isValid: false,
@@ -71,8 +73,10 @@ class Create extends React.Component {
             category: null,
             location: null,
             description: null,
-            required_achievements: [],
-            gain_achievements: [],
+            required_achievements_special: [],
+            required_achievements_certificate: [],
+            required_achievements_categorized: [],
+            gain_achievements_special: [],
             sessions: [],
         },
     };
@@ -95,8 +99,10 @@ class Create extends React.Component {
             "description",
         ];
         const checkboxProperties = [
-            "required_achievements",
-            "gain_achievements",
+            "required_achievements_special",
+            "required_achievements_certificate",
+            "required_achievements_categorized",
+            "gain_achievements_special",
         ];
         const newState = { ...this.state.trip };
 
@@ -104,22 +110,57 @@ class Create extends React.Component {
         if (stringProperties.includes(nameOfFormInput)) {
             newState[nameOfFormInput] = event.target.value;
         } else if (checkboxProperties.includes(nameOfFormInput)) {
-            let found = newState[nameOfFormInput].find((object) => {
-                return object.id == event.target.id;
+            //if already checked
+            let foundIndex = newState[nameOfFormInput].findIndex((object) => {
+                return object.id == event.target.value;
             });
-            //if found element, that means user unchecked element
-            if (found) {
-                let index = newState[nameOfFormInput].indexOf(found);
-                newState[nameOfFormInput].splice(index, 1);
-            }
-            //push achievement
-            else {
-                let found = this.state.achievements.find((object) => {
-                    return object.id == event.target.id;
-                });
-
-                if (found) {
-                    newState[nameOfFormInput].push(found);
+            //remove if alredy checked
+            if (foundIndex > -1) {
+                newState[nameOfFormInput].splice(foundIndex, 1);
+                console.log("state after splice");
+                console.log(newState[nameOfFormInput]);
+            } else {
+                let objectIndex = -1;
+                if (nameOfFormInput == "required_achievements_special") {
+                    objectIndex = this.state.achievements_special.findIndex(
+                        (object) => object.id == event.target.value
+                    );
+                    if (objectIndex > -1) {
+                        newState[nameOfFormInput].push(
+                            this.state.achievements_special[objectIndex]
+                        );
+                    }
+                } else if (
+                    nameOfFormInput == "required_achievements_certificate"
+                ) {
+                    objectIndex = this.state.achievements_certificate.findIndex(
+                        (object) => object.id == event.target.value
+                    );
+                    if (objectIndex > -1) {
+                        newState[nameOfFormInput].push(
+                            this.state.achievements_certificate[objectIndex]
+                        );
+                    }
+                } else if (
+                    nameOfFormInput == "required_achievements_categorized"
+                ) {
+                    objectIndex = this.state.achievements_categorized.findIndex(
+                        (object) => object.id == event.target.value
+                    );
+                    if (objectIndex > -1) {
+                        newState[nameOfFormInput].push(
+                            this.state.achievements_categorized[objectIndex]
+                        );
+                    }
+                } else if (nameOfFormInput == "gain_achievements_special") {
+                    objectIndex = this.state.achievements_special.findIndex(
+                        (object) => object.id == event.target.value
+                    );
+                    if (objectIndex > -1) {
+                        newState[nameOfFormInput].push(
+                            this.state.achievements_special[objectIndex]
+                        );
+                    }
                 }
             }
         } else if (nameOfFormInput == "category") {
@@ -183,10 +224,13 @@ class Create extends React.Component {
     submitHandler = async (event) => {
         event.preventDefault();
         await this.validateForm();
+        console.log("submit");
+        console.log(this.state.trip);
         if (this.state.form.isValid) {
             fetch("http://localhost:8080/trip", {
                 method: "POST",
                 mode: "cors",
+                credentials: "include",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -212,15 +256,34 @@ class Create extends React.Component {
         console.log(data1);
         this.setState({ categories: data1 });
 
-        const response2 = await fetch(`http://localhost:8080/achievement`);
+        const response2 = await fetch(
+            `http://localhost:8080/achievement/categorized`
+        );
         const data2 = await response2.json();
         console.log(data2);
-        //show: false -> add class name to button and hide it
-        this.setState({ achievements: data2 });
+        this.setState({ achievements_categorized: data2 });
+
+        const response3 = await fetch(
+            `http://localhost:8080/achievement/special`
+        );
+        const data3 = await response3.json();
+        console.log(data3);
+        this.setState({ achievements_special: data3 });
+
+        const response4 = await fetch(
+            `http://localhost:8080/achievement/certificate`
+        );
+        const data4 = await response4.json();
+        console.log(data4);
+        this.setState({ achievements_certificate: data4 });
     }
 
     render() {
-        if (this.state.achievements == null && this.state.categories == null) {
+        if (
+            this.state.achievements_required == null &&
+            this.state.achievements_gain == null &&
+            this.state.categories == null
+        ) {
             return (
                 <Container className="p-5 mt-5">
                     <Spinner animation="border" role="status">
@@ -445,7 +508,14 @@ class Create extends React.Component {
                         </Form.Group>
 
                         <Achievements
-                            items={this.state.achievements}
+                            itemsGain={this.state.achievements_special}
+                            itemsRequired={{
+                                special: this.state.achievements_special,
+                                categorized: this.state
+                                    .achievements_categorized,
+                                certificate: this.state
+                                    .achievements_certificate,
+                            }}
                             onChangeMethod={this.inputUpdateHandler}
                             selectedGain={[]}
                             selectedRequired={[]}
