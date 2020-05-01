@@ -20,17 +20,26 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MyAlert from "../../SmartGadgets/MyAlert";
 import DatePicker from "react-datepicker";
+import NumericInput from "react-numeric-input";
 
 class Close extends React.Component {
     state = {
         form: {
             isValid: false,
-            elements: {},
+            elements: {
+                actual_xp_reward: {
+                    more: false,
+                    less: false,
+                },
+            },
         },
         enrollment: {
             state: "ACTIVE",
-            actual_xp_reward: 0,
-            recieved_achievements_special: [],
+            actual_xp_reward: 15,
+            recieved_achievements_special: [
+                { id: 3, name: "Kuchticek 1. triedy", icon: "water" },
+                { id: 8, name: "Odvazlivec", icon: "trophy" },
+            ],
         },
         user: {
             firstName: "Peter",
@@ -56,11 +65,66 @@ class Close extends React.Component {
     /**
      * Update state from input.
      * @param {event} event
-     * @param {String} nameOfFormInput
-     * @param {Boolean} arrayToPush - if want push to array
-     * @param {Boolean} checkbox
+     * @param {String} inputName
+     * @param {String} stateName
      */
-    inputUpdateHandler = async (event, nameOfFormInput) => {
+    inputUpdateHandler = async (event, inputName) => {
+        console.log("Input validation ------------------------------------");
+        console.log(inputName);
+        //console.log(stateName);
+        // console.log(this.state[stateName][inputName]);
+
+        const newState = { ...this.state };
+        if (inputName == "actual_xp_reward") {
+            console.log(event.target.value);
+            const newFormState = { ...this.state.form };
+            const newEnrollmentState = { ...this.state.enrollment };
+            newEnrollmentState["actual_xp_reward"] = Number(event.target.value);
+            newFormState.elements.actual_xp_reward["more"] = false;
+            newFormState.elements.actual_xp_reward["less"] = false;
+            this.setState({
+                form: newFormState,
+                enrollment: newEnrollmentState,
+            });
+
+            if (event.target.value > this.state.trip.possible_xp_reward) {
+                newFormState.elements.actual_xp_reward["more"] = true;
+                newFormState.elements.actual_xp_reward["less"] = false;
+                this.setState({ form: newFormState });
+            } else if (event.target.value < 0) {
+                newFormState.elements.actual_xp_reward["more"] = false;
+                newFormState.elements.actual_xp_reward["less"] = true;
+                this.setState({ form: newFormState });
+            }
+            console.log(this.state);
+        } else if ((inputName = "recieved_achievements_special")) {
+            const newEnrollmentState = { ...this.state.enrollment };
+            //remove if found
+            let foundIndex = newEnrollmentState.recieved_achievements_special.findIndex(
+                (item) => item.id == event.target.value
+            );
+            if (foundIndex > -1) {
+                newEnrollmentState.recieved_achievements_special.splice(
+                    foundIndex,
+                    1
+                );
+            } else {
+                //add if not found
+                let foundIndexGained = this.state.trip.gain_achievements_special.findIndex(
+                    (item) => item.id == event.target.value
+                );
+                if (foundIndexGained > -1)
+                    newEnrollmentState.recieved_achievements_special.push(
+                        this.state.trip.gain_achievements_special[
+                            foundIndexGained
+                        ]
+                    );
+            }
+            this.setState({
+                enrollment: newEnrollmentState,
+            });
+            console.log(this.state.enrollment);
+        }
         /*const stringProperties = [
             "name",
             "short_name",
@@ -197,6 +261,13 @@ class Close extends React.Component {
                         <Form.Check.Input
                             type="checkbox"
                             defaultChecked={true}
+                            value={item.id}
+                            onChange={(event) =>
+                                this.inputUpdateHandler(
+                                    event,
+                                    "recieved_achievements_special"
+                                )
+                            }
                         />
                         <FontAwesomeIcon
                             icon={item.icon}
@@ -213,6 +284,60 @@ class Close extends React.Component {
                 {achievementArray}
             </div>
         );
+
+        let achievements_removed = [];
+        if (this.state.trip.gain_achievements_special.length > 0) {
+            this.state.trip.gain_achievements_special.forEach((shouldGain) => {
+                if (
+                    !this.state.enrollment.recieved_achievements_special.find(
+                        (notCanceled) => notCanceled.id == shouldGain.id
+                    )
+                ) {
+                    achievements_removed.push(shouldGain.name);
+                }
+            });
+        }
+        let achievement_alert =
+            achievements_removed.length > 0 ? (
+                <MyAlert
+                    variant="warning"
+                    text="Removed achievements"
+                    list={achievements_removed}
+                />
+            ) : null;
+
+        let xp_reward_alert = null;
+        if (this.state.form.elements.actual_xp_reward.less) {
+            xp_reward_alert = (
+                <MyAlert variant="danger" text="Cannot be less than 0." />
+            );
+        } else if (this.state.form.elements.actual_xp_reward.more) {
+            xp_reward_alert = (
+                <MyAlert
+                    variant="danger"
+                    text={
+                        "Cannot be more than " +
+                        this.state.trip.possible_xp_reward +
+                        "."
+                    }
+                />
+            );
+        } else if (
+            this.state.trip.possible_xp_reward >
+            this.state.enrollment.actual_xp_reward
+        ) {
+            xp_reward_alert = (
+                <MyAlert
+                    variant="warning"
+                    text={
+                        "Reward was decresed by " +
+                        (this.state.trip.possible_xp_reward -
+                            this.state.enrollment.actual_xp_reward) +
+                        " points."
+                    }
+                />
+            );
+        }
 
         if (false) {
             return (
@@ -256,52 +381,77 @@ class Close extends React.Component {
                             <Card.Text>{this.state.trip.description}</Card.Text>
                         </Card.Body>
 
-                        <Form className="d-flex">
-                            <Card.Body>
-                                <Card.Title className="text-muted">
-                                    Gain achievements
-                                </Card.Title>
-                                <Form.Group
-                                    as={Col}
-                                    className="d-flex flex-column align-items-center"
-                                >
-                                    {achievements}
-                                </Form.Group>
-                            </Card.Body>
-                            <Card.Body>
-                                <Form.Group as={Col}>
-                                    <Form.Label>XP reward</Form.Label>
-                                    <InputGroup className="mb-3">
-                                        <InputGroup.Prepend>
-                                            <InputGroup.Text id="basic-addon1">
-                                                Max{" "}
-                                                {
+                        <Form>
+                            <Row className="d-flex">
+                                <Card.Body>
+                                    <Card.Title className="text-muted">
+                                        Gain achievements
+                                    </Card.Title>
+                                    <Form.Group
+                                        as={Col}
+                                        className="d-flex flex-column align-items-center"
+                                    >
+                                        {achievements}
+                                    </Form.Group>
+                                    {achievement_alert}
+                                </Card.Body>
+                                <Card.Body>
+                                    <Form.Group as={Col}>
+                                        <Form.Label>XP reward</Form.Label>
+                                        <InputGroup className="mb-3">
+                                            <InputGroup.Prepend>
+                                                <InputGroup.Text id="basic-addon1">
+                                                    Max{" "}
+                                                    {
+                                                        this.state.trip
+                                                            .possible_xp_reward
+                                                    }
+                                                </InputGroup.Text>
+                                            </InputGroup.Prepend>
+                                            <Form.Control
+                                                type="number"
+                                                placeholder="XP reward"
+                                                defaultValue={
                                                     this.state.trip
                                                         .possible_xp_reward
                                                 }
-                                            </InputGroup.Text>
-                                        </InputGroup.Prepend>
+                                                onInput={(event) =>
+                                                    this.inputUpdateHandler(
+                                                        event,
+                                                        "actual_xp_reward",
+                                                        "enrollment"
+                                                    )
+                                                }
+                                            />
+                                        </InputGroup>
+                                        {xp_reward_alert}
+                                    </Form.Group>
+                                </Card.Body>
+                            </Row>
+                            <Row>
+                                <Card.Body>
+                                    <Form.Group as={Col}>
+                                        <Form.Label>Review</Form.Label>
                                         <Form.Control
-                                            type="number"
-                                            placeholder="XP reward"
-                                            defaultValue={
-                                                this.state.trip
-                                                    .possible_xp_reward
+                                            as="textarea"
+                                            rows="5"
+                                            onChange={(event) =>
+                                                this.inputUpdateHandler(
+                                                    event,
+                                                    "description"
+                                                )
                                             }
-                                            className={validationClassName(
-                                                "",
-                                                this.state.form
-                                            )}
                                         />
-                                        <div class="invalid-feedback">
-                                            {validationFeedback(
-                                                "",
-                                                this.state.form
-                                            )}
-                                        </div>
-                                    </InputGroup>
-                                </Form.Group>
-                            </Card.Body>
+                                    </Form.Group>
+                                </Card.Body>
+                            </Row>
+                            <Button
+                                variant="primary"
+                                type="submit"
+                                className="mb-5"
+                            >
+                                Submit
+                            </Button>
                         </Form>
                     </Card>
                 </Container>
