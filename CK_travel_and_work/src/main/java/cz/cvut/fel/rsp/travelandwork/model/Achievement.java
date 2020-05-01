@@ -3,6 +3,7 @@ package cz.cvut.fel.rsp.travelandwork.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @MappedSuperclass
@@ -31,6 +32,7 @@ public abstract class Achievement extends AbstractEntity{
         this.name = name;
         this.description = description;
         this.icon = icon;
+        this.trips = new ArrayList<>();
     }
 
     public String getName() {

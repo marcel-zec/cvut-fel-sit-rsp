@@ -29,6 +29,7 @@ public class Category extends AbstractEntity{
 
     public Category(@NotBlank(message = "Name of category cannot be blank") String name) {
         this.name = name;
+        this.trips = new ArrayList<>();
     }
 
     public boolean add(Trip trip){

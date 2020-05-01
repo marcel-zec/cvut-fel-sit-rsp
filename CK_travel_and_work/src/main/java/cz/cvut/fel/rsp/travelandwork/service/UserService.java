@@ -151,5 +151,8 @@ public class UserService {
         return dao.exists(id);
     }
 
-
+    @Transactional
+    public List<User> findAllUsers() {
+        return dao.findAll();
+    }
 }
