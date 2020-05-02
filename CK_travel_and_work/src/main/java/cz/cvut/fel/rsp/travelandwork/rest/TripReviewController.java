@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/trip_review")
 public class TripReviewController {
@@ -24,8 +26,13 @@ public class TripReviewController {
         return tripReviewService.find(identificator);
     }
 
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<TripReview> getAll() {
+        return tripReviewService.findAll();
+    }
+
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void create() {
+    public void create(@RequestBody TripReview tripReview) {
 
     }
 
