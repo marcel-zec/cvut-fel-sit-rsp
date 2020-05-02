@@ -5,6 +5,7 @@ import cz.cvut.fel.rsp.travelandwork.dao.EnrollmentDao;
 import cz.cvut.fel.rsp.travelandwork.dao.UserDao;
 import cz.cvut.fel.rsp.travelandwork.dto.AchievementSpecialDto;
 import cz.cvut.fel.rsp.travelandwork.dto.EnrollmentDto;
+import cz.cvut.fel.rsp.travelandwork.dto.RequestWrapperEnrollmentGet;
 import cz.cvut.fel.rsp.travelandwork.exception.NotAllowedException;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
 import cz.cvut.fel.rsp.travelandwork.model.AchievementSpecial;
@@ -45,7 +46,6 @@ public class EnrollmentService {
 
     @Transactional
     public List<EnrollmentDto> findAllDto(){
-
         List<EnrollmentDto> enrollmentDtos = new ArrayList<>();
 
         for (Enrollment e : enrollmentDao.findAll()) {
@@ -55,17 +55,29 @@ public class EnrollmentService {
         return enrollmentDtos;
     }
 
+    @Transactional
+    public List<RequestWrapperEnrollmentGet> findAllActiveEndedWithUser(){
+        List<RequestWrapperEnrollmentGet> requestWrappers = new ArrayList<>();
+
+        for (Enrollment e: findAllActiveEnded()) {
+            RequestWrapperEnrollmentGet wrapperEnrollmentGet = new RequestWrapperEnrollmentGet();
+            wrapperEnrollmentGet.setEnrollmentDto(translateService.translateEnrollment(e));
+            wrapperEnrollmentGet.setOwner(translateService.translateUser(e.getTravelJournal().getUser()));
+            requestWrappers.add(wrapperEnrollmentGet);
+        }
+        return requestWrappers;
+    }
 
     @Transactional
-    public List<EnrollmentDto> findAllActiveEnded(){
-        List<EnrollmentDto> enrollmentDtos = findAllDto();
-        List<EnrollmentDto> newEnrollmentDtos = new ArrayList<>();
-        for (EnrollmentDto e: enrollmentDtos) {
+    public List<Enrollment> findAllActiveEnded(){
+        List<Enrollment> enrollments = findAll();
+        List<Enrollment> newEnrollments = new ArrayList<>();
+        for (Enrollment e: enrollments) {
             if (e.getState().equals(EnrollmentState.ACTIVE) && e.getTripSession().getTo_date().isBefore(ChronoLocalDate.from(LocalDateTime.now()))){
-                newEnrollmentDtos.add(e);
+                newEnrollments.add(e);
             }
         }
-        return newEnrollmentDtos;
+        return newEnrollments;
     }
 
 

@@ -2,6 +2,7 @@ package cz.cvut.fel.rsp.travelandwork.rest;
 
 import cz.cvut.fel.rsp.travelandwork.dto.EnrollmentDto;
 import cz.cvut.fel.rsp.travelandwork.dto.RequestWrapperEnrollment;
+import cz.cvut.fel.rsp.travelandwork.dto.RequestWrapperEnrollmentGet;
 import cz.cvut.fel.rsp.travelandwork.exception.NotAllowedException;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
 import cz.cvut.fel.rsp.travelandwork.security.SecurityUtils;
@@ -59,8 +60,8 @@ public class EnrollmentController {
 
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN')")
     @GetMapping(value = "/complete", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<EnrollmentDto> getAllActiveEnded() {
-        return enrollmentService.findAllActiveEnded();
+    public List<RequestWrapperEnrollmentGet> getAllActiveEnded() {
+        return enrollmentService.findAllActiveEndedWithUser();
     }
 
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN')")
