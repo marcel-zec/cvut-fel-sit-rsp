@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.chrono.ChronoLocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,14 +39,37 @@ public class EnrollmentService {
         this.achievementSpecialDao = achievementSpecialDao;
     }
 
-    @Transactional
-    public List<Enrollment> findAll(){
+    private List<Enrollment> findAll(){
         return enrollmentDao.findAll();
+    }
+
+    @Transactional
+    public List<EnrollmentDto> findAllDto(){
+
+        List<EnrollmentDto> enrollmentDtos = new ArrayList<>();
+
+        for (Enrollment e : enrollmentDao.findAll()) {
+            enrollmentDtos.add(translateService.translateEnrollment(e));
+        }
+
+        return enrollmentDtos;
     }
 
 
     @Transactional
-    public Enrollment find(Long id){
+    public List<EnrollmentDto> findAllActiveEnded(){
+        List<EnrollmentDto> enrollmentDtos = findAllDto();
+        List<EnrollmentDto> newEnrollmentDtos = new ArrayList<>();
+        for (EnrollmentDto e: enrollmentDtos) {
+            if (e.getState().equals(EnrollmentState.ACTIVE) && e.getTripSession().getTo_date().isBefore(ChronoLocalDate.from(LocalDateTime.now()))){
+                newEnrollmentDtos.add(e);
+            }
+        }
+        return newEnrollmentDtos;
+    }
+
+
+    private Enrollment find(Long id){
         return enrollmentDao.find(id);
     }
 
