@@ -400,7 +400,7 @@ class Close extends React.Component {
                     <Container className="mt-3">
                         <Card /*style={{ width: "18rem" }}*/>
                             <Card.Body>
-                                <Card.Subtitle className="text-muted">
+                                <Card.Subtitle className="text-muted mb-3">
                                     Trip
                                 </Card.Subtitle>
                                 <Card.Title>{this.state.trip.name}</Card.Title>
@@ -443,7 +443,7 @@ class Close extends React.Component {
                     <Container className="mt-3">
                         <Card>
                             <Card.Body>
-                                <Card.Subtitle className="text-muted">
+                                <Card.Subtitle className="text-muted mb-3">
                                     User reward
                                 </Card.Subtitle>
                                 <Card.Text>
