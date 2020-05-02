@@ -20,6 +20,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MyAlert from "../../SmartGadgets/MyAlert";
 import DatePicker from "react-datepicker";
+import Slider from "@material-ui/core/Slider";
 import NumericInput from "react-numeric-input";
 
 class Close extends React.Component {
@@ -59,6 +60,10 @@ class Close extends React.Component {
                 { id: 3, name: "Kuchticek 1. triedy", icon: "water" },
                 { id: 8, name: "Odvazlivec", icon: "trophy" },
             ],
+        },
+        review: {
+            note: "",
+            rating: 5,
         },
     };
 
@@ -339,6 +344,48 @@ class Close extends React.Component {
             );
         }
 
+        const sliderMarks = [
+            {
+                value: 0,
+                label: "0",
+            },
+            {
+                value: 0.5,
+            },
+            {
+                value: 1,
+                label: "1",
+            },
+            {
+                value: 1.5,
+            },
+            {
+                value: 2,
+                label: "2",
+            },
+            {
+                value: 2.5,
+            },
+            {
+                value: 3,
+                label: "3",
+            },
+            {
+                value: 3.5,
+            },
+            {
+                value: 4,
+                label: "4",
+            },
+            {
+                value: 4.5,
+            },
+            {
+                value: 5,
+                label: "5",
+            },
+        ];
+
         if (false) {
             return (
                 <Container className="p-5 mt-5">
@@ -349,112 +396,154 @@ class Close extends React.Component {
             );
         } else {
             return (
-                <Container>
-                    <Card /*style={{ width: "18rem" }}*/>
-                        <Card.Body>
-                            <Card.Title>{this.state.trip.name}</Card.Title>
-                            <Card.Text>
-                                <FontAwesomeIcon
-                                    icon="map-marker-alt"
-                                    className="mr-3"
-                                />
-                                {this.state.trip.location}
-                            </Card.Text>
-                            <Card.Text>
-                                <FontAwesomeIcon
-                                    icon="calendar-alt"
-                                    className="mr-3"
-                                />
-                                <DatePicker
-                                    className="form-control"
-                                    selected={this.state.trip_session.from_date}
-                                    dateFormat="dd. MM. yyyy"
-                                    disabled={true}
-                                />
-                                <DatePicker
-                                    className="form-control ml-3"
-                                    selected={this.state.trip_session.to_date}
-                                    dateFormat="dd. MM. yyyy"
-                                    disabled={true}
-                                />
-                            </Card.Text>
-                            <Card.Text>{this.state.trip.description}</Card.Text>
-                        </Card.Body>
+                <>
+                    <Container className="mt-3">
+                        <Card /*style={{ width: "18rem" }}*/>
+                            <Card.Body>
+                                <Card.Subtitle className="text-muted mb-3">
+                                    Trip
+                                </Card.Subtitle>
+                                <Card.Title>{this.state.trip.name}</Card.Title>
+                                <Card.Text>
+                                    <FontAwesomeIcon
+                                        icon="map-marker-alt"
+                                        className="mr-3"
+                                    />
+                                    {this.state.trip.location}
+                                </Card.Text>
+                                <Card.Text>
+                                    <FontAwesomeIcon
+                                        icon="calendar-alt"
+                                        className="mr-3"
+                                    />
+                                    <DatePicker
+                                        className="form-control"
+                                        selected={
+                                            this.state.trip_session.from_date
+                                        }
+                                        dateFormat="dd. MM. yyyy"
+                                        disabled={true}
+                                    />
+                                    <DatePicker
+                                        className="form-control ml-3"
+                                        selected={
+                                            this.state.trip_session.to_date
+                                        }
+                                        dateFormat="dd. MM. yyyy"
+                                        disabled={true}
+                                    />
+                                </Card.Text>
+                                <Card.Text>
+                                    {this.state.trip.description}
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>
+                    </Container>
 
-                        <Form>
-                            <Row className="d-flex">
-                                <Card.Body>
-                                    <Card.Title className="text-muted">
-                                        Gain achievements
-                                    </Card.Title>
-                                    <Form.Group
-                                        as={Col}
-                                        className="d-flex flex-column align-items-center"
-                                    >
-                                        {achievements}
-                                    </Form.Group>
-                                    {achievement_alert}
-                                </Card.Body>
-                                <Card.Body>
-                                    <Form.Group as={Col}>
-                                        <Form.Label>XP reward</Form.Label>
-                                        <InputGroup className="mb-3">
-                                            <InputGroup.Prepend>
-                                                <InputGroup.Text id="basic-addon1">
-                                                    Max{" "}
-                                                    {
+                    <Container className="mt-3">
+                        <Card>
+                            <Card.Body>
+                                <Card.Subtitle className="text-muted mb-3">
+                                    User reward
+                                </Card.Subtitle>
+                                <Card.Text>
+                                    <FontAwesomeIcon
+                                        icon="user-alt"
+                                        className="mr-3"
+                                    />
+                                    {this.state.user.firstName +
+                                        " " +
+                                        this.state.user.lastName}
+                                </Card.Text>
+                            </Card.Body>
+
+                            <Form>
+                                <Row className="d-flex">
+                                    <Card.Body>
+                                        <Card.Title className="text-muted">
+                                            Gain achievements
+                                        </Card.Title>
+                                        <Form.Group
+                                            as={Col}
+                                            className="d-flex flex-column align-items-center"
+                                        >
+                                            {achievements}
+                                        </Form.Group>
+                                        {achievement_alert}
+                                    </Card.Body>
+                                    <Card.Body>
+                                        <Form.Group as={Col}>
+                                            <Form.Label>XP</Form.Label>
+                                            <InputGroup className="mb-3">
+                                                <InputGroup.Prepend>
+                                                    <InputGroup.Text id="basic-addon1">
+                                                        Max{" "}
+                                                        {
+                                                            this.state.trip
+                                                                .possible_xp_reward
+                                                        }
+                                                    </InputGroup.Text>
+                                                </InputGroup.Prepend>
+                                                <Form.Control
+                                                    type="number"
+                                                    placeholder="XP reward"
+                                                    defaultValue={
                                                         this.state.trip
                                                             .possible_xp_reward
                                                     }
-                                                </InputGroup.Text>
-                                            </InputGroup.Prepend>
+                                                    onInput={(event) =>
+                                                        this.inputUpdateHandler(
+                                                            event,
+                                                            "actual_xp_reward",
+                                                            "enrollment"
+                                                        )
+                                                    }
+                                                />
+                                            </InputGroup>
+                                            {xp_reward_alert}
+                                        </Form.Group>
+                                    </Card.Body>
+                                </Row>
+                                <Row>
+                                    <Card.Body>
+                                        <Form.Label>Review</Form.Label>
+                                        <Form.Group>
+                                            <Slider
+                                                className="w-50"
+                                                defaultValue={5}
+                                                aria-labelledby="discrete-slider"
+                                                valueLabelDisplay="auto"
+                                                step={0.5}
+                                                marks={sliderMarks}
+                                                min={0}
+                                                max={5}
+                                            />
+                                        </Form.Group>
+                                        <Form.Group>
                                             <Form.Control
-                                                type="number"
-                                                placeholder="XP reward"
-                                                defaultValue={
-                                                    this.state.trip
-                                                        .possible_xp_reward
-                                                }
-                                                onInput={(event) =>
+                                                as="textarea"
+                                                rows="5"
+                                                onChange={(event) =>
                                                     this.inputUpdateHandler(
                                                         event,
-                                                        "actual_xp_reward",
-                                                        "enrollment"
+                                                        "note"
                                                     )
                                                 }
                                             />
-                                        </InputGroup>
-                                        {xp_reward_alert}
-                                    </Form.Group>
-                                </Card.Body>
-                            </Row>
-                            <Row>
-                                <Card.Body>
-                                    <Form.Group as={Col}>
-                                        <Form.Label>Review</Form.Label>
-                                        <Form.Control
-                                            as="textarea"
-                                            rows="5"
-                                            onChange={(event) =>
-                                                this.inputUpdateHandler(
-                                                    event,
-                                                    "description"
-                                                )
-                                            }
-                                        />
-                                    </Form.Group>
-                                </Card.Body>
-                            </Row>
-                            <Button
-                                variant="primary"
-                                type="submit"
-                                className="mb-5"
-                            >
-                                Submit
-                            </Button>
-                        </Form>
-                    </Card>
-                </Container>
+                                        </Form.Group>
+                                    </Card.Body>
+                                </Row>
+                                <Button
+                                    variant="primary"
+                                    type="submit"
+                                    className="mb-5"
+                                >
+                                    Submit
+                                </Button>
+                            </Form>
+                        </Card>
+                    </Container>
+                </>
             );
         }
     }
