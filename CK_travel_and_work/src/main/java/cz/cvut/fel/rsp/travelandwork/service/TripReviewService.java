@@ -34,11 +34,11 @@ public class TripReviewService {
     }
 
     @Transactional
-    public void create(TripReview tripReview, User author) throws UnauthorizedException {
+    public void create(TripReview tripReview) throws UnauthorizedException {
         Objects.requireNonNull(tripReview);
         if (SecurityUtils.isAuthenticatedAnonymously()) throw new UnauthorizedException();
         tripReview.setAuthor(userDao.find(SecurityUtils.getCurrentUser().getId()));
-        //priradit trip
+        //todo priradit trip
         tripReviewDao.persist(tripReview);
     }
 
