@@ -59,7 +59,7 @@ public class EnrollmentController {
     }
 
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN')")
-    @GetMapping(value = "/complete", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/close", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<RequestWrapperEnrollmentGet> getAllActiveEnded() {
         return enrollmentService.findAllActiveEndedWithUser();
     }

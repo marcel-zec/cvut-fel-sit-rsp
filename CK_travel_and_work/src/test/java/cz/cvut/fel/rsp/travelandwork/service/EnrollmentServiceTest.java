@@ -64,13 +64,6 @@ public class EnrollmentServiceTest {
     @Test
     @Transactional
     @Rollback
-    public void findAll(){
-        enrollmentService.findAll();
-    }
-
-    @Test
-    @Transactional
-    @Rollback
     public void findAllOfUser() throws NotAllowedException {
         enrollmentService.findAllOfUser(user);
     }
