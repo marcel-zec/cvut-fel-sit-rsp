@@ -127,4 +127,10 @@ public class Enrollment extends AbstractEntity {
                 ", tripSession=" + tripSession +
                 "} " + super.toString();
     }
+
+
+    public void setRecieved_achievements_special(List<AchievementSpecial> recieved_achievements_special) {
+
+        this.recieved_achievements_special = recieved_achievements_special;
+    }
 }
