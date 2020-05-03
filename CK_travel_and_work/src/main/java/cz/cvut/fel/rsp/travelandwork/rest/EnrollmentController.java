@@ -87,4 +87,9 @@ public class EnrollmentController {
         return enrollmentService.findActiveEndedWithUser(id);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN')")
+    @PostMapping(value = "/close/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public void closeOk(@PathVariable Long id) throws NotAllowedException {
+         enrollmentService.closeOk(id);
+    }
 }
