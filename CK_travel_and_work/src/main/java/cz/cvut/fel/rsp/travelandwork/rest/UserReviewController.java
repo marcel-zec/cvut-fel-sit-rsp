@@ -1,12 +1,8 @@
 package cz.cvut.fel.rsp.travelandwork.rest;
 
-import cz.cvut.fel.rsp.travelandwork.dto.RequestWrapper;
-import cz.cvut.fel.rsp.travelandwork.dto.RequestWrapperReview;
 import cz.cvut.fel.rsp.travelandwork.dto.UserReviewDto;
-import cz.cvut.fel.rsp.travelandwork.exception.BadPassword;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
 import cz.cvut.fel.rsp.travelandwork.exception.UnauthorizedException;
-import cz.cvut.fel.rsp.travelandwork.model.UserReview;
 import cz.cvut.fel.rsp.travelandwork.security.SecurityUtils;
 import cz.cvut.fel.rsp.travelandwork.service.UserReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +21,7 @@ public class UserReviewController {
     private final UserReviewService userReviewService;
 
     @Autowired
-    public UserReviewController( UserReviewService userReviewService) {
+    public UserReviewController(UserReviewService userReviewService) {
         this.userReviewService = userReviewService;
     }
 
@@ -46,12 +42,4 @@ public class UserReviewController {
         return userReviewService.findAllOfUser();
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> create(@RequestBody RequestWrapperReview requestWrapperReview) throws Exception {
-        userReviewService.create(requestWrapperReview.getUserId(), SecurityUtils.getCurrentUser(), requestWrapperReview.getTripSessionId(),
-                requestWrapperReview.getUserReview());
-        //LOG.debug("User {} successfully registered.", user);
-        //return new ResponseEntity<>(headers, HttpStatus.CREATED);
-        return null;
-    }
 }

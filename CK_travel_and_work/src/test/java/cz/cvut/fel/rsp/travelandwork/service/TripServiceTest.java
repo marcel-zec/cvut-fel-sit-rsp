@@ -1,10 +1,7 @@
 package cz.cvut.fel.rsp.travelandwork.service;
 
 import cz.cvut.fel.rsp.travelandwork.environment.util.Generator;
-import cz.cvut.fel.rsp.travelandwork.exception.BadDateException;
-import cz.cvut.fel.rsp.travelandwork.exception.BadPassword;
-import cz.cvut.fel.rsp.travelandwork.exception.MissingVariableException;
-import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
+import cz.cvut.fel.rsp.travelandwork.exception.*;
 import cz.cvut.fel.rsp.travelandwork.model.Trip;
 import cz.cvut.fel.rsp.travelandwork.model.TripReview;
 import cz.cvut.fel.rsp.travelandwork.model.TripSession;
@@ -101,7 +98,7 @@ public class TripServiceTest {
     @Test
     @Transactional
     @Rollback
-    public void remove_TripRemoved() throws NotFoundException, BadPassword, BadDateException, MissingVariableException {
+    public void remove_TripRemoved() throws NotFoundException, BadPassword, BadDateException, MissingVariableException, UnauthorizedException {
         User user = Generator.generateUser();
         TripReview tripReview = new TripReview();
         tripReview.setNote("note");
@@ -111,7 +108,7 @@ public class TripServiceTest {
         trip.setReviews(user.getTripReviews());
 
         userService.createUser(user,user.getPassword());
-        tripReviewService.persist(tripReview);
+        tripReviewService.create(tripReview);
 
         tripService.delete(trip.getShort_name());
         assertThrows(NotFoundException.class, ()-> tripService.find(trip.getId()));

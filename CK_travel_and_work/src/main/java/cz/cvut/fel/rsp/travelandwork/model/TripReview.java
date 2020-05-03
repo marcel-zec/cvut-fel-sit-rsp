@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 public class TripReview extends AbstractEntity {
 
     @Basic(optional = false)
-    @Column(nullable = false)
     @Size(max = 255, min = 0, message = "Max 255 characters.")
     private String note;
 
@@ -75,5 +74,17 @@ public class TripReview extends AbstractEntity {
     public Trip getTrip() {
 
         return trip;
+    }
+
+
+    public void setAuthor(User author) {
+
+        this.author = author;
+    }
+
+
+    public void setTrip(Trip trip) {
+
+        this.trip = trip;
     }
 }

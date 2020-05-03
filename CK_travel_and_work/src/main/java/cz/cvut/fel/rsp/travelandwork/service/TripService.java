@@ -97,6 +97,8 @@ public class TripService {
         enrollment.setTripSession(tripSession);
         enrollment.setTravelJournal(user.getTravel_journal());
 
+        System.out.println(enrollment.toString());
+
         enrollmentDao.persist(enrollment);
         user.getTravel_journal().addEnrollment(enrollment);
         travelJournalDao.update(user.getTravel_journal());

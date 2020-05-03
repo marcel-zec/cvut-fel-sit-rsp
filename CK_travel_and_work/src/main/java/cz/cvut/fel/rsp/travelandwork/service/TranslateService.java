@@ -67,7 +67,7 @@ public class TranslateService {
 
         return new TripDto(trip.getId(),trip.getName(),trip.getShort_name(),trip.getPossible_xp_reward(),
                 trip.getDescription(),trip.getRating(),trip.getDeposit(),trip.getLocation(), trip.getRequired_level(),
-                trip.getCategory().getId(), required_certificates, required_achievements_categorized, required_achievements_special, gain_achievements,sessions);
+                trip.getCategory().getId(), required_certificates, required_achievements_categorized, required_achievements_special, gain_achievements, sessions);
     }
 
     @Transactional

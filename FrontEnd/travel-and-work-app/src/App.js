@@ -116,7 +116,11 @@ class App extends React.Component {
         console.log(this.state.user);
     };
 
-    async componentDidMount() {
+    componentDidMount() {
+        this.tryLogin();
+    }
+
+    tryLogin = () => {
         if (Cookies.get("JSESSIONID") && this.state.user == null) {
             console.log("app condition");
             fetch(`http://localhost:8080/user/current`, {
@@ -138,13 +142,15 @@ class App extends React.Component {
                     this.login(data);
                 });
         }
-    }
+        console.log("try login");
+    };
 
     render() {
         const value = {
             user: this.state.user,
             logout: this.logout,
             login: this.login,
+            tryLogin: this.tryLogin,
         };
 
         console.log(value);

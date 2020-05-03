@@ -3,6 +3,7 @@ package cz.cvut.fel.rsp.travelandwork.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -30,6 +31,8 @@ public class AchievementSpecial extends Achievement {
 
     public AchievementSpecial(String name, String description, String icon) {
         super(name, description, icon);
+        owned_travel_journals = new ArrayList<>();
+        recieved_via_enrollments = new ArrayList<>();
     }
 
     public List<TravelJournal> getOwned_travel_journals() {

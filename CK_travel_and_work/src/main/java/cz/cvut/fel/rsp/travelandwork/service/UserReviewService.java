@@ -1,12 +1,15 @@
 package cz.cvut.fel.rsp.travelandwork.service;
 
 
+import cz.cvut.fel.rsp.travelandwork.dao.EnrollmentDao;
 import cz.cvut.fel.rsp.travelandwork.dao.TripSessionDao;
 import cz.cvut.fel.rsp.travelandwork.dao.UserDao;
 import cz.cvut.fel.rsp.travelandwork.dao.UserReviewDao;
+import cz.cvut.fel.rsp.travelandwork.dto.EnrollmentDto;
 import cz.cvut.fel.rsp.travelandwork.dto.UserReviewDto;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
 import cz.cvut.fel.rsp.travelandwork.exception.UnauthorizedException;
+import cz.cvut.fel.rsp.travelandwork.model.Enrollment;
 import cz.cvut.fel.rsp.travelandwork.model.TripSession;
 import cz.cvut.fel.rsp.travelandwork.model.User;
 import cz.cvut.fel.rsp.travelandwork.model.UserReview;
@@ -26,15 +29,17 @@ public class UserReviewService {
     private final UserReviewDao userReviewDao;
     private final UserDao userDao;
     private final TripSessionDao tripSessionDao;
+    private final EnrollmentDao enrollmentDao;
 
 
     @Autowired
-    public UserReviewService(TranslateService translateService, UserReviewDao userReviewDao, UserDao userDao, TripSessionDao tripSessionDao) {
+    public UserReviewService(TranslateService translateService, UserReviewDao userReviewDao, UserDao userDao, TripSessionDao tripSessionDao, EnrollmentDao enrollmentDao) {
 
         this.translateService = translateService;
         this.userReviewDao = userReviewDao;
         this.userDao = userDao;
         this.tripSessionDao = tripSessionDao;
+        this.enrollmentDao = enrollmentDao;
     }
 
     @Transactional
@@ -83,9 +88,10 @@ public class UserReviewService {
     }
 
     @Transactional
-    public void create(Long userId, User currentUser, Long tripSessionId, UserReview userReview) throws Exception {
+    public void create(EnrollmentDto enrollmentDto, User currentUser, Long tripSessionId, UserReview userReview) throws Exception {
 
-        User user = userDao.find(userId);
+        Enrollment enrollment = enrollmentDao.find(enrollmentDto.getId());
+        User user = enrollment.getTravelJournal().getUser();
         User current_user = userDao.find(currentUser.getId());
         TripSession tripSession = tripSessionDao.find(tripSessionId);
 

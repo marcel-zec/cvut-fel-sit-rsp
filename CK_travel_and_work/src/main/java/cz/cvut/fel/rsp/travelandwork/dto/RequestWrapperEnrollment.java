@@ -4,10 +4,7 @@ import cz.cvut.fel.rsp.travelandwork.model.UserReview;
 
 import javax.validation.constraints.NotNull;
 
-public class RequestWrapperReview {
-
-    @NotNull(message = "User id cannot be blank")
-    private Long userId;
+public class RequestWrapperEnrollment {
 
     @NotNull(message = "User review cannot be blank")
     private UserReview userReview;
@@ -15,29 +12,19 @@ public class RequestWrapperReview {
     @NotNull(message = "Session id cannot be blank")
     private Long tripSessionId;
 
+    @NotNull(message = "Enrollment cannot be blank")
+    private EnrollmentDto enrollmentDto;
 
-    public RequestWrapperReview(@NotNull(message = "User id cannot be blank") Long userId, @NotNull(message = "User review cannot be blank") UserReview userReview,
-                                @NotNull(message = "Session id cannot be blank") Long tripSessionId) {
 
-        this.userId = userId;
+    public RequestWrapperEnrollment(@NotNull(message = "User review cannot be blank") UserReview userReview, @NotNull(message = "Session id cannot be blank") Long tripSessionId, @NotNull(message = "Enrollment cannot be blank") EnrollmentDto enrollmentDto) {
+
         this.userReview = userReview;
         this.tripSessionId = tripSessionId;
+        this.enrollmentDto = enrollmentDto;
     }
 
 
-    public RequestWrapperReview() {
-    }
-
-
-    public Long getUserId() {
-
-        return userId;
-    }
-
-
-    public void setUserId(Long userId) {
-
-        this.userId = userId;
+    public RequestWrapperEnrollment() {
     }
 
 
@@ -62,5 +49,17 @@ public class RequestWrapperReview {
     public void setTripSessionId(Long tripSessionId) {
 
         this.tripSessionId = tripSessionId;
+    }
+
+
+    public EnrollmentDto getEnrollmentDto() {
+
+        return enrollmentDto;
+    }
+
+
+    public void setEnrollmentDto(EnrollmentDto enrollmentDto) {
+
+        this.enrollmentDto = enrollmentDto;
     }
 }

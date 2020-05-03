@@ -21,12 +21,12 @@ public class TripSession extends AbstractEntity {
 
     @Basic(optional = false)
     @Column(nullable = false)
-    @FutureOrPresent
+//    @FutureOrPresent
     private LocalDate from_date;
 
     @Basic(optional = false)
     @Column(nullable = false)
-    @FutureOrPresent
+//    @FutureOrPresent
     private LocalDate to_date;
 
     @Basic(optional = false)
