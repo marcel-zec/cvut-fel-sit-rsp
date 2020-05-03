@@ -34,6 +34,12 @@ public class EnrollmentController {
         this.userReviewService = userReviewService;
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN')")
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public EnrollmentDto get(@PathVariable Long id)  {
+        return enrollmentService.findDto(id);
+    }
+
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping(value = "/complete", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<EnrollmentDto> getAllOfUserFinished() throws NotAllowedException {
