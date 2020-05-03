@@ -2,7 +2,10 @@ package cz.cvut.fel.rsp.travelandwork.seeder;
 
 import cz.cvut.fel.rsp.travelandwork.dao.*;
 import cz.cvut.fel.rsp.travelandwork.dto.TripSessionDto;
+import cz.cvut.fel.rsp.travelandwork.dto.UserDto;
+import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
 import cz.cvut.fel.rsp.travelandwork.model.*;
+import cz.cvut.fel.rsp.travelandwork.service.EnrollmentService;
 import cz.cvut.fel.rsp.travelandwork.service.TranslateService;
 import cz.cvut.fel.rsp.travelandwork.service.TripService;
 import cz.cvut.fel.rsp.travelandwork.service.UserService;
@@ -32,11 +35,12 @@ public class DatabaseSeeder implements
     private CategoryDao categoryDao;
     private UserDao userDao;
     private AddressDao addressDao;
+    private EnrollmentDao enrollmentDao;
     private TripService tripService;
     private TranslateService translateService;
 
     @Autowired
-    public DatabaseSeeder(TripDao tripDao, TripSessionDao tripSessionDao, AchievementCertificateDao achievementCertificateDao, AchievementCategorizedDao achievementCategorizedDao, AchievementSpecialDao achievementSpecialDao, CategoryDao categoryDao, UserDao userDao, AddressDao addressDao, TripService tripService, TranslateService translateService) {
+    public DatabaseSeeder(TripDao tripDao, TripSessionDao tripSessionDao, AchievementCertificateDao achievementCertificateDao, AchievementCategorizedDao achievementCategorizedDao, AchievementSpecialDao achievementSpecialDao, CategoryDao categoryDao, UserDao userDao, AddressDao addressDao, EnrollmentDao enrollmentDao, TripService tripService, TranslateService translateService) {
         this.tripDao = tripDao;
         this.tripSessionDao = tripSessionDao;
         this.achievementCertificateDao = achievementCertificateDao;
@@ -45,6 +49,7 @@ public class DatabaseSeeder implements
         this.categoryDao = categoryDao;
         this.userDao = userDao;
         this.addressDao = addressDao;
+        this.enrollmentDao = enrollmentDao;
         this.tripService = tripService;
         this.translateService = translateService;
     }
@@ -60,7 +65,7 @@ public class DatabaseSeeder implements
         createTrips();
         setAchievementsAndCategories();
         createUsers();
-        signUsersToTrips();
+        //signUsersToTrips();git
 
     }
 
@@ -390,6 +395,7 @@ public class DatabaseSeeder implements
         User user = userDao.findAll().get(0);
         Trip trip = tripDao.findAll().get(0);
         TripSession tripSession = trip.getSessions().get(0);
+        TravelJournal travelJournal;
 
         //test
         /*
@@ -409,12 +415,25 @@ public class DatabaseSeeder implements
         user = userDao.findAll().get(0);
         trip = tripDao.findAll().get(1);
         tripSession = trip.getSessions().get(0);
+
         signUserToTrip(user, tripSession);
+
+        travelJournal = user.getTravel_journal();
+        Enrollment e = travelJournal.getEnrollments().get(0);
+        e.setDeposit_was_paid(true);
+        enrollmentDao.update(e);
+
 
         user = userDao.findAll().get(1);
         trip = tripDao.findAll().get(0);
         tripSession = trip.getSessions().get(1);
+
         signUserToTrip(user, tripSession);
+
+        travelJournal = user.getTravel_journal();
+        e = travelJournal.getEnrollments().get(0);
+        e.setState(EnrollmentState.CANCELED);
+        enrollmentDao.update(e);
 
         //Milan
         user = userDao.findAll().get(1);
@@ -425,16 +444,33 @@ public class DatabaseSeeder implements
 
         //enrolment ke tripu, ktery ma datum  ukonceni vcera
         tripSession = trip.getSessions().get(3);
+
         signUserToTrip(user, tripSession);
+
+        travelJournal = user.getTravel_journal();
+        e = travelJournal.getEnrollments().get(0);
+        e.setDeposit_was_paid(true);
+        enrollmentDao.update(e);
 
         //enrolment ke tripu, ktery ma datum  ukonceni predevcirem
         tripSession = trip.getSessions().get(4);
+
         signUserToTrip(user, tripSession);
+
+        travelJournal = user.getTravel_journal();
+        e = travelJournal.getEnrollments().get(1);
+        e.setDeposit_was_paid(false);
+        enrollmentDao.update(e);
 
         //enrolment ke tripu, ktery ma datum  ukonceni pred tydem
         tripSession = trip.getSessions().get(5);
+
         signUserToTrip(user, tripSession);
 
+        travelJournal = user.getTravel_journal();
+        e = travelJournal.getEnrollments().get(2);
+        e.setDeposit_was_paid(true);
+        enrollmentDao.update(e);
     }
 
     void signUserToTrip(User user, TripSession tripSession) {
