@@ -108,15 +108,34 @@ public class DatabaseSeeder implements
         description = "Tento zajezd bude mit zalohu, pro absolvování je potřeba mít achievement ´Kuchař ryb fugu´." ;
         trip = new Trip("Vaření ryb Fugu, Praha",10,description,"fuguvar",3459,"Praha, Česká republika",1);
         tripDao.persist(trip);
+
         tripSession = new TripSession(trip, LocalDate.parse("2020-07-06"), LocalDate.parse("2020-07-12"), 0);
         tripSessionDao.persist(tripSession);
         trip.addSession(tripSession);
+
         tripSession = new TripSession(trip, LocalDate.parse("2020-07-12"), LocalDate.parse("2020-07-18"), 0);
         tripSessionDao.persist(tripSession);
         trip.addSession(tripSession);
+
         tripSession = new TripSession(trip, LocalDate.parse("2020-07-18"), LocalDate.parse("2020-07-24"), 0);
         tripSessionDao.persist(tripSession);
         trip.addSession(tripSession);
+
+        //trip ma datum  ukonceni vcera :D
+        tripSession = new TripSession(trip, LocalDate.now().minusDays(16), LocalDate.now().minusDays(1), 0);
+        tripSessionDao.persist(tripSession);
+        trip.addSession(tripSession);
+
+        //trip ma datum  ukonceni predevcirem :D
+        tripSession = new TripSession(trip, LocalDate.now().minusDays(15), LocalDate.now().minusDays(2), 0);
+        tripSessionDao.persist(tripSession);
+        trip.addSession(tripSession);
+
+        //trip ma datum  ukonceni pred tydnem :D
+        tripSession = new TripSession(trip, LocalDate.now().minusDays(21), LocalDate.now().minusDays(7), 0);
+        tripSessionDao.persist(tripSession);
+        trip.addSession(tripSession);
+
         tripDao.update(trip);
 
         description = "Tento zajezd bude mit zalohu, pro absolvování je potřeba mít achievement ´Kuchař´." ;
@@ -397,10 +416,25 @@ public class DatabaseSeeder implements
         tripSession = trip.getSessions().get(1);
         signUserToTrip(user, tripSession);
 
+        //Milan
         user = userDao.findAll().get(1);
+        //trip "Fuguvar"
         trip = tripDao.findAll().get(1);
         tripSession = trip.getSessions().get(1);
         signUserToTrip(user, tripSession);
+
+        //enrolment ke tripu, ktery ma datum  ukonceni vcera
+        tripSession = trip.getSessions().get(3);
+        signUserToTrip(user, tripSession);
+
+        //enrolment ke tripu, ktery ma datum  ukonceni predevcirem
+        tripSession = trip.getSessions().get(4);
+        signUserToTrip(user, tripSession);
+
+        //enrolment ke tripu, ktery ma datum  ukonceni pred tydem
+        tripSession = trip.getSessions().get(5);
+        signUserToTrip(user, tripSession);
+
     }
 
     void signUserToTrip(User user, TripSession tripSession) {
