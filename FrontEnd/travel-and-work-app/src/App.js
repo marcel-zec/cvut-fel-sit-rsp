@@ -129,23 +129,26 @@ class App extends React.Component {
     tryLogin = async () => {
         console.log("try login");
 
-        const response = await fetch(`http://localhost:8080/user/current`, {
+        await fetch(`http://localhost:8080/user/current`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
             },
             credentials: "include",
-        });
-        if (await response.ok) {
-            const data = await response.json();
-            this.login(data);
-            console.log("after login");
-            console.log(this.state.user);
-        } else {
-            this.logout();
-            console.log("after logout");
-            console.log(this.state.user);
-        }
+        })
+            .then((response) => {
+                if (response.ok) return response.json();
+                else throw Error(response.status);
+            })
+            .then((data) => {
+                this.login(data);
+                console.log("after login");
+            })
+            .catch((error) => {
+                this.logout();
+                console.log("after logout");
+                console.error(error);
+            });
     };
 
     render() {
