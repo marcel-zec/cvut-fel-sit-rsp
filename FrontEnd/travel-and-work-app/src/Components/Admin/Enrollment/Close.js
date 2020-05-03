@@ -22,6 +22,8 @@ import MyAlert from "../../SmartGadgets/MyAlert";
 import DatePicker from "react-datepicker";
 import Slider from "@material-ui/core/Slider";
 import NumericInput from "react-numeric-input";
+import RangeSlider from "react-bootstrap-range-slider";
+import "react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css";
 
 class Close extends React.Component {
     state = {
@@ -34,35 +36,11 @@ class Close extends React.Component {
                 },
             },
         },
-        enrollment: {
-            state: "ACTIVE",
-            actual_xp_reward: 15,
-            recieved_achievements_special: [
-                { id: 3, name: "Kuchticek 1. triedy", icon: "water" },
-                { id: 8, name: "Odvazlivec", icon: "trophy" },
-            ],
-        },
-        user: {
-            firstName: "Peter",
-            lastName: "Horák",
-        },
-        trip_session: {
-            from_date: Date.parse("2020-05-20"),
-            to_date: Date.parse("2020-06-08"),
-        },
-        trip: {
-            name: "Kucharcok",
-            location: "Blok 6, Olympijska 5, Praha 6, Cesko",
-            description:
-                "Bdajsoijioj dsajoidja daisojioiojeao dasiojioda jiodaijdoas",
-            possible_xp_reward: 15,
-            gain_achievements_special: [
-                { id: 3, name: "Kuchticek 1. triedy", icon: "water" },
-                { id: 8, name: "Odvazlivec", icon: "trophy" },
-            ],
-        },
+        enrollment: null,
+        user: null,
+
         review: {
-            note: "",
+            note: null,
             rating: 5,
         },
     };
@@ -74,14 +52,8 @@ class Close extends React.Component {
      * @param {String} stateName
      */
     inputUpdateHandler = async (event, inputName) => {
-        console.log("Input validation ------------------------------------");
-        console.log(inputName);
-        //console.log(stateName);
-        // console.log(this.state[stateName][inputName]);
-
-        const newState = { ...this.state };
+        console.log("inputhandaler");
         if (inputName == "actual_xp_reward") {
-            console.log(event.target.value);
             const newFormState = { ...this.state.form };
             const newEnrollmentState = { ...this.state.enrollment };
             newEnrollmentState["actual_xp_reward"] = Number(event.target.value);
@@ -92,7 +64,10 @@ class Close extends React.Component {
                 enrollment: newEnrollmentState,
             });
 
-            if (event.target.value > this.state.trip.possible_xp_reward) {
+            if (
+                event.target.value >
+                this.state.enrollment.trip.possible_xp_reward
+            ) {
                 newFormState.elements.actual_xp_reward["more"] = true;
                 newFormState.elements.actual_xp_reward["less"] = false;
                 this.setState({ form: newFormState });
@@ -102,7 +77,7 @@ class Close extends React.Component {
                 this.setState({ form: newFormState });
             }
             console.log(this.state);
-        } else if ((inputName = "recieved_achievements_special")) {
+        } else if (inputName == "recieved_achievements_special") {
             const newEnrollmentState = { ...this.state.enrollment };
             //remove if found
             let foundIndex = newEnrollmentState.recieved_achievements_special.findIndex(
@@ -115,12 +90,12 @@ class Close extends React.Component {
                 );
             } else {
                 //add if not found
-                let foundIndexGained = this.state.trip.gain_achievements_special.findIndex(
+                let foundIndexGained = this.state.enrollment.trip.gain_achievements_special.findIndex(
                     (item) => item.id == event.target.value
                 );
                 if (foundIndexGained > -1)
                     newEnrollmentState.recieved_achievements_special.push(
-                        this.state.trip.gain_achievements_special[
+                        this.state.enrollment.trip.gain_achievements_special[
                             foundIndexGained
                         ]
                     );
@@ -128,98 +103,25 @@ class Close extends React.Component {
             this.setState({
                 enrollment: newEnrollmentState,
             });
-            console.log(this.state.enrollment);
-        }
-        /*const stringProperties = [
-            "name",
-            "short_name",
-            "deposit",
-            "required_level",
-            "possible_xp_reward",
-            "location",
-            "description",
-        ];
-        const checkboxProperties = [
-            "required_achievements_special",
-            "required_achievements_certificate",
-            "required_achievements_categorized",
-            "gain_achievements_special",
-        ];
-        const newState = { ...this.state.trip };
+        } else if (inputName == "rating") {
+            console.log("input rating");
+            const newState = { ...this.state.review };
 
-        //string inputs
-        if (stringProperties.includes(nameOfFormInput)) {
-            newState[nameOfFormInput] = event.target.value;
-        } else if (checkboxProperties.includes(nameOfFormInput)) {
-            //if already checked
-            let foundIndex = newState[nameOfFormInput].findIndex((object) => {
-                return object.id == event.target.value;
-            });
-            //remove if alredy checked
-            if (foundIndex > -1) {
-                newState[nameOfFormInput].splice(foundIndex, 1);
-                console.log("state after splice");
-                console.log(newState[nameOfFormInput]);
-            } else {
-                let objectIndex = -1;
-                if (nameOfFormInput == "required_achievements_special") {
-                    objectIndex = this.state.achievements_special.findIndex(
-                        (object) => object.id == event.target.value
-                    );
-                    if (objectIndex > -1) {
-                        newState[nameOfFormInput].push(
-                            this.state.achievements_special[objectIndex]
-                        );
-                    }
-                } else if (
-                    nameOfFormInput == "required_achievements_certificate"
-                ) {
-                    objectIndex = this.state.achievements_certificate.findIndex(
-                        (object) => object.id == event.target.value
-                    );
-                    if (objectIndex > -1) {
-                        newState[nameOfFormInput].push(
-                            this.state.achievements_certificate[objectIndex]
-                        );
-                    }
-                } else if (
-                    nameOfFormInput == "required_achievements_categorized"
-                ) {
-                    objectIndex = this.state.achievements_categorized.findIndex(
-                        (object) => object.id == event.target.value
-                    );
-                    if (objectIndex > -1) {
-                        newState[nameOfFormInput].push(
-                            this.state.achievements_categorized[objectIndex]
-                        );
-                    }
-                } else if (nameOfFormInput == "gain_achievements_special") {
-                    objectIndex = this.state.achievements_special.findIndex(
-                        (object) => object.id == event.target.value
-                    );
-                    if (objectIndex > -1) {
-                        newState[nameOfFormInput].push(
-                            this.state.achievements_special[objectIndex]
-                        );
-                    }
-                }
-            }
-        } else if (nameOfFormInput == "category") {
+            newState.rating = event.target.value;
             console.log(event.target.value);
-            let foundIndex = this.state.categories.findIndex(
-                (category) => category.name == event.target.value
-            );
-            if (foundIndex > -1) {
-                newState.category = this.state.categories[foundIndex];
+            await this.setState({ review: newState });
+            console.log(this.state.review);
+        } else if (inputName == "note") {
+            const newState = { ...this.state.review };
+
+            if (event.target.value.trim() == "") {
+                newState.note = null;
+            } else {
+                newState.note = event.target.value;
             }
+
+            await this.setState({ review: newState });
         }
-        await this.setState({ trip: newState });
-        if (
-            this.state.form.elements.hasOwnProperty(nameOfFormInput) &&
-            this.state.form.elements[nameOfFormInput].touched
-        ) {
-            this.validateForm();
-        }*/
     };
 
     validateForm = async () => {
@@ -231,21 +133,27 @@ class Close extends React.Component {
     submitHandler = async (event) => {
         event.preventDefault();
         await this.validateForm();
-        /*if (this.state.form.isValid) {
-            
-            fetch("http://localhost:8080/trip/" + this.props.match.params.id, {
-                method: "PATCH",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(this.state.trip),
-            }).then((response) => {
-                if (response.ok) this.props.history.push("/trip");
-                //TODO - osetrenie vynimiek
-                else console.log("Error: somethhing goes wrong");
-            });
-        }*/
+        const request = {
+            userReview: { ...this.state.review },
+            enrollmentDto: { ...this.state.enrollment },
+            tripSessionId: this.state.enrollment.tripSession.id,
+        };
+        console.log(request);
+        ///*if (this.state.form.isValid) {
+
+        fetch("http://localhost:8080/enrollment/close", {
+            method: "PATCH",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(request),
+        }).then((response) => {
+            if (response.ok) this.props.history.push("/close");
+            //TODO - osetrenie vynimiek
+            else console.log("Error: somethhing goes wrong");
+        });
+        // }*/
     };
 
     async componentDidMount() {
@@ -262,155 +170,31 @@ class Close extends React.Component {
             }
         );
         const data = await response.json();
-        console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+
         console.log(data);
 
-        const trip_session = { ...data.enrollmentDto.tripSession };
-        const trip = { ...data.enrollmentDto.trip };
-        console.log(trip);
         const user = { ...data.owner };
         const enrollment = { ...data.enrollmentDto };
-        enrollment.trip = null;
-        enrollment.tripSession = null;
-        console.log(enrollment);
+
+        enrollment.actual_xp_reward = enrollment.trip.possible_xp_reward;
+        for (
+            let i = 0;
+            i < enrollment.trip.gain_achievements_special.length;
+            i++
+        ) {
+            enrollment.recieved_achievements_special.push(
+                enrollment.trip.gain_achievements_special[i]
+            );
+        }
+
         this.setState({
-            trip: trip,
-            trip_session: trip_session,
             user: user,
             enrollment: enrollment,
         });
     }
 
     render() {
-        let achievementArray = [];
-        if (this.state.trip.gain_achievements_special.length > 0) {
-            this.state.trip.gain_achievements_special.forEach((item) => {
-                achievementArray.push(
-                    <Form.Check.Label>
-                        <Form.Check.Input
-                            type="checkbox"
-                            defaultChecked={true}
-                            value={item.id}
-                            onChange={(event) =>
-                                this.inputUpdateHandler(
-                                    event,
-                                    "recieved_achievements_special"
-                                )
-                            }
-                        />
-                        <FontAwesomeIcon
-                            icon={item.icon}
-                            size="lg"
-                            className="mr-3 ml-3"
-                        />
-                        {item.name}
-                    </Form.Check.Label>
-                );
-            });
-        }
-        let achievements = (
-            <div className="d-flex flex-column align-items-start">
-                {achievementArray}
-            </div>
-        );
-
-        let achievements_removed = [];
-        if (this.state.trip.gain_achievements_special.length > 0) {
-            this.state.trip.gain_achievements_special.forEach((shouldGain) => {
-                if (
-                    !this.state.enrollment.recieved_achievements_special.find(
-                        (notCanceled) => notCanceled.id == shouldGain.id
-                    )
-                ) {
-                    achievements_removed.push(shouldGain.name);
-                }
-            });
-        }
-        let achievement_alert =
-            achievements_removed.length > 0 ? (
-                <MyAlert
-                    variant="warning"
-                    text="Removed achievements"
-                    list={achievements_removed}
-                />
-            ) : null;
-
-        let xp_reward_alert = null;
-        if (this.state.form.elements.actual_xp_reward.less) {
-            xp_reward_alert = (
-                <MyAlert variant="danger" text="Cannot be less than 0." />
-            );
-        } else if (this.state.form.elements.actual_xp_reward.more) {
-            xp_reward_alert = (
-                <MyAlert
-                    variant="danger"
-                    text={
-                        "Cannot be more than " +
-                        this.state.trip.possible_xp_reward +
-                        "."
-                    }
-                />
-            );
-        } else if (
-            this.state.trip.possible_xp_reward >
-            this.state.enrollment.actual_xp_reward
-        ) {
-            xp_reward_alert = (
-                <MyAlert
-                    variant="warning"
-                    text={
-                        "Reward was decresed by " +
-                        (this.state.trip.possible_xp_reward -
-                            this.state.enrollment.actual_xp_reward) +
-                        " points."
-                    }
-                />
-            );
-        }
-
-        const sliderMarks = [
-            {
-                value: 0,
-                label: "0",
-            },
-            {
-                value: 0.5,
-            },
-            {
-                value: 1,
-                label: "1",
-            },
-            {
-                value: 1.5,
-            },
-            {
-                value: 2,
-                label: "2",
-            },
-            {
-                value: 2.5,
-            },
-            {
-                value: 3,
-                label: "3",
-            },
-            {
-                value: 3.5,
-            },
-            {
-                value: 4,
-                label: "4",
-            },
-            {
-                value: 4.5,
-            },
-            {
-                value: 5,
-                label: "5",
-            },
-        ];
-
-        if (false) {
+        if (this.state.enrollment == null || this.state.user == null) {
             return (
                 <Container className="p-5 mt-5">
                     <Spinner animation="border" role="status">
@@ -419,6 +203,100 @@ class Close extends React.Component {
                 </Container>
             );
         } else {
+            let achievementArray = [];
+            if (
+                this.state.enrollment.trip.gain_achievements_special.length > 0
+            ) {
+                this.state.enrollment.trip.gain_achievements_special.forEach(
+                    (item) => {
+                        achievementArray.push(
+                            <Form.Check.Label>
+                                <Form.Check.Input
+                                    type="checkbox"
+                                    defaultChecked={true}
+                                    value={item.id}
+                                    onChange={(event) =>
+                                        this.inputUpdateHandler(
+                                            event,
+                                            "recieved_achievements_special"
+                                        )
+                                    }
+                                />
+                                <FontAwesomeIcon
+                                    icon={item.icon}
+                                    size="lg"
+                                    className="mr-3 ml-3"
+                                />
+                                {item.name}
+                            </Form.Check.Label>
+                        );
+                    }
+                );
+            }
+            let achievements = (
+                <div className="d-flex flex-column align-items-start">
+                    {achievementArray}
+                </div>
+            );
+
+            let achievements_removed = [];
+            if (
+                this.state.enrollment.trip.gain_achievements_special.length > 0
+            ) {
+                this.state.enrollment.trip.gain_achievements_special.forEach(
+                    (shouldGain) => {
+                        if (
+                            !this.state.enrollment.recieved_achievements_special.find(
+                                (notCanceled) => notCanceled.id == shouldGain.id
+                            )
+                        ) {
+                            achievements_removed.push(shouldGain.name);
+                        }
+                    }
+                );
+            }
+            let achievement_alert =
+                achievements_removed.length > 0 ? (
+                    <MyAlert
+                        variant="warning"
+                        text="Removed achievements"
+                        list={achievements_removed}
+                    />
+                ) : null;
+
+            let xp_reward_alert = null;
+            if (this.state.form.elements.actual_xp_reward.less) {
+                xp_reward_alert = (
+                    <MyAlert variant="danger" text="Cannot be less than 0." />
+                );
+            } else if (this.state.form.elements.actual_xp_reward.more) {
+                xp_reward_alert = (
+                    <MyAlert
+                        variant="danger"
+                        text={
+                            "Cannot be more than " +
+                            this.state.enrollment.trip.possible_xp_reward +
+                            "."
+                        }
+                    />
+                );
+            } else if (
+                this.state.enrollment.trip.possible_xp_reward >
+                this.state.enrollment.actual_xp_reward
+            ) {
+                xp_reward_alert = (
+                    <MyAlert
+                        variant="warning"
+                        text={
+                            "Reward was decresed by " +
+                            (this.state.enrollment.trip.possible_xp_reward -
+                                this.state.enrollment.actual_xp_reward) +
+                            " points."
+                        }
+                    />
+                );
+            }
+
             return (
                 <>
                     <Container className="mt-3">
@@ -427,13 +305,15 @@ class Close extends React.Component {
                                 <Card.Subtitle className="text-muted mb-3">
                                     Trip
                                 </Card.Subtitle>
-                                <Card.Title>{this.state.trip.name}</Card.Title>
+                                <Card.Title>
+                                    {this.state.enrollment.trip.name}
+                                </Card.Title>
                                 <Card.Text>
                                     <FontAwesomeIcon
                                         icon="map-marker-alt"
                                         className="mr-3"
                                     />
-                                    {this.state.trip.location}
+                                    {this.state.enrollment.trip.location}
                                 </Card.Text>
                                 <Card.Text>
                                     <FontAwesomeIcon
@@ -442,23 +322,25 @@ class Close extends React.Component {
                                     />
                                     <DatePicker
                                         className="form-control"
-                                        selected={
-                                            this.state.trip_session.from_date
-                                        }
+                                        selected={Date.parse(
+                                            this.state.enrollment.tripSession
+                                                .from_date
+                                        )}
                                         dateFormat="dd. MM. yyyy"
                                         disabled={true}
                                     />
                                     <DatePicker
                                         className="form-control ml-3"
-                                        selected={
-                                            this.state.trip_session.to_date
-                                        }
+                                        selected={Date.parse(
+                                            this.state.enrollment.tripSession
+                                                .to_date
+                                        )}
                                         dateFormat="dd. MM. yyyy"
                                         disabled={true}
                                     />
                                 </Card.Text>
                                 <Card.Text>
-                                    {this.state.trip.description}
+                                    {this.state.enrollment.trip.description}
                                 </Card.Text>
                             </Card.Body>
                         </Card>
@@ -481,7 +363,9 @@ class Close extends React.Component {
                                 </Card.Text>
                             </Card.Body>
 
-                            <Form>
+                            <Form
+                                onSubmit={(event) => this.submitHandler(event)}
+                            >
                                 <Row className="d-flex">
                                     <Card.Body>
                                         <Card.Title className="text-muted">
@@ -503,7 +387,8 @@ class Close extends React.Component {
                                                     <InputGroup.Text id="basic-addon1">
                                                         Max{" "}
                                                         {
-                                                            this.state.trip
+                                                            this.state
+                                                                .enrollment.trip
                                                                 .possible_xp_reward
                                                         }
                                                     </InputGroup.Text>
@@ -512,7 +397,8 @@ class Close extends React.Component {
                                                     type="number"
                                                     placeholder="XP reward"
                                                     defaultValue={
-                                                        this.state.trip
+                                                        this.state.enrollment
+                                                            .trip
                                                             .possible_xp_reward
                                                     }
                                                     onInput={(event) =>
@@ -531,16 +417,22 @@ class Close extends React.Component {
                                 <Row>
                                     <Card.Body>
                                         <Form.Label>Review</Form.Label>
-                                        <Form.Group>
-                                            <Slider
-                                                className="w-50"
-                                                defaultValue={5}
-                                                aria-labelledby="discrete-slider"
-                                                valueLabelDisplay="auto"
-                                                step={0.5}
-                                                marks={sliderMarks}
+                                        <Form.Group className="d-flex flex-column w-50">
+                                            <span>
+                                                {this.state.review.rating}
+                                            </span>
+                                            <RangeSlider
+                                                value={this.state.review.rating}
                                                 min={0}
                                                 max={5}
+                                                step={0.5}
+                                                tooltip="off"
+                                                onChange={(event) =>
+                                                    this.inputUpdateHandler(
+                                                        event,
+                                                        "rating"
+                                                    )
+                                                }
                                             />
                                         </Form.Group>
                                         <Form.Group>
