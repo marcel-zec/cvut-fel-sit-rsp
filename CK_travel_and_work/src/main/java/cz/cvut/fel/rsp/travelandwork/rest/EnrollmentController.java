@@ -74,7 +74,7 @@ public class EnrollmentController {
     @PatchMapping(value = "/close", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> close(@RequestBody RequestWrapperEnrollment requestWrapperEnrollment) throws Exception {
         enrollmentService.close(requestWrapperEnrollment.getEnrollmentDto());
-        userReviewService.create(requestWrapperEnrollment.getEnrollmentDto(),SecurityUtils.getCurrentUser(),
+        userReviewService.create(requestWrapperEnrollment.getEnrollmentDto().getId(),SecurityUtils.getCurrentUser(),
                 requestWrapperEnrollment.getTripSessionId(), requestWrapperEnrollment.getUserReview() );
         //LOG.debug("User {} successfully registered.", user);
         //return new ResponseEntity<>(headers, HttpStatus.CREATED);
@@ -87,4 +87,10 @@ public class EnrollmentController {
         return enrollmentService.findActiveEndedWithUser(id);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN')")
+    @PostMapping(value = "/close/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public void closeOk(@PathVariable Long id) throws Exception {
+        enrollmentService.closeOk(id);
+        userReviewService.create(id,SecurityUtils.getCurrentUser());
+    }
 }

@@ -5,6 +5,7 @@ import cz.cvut.fel.rsp.travelandwork.dto.TripDto;
 import cz.cvut.fel.rsp.travelandwork.dto.TripSessionDto;
 import cz.cvut.fel.rsp.travelandwork.exception.BadDateException;
 import cz.cvut.fel.rsp.travelandwork.exception.MissingVariableException;
+import cz.cvut.fel.rsp.travelandwork.exception.NotAllowedException;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
 import cz.cvut.fel.rsp.travelandwork.model.*;
 import cz.cvut.fel.rsp.travelandwork.service.security.AccessService;
@@ -107,17 +108,18 @@ public class TripService {
     }
 
     @Transactional
-    public List<Trip> findAfford(User current_user) {
+    public List<Trip> findAfford(User current_user) throws NotAllowedException {
+        if (current_user == null) throw new NotAllowedException();
         User user = accessService.getUser(current_user);
-        //int level = user.getTravel_journal().
-        //List<Trip> trips ;
-        return null;
+        int level = translateService.countLevel(translateService.translateTravelJournal(user.getTravel_journal()).getXp_count());
+        return  tripDao.find(level);
     }
 
     @Transactional
-    public List<Trip> findNotAfford(User current_user) {
-        List<Trip> trips;
-        return null;
+    public List<Trip> findNotAfford(User current_user) throws NotAllowedException {
+        List<Trip> trips = tripDao.findAll();
+        trips.removeAll(findAfford(current_user));
+        return trips;
     }
 
     @Transactional

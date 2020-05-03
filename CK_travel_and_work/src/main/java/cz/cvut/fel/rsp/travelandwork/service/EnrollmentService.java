@@ -168,6 +168,14 @@ public class EnrollmentService {
         enrollmentDao.update(enrollment);
     }
 
+    @Transactional
+    public void closeOk(Long id){
+        Enrollment enrollment = find(id);
+        enrollment.setState(EnrollmentState.FINISHED);
+        enrollment.setActual_xp_reward(enrollment.getTrip().getPossible_xp_reward());
+        enrollment.setRecieved_achievements_special(enrollment.getTrip().getGain_achievements_special());
+        enrollmentDao.update(enrollment);
+    }
 
 
 

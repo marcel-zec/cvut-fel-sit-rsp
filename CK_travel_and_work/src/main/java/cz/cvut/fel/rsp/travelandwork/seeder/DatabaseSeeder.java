@@ -66,7 +66,8 @@ public class DatabaseSeeder implements
         setAchievementsAndCategories();
         createUsers();
         signUsersToTrips();
-
+        System.out.println("!!!!!!!!" + userDao.findAll().toString());
+        System.out.println("!!!!!!!!" + userDao.findAll().get(1).getTravel_journal().getEnrollments().toString());
     }
 
     @Transactional
@@ -75,24 +76,7 @@ public class DatabaseSeeder implements
         Trip trip;/* = new Trip("Casablanca Me gusto",15,description,"casablanca_me_gusta",1000,"Casablan, Mexico",2);
         tripDao.persist(trip);
         */TripSession tripSession;
-/*
-        description = "Humanitární akce v imigračním táboře Ušivak v Bosně a Hercegovině. Potřeba znát základy javy, office a nebát se ušpinit si ruce při stavbě skleníku." ;
-        trip = new Trip("projekt „Úsměv pro všechny“",3,description,"usibos",200,"tábor Ušivak, Bosna a Hercegovina",1);
-        tripDao.persist(trip);
-        tripSession = new TripSession(trip, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 0);
-        tripSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-        tripSession = new TripSession(trip, LocalDate.parse("2020-06-12"), LocalDate.parse("2020-06-18"), 0);
-        tripSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-        tripSession = new TripSession(trip, LocalDate.parse("2020-06-18"), LocalDate.parse("2020-06-24"), 0);
-        tripSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-        tripSession = new TripSession(trip, LocalDate.parse("2020-06-24"), LocalDate.parse("2020-06-30"), 0);
-        tripSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-        tripDao.update(trip);
-        */
+
         //priklady tripov a user progressu medzi nimi
         description = "Tento zajezd bude mit cenu za dopravu a kurz, po absolvování se odemkne achievement ´kuchař ryb fugu´, pro absolvování je potřeba mít achievement ´Kuchtík´." ;
         trip = new Trip("Kurz vaření ryb Fugu",10,description,"fugukurz",1000,"Tokyo, Japan",1);
@@ -158,7 +142,7 @@ public class DatabaseSeeder implements
         tripDao.update(trip);
 
         description = "Tento zajezd nevyzaduje zadne achievementy a po nem se nedaji ziskat specialni achievementy ale daji se ziskat achievementy jako jsou např. ´Kuchtík´, ´Kuchař´ apod. Odměna Xp je dost nízká aby se nedalo jednoduše dostat za tuhle práci na prestižnější místa jako pražský hrad, ale zároveň je možno si dopomoct s touto lehčí a dostupnější práci nahnat achievement kuchař, jestliže xp grind mám za sebou z jiných zájezdů." ;
-        trip = new Trip("Kuchař menza Studentský dům, Praha",3,description,"studumkuch",50,"Praha, Česká republika",1);
+        trip = new Trip("Kuchař menza Studentský dům, Praha",3,description,"studumkuch",50,"Praha, Česká republika",0);
         tripDao.persist(trip);
         tripSession = new TripSession(trip, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 0);
         tripSessionDao.persist(tripSession);
@@ -172,7 +156,7 @@ public class DatabaseSeeder implements
         tripDao.update(trip);
 
         description = "Humanitární akce v imigračním táboře Ušivak v Bosně a Hercegovině. Potřeba znát základy javy, office a nebát se ušpinit si ruce při stavbě skleníku." ;
-        trip = new Trip("projekt „Úsměv pro všechny“",3,description,"usibos",200,"tábor Ušivak, Bosna a Hercegovina",1);
+        trip = new Trip("projekt „Úsměv pro všechny“",3,description,"usibos",200,"tábor Ušivak, Bosna a Hercegovina",0);
         tripDao.persist(trip);
         tripSession = new TripSession(trip, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 0);
         tripSessionDao.persist(tripSession);
@@ -424,7 +408,7 @@ public class DatabaseSeeder implements
         enrollmentDao.update(e);
 
 
-        user = userDao.findAll().get(1);
+        user = userDao.findAll().get(2);
         trip = tripDao.findAll().get(0);
         tripSession = trip.getSessions().get(1);
 
@@ -444,32 +428,32 @@ public class DatabaseSeeder implements
 
         //enrolment ke tripu, ktery ma datum  ukonceni vcera
         tripSession = trip.getSessions().get(3);
-
         signUserToTrip(user, tripSession);
 
         travelJournal = user.getTravel_journal();
         e = travelJournal.getEnrollments().get(0);
         e.setDeposit_was_paid(true);
+        e.setState(EnrollmentState.ACTIVE);
         enrollmentDao.update(e);
 
         //enrolment ke tripu, ktery ma datum  ukonceni predevcirem
         tripSession = trip.getSessions().get(4);
-
         signUserToTrip(user, tripSession);
 
         travelJournal = user.getTravel_journal();
         e = travelJournal.getEnrollments().get(1);
         e.setDeposit_was_paid(false);
+        e.setState(EnrollmentState.ACTIVE);
         enrollmentDao.update(e);
 
         //enrolment ke tripu, ktery ma datum  ukonceni pred tydem
         tripSession = trip.getSessions().get(5);
-
         signUserToTrip(user, tripSession);
 
         travelJournal = user.getTravel_journal();
         e = travelJournal.getEnrollments().get(2);
         e.setDeposit_was_paid(true);
+        e.setState(EnrollmentState.ACTIVE);
         enrollmentDao.update(e);
     }
 
