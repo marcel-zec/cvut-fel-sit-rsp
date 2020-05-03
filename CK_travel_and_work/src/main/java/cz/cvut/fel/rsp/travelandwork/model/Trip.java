@@ -9,7 +9,9 @@ import java.util.List;
 @Table(name = "TRIP")
 @NamedQueries({
         @NamedQuery(name = "Trip.findByStringId", query = "SELECT t FROM Trip t WHERE t.short_name = :id AND t.deleted_at is null"),
-        @NamedQuery(name = "Trip.findByLevel", query = "SELECT t FROM Trip t WHERE t.required_level = :required_level AND t.deleted_at is null")
+        @NamedQuery(name = "Trip.findByLevel", query = "SELECT t FROM Trip t WHERE t.required_level = :required_level AND t.deleted_at is null"),
+        @NamedQuery(name = "Trip.findByFilter", query = "SELECT DISTINCT t FROM Trip t JOIN t.sessions s WHERE (" +
+                "(:location is null OR t.location = :location) AND (s.price <= :price) AND (s.from_date >= :from_date) AND (s.to_date <= :to_date))")
 })
 public class Trip extends AbstractEntity {
 

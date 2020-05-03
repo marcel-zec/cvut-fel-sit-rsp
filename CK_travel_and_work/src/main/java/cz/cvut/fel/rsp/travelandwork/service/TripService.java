@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -179,5 +181,12 @@ public class TripService {
     }
 
 
+    public List<Trip> getAllTripsByFilter(String location, String from_date, String to_date, double maxPrice) {
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate local_to_date = LocalDate.parse(to_date, formatter);
+        LocalDate local_from_date = LocalDate.parse(from_date, formatter);
+
+        return tripDao.findByFilter(location,  local_from_date, local_to_date, maxPrice);
+    }
 }
