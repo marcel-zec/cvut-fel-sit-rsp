@@ -86,6 +86,13 @@ public class EnrollmentService {
     }
 
     @Transactional
+    public EnrollmentDto findDto(Long id){
+
+       return translateService.translateEnrollment(enrollmentDao.find(id));
+    }
+
+
+    @Transactional
     public List<EnrollmentDto> findAllOfUser(User current_user) throws NotAllowedException {
 
         User user = accessService.getUser(current_user);
