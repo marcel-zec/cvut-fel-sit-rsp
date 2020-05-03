@@ -59,7 +59,7 @@ public class DatabaseSeeder implements
         //setAchievementsAndCategories();
         createTrips();
         createUsers();
-        signUsersToTrips();
+        //signUsersToTrips();git
 
     }
 
