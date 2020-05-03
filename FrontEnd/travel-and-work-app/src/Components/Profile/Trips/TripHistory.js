@@ -25,9 +25,6 @@ class TripHistory extends React.Component {
                 />
             );
         });
-
-        console.log(this.state);
-
         //incrementing number for tooltips ID
         let placement = 0;
         let commentButton = null;
@@ -42,8 +39,8 @@ class TripHistory extends React.Component {
                         </Tooltip>
                     }
                 >
-                    <Link>
-                        <FontAwesomeIcon icon="comment-medical" size="2x" />
+                    <Link className="submit">
+                        Add review<FontAwesomeIcon icon="comment-medical" />
                     </Link>
                 </OverlayTrigger>
             );
@@ -51,56 +48,59 @@ class TripHistory extends React.Component {
             //comment icons for updating
             commentButton = (
                 <OverlayTrigger
-                    placement="right"
+                    placement={"right"}
                     overlay={
                         <Tooltip id={`tooltip-${++placement}`}>
                             Show or update your review of this trip.
                         </Tooltip>
                     }
                 >
-                    <Link>
-                        <FontAwesomeIcon icon="comment-dots" size="2x" />
+                    <Link to="/" className="submit">
+                        Show review<FontAwesomeIcon icon="comment-dots" />
                     </Link>
                 </OverlayTrigger>
             );
         }
 
         return (
-            <Card className="mb-3">
+            <Card className="mb-3 userTrip window radius">
                 <Card.Body className="d-flex flex-row">
-                    <Col>
-                        <Image
-                            src="https://blog.pravda.sk/avatar/blog-1166-256.png"
-                            rounded
-                        />
+                    <Col xs={2}>
+                        <div className="tripImage">
+                            <Image src="https://www.transparency.cz/wp-content/uploads/Jablonec-nad-Nisou-621x466.jpg" rounded/>
+                        </div>
                     </Col>
-                    <Col>
+                    <Col xs={4}>
                         <Card.Title className="mb-2 text-muted">
                             Name
                         </Card.Title>
                         <Card.Text>{this.props.trip.name}</Card.Text>
 
                         <Card.Title className="mb-2 text-muted">
-                            Date
+                            Location
                         </Card.Title>
-                        <Card.Text>{this.props.trip.tripDate}</Card.Text>
+                        <Card.Text>{this.props.trip.location}</Card.Text>
                     </Col>
                     <Col>
                         <Card.Title className="mb-2 text-muted">
-                            Recieved XP
+                            Trip session
                         </Card.Title>
-                        <Card.Text>{this.props.trip.xp}</Card.Text>
+                        <Card.Text>{this.props.trip.tripDate}</Card.Text>
+
                         <Card.Title className="mb-2 text-muted">
-                            Achievments
+                            Reward XP and achievements
                         </Card.Title>
-                        <Card.Text>{achievments}</Card.Text>
+                        <Card.Text>{this.props.trip.xp} XP - {achievments}</Card.Text>
                     </Col>
-                    <Col
-                        xs
-                        lg="1"
-                        className="d-flex flex-column justify-content-center"
-                    >
-                        {commentButton}
+                    <Col>
+                        <Card.Title className="mb-2 text-muted">
+                            Added to travel journal on
+                        </Card.Title>
+                        <Card.Text>{this.props.trip.enrollmentDate}</Card.Text>
+                        <Card.Title className="mb-2 text-muted">
+                            Action
+                        </Card.Title>
+                        <Card.Text>{commentButton}</Card.Text>
                     </Col>
                 </Card.Body>
             </Card>
