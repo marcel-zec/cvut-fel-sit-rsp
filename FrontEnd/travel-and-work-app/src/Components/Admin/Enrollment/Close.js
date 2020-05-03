@@ -249,12 +249,36 @@ class Close extends React.Component {
     };
 
     async componentDidMount() {
-        /*const response = await fetch(
-            `http://localhost:8080/trip/` + this.props.match.params.id
+        const response = await fetch(
+            `http://localhost:8080/enrollment/close/` +
+                this.props.match.params.id,
+            {
+                method: "GET",
+                mode: "cors",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
         );
         const data = await response.json();
+        console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         console.log(data);
-        this.setState({ trip: data });*/
+
+        const trip_session = { ...data.enrollmentDto.tripSession };
+        const trip = { ...data.enrollmentDto.trip };
+        console.log(trip);
+        const user = { ...data.owner };
+        const enrollment = { ...data.enrollmentDto };
+        enrollment.trip = null;
+        enrollment.tripSession = null;
+        console.log(enrollment);
+        this.setState({
+            trip: trip,
+            trip_session: trip_session,
+            user: user,
+            enrollment: enrollment,
+        });
     }
 
     render() {

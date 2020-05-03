@@ -48,10 +48,10 @@ public class TripDto {
     private int required_level;
 
     private Long categoryId;
-    private List<AchievementCertificateDto> required_certificates;
+    private List<AchievementCertificateDto> required_achievements_certificate;
     private List<AchievementCategorizedDto> required_achievements_categorized;
     private List<AchievementSpecialDto> required_achievements_special;
-    private List<AchievementSpecialDto> gain_achievements;
+    private List<AchievementSpecialDto> gain_achievements_special;
     private List<Long> sessionsID;
 
     public TripDto() {
@@ -68,10 +68,10 @@ public class TripDto {
         this.location = location;
         this.required_level = required_level;
         this.categoryId = categoryId;
-        this.required_certificates = required_certificates;
+        this.required_achievements_certificate = required_certificates;
         this.required_achievements_categorized = required_achievements_categorized;
         this.required_achievements_special = required_achievements_special;
-        this.gain_achievements = gain_achievements;
+        this.gain_achievements_special = gain_achievements;
         this.sessionsID = sessionsID;
     }
 
@@ -182,12 +182,12 @@ public class TripDto {
         this.categoryId = categoryId;
     }
 
-    public List<AchievementCertificateDto> getRequired_certificates() {
-        return required_certificates;
+    public List<AchievementCertificateDto> getRequired_achievements_certificate() {
+        return required_achievements_certificate;
     }
 
-    public void setRequired_certificates(List<AchievementCertificateDto> required_certificates) {
-        this.required_certificates = required_certificates;
+    public void setRequired_achievements_certificate(List<AchievementCertificateDto> required_certificates) {
+        this.required_achievements_certificate = required_certificates;
     }
 
     public List<AchievementCategorizedDto> getRequired_achievements_categorized() {
@@ -206,12 +206,12 @@ public class TripDto {
         this.required_achievements_special = required_achievements_special;
     }
 
-    public List<AchievementSpecialDto> getGain_achievements() {
-        return gain_achievements;
+    public List<AchievementSpecialDto> getGain_achievements_special() {
+        return gain_achievements_special;
     }
 
-    public void setGain_achievements(List<AchievementSpecialDto> gain_achievements) {
-        this.gain_achievements = gain_achievements;
+    public void setGain_achievements_special(List<AchievementSpecialDto> gain_achievements) {
+        this.gain_achievements_special = gain_achievements;
     }
 
     public List<Long> getSessionsID() {
@@ -250,10 +250,10 @@ public class TripDto {
                 ", location='" + location + '\'' +
                 ", required_level=" + required_level +
                 ", categoryId=" + categoryId +
-                ", required_certificates=" + required_certificates +
+                ", required_achievements_certificate=" + required_achievements_certificate +
                 ", required_achievements_categorized=" + required_achievements_categorized +
                 ", required_achievements_special=" + required_achievements_special +
-                ", gain_achievements=" + gain_achievements +
+                ", gain_achievements_special=" + gain_achievements_special +
                 ", sessionsID=" + sessionsID +
                 '}';
     }

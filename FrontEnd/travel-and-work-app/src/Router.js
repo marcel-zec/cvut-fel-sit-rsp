@@ -182,22 +182,22 @@ function Router(props) {
                 />
 
                 <Route
-                    path="/close/:id"
+                    path="/close"
                     exact={true}
                     render={() => {
                         return allowAuthWithRole(
-                            <CloseEnrollment />,
+                            <IndexEnrollment />,
                             ROLE_ADMIN
                         );
                     }}
                 />
 
                 <Route
-                    path="/close"
+                    path="/close/:id"
                     exact={true}
                     render={() => {
                         return allowAuthWithRole(
-                            <IndexEnrollment />,
+                            <CloseEnrollment />,
                             ROLE_ADMIN
                         );
                     }}

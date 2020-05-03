@@ -12,7 +12,14 @@ class Index extends React.Component {
     };
 
     async componentDidMount() {
-        const response = await fetch(`http://localhost:8080/enrollment/close`);
+        const response = await fetch(`http://localhost:8080/enrollment/close`, {
+            method: "GET",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
         const data = await response.json();
         console.log(data);
         this.setState({ items: data });
@@ -49,7 +56,10 @@ class Index extends React.Component {
                                         </Tooltip>
                                     }
                                 >
-                                    <Link className="p-3" to={"category/edit"}>
+                                    <Link
+                                        className="p-3"
+                                        to={"close/" + item.enrollmentDto.id}
+                                    >
                                         <FontAwesomeIcon icon="cog" />
                                     </Link>
                                 </OverlayTrigger>

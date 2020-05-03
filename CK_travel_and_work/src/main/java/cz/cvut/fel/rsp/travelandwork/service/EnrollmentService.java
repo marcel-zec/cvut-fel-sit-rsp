@@ -60,7 +60,7 @@ public class EnrollmentService {
     @Transactional
     public RequestWrapperEnrollmentGet findActiveEndedWithUser(Long enrollId) throws NotAllowedException {
         RequestWrapperEnrollmentGet wrapperEnrollmentGet = new RequestWrapperEnrollmentGet();
-        if (findDto(enrollId).getState() != EnrollmentState.ACTIVE || findDto(enrollId).getTripSession().getTo_date().isBefore(ChronoLocalDate.from(LocalDateTime.now()))) throw new NotAllowedException();
+        if (findDto(enrollId).getState() != EnrollmentState.ACTIVE || findDto(enrollId).getTripSession().getTo_date().isAfter(ChronoLocalDate.from(LocalDateTime.now()))) throw new NotAllowedException();
         wrapperEnrollmentGet.setEnrollmentDto(translateService.translateEnrollment(find(enrollId)));
         wrapperEnrollmentGet.setOwner(translateService.translateUser(userDao.find(find(enrollId).getTravelJournal().getUser().getId())));
         return wrapperEnrollmentGet;
