@@ -20,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -77,6 +79,13 @@ public class EnrollmentService {
                 newEnrollments.add(e);
             }
         }
+        Collections.sort(newEnrollments, new Comparator<Enrollment>() {
+            @Override
+            public int compare(Enrollment e1, Enrollment e2)
+            {
+                return  e1.getTripSession().getTo_date().compareTo(e2.getTripSession().getTo_date());
+            }
+        });
         return newEnrollments;
     }
 
