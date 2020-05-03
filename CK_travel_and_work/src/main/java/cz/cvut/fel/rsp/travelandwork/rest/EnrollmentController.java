@@ -83,7 +83,7 @@ public class EnrollmentController {
 
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN')")
     @GetMapping(value = "/close/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public RequestWrapperEnrollmentGet getWithUser(@PathVariable Long id) {
+    public RequestWrapperEnrollmentGet getWithUser(@PathVariable Long id) throws NotAllowedException {
         return enrollmentService.findActiveEndedWithUser(id);
     }
 
