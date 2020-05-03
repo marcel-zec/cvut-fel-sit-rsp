@@ -9,14 +9,26 @@ import ButtonInRow from "../../SmartGadgets/ButtonInRow";
 import { appContext } from "../../../appContext";
 
 class Index extends React.Component {
+    static contextType = appContext;
     state = { trips: null };
     async componentDidMount() {
-        const response = await fetch(`http://localhost:8080/trip`);
-        const data = await response.json();
-        console.log(data);
-        this.setState({ trips: data });
-        console.log("cookieeeeeIndexAdmin");
-        console.log(document.cookie);
+        await fetch(`http://localhost:8080/trip`, {
+            method: "GET",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((response) => {
+                if (response.ok) return response.json();
+                else console.error(response.status);
+            })
+            .then((data) => {
+                this.setState({ trips: data });
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }
 
     render() {
@@ -57,6 +69,18 @@ class Index extends React.Component {
                 });
             }
 
+            /**
+             * Alert (flash message) from this.props.location.alert
+             */
+            let alert = null;
+            if (
+                this.props.location &&
+                this.props.location.hasOwnProperty("alert")
+            ) {
+                console.log(this.props.location);
+                alert = this.props.location.alert;
+            }
+
             return (
                 <Container>
                     <ButtonInRow
@@ -65,6 +89,8 @@ class Index extends React.Component {
                         side="right"
                         label="Add trip"
                     />
+
+                    {alert}
 
                     <Table striped bordered hover>
                         <thead>
