@@ -427,7 +427,6 @@ public class DatabaseSeeder implements
 
         //enrolment ke tripu, ktery ma datum  ukonceni vcera
         tripSession = trip.getSessions().get(3);
-
         signUserToTrip(user, tripSession);
 
         travelJournal = user.getTravel_journal();
@@ -437,7 +436,6 @@ public class DatabaseSeeder implements
 
         //enrolment ke tripu, ktery ma datum  ukonceni predevcirem
         tripSession = trip.getSessions().get(4);
-
         signUserToTrip(user, tripSession);
 
         travelJournal = user.getTravel_journal();
@@ -447,7 +445,6 @@ public class DatabaseSeeder implements
 
         //enrolment ke tripu, ktery ma datum  ukonceni pred tydem
         tripSession = trip.getSessions().get(5);
-
         signUserToTrip(user, tripSession);
 
         travelJournal = user.getTravel_journal();
