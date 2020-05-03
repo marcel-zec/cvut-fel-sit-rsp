@@ -3,9 +3,9 @@ package cz.cvut.fel.rsp.travelandwork.seeder;
 import cz.cvut.fel.rsp.travelandwork.dao.*;
 import cz.cvut.fel.rsp.travelandwork.dto.TripSessionDto;
 import cz.cvut.fel.rsp.travelandwork.model.*;
+import cz.cvut.fel.rsp.travelandwork.service.EnrollmentService;
 import cz.cvut.fel.rsp.travelandwork.service.TranslateService;
 import cz.cvut.fel.rsp.travelandwork.service.TripService;
-import cz.cvut.fel.rsp.travelandwork.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -34,9 +34,10 @@ public class DatabaseSeeder implements
     private AddressDao addressDao;
     private TripService tripService;
     private TranslateService translateService;
+    private EnrollmentService enrollmentService;
 
     @Autowired
-    public DatabaseSeeder(TripDao tripDao, TripSessionDao tripSessionDao, AchievementCertificateDao achievementCertificateDao, AchievementCategorizedDao achievementCategorizedDao, AchievementSpecialDao achievementSpecialDao, CategoryDao categoryDao, UserDao userDao, AddressDao addressDao, TripService tripService, TranslateService translateService) {
+    public DatabaseSeeder(TripDao tripDao, TripSessionDao tripSessionDao, AchievementCertificateDao achievementCertificateDao, AchievementCategorizedDao achievementCategorizedDao, AchievementSpecialDao achievementSpecialDao, CategoryDao categoryDao, UserDao userDao, AddressDao addressDao, TripService tripService, TranslateService translateService, EnrollmentService enrollmentService) {
         this.tripDao = tripDao;
         this.tripSessionDao = tripSessionDao;
         this.achievementCertificateDao = achievementCertificateDao;
@@ -47,6 +48,7 @@ public class DatabaseSeeder implements
         this.addressDao = addressDao;
         this.tripService = tripService;
         this.translateService = translateService;
+        this.enrollmentService = enrollmentService;
     }
 
     @Override
@@ -410,11 +412,15 @@ public class DatabaseSeeder implements
         trip = tripDao.findAll().get(1);
         tripSession = trip.getSessions().get(0);
         signUserToTrip(user, tripSession);
+        Enrollment e = user.getTravel_journal().getEnrollments().get(0);
+        e.setDeposit_was_paid(true);
 
         user = userDao.findAll().get(1);
         trip = tripDao.findAll().get(0);
         tripSession = trip.getSessions().get(1);
         signUserToTrip(user, tripSession);
+        e = user.getTravel_journal().getEnrollments().get(0);
+        e.setState(EnrollmentState.CANCELED);
 
         //Milan
         user = userDao.findAll().get(1);
