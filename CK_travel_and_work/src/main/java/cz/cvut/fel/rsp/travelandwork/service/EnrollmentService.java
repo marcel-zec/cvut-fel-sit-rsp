@@ -56,6 +56,15 @@ public class EnrollmentService {
     }
 
     @Transactional
+    public RequestWrapperEnrollmentGet findActiveEndedWithUser(Long enrollId) throws NotAllowedException {
+        RequestWrapperEnrollmentGet wrapperEnrollmentGet = new RequestWrapperEnrollmentGet();
+        if (findDto(enrollId).getState() != EnrollmentState.ACTIVE || findDto(enrollId).getTripSession().getTo_date().isBefore(ChronoLocalDate.from(LocalDateTime.now()))) throw new NotAllowedException();
+        wrapperEnrollmentGet.setEnrollmentDto(translateService.translateEnrollment(find(enrollId)));
+        wrapperEnrollmentGet.setOwner(translateService.translateUser(userDao.find(find(enrollId).getTravelJournal().getUser().getId())));
+        return wrapperEnrollmentGet;
+    }
+
+    @Transactional
     public List<RequestWrapperEnrollmentGet> findAllActiveEndedWithUser(){
         List<RequestWrapperEnrollmentGet> requestWrappers = new ArrayList<>();
 
@@ -90,7 +99,6 @@ public class EnrollmentService {
 
        return translateService.translateEnrollment(enrollmentDao.find(id));
     }
-
 
     @Transactional
     public List<EnrollmentDto> findAllOfUser(User current_user) throws NotAllowedException {
@@ -159,4 +167,8 @@ public class EnrollmentService {
         enrollment.setRecieved_achievements_special(achievementSpecials);
         enrollmentDao.update(enrollment);
     }
+
+
+
+
 }
