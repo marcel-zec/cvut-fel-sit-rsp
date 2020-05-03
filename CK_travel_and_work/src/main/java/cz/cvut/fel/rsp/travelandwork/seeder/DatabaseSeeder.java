@@ -70,7 +70,24 @@ public class DatabaseSeeder implements
         Trip trip;/* = new Trip("Casablanca Me gusto",15,description,"casablanca_me_gusta",1000,"Casablan, Mexico",2);
         tripDao.persist(trip);
         */TripSession tripSession;
-
+/*
+        description = "Humanitární akce v imigračním táboře Ušivak v Bosně a Hercegovině. Potřeba znát základy javy, office a nebát se ušpinit si ruce při stavbě skleníku." ;
+        trip = new Trip("projekt „Úsměv pro všechny“",3,description,"usibos",200,"tábor Ušivak, Bosna a Hercegovina",1);
+        tripDao.persist(trip);
+        tripSession = new TripSession(trip, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 0);
+        tripSessionDao.persist(tripSession);
+        trip.addSession(tripSession);
+        tripSession = new TripSession(trip, LocalDate.parse("2020-06-12"), LocalDate.parse("2020-06-18"), 0);
+        tripSessionDao.persist(tripSession);
+        trip.addSession(tripSession);
+        tripSession = new TripSession(trip, LocalDate.parse("2020-06-18"), LocalDate.parse("2020-06-24"), 0);
+        tripSessionDao.persist(tripSession);
+        trip.addSession(tripSession);
+        tripSession = new TripSession(trip, LocalDate.parse("2020-06-24"), LocalDate.parse("2020-06-30"), 0);
+        tripSessionDao.persist(tripSession);
+        trip.addSession(tripSession);
+        tripDao.update(trip);
+        */
         //priklady tripov a user progressu medzi nimi
         description = "Tento zajezd bude mit cenu za dopravu a kurz, po absolvování se odemkne achievement ´kuchař ryb fugu´, pro absolvování je potřeba mít achievement ´Kuchtík´." ;
         trip = new Trip("Kurz vaření ryb Fugu",10,description,"fugukurz",1000,"Tokyo, Japan",1);
@@ -148,6 +165,24 @@ public class DatabaseSeeder implements
         tripSessionDao.persist(tripSession);
         trip.addSession(tripSession);
         tripDao.update(trip);
+
+        description = "Humanitární akce v imigračním táboře Ušivak v Bosně a Hercegovině. Potřeba znát základy javy, office a nebát se ušpinit si ruce při stavbě skleníku." ;
+        trip = new Trip("projekt „Úsměv pro všechny“",3,description,"usibos",200,"tábor Ušivak, Bosna a Hercegovina",1);
+        tripDao.persist(trip);
+        tripSession = new TripSession(trip, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 0);
+        tripSessionDao.persist(tripSession);
+        trip.addSession(tripSession);
+        tripSession = new TripSession(trip, LocalDate.parse("2020-06-12"), LocalDate.parse("2020-06-18"), 0);
+        tripSessionDao.persist(tripSession);
+        trip.addSession(tripSession);
+        tripSession = new TripSession(trip, LocalDate.parse("2020-06-18"), LocalDate.parse("2020-06-24"), 0);
+        tripSessionDao.persist(tripSession);
+        trip.addSession(tripSession);
+        tripSession = new TripSession(trip, LocalDate.parse("2020-06-24"), LocalDate.parse("2020-06-30"), 0);
+        tripSessionDao.persist(tripSession);
+        trip.addSession(tripSession);
+        tripDao.update(trip);
+
     }
 
     @Transactional
@@ -177,10 +212,10 @@ public class DatabaseSeeder implements
         achievementSpecialDao.persist(achievementSpecial);
 
         //Achievementy za počet zájezdů v konkrétních kategoriích
-        /*achievementCategorized = new AchievementCategorized("Kuchtík", "Uživatel byl jednou vařit.", "hamburger"); //0
+        achievementCategorized = new AchievementCategorized("Kuchtík", "Uživatel byl jednou vařit.", "hamburger"); //0
         achievementCategorized.setCategory(categoryDao.findAll().get(0));
         achievementCategorized.setLimit(1);
-        achievementCategorizedDao.persist(achievementCategorized);*/
+        achievementCategorizedDao.persist(achievementCategorized);
 
         achievementCategorized = new AchievementCategorized("Kuchař", "Uživatel vařil už na 5-ti zájezdech.", "pizza-slice"); //1
         achievementCategorized.setCategory(categoryDao.findAll().get(0));
@@ -228,6 +263,10 @@ public class DatabaseSeeder implements
         trip.setCategory(categories.get(0));
         categories.get(0).add(trip);
 
+        trip = trips.get(4);
+        trip.setCategory(categories.get(6));
+        categories.get(6).add(trip);
+
         //jediny zlepsovak co tu je aj ked by to but ani nemusel...
         for(Trip t : trips) {
             tripDao.update(t);
@@ -248,22 +287,31 @@ public class DatabaseSeeder implements
     }
 
     void createCategories(){
-        Category category = new Category("Vaření");
+        Category category = new Category("Vaření");//0
         categoryDao.persist(category);
 
-        category = new Category("Archeologie");
+        category = new Category("Archeologie");//1
         categoryDao.persist(category);
 
-        category = new Category("Restaurování");
+        category = new Category("Restaurování");//2
         categoryDao.persist(category);
 
-        category = new Category("Práce instruktora");
+        category = new Category("Práce instruktora");//3
         categoryDao.persist(category);
 
-        category = new Category("Kurz");
+        category = new Category("Kurz");//4
         categoryDao.persist(category);
 
-        category = new Category("Práce animátora");
+        category = new Category("Práce animátora");//5
+        categoryDao.persist(category);
+
+        category = new Category("Humanitarní akce");//6
+        categoryDao.persist(category);
+
+        category = new Category("Učitel");//7
+        categoryDao.persist(category);
+
+        category = new Category("Práce na stavbě");//8
         categoryDao.persist(category);
     }
 
@@ -294,10 +342,28 @@ public class DatabaseSeeder implements
         address = new Address();
         address.setUser(user);
         address.setCountry("Slovakia");
-        address.setCity("Kapusany");
-        address.setStreet("Presovska");
-        address.setHouseNumber(20);
-        address.setZipCode("08001");
+        address.setCity("Piešťany");
+        address.setStreet("Teplická");
+        address.setHouseNumber(24);
+        address.setZipCode("92101");
+        addressDao.persist(address);
+        user.setAddress(address);
+        userDao.update(user);
+        System.out.println("Test user persist.");
+
+
+        //user Julia
+        user = new User(BCrypt.hashpw("hesloo",BCrypt.gensalt()),"Julia","Lopez","july1331@gmail.com");
+        user.setRole(Role.USER);
+
+        userDao.persist(user);
+        address = new Address();
+        address.setUser(user);
+        address.setCountry("Bohemia");
+        address.setCity("Prague");
+        address.setStreet("Opletalova");
+        address.setHouseNumber(1626);
+        address.setZipCode("01001");
         addressDao.persist(address);
         user.setAddress(address);
         userDao.update(user);
@@ -325,8 +391,8 @@ public class DatabaseSeeder implements
         Trip trip = tripDao.findAll().get(0);
         TripSession tripSession = trip.getSessions().get(0);
 
-/*
         //test
+        /*
         System.out.println("SESSION: " + tripSession.toString());
         System.out.println("TRIP IN SESSION: " + tripSession.getTrip().toString());
         System.out.println("CATEGORIZED IN TRIP: " + trip.getRequired_achievements_categorized().toString());
@@ -334,7 +400,7 @@ public class DatabaseSeeder implements
         System.out.println("TRIP DTO: " + translateService.translateTrip(trip).toString());
         System.out.println("TRIP DTO: " + translateService.translateTrip(tripSession.getTrip()).toString());
         System.out.println("SESSION DTO: " + translateService.translateSession(tripSession));
-*/
+        */
 
         if(tripSession != null && tripSession.getTrip() != null) {
             signUserToTrip(user, tripSession);
