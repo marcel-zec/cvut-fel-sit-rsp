@@ -9,6 +9,20 @@ import ButtonInRow from "../../SmartGadgets/ButtonInRow";
 class Index extends React.Component {
     state = {
         items: null,
+        modal: {
+            show: false,
+            title: null,
+            description: null,
+            buttin: {
+                title: "Close",
+                onClick: null,
+            },
+        },
+    };
+
+    submitHandler = (event) => {
+        event.preventDefault();
+        console.log("submiting");
     };
 
     async componentDidMount() {
