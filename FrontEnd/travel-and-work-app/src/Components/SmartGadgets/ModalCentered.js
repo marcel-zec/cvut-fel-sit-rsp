@@ -21,6 +21,23 @@ function ModalCentered(props) {
         );
     }
     */
+    let footer = null;
+    if (this.props.button) {
+        footer = (
+            <Modal.Footer>
+                <Button
+                    variant={
+                        this.props.button.variant
+                            ? this.props.button.variant
+                            : "primary"
+                    }
+                    onClick={(event) => this.props.button.onClick(event)}
+                >
+                    {this.props.button.title}
+                </Button>
+            </Modal.Footer>
+        );
+    }
 
     return (
         <Modal
@@ -29,7 +46,7 @@ function ModalCentered(props) {
             aria-labelledby="contained-modal-title-vcenter"
             centered
             style={{
-                textAlign: "center"
+                textAlign: "center",
             }}
         >
             <Modal.Header closeButton>
@@ -41,6 +58,7 @@ function ModalCentered(props) {
                 <FontAwesomeIcon icon={props.icon} size="6x" />
                 <p>{props.description}</p>
             </Modal.Body>
+            {footer}
         </Modal>
     );
 }
