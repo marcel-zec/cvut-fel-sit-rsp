@@ -19,6 +19,7 @@ import IndexCategory from "./Components/Admin/Category/Index";
 import CreateCategory from "./Components/Admin/Category/Create";
 import EditCategory from "./Components/Admin/Category/Edit";
 import IndexUser from "./Components/Admin/User/Index";
+import IndexEnrollment from "./Components/Admin/Enrollment/Index";
 import CloseEnrollment from "./Components/Admin/Enrollment/Close";
 import { appContext } from "./appContext";
 
@@ -181,11 +182,22 @@ function Router(props) {
                 />
 
                 <Route
-                    path="/close"
+                    path="/close/:id"
                     exact={true}
                     render={() => {
                         return allowAuthWithRole(
                             <CloseEnrollment />,
+                            ROLE_ADMIN
+                        );
+                    }}
+                />
+
+                <Route
+                    path="/close"
+                    exact={true}
+                    render={() => {
+                        return allowAuthWithRole(
+                            <IndexEnrollment />,
                             ROLE_ADMIN
                         );
                     }}
