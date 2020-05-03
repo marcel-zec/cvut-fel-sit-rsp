@@ -17,7 +17,6 @@ public class EnrollmentDto {
     private Long id;
 
     @Basic(optional = false)
-    @JsonFormat(pattern = "yyyy-MM-dd")
     @PastOrPresent
     private LocalDateTime enrollDate;
 
