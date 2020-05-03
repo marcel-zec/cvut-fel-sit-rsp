@@ -88,15 +88,36 @@ public class UserReviewService {
     }
 
     @Transactional
-    public void create(EnrollmentDto enrollmentDto, User currentUser, Long tripSessionId, UserReview userReview) throws Exception {
+    public void create(long enrollmentId, User currentUser, Long tripSessionId, UserReview userReview) throws Exception {
 
-        Enrollment enrollment = enrollmentDao.find(enrollmentDto.getId());
+        Enrollment enrollment = enrollmentDao.find(enrollmentId);
         User user = enrollment.getTravelJournal().getUser();
         User current_user = userDao.find(currentUser.getId());
         TripSession tripSession = tripSessionDao.find(tripSessionId);
 
         if (user == null || tripSession==null) throw new NotFoundException();
 
+        userReview.setUser(user);
+        userReview.setAuthor(current_user);
+        userReview.setTripSession(tripSession);
+        userReviewDao.persist(userReview);
+    }
+
+    @Transactional
+    public void create(long enrollmentId, User currentUser) throws Exception {
+
+        Enrollment enrollment = enrollmentDao.find(enrollmentId);
+        if (enrollment == null) throw new NotFoundException();
+
+        User user = enrollment.getTravelJournal().getUser();
+        User current_user = userDao.find(currentUser.getId());
+        TripSession tripSession = tripSessionDao.find(enrollment.getTripSession().getId());
+        UserReview userReview = new UserReview();
+
+        if (user == null || tripSession == null) throw new NotFoundException();
+
+        userReview.setRating(5);
+        userReview.setNote(null);
         userReview.setUser(user);
         userReview.setAuthor(current_user);
         userReview.setTripSession(tripSession);

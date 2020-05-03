@@ -4,6 +4,7 @@ import cz.cvut.fel.rsp.travelandwork.dto.TripDto;
 import cz.cvut.fel.rsp.travelandwork.dto.TripSessionDto;
 import cz.cvut.fel.rsp.travelandwork.exception.BadDateException;
 import cz.cvut.fel.rsp.travelandwork.exception.MissingVariableException;
+import cz.cvut.fel.rsp.travelandwork.exception.NotAllowedException;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
 import cz.cvut.fel.rsp.travelandwork.model.Trip;
 import cz.cvut.fel.rsp.travelandwork.security.SecurityUtils;
@@ -80,13 +81,13 @@ public class TripController {
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping(value = "/cannotAfford", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Trip> showAllTripsCantUserAfford() {
+    public List<Trip> showAllTripsCantUserAfford() throws NotAllowedException {
         return tripService.findNotAfford(SecurityUtils.getCurrentUser());
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping(value = "/canAfford", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Trip> showAllTripsCanUserAfford() {
+    public List<Trip> showAllTripsCanUserAfford() throws NotAllowedException {
         return tripService.findAfford(SecurityUtils.getCurrentUser());
     }
 }

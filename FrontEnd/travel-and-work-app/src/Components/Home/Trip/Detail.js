@@ -78,7 +78,7 @@ class Detail extends React.Component {
 
         const req_ach_special = this.state.trip.required_achievements_special;
         const req_ach_categorized = this.state.trip.required_achievements_categorized;
-        const req_cerf = this.state.trip.required_certificates;
+        const req_cerf = this.state.trip.required_achievements_certificate;
         const minlevel = this.state.trip.required_level;
 
         specialValidate = req_ach_special.every(val => this.validateUserAchievement(val,this.userDTO.achievements_special));
@@ -282,7 +282,7 @@ class Detail extends React.Component {
                                         Required certifications
                                     </Card.Title>
                                     <ListGroup variant="flush">
-                                        {this.renderAchievements(this.state.trip.required_certificates,"No certifications are required")}
+                                        {this.renderAchievements(this.state.trip.required_achievements_certificate,"No certifications are required")}
                                     </ListGroup>
                                 </Card.Body>
                             </Card>
@@ -366,7 +366,7 @@ class Detail extends React.Component {
                                 <Col className="alignLeft">
                                     <Card.Title>Required certifications</Card.Title>
                                     <Card.Body className="flex">
-                                        <AchievementListInline achievements={this.state.trip.required_certificates} userList={this.userDTO.certifications} message={"No certifications are required"}/>
+                                        <AchievementListInline achievements={this.state.trip.required_achievements_certificate} userList={this.userDTO.certifications} message={"No certifications are required"}/>
                                     </Card.Body>
                                 </Col>
                                 <Col xs={4}>

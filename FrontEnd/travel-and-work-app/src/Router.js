@@ -5,6 +5,7 @@ import Login from "./Components/Auth/Login";
 import Profile from "./Components/Profile/Profile";
 import ProfileTrips from "./Components/Profile/Trips/ProfileTrips";
 import ProfileDetails from "./Components/Profile/ProfileDetails";
+import ActiveTrip from "./Components/Profile/Trips/ActiveTrips";
 import ProfileAchievments from "./Components/Profile/ProfileAchievments";
 import CreateTrip from "./Components/Admin/Trip/Create";
 import EditTrip from "./Components/Admin/Trip/Edit";
@@ -72,6 +73,7 @@ function Router(props) {
             <Route path="/profile/details" component={ProfileDetails} />
             <Route path="/profile/achievments" component={ProfileAchievments} />
             <Route path="/profile/trips" component={ProfileTrips} />
+            <Route path="/profile/trips/active" component={ActiveTrip} />
             <Switch>
                 {/*Global*/}
                 <Route
