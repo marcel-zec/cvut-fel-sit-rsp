@@ -65,7 +65,7 @@ public class DatabaseSeeder implements
         createTrips();
         setAchievementsAndCategories();
         createUsers();
-        //signUsersToTrips();git
+        signUsersToTrips();
 
     }
 
@@ -75,24 +75,7 @@ public class DatabaseSeeder implements
         Trip trip;/* = new Trip("Casablanca Me gusto",15,description,"casablanca_me_gusta",1000,"Casablan, Mexico",2);
         tripDao.persist(trip);
         */TripSession tripSession;
-/*
-        description = "Humanitární akce v imigračním táboře Ušivak v Bosně a Hercegovině. Potřeba znát základy javy, office a nebát se ušpinit si ruce při stavbě skleníku." ;
-        trip = new Trip("projekt „Úsměv pro všechny“",3,description,"usibos",200,"tábor Ušivak, Bosna a Hercegovina",1);
-        tripDao.persist(trip);
-        tripSession = new TripSession(trip, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 0);
-        tripSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-        tripSession = new TripSession(trip, LocalDate.parse("2020-06-12"), LocalDate.parse("2020-06-18"), 0);
-        tripSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-        tripSession = new TripSession(trip, LocalDate.parse("2020-06-18"), LocalDate.parse("2020-06-24"), 0);
-        tripSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-        tripSession = new TripSession(trip, LocalDate.parse("2020-06-24"), LocalDate.parse("2020-06-30"), 0);
-        tripSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-        tripDao.update(trip);
-        */
+
         //priklady tripov a user progressu medzi nimi
         description = "Tento zajezd bude mit cenu za dopravu a kurz, po absolvování se odemkne achievement ´kuchař ryb fugu´, pro absolvování je potřeba mít achievement ´Kuchtík´." ;
         trip = new Trip("Kurz vaření ryb Fugu",10,description,"fugukurz",1000,"Tokyo, Japan",1);
