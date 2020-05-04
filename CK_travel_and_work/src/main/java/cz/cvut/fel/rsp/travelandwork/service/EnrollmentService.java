@@ -1,17 +1,12 @@
 package cz.cvut.fel.rsp.travelandwork.service;
 
-import cz.cvut.fel.rsp.travelandwork.dao.AchievementSpecialDao;
-import cz.cvut.fel.rsp.travelandwork.dao.EnrollmentDao;
-import cz.cvut.fel.rsp.travelandwork.dao.UserDao;
+import cz.cvut.fel.rsp.travelandwork.dao.*;
 import cz.cvut.fel.rsp.travelandwork.dto.AchievementSpecialDto;
 import cz.cvut.fel.rsp.travelandwork.dto.EnrollmentDto;
 import cz.cvut.fel.rsp.travelandwork.dto.RequestWrapperEnrollmentGet;
 import cz.cvut.fel.rsp.travelandwork.exception.NotAllowedException;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
-import cz.cvut.fel.rsp.travelandwork.model.AchievementSpecial;
-import cz.cvut.fel.rsp.travelandwork.model.Enrollment;
-import cz.cvut.fel.rsp.travelandwork.model.EnrollmentState;
-import cz.cvut.fel.rsp.travelandwork.model.User;
+import cz.cvut.fel.rsp.travelandwork.model.*;
 import cz.cvut.fel.rsp.travelandwork.service.security.AccessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -185,7 +180,4 @@ public class EnrollmentService {
         enrollment.setRecieved_achievements_special(enrollment.getTrip().getGain_achievements_special());
         enrollmentDao.update(enrollment);
     }
-
-
-
 }

@@ -66,7 +66,6 @@ public class DatabaseSeeder implements
         setAchievementsAndCategories();
         createUsers();
         signUsersToTrips();
-
     }
 
     @Transactional
@@ -407,7 +406,7 @@ public class DatabaseSeeder implements
         enrollmentDao.update(e);
 
 
-        user = userDao.findAll().get(1);
+        user = userDao.findAll().get(2);
         trip = tripDao.findAll().get(0);
         tripSession = trip.getSessions().get(1);
 
@@ -427,32 +426,32 @@ public class DatabaseSeeder implements
 
         //enrolment ke tripu, ktery ma datum  ukonceni vcera
         tripSession = trip.getSessions().get(3);
-
         signUserToTrip(user, tripSession);
 
         travelJournal = user.getTravel_journal();
         e = travelJournal.getEnrollments().get(0);
         e.setDeposit_was_paid(true);
+        e.setState(EnrollmentState.ACTIVE);
         enrollmentDao.update(e);
 
         //enrolment ke tripu, ktery ma datum  ukonceni predevcirem
         tripSession = trip.getSessions().get(4);
-
         signUserToTrip(user, tripSession);
 
         travelJournal = user.getTravel_journal();
         e = travelJournal.getEnrollments().get(1);
         e.setDeposit_was_paid(false);
+        e.setState(EnrollmentState.ACTIVE);
         enrollmentDao.update(e);
 
         //enrolment ke tripu, ktery ma datum  ukonceni pred tydem
         tripSession = trip.getSessions().get(5);
-
         signUserToTrip(user, tripSession);
 
         travelJournal = user.getTravel_journal();
         e = travelJournal.getEnrollments().get(2);
         e.setDeposit_was_paid(true);
+        e.setState(EnrollmentState.ACTIVE);
         enrollmentDao.update(e);
     }
 
