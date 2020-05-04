@@ -25,20 +25,14 @@ public class EnrollmentService {
     private final AccessService accessService;
     private final UserDao userDao;
     private final AchievementSpecialDao achievementSpecialDao;
-    private final AchievementCategorizedService achievementCategorizedService;
-    private final TravelJournalService travelJournalService;
-    private final TravelJournalDao travelJournalDao;
 
     @Autowired
-    public EnrollmentService(EnrollmentDao enrollmentDao, TranslateService translateService, AccessService accessService, UserDao userDao, AchievementSpecialDao achievementSpecialDao, AchievementCategorizedService achievementCategorizedService1, TravelJournalService travelJournalService, TravelJournalDao travelJournalDao) {
+    public EnrollmentService(EnrollmentDao enrollmentDao, TranslateService translateService, AccessService accessService, UserDao userDao, AchievementSpecialDao achievementSpecialDao) {
         this.enrollmentDao = enrollmentDao;
         this.translateService =  translateService;
         this.accessService = accessService;
         this.userDao = userDao;
         this.achievementSpecialDao = achievementSpecialDao;
-        this.achievementCategorizedService = achievementCategorizedService1;
-        this.travelJournalService = travelJournalService;
-        this.travelJournalDao = travelJournalDao;
     }
 
     private List<Enrollment> findAll(){
@@ -176,24 +170,5 @@ public class EnrollmentService {
         enrollment.setActual_xp_reward(enrollment.getTrip().getPossible_xp_reward());
         enrollment.setRecieved_achievements_special(enrollment.getTrip().getGain_achievements_special());
         enrollmentDao.update(enrollment);
-    }
-
-    //this should be used after finalizing/closing the enrollment and adding new trip to hashmap in travel journal
-    private void checkCategorizedAchievements(Category category, TravelJournal currentTravelJournal) {
-        int numberOfTripsInCat = currentTravelJournal.findAndGetCategoryValueIfExists(category);
-        List<AchievementCategorized> categorizedAchievements = achievementCategorizedService.findAllInCategory(category);
-        List<AchievementCategorized> ownedAchievements = currentTravelJournal.getEarnedAchievementsCategorized();
-
-        if((numberOfTripsInCat == -1) || (categorizedAchievements == null)) return;
-
-        for(AchievementCategorized cA : categorizedAchievements) {
-            if((cA.getLimit() <= numberOfTripsInCat) && (!ownedAchievements.contains(cA))) {
-                currentTravelJournal.addEarnedAchievementCategorized(cA);
-                cA.addTravelJournal(currentTravelJournal);
-                achievementCategorizedService.update(cA);
-            }
-        }
-
-        travelJournalDao.update(currentTravelJournal);
     }
 }
