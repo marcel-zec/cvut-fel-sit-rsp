@@ -22,18 +22,16 @@ function ModalCentered(props) {
     }
     */
     let footer = null;
-    if (this.props.button) {
+    if (props && props.button) {
         footer = (
             <Modal.Footer>
                 <Button
                     variant={
-                        this.props.button.variant
-                            ? this.props.button.variant
-                            : "primary"
+                        props.button.variant ? props.button.variant : "primary"
                     }
-                    onClick={(event) => this.props.button.onClick(event)}
+                    onClick={(event) => props.button.onClick(event)}
                 >
-                    {this.props.button.title}
+                    {props.button.title}
                 </Button>
             </Modal.Footer>
         );
