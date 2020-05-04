@@ -30,6 +30,7 @@ public class TravelJournalService {
         Objects.requireNonNull(travelJournal);
         travelJournal.addTrip(trip);
         dao.update(travelJournal);
+        checkCategorizedAchievements(trip.getCategory(), travelJournal);
     }
 
 
