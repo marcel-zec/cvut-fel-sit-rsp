@@ -1,17 +1,12 @@
 package cz.cvut.fel.rsp.travelandwork.service;
 
-import cz.cvut.fel.rsp.travelandwork.dao.AchievementSpecialDao;
-import cz.cvut.fel.rsp.travelandwork.dao.EnrollmentDao;
-import cz.cvut.fel.rsp.travelandwork.dao.UserDao;
+import cz.cvut.fel.rsp.travelandwork.dao.*;
 import cz.cvut.fel.rsp.travelandwork.dto.AchievementSpecialDto;
 import cz.cvut.fel.rsp.travelandwork.dto.EnrollmentDto;
 import cz.cvut.fel.rsp.travelandwork.dto.RequestWrapperEnrollmentGet;
 import cz.cvut.fel.rsp.travelandwork.exception.NotAllowedException;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
-import cz.cvut.fel.rsp.travelandwork.model.AchievementSpecial;
-import cz.cvut.fel.rsp.travelandwork.model.Enrollment;
-import cz.cvut.fel.rsp.travelandwork.model.EnrollmentState;
-import cz.cvut.fel.rsp.travelandwork.model.User;
+import cz.cvut.fel.rsp.travelandwork.model.*;
 import cz.cvut.fel.rsp.travelandwork.service.security.AccessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,14 +25,20 @@ public class EnrollmentService {
     private final AccessService accessService;
     private final UserDao userDao;
     private final AchievementSpecialDao achievementSpecialDao;
+    private final AchievementCategorizedService achievementCategorizedService;
+    private final TravelJournalService travelJournalService;
+    private final TravelJournalDao travelJournalDao;
 
     @Autowired
-    public EnrollmentService(EnrollmentDao enrollmentDao, TranslateService translateService, AccessService accessService, UserDao userDao, AchievementSpecialDao achievementSpecialDao) {
+    public EnrollmentService(EnrollmentDao enrollmentDao, TranslateService translateService, AccessService accessService, UserDao userDao, AchievementSpecialDao achievementSpecialDao, AchievementCategorizedService achievementCategorizedService1, TravelJournalService travelJournalService, TravelJournalDao travelJournalDao) {
         this.enrollmentDao = enrollmentDao;
         this.translateService =  translateService;
         this.accessService = accessService;
         this.userDao = userDao;
         this.achievementSpecialDao = achievementSpecialDao;
+        this.achievementCategorizedService = achievementCategorizedService1;
+        this.travelJournalService = travelJournalService;
+        this.travelJournalDao = travelJournalDao;
     }
 
     private List<Enrollment> findAll(){
@@ -177,6 +178,22 @@ public class EnrollmentService {
         enrollmentDao.update(enrollment);
     }
 
+    //this should be used after finalizing/closing the enrollment and adding new trip to hashmap in travel journal
+    private void checkCategorizedAchievements(Category category, TravelJournal currentTravelJournal) {
+        int numberOfTripsInCat = currentTravelJournal.findAndGetCategoryValueIfExists(category);
+        List<AchievementCategorized> categorizedAchievements = achievementCategorizedService.findAllInCategory(category);
+        List<AchievementCategorized> ownedAchievements = currentTravelJournal.getEarnedAchievementsCategorized();
 
+        if((numberOfTripsInCat == -1) || (categorizedAchievements == null)) return;
 
+        for(AchievementCategorized cA : categorizedAchievements) {
+            if((cA.getLimit() <= numberOfTripsInCat) && (!ownedAchievements.contains(cA))) {
+                currentTravelJournal.addEarnedAchievementCategorized(cA);
+                cA.addTravelJournal(currentTravelJournal);
+                achievementCategorizedService.update(cA);
+            }
+        }
+
+        travelJournalDao.update(currentTravelJournal);
+    }
 }

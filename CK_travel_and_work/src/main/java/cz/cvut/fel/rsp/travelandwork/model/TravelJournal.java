@@ -148,7 +148,8 @@ public class TravelJournal extends AbstractEntity{
         addsXp(trip.getPossible_xp_reward());
     }
 
-    private int findAndGetCategoryValueIfExists(Category category){
+    //if it has to be private we can copy it, but it would be great to have this accesible in services
+    public int findAndGetCategoryValueIfExists(Category category){
         for (Category key: this.trip_counter.keySet()) {
             if(key.equals(category)){
                 return this.trip_counter.get(key);

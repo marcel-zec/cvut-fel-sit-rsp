@@ -50,4 +50,8 @@ public class AchievementSpecial extends Achievement {
     public void setRecieved_via_enrollments(List<Enrollment> recieved_via_enrollments) {
         this.recieved_via_enrollments = recieved_via_enrollments;
     }
+
+    public void addTravelJournal(TravelJournal travelJournal) {
+        this.owned_travel_journals.add(travelJournal);
+    }
 }
