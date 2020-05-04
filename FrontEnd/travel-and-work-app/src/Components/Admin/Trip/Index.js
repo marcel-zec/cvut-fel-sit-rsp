@@ -1,6 +1,13 @@
 import React from "react";
 import Form from "react-bootstrap/Form";
-import { Col, Button, Row, Table } from "react-bootstrap";
+import {
+    Col,
+    Button,
+    Row,
+    Table,
+    OverlayTrigger,
+    Tooltip,
+} from "react-bootstrap";
 import { Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Spinner from "react-bootstrap/Spinner";
@@ -53,12 +60,47 @@ class Index extends React.Component {
                             <td>{element.possible_xp_reward}</td>
                             <td>{element.deposit}</td>
                             <td>
-                                <Link
-                                    className="p-3"
-                                    to={"trip/" + element.short_name + "/edit"}
+                                <OverlayTrigger
+                                    key="participants"
+                                    overlay={
+                                        <Tooltip>
+                                            Show participants registered to
+                                            trip.
+                                        </Tooltip>
+                                    }
                                 >
-                                    <FontAwesomeIcon icon="cog" />
-                                </Link>
+                                    <Link
+                                        className="p-3"
+                                        to={
+                                            "trip/" +
+                                            element.short_name +
+                                            "/participants"
+                                        }
+                                    >
+                                        <FontAwesomeIcon
+                                            icon="address-card"
+                                            size="lg"
+                                        />
+                                    </Link>
+                                </OverlayTrigger>
+
+                                <OverlayTrigger
+                                    key="edit"
+                                    overlay={
+                                        <Tooltip>Edit trip attributes.</Tooltip>
+                                    }
+                                >
+                                    <Link
+                                        className="p-3"
+                                        to={
+                                            "trip/" +
+                                            element.short_name +
+                                            "/edit"
+                                        }
+                                    >
+                                        <FontAwesomeIcon icon="cog" size="lg" />
+                                    </Link>
+                                </OverlayTrigger>
 
                                 <Link className="p-3">
                                     <FontAwesomeIcon icon="trash-alt" />

@@ -10,6 +10,7 @@ import ProfileAchievments from "./Components/Profile/ProfileAchievments";
 import CreateTrip from "./Components/Admin/Trip/Create";
 import EditTrip from "./Components/Admin/Trip/Edit";
 import IndexTrip from "./Components/Admin/Trip/Index";
+import IndexParticipants from "./Components/Admin/Trip/Participants/Index";
 import Register from "./Components/Register";
 import { Redirect, Switch, Route } from "react-router-dom";
 import TripDetail from "./Components/Home/Trip/Detail";
@@ -115,11 +116,23 @@ function Router(props) {
                         return allowAuthWithRole(<CreateTrip />, ROLE_ADMIN);
                     }}
                 />
+
                 <Route
                     path="/trip/:id/edit"
                     exact
                     render={() => {
                         return allowAuthWithRole(<EditTrip />, ROLE_ADMIN);
+                    }}
+                />
+
+                <Route
+                    path="/trip/:id/participants"
+                    exact
+                    render={() => {
+                        return allowAuthWithRole(
+                            <IndexParticipants />,
+                            ROLE_ADMIN
+                        );
                     }}
                 />
 
