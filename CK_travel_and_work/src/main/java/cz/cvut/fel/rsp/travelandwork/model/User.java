@@ -65,6 +65,7 @@ public class User extends AbstractEntity {
 
     public User() {
         this.role = Role.USER;
+        this.tripReviews = new ArrayList<>();
         this.userReviews = new ArrayList<>();
         this.userReviewsAuthor = new ArrayList<>();
     }
@@ -78,6 +79,7 @@ public class User extends AbstractEntity {
         this.userReviewsAuthor = new ArrayList<>();
         this.role = Role.USER;
         this.travel_journal = new TravelJournal();
+        this.tripReviews = new ArrayList<>();
     }
 
     public User(
@@ -157,13 +159,10 @@ public class User extends AbstractEntity {
 
 
     public List<TripReview> getTripReviews() {
-        if (tripReviews == null) tripReviews = new ArrayList<TripReview>();
         return tripReviews;
     }
 
     public void addReview(TripReview tripReview) {
-
-         if (tripReviews == null) tripReviews = new ArrayList<TripReview>();
          tripReviews.add(tripReview);
     }
 
@@ -186,25 +185,21 @@ public class User extends AbstractEntity {
 
 
     public List<UserReview> getUserReviews() {
-
         return userReviews;
     }
 
 
     public void setUserReviews(List<UserReview> userReviews) {
-
         this.userReviews = userReviews;
     }
 
 
     public List<UserReview> getUserReviewsAuthor() {
-
         return userReviewsAuthor;
     }
 
 
     public void setUserReviewsAuthor(List<UserReview> userReviewsAuthor) {
-
         this.userReviewsAuthor = userReviewsAuthor;
     }
 

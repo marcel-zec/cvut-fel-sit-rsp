@@ -93,21 +93,27 @@ public class TripService {
 //      TODO odkomentovat ked bude otestovane ukoncovanie tripov
 //       if (tripSession.getFrom_date().isBefore(ChronoLocalDate.from(LocalDateTime.now()))) throw new NotAllowedException();
         User user = userDao.find(current_user.getId());
-        Enrollment enrollment = new Enrollment();
 
-        enrollment.setDeposit_was_paid(false);
-        enrollment.setEnrollDate(LocalDateTime.now());
-        enrollment.setActual_xp_reward(0);
-        enrollment.setTrip(tripSession.getTrip());
-        enrollment.setState(EnrollmentState.ACTIVE);
-        enrollment.setTripSession(tripSession);
-        enrollment.setTravelJournal(user.getTravel_journal());
+        if(checkOwnedAchievements(user.getTravel_journal(), tripSession.getTrip())) {
+            Enrollment enrollment = new Enrollment();
 
-        System.out.println(enrollment.toString());
+            enrollment.setDeposit_was_paid(false);
+            enrollment.setEnrollDate(LocalDateTime.now());
+            enrollment.setActual_xp_reward(0);
+            enrollment.setTrip(tripSession.getTrip());
+            enrollment.setState(EnrollmentState.ACTIVE);
+            enrollment.setTripSession(tripSession);
+            enrollment.setTravelJournal(user.getTravel_journal());
 
-        enrollmentDao.persist(enrollment);
-        user.getTravel_journal().addEnrollment(enrollment);
-        travelJournalDao.update(user.getTravel_journal());
+            System.out.println(enrollment.toString());
+
+            enrollmentDao.persist(enrollment);
+            user.getTravel_journal().addEnrollment(enrollment);
+            travelJournalDao.update(user.getTravel_journal());
+        }
+        else {
+            System.out.println("!USER DID NOT GET SIGNED UP TO TRIP!");
+        }
     }
 
     @Transactional
@@ -186,12 +192,44 @@ public class TripService {
     }
 
 
-    public List<Trip> getAllTripsByFilter(String location, String from_date, String to_date, double maxPrice) {
+    public List<TripDto> getAllTripsByFilter(String location, String from_date, String to_date, double maxPrice) {
 
+        List<TripDto> tripDtos = new ArrayList<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate local_to_date = LocalDate.parse(to_date, formatter);
         LocalDate local_from_date = LocalDate.parse(from_date, formatter);
 
-        return tripDao.findByFilter(location,  local_from_date, local_to_date, maxPrice);
+        for (Trip trip : tripDao.findByFilter(location,  local_from_date, local_to_date, maxPrice)) {
+            tripDtos.add(translateService.translateTrip(trip));
+        }
+
+        return tripDtos;
+    }
+
+    public boolean checkOwnedAchievements(TravelJournal usersJournal, Trip trip) {
+        List<AchievementCategorized> ownedCat = usersJournal.getEarnedAchievementsCategorized();
+        List<AchievementCertificate> ownedCer = usersJournal.getCertificates();
+        List<AchievementSpecial> ownedSpec = usersJournal.getEarnedAchievementsSpecial();
+
+        for (AchievementCategorized ac : trip.getRequired_achievements_categorized()) {
+            if(!ownedCat.contains(ac)) {
+                System.out.println("UserJournal " + usersJournal + " lacks this achievement" + ac.getName());
+                return false;
+            }
+        }
+        for(AchievementSpecial as : trip.getRequired_achievements_special()) {
+            if(!ownedSpec.contains(as)) {
+                System.out.println("UserJournal " + usersJournal + " lacks this achievement" + as.getName());
+                return false;
+            }
+        }
+        for(AchievementCertificate ac : trip.getRequired_achievements_certificate()) {
+            if(!ownedCer.contains(ac)) {
+                System.out.println("UserJournal " + usersJournal + " lacks this achievement" + ac.getName());
+                return false;
+            }
+        }
+
+        return true;
     }
 }
