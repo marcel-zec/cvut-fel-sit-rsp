@@ -12,8 +12,6 @@ import java.time.LocalDateTime;
 @Table(name = "USER_REVIEW")
 public class UserReview extends AbstractEntity {
 
-    @Basic(optional = false)
-    @Column(nullable = false)
     @Size(max = 255, min = 0, message = "Max 255 characters.")
     private String note;
 

@@ -1,5 +1,8 @@
 package cz.cvut.fel.rsp.travelandwork.dto;
 
+import cz.cvut.fel.rsp.travelandwork.model.TripSession;
+import cz.cvut.fel.rsp.travelandwork.security.SessionTimeoutManager;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.List;
@@ -52,12 +55,15 @@ public class TripDto {
     private List<AchievementCategorizedDto> required_achievements_categorized;
     private List<AchievementSpecialDto> required_achievements_special;
     private List<AchievementSpecialDto> gain_achievements_special;
-    private List<Long> sessionsID;
+    private List<TripSessionDto> sessions;
 
     public TripDto() {
     }
 
-    public TripDto(@NotNull(message = "Id cannot be blank") Long id, @Size(max = 255, min = 3, message = "Name has to be from 3 to 255 characters.") @NotNull(message = "Name has to be from 3 to 255 characters.") String name, @Size(max = 100, min = 3, message = "Short name has to be from 3 to 100 characters.") @NotNull(message = "Short name has to be from 3 to 100 characters.") String short_name, @Min(value = 0, message = "Min 0") @Max(value = 20, message = "Max 20") int possible_xp_reward, @Size(max = 3000, min = 0, message = "Max 3000 characters.") String description, @Min(value = 0, message = "Min 0") @Max(value = 5, message = "Max 5") double rating, @Min(value = 0, message = "Min 0") @Max(value = 10000, message = "Max 10 000") double deposit, @Size(max = 200, min = 0, message = "Max 200 characters.") String location, @Min(value = 0, message = "Min 0") int required_level, Long categoryId, List<AchievementCertificateDto> required_certificates, List<AchievementCategorizedDto> required_achievements_categorized, List<AchievementSpecialDto> required_achievements_special, List<AchievementSpecialDto> gain_achievements, List<Long> sessionsID) {
+    public TripDto(@NotNull(message = "Id cannot be blank") Long id, @Size(max = 255, min = 3, message = "Name has to be from 3 to 255 characters.") @NotNull(message = "Name has to be from 3 to 255 characters.") String name, @Size(max = 100, min = 3, message = "Short name has to be from 3 to 100 characters.") @NotNull(message = "Short name has to be from 3 to 100 characters.") String short_name,
+                   @Min(value = 0, message = "Min 0") @Max(value = 20, message = "Max 20") int possible_xp_reward, @Size(max = 3000, min = 0, message = "Max 3000 characters.") String description, @Min(value = 0, message = "Min 0") @Max(value = 5, message = "Max 5") double rating,
+                   @Min(value = 0, message = "Min 0") @Max(value = 10000, message = "Max 10 000") double deposit, @Size(max = 200, min = 0, message = "Max 200 characters.") String location, @Min(value = 0, message = "Min 0") int required_level, Long categoryId, List<AchievementCertificateDto> required_certificates,
+                   List<AchievementCategorizedDto> required_achievements_categorized, List<AchievementSpecialDto> required_achievements_special, List<AchievementSpecialDto> gain_achievements, List<TripSessionDto> sessions) {
         this.id = id;
         this.name = name;
         this.short_name = short_name;
@@ -72,7 +78,7 @@ public class TripDto {
         this.required_achievements_categorized = required_achievements_categorized;
         this.required_achievements_special = required_achievements_special;
         this.gain_achievements_special = gain_achievements;
-        this.sessionsID = sessionsID;
+        this.sessions = sessions;
     }
 
     public String getName() {
@@ -214,15 +220,15 @@ public class TripDto {
         this.gain_achievements_special = gain_achievements;
     }
 
-    public List<Long> getSessionsID() {
+    public List<TripSessionDto> getSessionsID() {
 
-        return sessionsID;
+        return sessions;
     }
 
 
-    public void setSessionsID(List<Long> sessionsID) {
+    public void setSessionsID(List<TripSessionDto> sessions) {
 
-        this.sessionsID = sessionsID;
+        this.sessions = sessions;
     }
 
 
@@ -254,7 +260,7 @@ public class TripDto {
                 ", required_achievements_categorized=" + required_achievements_categorized +
                 ", required_achievements_special=" + required_achievements_special +
                 ", gain_achievements_special=" + gain_achievements_special +
-                ", sessionsID=" + sessionsID +
+                ", sessionsDto=" + sessions +
                 '}';
     }
 }
