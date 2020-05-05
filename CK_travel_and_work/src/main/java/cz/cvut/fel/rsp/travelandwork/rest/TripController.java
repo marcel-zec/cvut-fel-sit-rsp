@@ -31,11 +31,6 @@ public class TripController {
         this.tripService = tripService;
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Trip> getAll() {
-        return tripService.findAll();
-    }
-
     //endpoint looks like that: localhost:8080/trip/filter?location=Tokyo, Japan&max_price=4000&from_date=2020-06-07&to_date=2020-06-18
     @GetMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Trip> getAllTripsByFilter(@RequestParam(value = "location", required = false) String location, @RequestParam String from_date,
@@ -43,8 +38,8 @@ public class TripController {
         return tripService.getAllTripsByFilter(location, from_date, to_date, maxPrice);
     }
 
-    @GetMapping(value = "/shortcut", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<TripDto> getAllDto() {
+    @GetMapping( produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<TripDto> getAll() {
         return tripService.findAllDto();
     }
 
