@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -53,7 +55,7 @@ public class EnrollmentService {
     @Transactional
     public RequestWrapperEnrollmentGet findActiveEndedWithUser(Long enrollId) throws NotAllowedException {
         RequestWrapperEnrollmentGet wrapperEnrollmentGet = new RequestWrapperEnrollmentGet();
-        if (findDto(enrollId).getState() != EnrollmentState.ACTIVE || findDto(enrollId).getTripSession().getTo_date().isBefore(ChronoLocalDate.from(LocalDateTime.now()))) throw new NotAllowedException();
+        if (findDto(enrollId).getState() != EnrollmentState.ACTIVE || findDto(enrollId).getTripSession().getTo_date().isAfter(ChronoLocalDate.from(LocalDateTime.now()))) throw new NotAllowedException();
         wrapperEnrollmentGet.setEnrollmentDto(translateService.translateEnrollment(find(enrollId)));
         wrapperEnrollmentGet.setOwner(translateService.translateUser(userDao.find(find(enrollId).getTravelJournal().getUser().getId())));
         return wrapperEnrollmentGet;
@@ -81,6 +83,13 @@ public class EnrollmentService {
                 newEnrollments.add(e);
             }
         }
+        Collections.sort(newEnrollments, new Comparator<Enrollment>() {
+            @Override
+            public int compare(Enrollment e1, Enrollment e2)
+            {
+                return  e1.getTripSession().getTo_date().compareTo(e2.getTripSession().getTo_date());
+            }
+        });
         return newEnrollments;
     }
 
@@ -166,9 +175,10 @@ public class EnrollmentService {
     @Transactional
     public void closeOk(Long id){
         Enrollment enrollment = find(id);
+        List<AchievementSpecial> achievementSpecials = enrollment.getTrip().getGain_achievements_special();
         enrollment.setState(EnrollmentState.FINISHED);
         enrollment.setActual_xp_reward(enrollment.getTrip().getPossible_xp_reward());
-        enrollment.setRecieved_achievements_special(enrollment.getTrip().getGain_achievements_special());
+        enrollment.setRecieved_achievements_special(achievementSpecials);
         enrollmentDao.update(enrollment);
     }
 }

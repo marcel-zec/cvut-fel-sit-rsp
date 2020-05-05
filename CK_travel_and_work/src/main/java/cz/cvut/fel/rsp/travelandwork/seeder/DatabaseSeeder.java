@@ -3,6 +3,7 @@ package cz.cvut.fel.rsp.travelandwork.seeder;
 import cz.cvut.fel.rsp.travelandwork.dao.*;
 import cz.cvut.fel.rsp.travelandwork.dto.TripSessionDto;
 import cz.cvut.fel.rsp.travelandwork.dto.UserDto;
+import cz.cvut.fel.rsp.travelandwork.exception.NotAllowedException;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
 import cz.cvut.fel.rsp.travelandwork.model.*;
 import cz.cvut.fel.rsp.travelandwork.service.EnrollmentService;
@@ -65,7 +66,11 @@ public class DatabaseSeeder implements
         createTrips();
         setAchievementsAndCategories();
         createUsers();
-        signUsersToTrips();
+        try {
+            signUsersToTrips();
+        } catch (NotAllowedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Transactional
@@ -373,7 +378,7 @@ public class DatabaseSeeder implements
         System.out.println("Test admin persist.");
     }
 
-    void signUsersToTrips() {
+    void signUsersToTrips() throws NotAllowedException {
         User user = userDao.findAll().get(0);
         Trip trip = tripDao.findAll().get(0);
         TripSession tripSession = trip.getSessions().get(0);
@@ -455,7 +460,7 @@ public class DatabaseSeeder implements
         enrollmentDao.update(e);
     }
 
-    void signUserToTrip(User user, TripSession tripSession) {
+    void signUserToTrip(User user, TripSession tripSession) throws NotAllowedException {
         TripSessionDto tripSessionDto;
 
         tripSessionDto = translateService.translateSession(tripSession);

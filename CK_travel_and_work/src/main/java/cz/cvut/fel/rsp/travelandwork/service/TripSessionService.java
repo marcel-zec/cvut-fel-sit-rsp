@@ -2,9 +2,9 @@ package cz.cvut.fel.rsp.travelandwork.service;
 
 import cz.cvut.fel.rsp.travelandwork.dao.TripDao;
 import cz.cvut.fel.rsp.travelandwork.dao.TripSessionDao;
-import cz.cvut.fel.rsp.travelandwork.dto.TripDto;
-import cz.cvut.fel.rsp.travelandwork.dto.TripSessionDto;
+import cz.cvut.fel.rsp.travelandwork.dto.*;
 import cz.cvut.fel.rsp.travelandwork.exception.MissingVariableException;
+import cz.cvut.fel.rsp.travelandwork.model.Enrollment;
 import cz.cvut.fel.rsp.travelandwork.model.TripSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,6 +57,23 @@ public class TripSessionService {
         oldSession.setTrip(newSession.getTrip());
         tripSessionDao.update(oldSession);
         return oldSession;
+    }
+
+    @Transactional
+    public List<RequestWrapperTripSessionsParticipants> findAllParticipants(String trip_short_name){
+        List<TripSession> tripSessions = tripSessionDao.find(trip_short_name);
+        List<RequestWrapperTripSessionsParticipants> response = new ArrayList<RequestWrapperTripSessionsParticipants>();
+        for (TripSession session:tripSessions) {
+            List<RequestWrapperEnrollmentGet> enrollments = new ArrayList<RequestWrapperEnrollmentGet>();
+            for (Enrollment enrollment :session.getEnrollments()) {
+                UserDto userDto = translateService.translateUser(enrollment.getTravelJournal().getUser());
+                EnrollmentDto enrollmentDto = translateService.translateEnrollment(enrollment);
+                enrollments.add(new RequestWrapperEnrollmentGet(enrollmentDto,userDto));
+            }
+
+            response.add(new RequestWrapperTripSessionsParticipants(translateService.translateSession(session),enrollments));
+        }
+        return response;
     }
 
 }

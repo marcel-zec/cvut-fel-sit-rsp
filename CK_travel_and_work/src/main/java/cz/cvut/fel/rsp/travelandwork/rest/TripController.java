@@ -80,7 +80,7 @@ public class TripController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping(value = "/{identificator}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void signUpToTrip(@RequestBody TripSessionDto tripSessionDto) {
+    public void signUpToTrip(@RequestBody TripSessionDto tripSessionDto) throws NotAllowedException {
         //ResponseEntity<Void>
         //return new ResponseEntity<>(headers, HttpStatus.SUCCESS);
         tripService.signUpToTrip(tripSessionDto, SecurityUtils.getCurrentUser());

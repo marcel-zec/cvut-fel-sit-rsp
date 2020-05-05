@@ -53,6 +53,7 @@ import {
 import { faStar as emptyStar } from "@fortawesome/free-regular-svg-icons";
 import { appContext } from "./appContext";
 import Cookies from "js-cookie";
+import { Container, Spinner } from "react-bootstrap";
 
 //allow use string names of icons from FontAwesome
 library.add(
@@ -103,6 +104,7 @@ library.add(
 class App extends React.Component {
     state = {
         user: null,
+        loginTry: false,
     };
 
     logout = () => {
@@ -116,33 +118,39 @@ class App extends React.Component {
         console.log(this.state.user);
     };
 
-    componentDidMount() {
-        this.tryLogin();
-    }
-
-    tryLogin = () => {
+    componentDidMount = async () => {
         if (Cookies.get("JSESSIONID") && this.state.user == null) {
-            console.log("app condition");
-            fetch(`http://localhost:8080/user/current`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                credentials: "include",
-            })
-                .then((response) => {
-                    if (response.ok) return response.json();
-                    else {
-                        this.logout();
-                        return null;
-                    }
-                })
-                .then((data) => {
-                    console.log(data);
-                    this.login(data);
-                });
+            console.log("tryiiiiiiing");
+            await this.tryLogin();
+            console.log("after try");
         }
+        console.log("after condition");
+        this.setState({ tryLogin: true });
+    };
+
+    tryLogin = async () => {
         console.log("try login");
+
+        await fetch(`http://localhost:8080/user/current`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            credentials: "include",
+        })
+            .then((response) => {
+                if (response.ok) return response.json();
+                else throw Error(response.status);
+            })
+            .then((data) => {
+                this.login(data);
+                console.log("after login");
+            })
+            .catch((error) => {
+                this.logout();
+                console.log("after logout");
+                console.error(error);
+            });
     };
 
     render() {
@@ -154,18 +162,27 @@ class App extends React.Component {
         };
 
         console.log(value);
-        return (
-            //obalia sa vsetky komponenty, ktore maju zvladat routovanie
-            <appContext.Provider value={value}>
-                <BrowserRouter>
-                    <div className="App">
-                        <Navigation />
-                        <Router />
-                        {/* router z Router.js */}
-                    </div>
-                </BrowserRouter>
-            </appContext.Provider>
-        );
+        if (this.state.tryLogin) {
+            return (
+                <appContext.Provider value={value}>
+                    <BrowserRouter>
+                        <div className="App">
+                            <Navigation />
+                            <Router />
+                            {/* router z Router.js */}
+                        </div>
+                    </BrowserRouter>
+                </appContext.Provider>
+            );
+        } else {
+            return (
+                <Container className="p-5">
+                    <Spinner animation="border" role="status">
+                        <span className="sr-only">Loading...</span>
+                    </Spinner>
+                </Container>
+            );
+        }
     }
 }
 

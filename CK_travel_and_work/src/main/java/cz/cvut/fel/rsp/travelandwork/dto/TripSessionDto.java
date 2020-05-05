@@ -26,17 +26,17 @@ public class TripSessionDto {
     private double price;
 
     @Basic(optional = false)
-    private TripDto tripDto;
+    private Long tripDtoId;
 
 
     public TripSessionDto(@NotNull(message = "Id cannot be blank") Long id, @FutureOrPresent LocalDate from_date, @FutureOrPresent LocalDate to_date, @Min(value = 0, message = "Min 0") @Max(value = 99999, message = "Max 99999") double price,
-                          TripDto tripDto) {
+                          Long tripDtoId) {
 
         this.id = id;
         this.from_date = from_date;
         this.to_date = to_date;
         this.price = price;
-        this.tripDto = tripDto;
+        this.tripDtoId = tripDtoId;
     }
 
 
@@ -80,15 +80,15 @@ public class TripSessionDto {
     }
 
 
-    public TripDto getTripDto() {
+    public Long getTripDto() {
 
-        return tripDto;
+        return tripDtoId;
     }
 
 
-    public void setTripDto(TripDto tripDto) {
+    public void setTripDto(Long tripDto) {
 
-        this.tripDto = tripDto;
+        this.tripDtoId = tripDto;
     }
 
 
