@@ -12,7 +12,6 @@ import java.util.List;
 public class Enrollment extends AbstractEntity {
     @Basic(optional = false)
     @Column(nullable = false)
-    @JsonFormat(pattern = "yyyy-MM-dd")
     @PastOrPresent
     private LocalDateTime enrollDate;
 

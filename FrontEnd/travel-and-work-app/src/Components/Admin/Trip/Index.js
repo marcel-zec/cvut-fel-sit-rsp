@@ -1,6 +1,13 @@
 import React from "react";
 import Form from "react-bootstrap/Form";
-import { Col, Button, Row, Table } from "react-bootstrap";
+import {
+    Col,
+    Button,
+    Row,
+    Table,
+    OverlayTrigger,
+    Tooltip,
+} from "react-bootstrap";
 import { Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Spinner from "react-bootstrap/Spinner";
@@ -9,14 +16,26 @@ import ButtonInRow from "../../SmartGadgets/ButtonInRow";
 import { appContext } from "../../../appContext";
 
 class Index extends React.Component {
+    static contextType = appContext;
     state = { trips: null };
     async componentDidMount() {
-        const response = await fetch(`http://localhost:8080/trip`);
-        const data = await response.json();
-        console.log(data);
-        this.setState({ trips: data });
-        console.log("cookieeeeeIndexAdmin");
-        console.log(document.cookie);
+        await fetch(`http://localhost:8080/trip`, {
+            method: "GET",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((response) => {
+                if (response.ok) return response.json();
+                else console.error(response.status);
+            })
+            .then((data) => {
+                this.setState({ trips: data });
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }
 
     render() {
@@ -41,12 +60,47 @@ class Index extends React.Component {
                             <td>{element.possible_xp_reward}</td>
                             <td>{element.deposit}</td>
                             <td>
-                                <Link
-                                    className="p-3"
-                                    to={"trip/" + element.short_name + "/edit"}
+                                <OverlayTrigger
+                                    key="participants"
+                                    overlay={
+                                        <Tooltip>
+                                            Show participants registered to
+                                            trip.
+                                        </Tooltip>
+                                    }
                                 >
-                                    <FontAwesomeIcon icon="cog" />
-                                </Link>
+                                    <Link
+                                        className="p-3"
+                                        to={
+                                            "trip/" +
+                                            element.short_name +
+                                            "/participants"
+                                        }
+                                    >
+                                        <FontAwesomeIcon
+                                            icon="address-card"
+                                            size="lg"
+                                        />
+                                    </Link>
+                                </OverlayTrigger>
+
+                                <OverlayTrigger
+                                    key="edit"
+                                    overlay={
+                                        <Tooltip>Edit trip attributes.</Tooltip>
+                                    }
+                                >
+                                    <Link
+                                        className="p-3"
+                                        to={
+                                            "trip/" +
+                                            element.short_name +
+                                            "/edit"
+                                        }
+                                    >
+                                        <FontAwesomeIcon icon="cog" size="lg" />
+                                    </Link>
+                                </OverlayTrigger>
 
                                 <Link className="p-3">
                                     <FontAwesomeIcon icon="trash-alt" />
@@ -57,6 +111,18 @@ class Index extends React.Component {
                 });
             }
 
+            /**
+             * Alert (flash message) from this.props.location.alert
+             */
+            let alert = null;
+            if (
+                this.props.location &&
+                this.props.location.hasOwnProperty("alert")
+            ) {
+                console.log(this.props.location);
+                alert = this.props.location.alert;
+            }
+
             return (
                 <Container>
                     <ButtonInRow
@@ -65,6 +131,8 @@ class Index extends React.Component {
                         side="right"
                         label="Add trip"
                     />
+
+                    {alert}
 
                     <Table striped bordered hover>
                         <thead>

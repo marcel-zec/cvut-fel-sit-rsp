@@ -66,8 +66,6 @@ public class DatabaseSeeder implements
         setAchievementsAndCategories();
         createUsers();
         signUsersToTrips();
-        System.out.println("!!!!!!!!" + userDao.findAll().toString());
-        System.out.println("!!!!!!!!" + userDao.findAll().get(1).getTravel_journal().getEnrollments().toString());
     }
 
     @Transactional

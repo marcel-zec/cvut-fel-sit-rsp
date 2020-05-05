@@ -10,10 +10,25 @@ import ButtonInRow from "../../SmartGadgets/ButtonInRow";
 class Index extends React.Component {
     state = { users: null };
     async componentDidMount() {
-        const response = await fetch(`http://localhost:8080/user`);
-        const data = await response.json();
-        console.log(data);
-        this.setState({ users: data });
+        fetch("http://localhost:8080/user", {
+            method: "GET",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((response) => {
+                if (response.ok) return response.json();
+                else throw Error(response.status);
+            })
+            .then((data) => {
+                this.setState({ users: data });
+                console.log(data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }
 
     render() {
@@ -36,14 +51,17 @@ class Index extends React.Component {
                             <td>{element.email}</td>
                             <td>{element.address.country}</td>
                             <td>{element.address.city}</td>
-                            <td>
+                            <td>{element.address.zipCode}</td>
+                            <td>{element.address.street}</td>
+                            <td>{element.address.houseNumber}</td>
+                            {/*<td>
                                 <Link
                                     className="p-3"
                                     to={"/user/" + element.id}
                                 >
                                     <FontAwesomeIcon icon="cog" />
                                 </Link>
-                            </td>
+                            </td>*/}
                         </tr>
                     );
                 });
@@ -59,7 +77,10 @@ class Index extends React.Component {
                                 <th>E-mail</th>
                                 <th>Country</th>
                                 <th>City</th>
-                                <th>Settings</th>
+                                <th>Zipcode</th>
+                                <th>Street</th>
+                                <th>House number</th>
+                                {/*<th>Settings</th>*/}
                             </tr>
                         </thead>
                         <tbody>{tableRows}</tbody>

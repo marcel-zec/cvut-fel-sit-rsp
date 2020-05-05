@@ -12,6 +12,7 @@ import {
     validationFeedback,
     validationClassName,
 } from "../../../Validator";
+import MyAlert from "../../SmartGadgets/MyAlert";
 
 class Edit extends React.Component {
     state = {
@@ -240,47 +241,100 @@ class Edit extends React.Component {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(this.state.trip),
-            }).then((response) => {
-                if (response.ok) this.props.history.push("/trip");
-                //TODO - osetrenie vynimiek
-                else console.log("Error: somethhing goes wrong");
-            });
+            })
+                .then((response) => {
+                    if (response.ok) {
+                        this.props.history.push({
+                            pathname: "/trip",
+                            alert: <MyAlert text="Trip updated" flash={true} />,
+                        });
+                    } else console.error(response.status);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
         }
     };
 
     async componentDidMount() {
-        const response = await fetch(
-            `http://localhost:8080/trip/` + this.props.match.params.id
-        );
-        const data = await response.json();
-        console.log(data);
-        this.setState({ trip: data });
+        const requestSettings = {
+            method: "GET",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        };
+        await fetch(
+            `http://localhost:8080/trip/` + this.props.match.params.id,
+            requestSettings
+        )
+            .then((response) => {
+                if (response.ok) return response.json();
+                else console.error(response.status);
+            })
+            .then((data) => {
+                this.setState({ trip: data });
+            })
+            .catch((error) => {
+                console.error(error);
+            });
 
-        const response1 = await fetch(`http://localhost:8080/category`);
-        const data1 = await response1.json();
-        console.log(data1);
-        this.setState({ categories: data1 });
+        await fetch(`http://localhost:8080/category`, requestSettings)
+            .then((response) => {
+                if (response.ok) return response.json();
+                else console.error(response.status);
+            })
+            .then((data) => {
+                this.setState({ categories: data });
+            })
+            .catch((error) => {
+                console.error(error);
+            });
 
-        const response2 = await fetch(
-            `http://localhost:8080/achievement/categorized`
-        );
-        const data2 = await response2.json();
-        console.log(data2);
-        this.setState({ achievements_categorized: data2 });
+        await fetch(
+            `http://localhost:8080/achievement/categorized`,
+            requestSettings
+        )
+            .then((response) => {
+                if (response.ok) return response.json();
+                else console.error(response.status);
+            })
+            .then((data) => {
+                this.setState({ achievements_categorized: data });
+            })
+            .catch((error) => {
+                console.error(error);
+            });
 
-        const response3 = await fetch(
-            `http://localhost:8080/achievement/special`
-        );
-        const data3 = await response3.json();
-        console.log(data3);
-        this.setState({ achievements_special: data3 });
+        await fetch(
+            `http://localhost:8080/achievement/special`,
+            requestSettings
+        )
+            .then((response) => {
+                if (response.ok) return response.json();
+                else console.error(response.status);
+            })
+            .then((data) => {
+                this.setState({ achievements_special: data });
+            })
+            .catch((error) => {
+                console.error(error);
+            });
 
-        const response4 = await fetch(
-            `http://localhost:8080/achievement/certificate`
-        );
-        const data4 = await response4.json();
-        console.log(data4);
-        this.setState({ achievements_certificate: data4 });
+        await fetch(
+            `http://localhost:8080/achievement/certificate`,
+            requestSettings
+        )
+            .then((response) => {
+                if (response.ok) return response.json();
+                else console.error(response.status);
+            })
+            .then((data) => {
+                this.setState({ achievements_certificate: data });
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }
 
     render() {
