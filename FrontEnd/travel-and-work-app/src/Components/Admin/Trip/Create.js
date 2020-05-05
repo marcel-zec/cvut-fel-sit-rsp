@@ -644,7 +644,7 @@ class Create extends React.Component {
                             selectedRequired={[]}
                         />
 
-                        <FormGroup
+                        <Form.Group
                             className={validationClassName(
                                 "sessions",
                                 this.state.form
@@ -655,7 +655,7 @@ class Create extends React.Component {
                                 sessions={this.state.trip.sessions}
                                 forDeleteSession={this.sessionDeleteHandler}
                             />
-                        </FormGroup>
+                        </Form.Group>
                         <div class="invalid-feedback">
                             {this.state.form.elements.sessions.feedback}
                         </div>
