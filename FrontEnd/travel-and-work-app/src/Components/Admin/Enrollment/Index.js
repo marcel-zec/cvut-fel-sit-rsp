@@ -3,8 +3,10 @@ import { Table, Tooltip, OverlayTrigger } from "react-bootstrap";
 import { Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Spinner from "react-bootstrap/Spinner";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import ButtonInRow from "../../SmartGadgets/ButtonInRow";
+import ModalCentered from "../../SmartGadgets/ModalCentered";
+import MyAlert from "../../SmartGadgets/MyAlert";
 
 class Index extends React.Component {
     state = {
@@ -13,31 +15,98 @@ class Index extends React.Component {
             show: false,
             title: null,
             description: null,
-            buttin: {
+            button: {
                 title: "Close",
-                onClick: null,
+                onClick: this.submitHandler,
             },
         },
     };
 
-    submitHandler = (event) => {
-        event.preventDefault();
-        console.log("submiting");
+    submitHandler = async (event, enrollment) => {
+        await fetch(`http://localhost:8080/enrollment/close/` + enrollment.id, {
+            method: "POST",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((response) => {
+                if (response.ok) {
+                    this.onHideModalHandler();
+                    this.fetchData();
+                    this.props.history.push({
+                        alert: <MyAlert text="Trip closed" flash={true} />,
+                    });
+                } else console.error(response.status);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     };
 
-    async componentDidMount() {
-        const response = await fetch(`http://localhost:8080/enrollment/close`, {
+    fetchData = async () => {
+        await fetch(`http://localhost:8080/enrollment/close`, {
             method: "GET",
             mode: "cors",
             credentials: "include",
             headers: {
                 "Content-Type": "application/json",
             },
-        });
-        const data = await response.json();
-        console.log(data);
-        this.setState({ items: data });
+        })
+            .then((response) => {
+                if (response.ok) return response.json();
+                else console.error(response.status);
+            })
+            .then((data) => {
+                this.setState({ items: data });
+                console.log(data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
+    async componentDidMount() {
+        await this.fetchData();
     }
+
+    endClickHandler = (enrollment, user) => {
+        this.setState({
+            modal: {
+                show: true,
+                title: "End enrollment",
+                description: [
+                    "Do you want to end trip enrollment with full reward and 5 start rating?",
+                    user.firstName + " " + user.lastName,
+                    "from " +
+                        enrollment.tripSession.from_date +
+                        " to " +
+                        enrollment.tripSession.to_date,
+                ],
+
+                button: {
+                    title: "Yes",
+                    onClick: this.submitHandler,
+                    onClickParameter: enrollment,
+                },
+            },
+        });
+    };
+
+    onHideModalHandler = () => {
+        this.setState({
+            modal: {
+                show: false,
+                title: null,
+                description: null,
+                button: {
+                    title: "Yes",
+                    onClick: this.submitHandler,
+                },
+            },
+        });
+    };
 
     render() {
         if (this.state.items === null) {
@@ -60,6 +129,7 @@ class Index extends React.Component {
                                     " " +
                                     item.owner.lastName}
                             </td>
+                            <td>{item.enrollmentDto.tripSession.from_date}</td>
                             <td>{item.enrollmentDto.tripSession.to_date}</td>
                             <td>
                                 <OverlayTrigger
@@ -87,7 +157,15 @@ class Index extends React.Component {
                                         </Tooltip>
                                     }
                                 >
-                                    <Link className="p-3">
+                                    <Link
+                                        className="p-3"
+                                        onClick={() =>
+                                            this.endClickHandler(
+                                                item.enrollmentDto,
+                                                item.owner
+                                            )
+                                        }
+                                    >
                                         <FontAwesomeIcon icon="check-circle" />
                                     </Link>
                                 </OverlayTrigger>
@@ -101,6 +179,17 @@ class Index extends React.Component {
                 });
             }
 
+            /**
+             * Alert (flash message) from this.props.location.alert
+             */
+            let alert = null;
+            if (
+                this.props.location &&
+                this.props.location.hasOwnProperty("alert")
+            ) {
+                alert = this.props.location.alert;
+            }
+
             return (
                 <Container>
                     <ButtonInRow
@@ -110,11 +199,22 @@ class Index extends React.Component {
                         label="Add category"
                     />
 
+                    {alert}
+
+                    <ModalCentered
+                        show={this.state.modal.show}
+                        onHide={() => this.onHideModalHandler()}
+                        title={this.state.modal.title}
+                        size="lg"
+                        description={this.state.modal.description}
+                        button={this.state.modal.button}
+                    />
                     <Table striped bordered hover>
                         <thead>
                             <tr>
                                 <th>Trip</th>
                                 <th>User</th>
+                                <th>Date of start</th>
                                 <th>Date of end</th>
                                 <th>Settings</th>
                             </tr>
@@ -127,4 +227,4 @@ class Index extends React.Component {
     }
 }
 
-export default Index;
+export default withRouter(Index);
