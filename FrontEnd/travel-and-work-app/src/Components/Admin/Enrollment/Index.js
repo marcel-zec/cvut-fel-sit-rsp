@@ -3,9 +3,10 @@ import { Table, Tooltip, OverlayTrigger } from "react-bootstrap";
 import { Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Spinner from "react-bootstrap/Spinner";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import ButtonInRow from "../../SmartGadgets/ButtonInRow";
 import ModalCentered from "../../SmartGadgets/ModalCentered";
+import MyAlert from "../../SmartGadgets/MyAlert";
 
 class Index extends React.Component {
     state = {
@@ -32,7 +33,11 @@ class Index extends React.Component {
         })
             .then((response) => {
                 if (response.ok) {
-                    console.log("ok");
+                    this.onHideModalHandler();
+                    this.fetchData();
+                    this.props.history.push({
+                        alert: <MyAlert text="Trip closed" flash={true} />,
+                    });
                 } else console.error(response.status);
             })
             .catch((error) => {
@@ -40,7 +45,7 @@ class Index extends React.Component {
             });
     };
 
-    async componentDidMount() {
+    fetchData = async () => {
         await fetch(`http://localhost:8080/enrollment/close`, {
             method: "GET",
             mode: "cors",
@@ -60,6 +65,10 @@ class Index extends React.Component {
             .catch((error) => {
                 console.error(error);
             });
+    };
+
+    async componentDidMount() {
+        await this.fetchData();
     }
 
     endClickHandler = (enrollment, user) => {
@@ -170,6 +179,17 @@ class Index extends React.Component {
                 });
             }
 
+            /**
+             * Alert (flash message) from this.props.location.alert
+             */
+            let alert = null;
+            if (
+                this.props.location &&
+                this.props.location.hasOwnProperty("alert")
+            ) {
+                alert = this.props.location.alert;
+            }
+
             return (
                 <Container>
                     <ButtonInRow
@@ -178,6 +198,8 @@ class Index extends React.Component {
                         side="right"
                         label="Add category"
                     />
+
+                    {alert}
 
                     <ModalCentered
                         show={this.state.modal.show}
@@ -205,4 +227,4 @@ class Index extends React.Component {
     }
 }
 
-export default Index;
+export default withRouter(Index);
