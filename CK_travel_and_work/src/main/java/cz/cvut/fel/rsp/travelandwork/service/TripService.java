@@ -90,21 +90,24 @@ public class TripService {
     public void signUpToTrip(TripSessionDto tripSessionDto, User current_user) {
         TripSession tripSession = tripSessionDao.find(tripSessionDto.getId());
         User user = userDao.find(current_user.getId());
-        Enrollment enrollment = new Enrollment();
 
-        enrollment.setDeposit_was_paid(false);
-        enrollment.setEnrollDate(LocalDateTime.now());
-        enrollment.setActual_xp_reward(0);
-        enrollment.setTrip(tripSession.getTrip());
-        enrollment.setState(EnrollmentState.ACTIVE);
-        enrollment.setTripSession(tripSession);
-        enrollment.setTravelJournal(user.getTravel_journal());
+        if(checkOwnedAchievements(user.getTravel_journal(), tripSession.getTrip())) {
+            Enrollment enrollment = new Enrollment();
 
-        System.out.println(enrollment.toString());
+            enrollment.setDeposit_was_paid(false);
+            enrollment.setEnrollDate(LocalDateTime.now());
+            enrollment.setActual_xp_reward(0);
+            enrollment.setTrip(tripSession.getTrip());
+            enrollment.setState(EnrollmentState.ACTIVE);
+            enrollment.setTripSession(tripSession);
+            enrollment.setTravelJournal(user.getTravel_journal());
 
-        enrollmentDao.persist(enrollment);
-        user.getTravel_journal().addEnrollment(enrollment);
-        travelJournalDao.update(user.getTravel_journal());
+            System.out.println(enrollment.toString());
+
+            enrollmentDao.persist(enrollment);
+            user.getTravel_journal().addEnrollment(enrollment);
+            travelJournalDao.update(user.getTravel_journal());
+        }
     }
 
     @Transactional
@@ -190,5 +193,29 @@ public class TripService {
         LocalDate local_from_date = LocalDate.parse(from_date, formatter);
 
         return tripDao.findByFilter(location,  local_from_date, local_to_date, maxPrice);
+    }
+
+    private boolean checkOwnedAchievements(TravelJournal usersJournal, Trip trip) {
+        List<AchievementCategorized> ownedCat = usersJournal.getEarnedAchievementsCategorized();
+        List<AchievementCertificate> ownedCer = usersJournal.getCertificates();
+        List<AchievementSpecial> ownedSpec = usersJournal.getEarnedAchievementsSpecial();
+
+        for (AchievementCategorized ac : trip.getRequired_achievements_categorized()) {
+            if(!ownedCat.contains(ac)) {
+                return false;
+            }
+        }
+        for(AchievementSpecial as : trip.getRequired_achievements_special()) {
+            if(!ownedSpec.contains(as)) {
+                return false;
+            }
+        }
+        for(AchievementCertificate ac : trip.getRequired_achievements_certificate()) {
+            if(!ownedCer.contains(ac)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
