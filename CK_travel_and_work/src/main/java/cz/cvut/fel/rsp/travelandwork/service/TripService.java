@@ -111,6 +111,9 @@ public class TripService {
             user.getTravel_journal().addEnrollment(enrollment);
             travelJournalDao.update(user.getTravel_journal());
         }
+        else {
+            System.out.println("!USER DID NOT GET SIGNED UP TO TRIP!");
+        }
     }
 
     @Transactional
@@ -198,23 +201,26 @@ public class TripService {
         return tripDao.findByFilter(location,  local_from_date, local_to_date, maxPrice);
     }
 
-    private boolean checkOwnedAchievements(TravelJournal usersJournal, Trip trip) {
+    public boolean checkOwnedAchievements(TravelJournal usersJournal, Trip trip) {
         List<AchievementCategorized> ownedCat = usersJournal.getEarnedAchievementsCategorized();
         List<AchievementCertificate> ownedCer = usersJournal.getCertificates();
         List<AchievementSpecial> ownedSpec = usersJournal.getEarnedAchievementsSpecial();
 
         for (AchievementCategorized ac : trip.getRequired_achievements_categorized()) {
             if(!ownedCat.contains(ac)) {
+                System.out.println("UserJournal " + usersJournal + " lacks this achievement" + ac.getName());
                 return false;
             }
         }
         for(AchievementSpecial as : trip.getRequired_achievements_special()) {
             if(!ownedSpec.contains(as)) {
+                System.out.println("UserJournal " + usersJournal + " lacks this achievement" + as.getName());
                 return false;
             }
         }
         for(AchievementCertificate ac : trip.getRequired_achievements_certificate()) {
             if(!ownedCer.contains(ac)) {
+                System.out.println("UserJournal " + usersJournal + " lacks this achievement" + ac.getName());
                 return false;
             }
         }
