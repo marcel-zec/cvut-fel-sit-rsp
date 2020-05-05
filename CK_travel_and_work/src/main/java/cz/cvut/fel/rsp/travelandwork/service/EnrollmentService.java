@@ -175,9 +175,10 @@ public class EnrollmentService {
     @Transactional
     public void closeOk(Long id){
         Enrollment enrollment = find(id);
+        List<AchievementSpecial> achievementSpecials = enrollment.getTrip().getGain_achievements_special();
         enrollment.setState(EnrollmentState.FINISHED);
         enrollment.setActual_xp_reward(enrollment.getTrip().getPossible_xp_reward());
-        enrollment.setRecieved_achievements_special(enrollment.getTrip().getGain_achievements_special());
+        enrollment.setRecieved_achievements_special(achievementSpecials);
         enrollmentDao.update(enrollment);
     }
 }
