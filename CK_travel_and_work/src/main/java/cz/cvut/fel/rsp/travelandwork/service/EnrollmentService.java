@@ -178,7 +178,9 @@ public class EnrollmentService {
         List<AchievementSpecial> achievementSpecials = enrollment.getTrip().getGain_achievements_special();
         enrollment.setState(EnrollmentState.FINISHED);
         enrollment.setActual_xp_reward(enrollment.getTrip().getPossible_xp_reward());
-        enrollment.setRecieved_achievements_special(achievementSpecials);
+        enrollment.setRecieved_achievements_special(new ArrayList());
+        enrollment.getRecieved_achievements().addAll(achievementSpecials);
+       // enrollment.setRecieved_achievements_special(achievementSpecials);
         enrollmentDao.update(enrollment);
     }
 }
