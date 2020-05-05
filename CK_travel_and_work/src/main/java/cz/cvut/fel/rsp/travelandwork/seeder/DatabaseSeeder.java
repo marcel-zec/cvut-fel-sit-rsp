@@ -430,34 +430,34 @@ public class DatabaseSeeder implements
         signUserToTrip(user, tripSession);
 
         //enrolment ke tripu, ktery ma datum  ukonceni vcera
-        tripSession = trip.getSessions().get(3);
-        signUserToTrip(user, tripSession);
+//        tripSession = trip.getSessions().get(3);
+//        signUserToTrip(user, tripSession);
 
-        travelJournal = user.getTravel_journal();
-        e = travelJournal.getEnrollments().get(0);
-        e.setDeposit_was_paid(true);
-        e.setState(EnrollmentState.ACTIVE);
-        enrollmentDao.update(e);
+//        travelJournal = user.getTravel_journal();
+//        e = travelJournal.getEnrollments().get(0);
+//        e.setDeposit_was_paid(true);
+//        e.setState(EnrollmentState.ACTIVE);
+//        enrollmentDao.update(e);
 
         //enrolment ke tripu, ktery ma datum  ukonceni predevcirem
-        tripSession = trip.getSessions().get(4);
-        signUserToTrip(user, tripSession);
+//        tripSession = trip.getSessions().get(4);
+//        signUserToTrip(user, tripSession);
 
-        travelJournal = user.getTravel_journal();
-        e = travelJournal.getEnrollments().get(1);
-        e.setDeposit_was_paid(false);
-        e.setState(EnrollmentState.ACTIVE);
-        enrollmentDao.update(e);
+//        travelJournal = user.getTravel_journal();
+//        e = travelJournal.getEnrollments().get(1);
+//        e.setDeposit_was_paid(false);
+//        e.setState(EnrollmentState.ACTIVE);
+//        enrollmentDao.update(e);
 
         //enrolment ke tripu, ktery ma datum  ukonceni pred tydem
-        tripSession = trip.getSessions().get(5);
-        signUserToTrip(user, tripSession);
+//        tripSession = trip.getSessions().get(5);
+//        signUserToTrip(user, tripSession);
 
-        travelJournal = user.getTravel_journal();
-        e = travelJournal.getEnrollments().get(2);
-        e.setDeposit_was_paid(true);
-        e.setState(EnrollmentState.ACTIVE);
-        enrollmentDao.update(e);
+//        travelJournal = user.getTravel_journal();
+//        e = travelJournal.getEnrollments().get(2);
+//        e.setDeposit_was_paid(true);
+//        e.setState(EnrollmentState.ACTIVE);
+//        enrollmentDao.update(e);
     }
 
     void signUserToTrip(User user, TripSession tripSession) throws NotAllowedException {
