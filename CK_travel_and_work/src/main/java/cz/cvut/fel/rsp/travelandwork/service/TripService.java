@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.chrono.ChronoLocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -87,8 +88,9 @@ public class TripService {
     }
 
     @Transactional
-    public void signUpToTrip(TripSessionDto tripSessionDto, User current_user) {
+    public void signUpToTrip(TripSessionDto tripSessionDto, User current_user) throws NotAllowedException {
         TripSession tripSession = tripSessionDao.find(tripSessionDto.getId());
+        if (tripSession.getFrom_date().isBefore(ChronoLocalDate.from(LocalDateTime.now()))) throw new NotAllowedException();
         User user = userDao.find(current_user.getId());
         Enrollment enrollment = new Enrollment();
 
