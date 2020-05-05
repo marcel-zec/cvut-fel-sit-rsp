@@ -220,13 +220,13 @@ public class TripDto {
         this.gain_achievements_special = gain_achievements;
     }
 
-    public List<TripSessionDto> getSessionsID() {
+    public List<TripSessionDto> getSessions() {
 
         return sessions;
     }
 
 
-    public void setSessionsID(List<TripSessionDto> sessions) {
+    public void setSessions(List<TripSessionDto> sessions) {
 
         this.sessions = sessions;
     }

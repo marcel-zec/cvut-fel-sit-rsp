@@ -61,13 +61,13 @@ public class TripService {
     }
 
     @Transactional
-    public Trip find(Long id) {
-        return tripDao.find(id);
+    public TripDto find(Long id) {
+        return translateService.translateTrip(tripDao.find(id));
     }
 
     @Transactional
-    public Trip findByString(String stringId) {
-        return tripDao.find(stringId);
+    public TripDto findByString(String stringId) {
+        return translateService.translateTrip(tripDao.find(stringId));
     }
 
     @Transactional

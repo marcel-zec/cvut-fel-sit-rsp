@@ -44,7 +44,7 @@ public class TripController {
     }
 
     @GetMapping(value = "/{identificator}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Trip get(@PathVariable String identificator) {
+    public TripDto get(@PathVariable String identificator) {
         return tripService.findByString(identificator);
     }
 
