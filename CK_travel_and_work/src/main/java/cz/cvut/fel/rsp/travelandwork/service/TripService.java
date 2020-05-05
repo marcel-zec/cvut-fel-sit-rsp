@@ -186,12 +186,17 @@ public class TripService {
     }
 
 
-    public List<Trip> getAllTripsByFilter(String location, String from_date, String to_date, double maxPrice) {
+    public List<TripDto> getAllTripsByFilter(String location, String from_date, String to_date, double maxPrice) {
 
+        List<TripDto> tripDtos = new ArrayList<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate local_to_date = LocalDate.parse(to_date, formatter);
         LocalDate local_from_date = LocalDate.parse(from_date, formatter);
 
-        return tripDao.findByFilter(location,  local_from_date, local_to_date, maxPrice);
+        for (Trip trip : tripDao.findByFilter(location,  local_from_date, local_to_date, maxPrice)) {
+            tripDtos.add(translateService.translateTrip(trip));
+        }
+
+        return tripDtos;
     }
 }
