@@ -78,7 +78,13 @@ class Profile extends React.Component {
                     <Col>
                         <Link to="/profile/achievments">
                             <FontAwesomeIcon icon="trophy" size="3x" />
-                            <h4>My acheievments</h4>
+                            <h4>My achievements</h4>
+                        </Link>
+                    </Col>
+                    <Col>
+                        <Link to="/profile/reviews">
+                            <FontAwesomeIcon icon="star" size="3x" />
+                            <h4>My reviews</h4>
                         </Link>
                     </Col>
                     <Col>
