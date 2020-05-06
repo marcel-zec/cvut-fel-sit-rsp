@@ -54,8 +54,8 @@ public class UserService {
         }
         if (user.getTravel_journal() == null) {
             TravelJournal tj = new TravelJournal(user);
-            user.setTravel_journal(tj);
             travelJournalDao.persist(tj);
+            user.setTravel_journal(tj);
         }
         dao.update(user);
     }
