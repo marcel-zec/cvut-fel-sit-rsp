@@ -572,21 +572,21 @@ header .nav-link a{
     color: #fce23a;
 }
 /*tripDetail reviews*/
-#trip_detail .trip_reviews .review{
+.trip_reviews .review{
     text-align: left;
     margin-top: 20px;
 }
-#trip_detail .trip_reviews .rev_author svg{
+.trip_reviews .rev_author svg{
     color:#ff6666;
 }
-#trip_detail .trip_reviews .rev_author span{
+.trip_reviews .rev_author span{
     margin-left: 10px;
 }
-#trip_detail .trip_reviews .rev_rating{
+.trip_reviews .rev_rating{
     text-align: right;
     color:#fce23a;
 }
-#trip_detail .trip_reviews p.note{
+.trip_reviews p.note{
     margin: 0px 20px;
     color:#363636
 }

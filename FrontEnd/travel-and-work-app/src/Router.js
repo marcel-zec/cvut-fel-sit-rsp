@@ -24,6 +24,7 @@ import IndexUser from "./Components/Admin/User/Index";
 import IndexEnrollment from "./Components/Admin/Enrollment/Index";
 import CloseEnrollment from "./Components/Admin/Enrollment/Close";
 import { appContext } from "./appContext";
+import UserReview from "./Components/Profile/UserReview";
 
 function Router(props) {
     const context = useContext(appContext);
@@ -75,6 +76,7 @@ function Router(props) {
             <Route path="/profile/achievments" component={ProfileAchievments} />
             <Route path="/profile/trips" component={ProfileTrips} />
             <Route path="/profile/trips/active" component={ActiveTrip} />
+            <Route path="/profile/reviews" component={UserReview} />
             <Switch>
                 {/*Global*/}
                 <Route
