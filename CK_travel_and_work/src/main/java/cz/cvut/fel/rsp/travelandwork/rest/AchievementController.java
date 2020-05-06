@@ -1,6 +1,7 @@
 package cz.cvut.fel.rsp.travelandwork.rest;
 
-import cz.cvut.fel.rsp.travelandwork.model.Achievement;
+import cz.cvut.fel.rsp.travelandwork.dto.AchievementDto;
+import cz.cvut.fel.rsp.travelandwork.security.SecurityUtils;
 import cz.cvut.fel.rsp.travelandwork.service.AchievementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -22,9 +23,9 @@ public class AchievementController {
         this.achievementService = achievementService;
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN')")
-    @GetMapping( produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Achievement> getAll(){
-        return achievementService.findAll();
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<AchievementDto> getAllOfUser() {
+        return achievementService.findAllOfUser(SecurityUtils.getCurrentUser());
     }
 }
