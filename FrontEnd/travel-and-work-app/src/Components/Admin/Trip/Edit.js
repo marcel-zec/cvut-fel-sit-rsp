@@ -63,6 +63,11 @@ class Edit extends React.Component {
                     valid: false,
                     validationRules: rules.trip.description,
                 },
+                sessions: {
+                    touched: false,
+                    valid: false,
+                    feedback: null,
+                },
             },
         },
         trip: {
@@ -225,6 +230,76 @@ class Edit extends React.Component {
     validateForm = async () => {
         const newState = { ...this.state.form };
         formValidation(newState, this.state.trip);
+        newState.elements.sessions.feedback = null;
+        await this.setState({ form: newState });
+        let sessionValid = true;
+        newState.elements.sessions.touched = true;
+        if (this.state.trip.sessions.length > 0) {
+            let index = 1;
+            this.state.trip.sessions.forEach((session) => {
+                console.log(session.price);
+                if (session.from_date == null) {
+                    if (newState.elements.sessions.feedback)
+                        newState.elements.sessions.feedback +=
+                            "Missing 'from' date at " + index + ". session. ";
+                    else
+                        newState.elements.sessions.feedback =
+                            "Missing 'from' date at " + index + ". session. ";
+                    sessionValid = false;
+                }
+                if (session.to_date == null) {
+                    if (newState.elements.sessions.feedback)
+                        newState.elements.sessions.feedback +=
+                            "Missing 'to' date at " + index + ". session. ";
+                    else
+                        newState.elements.sessions.feedback =
+                            "Missing 'to' date at " + index + ". session. ";
+                    sessionValid = false;
+                }
+                if (session.price == null) {
+                    if (newState.elements.sessions.feedback)
+                        newState.elements.sessions.feedback +=
+                            "Missing 'price' at " + index + ". session.";
+                    else
+                        newState.elements.sessions.feedback =
+                            "Missing 'price' date at " + index + ". session.";
+                    sessionValid = false;
+                } else if (isNaN(parseInt(session.price))) {
+                    if (newState.elements.sessions.feedback)
+                        newState.elements.sessions.feedback +=
+                            "Price at " +
+                            index +
+                            ". session needs to be number. ";
+                    else
+                        newState.elements.sessions.feedback =
+                            "Price at " +
+                            index +
+                            ". session needs to be number. ";
+                    sessionValid = false;
+                } else if (session.price < 0 || session.price > 99999) {
+                    if (newState.elements.sessions.feedback)
+                        newState.elements.sessions.feedback +=
+                            "Price at " +
+                            index +
+                            ". session needs to be at range 0 - 99 999. ";
+                    else
+                        newState.elements.sessions.feedback =
+                            "Price at " +
+                            index +
+                            ". session needs to be at range 0 - 99 999. ";
+                }
+                index++;
+            });
+        } else {
+            if (newState.elements.sessions.feedback)
+                newState.elements.sessions.feedback +=
+                    "Trip needs to have at least one session. ";
+            else
+                newState.elements.sessions.feedback =
+                    "Trip needs to have at least one session. ";
+            sessionValid = false;
+        }
+        newState.elements.sessions.valid = sessionValid;
         await this.setState({ form: newState });
     };
 
@@ -609,12 +684,21 @@ class Edit extends React.Component {
                             }}
                             onChangeMethod={this.inputUpdateHandler}
                         />
-
-                        <SessionGroup
-                            onChangeMethod={this.inputSessionUpdateHandler}
-                            sessions={this.state.trip.sessions}
-                            forDeleteSession={this.sessionDeleteHandler}
-                        />
+                        <Form.Group
+                            className={validationClassName(
+                                "sessions",
+                                this.state.form
+                            )}
+                        >
+                            <SessionGroup
+                                onChangeMethod={this.inputSessionUpdateHandler}
+                                sessions={this.state.trip.sessions}
+                                forDeleteSession={this.sessionDeleteHandler}
+                            />
+                        </Form.Group>
+                        <div class="invalid-feedback">
+                            {this.state.form.elements.sessions.feedback}
+                        </div>
                         <Button variant="primary" type="submit">
                             Submit
                         </Button>
