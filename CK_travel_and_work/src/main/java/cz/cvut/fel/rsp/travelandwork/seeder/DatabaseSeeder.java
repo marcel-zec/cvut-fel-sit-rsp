@@ -2,13 +2,9 @@ package cz.cvut.fel.rsp.travelandwork.seeder;
 
 import cz.cvut.fel.rsp.travelandwork.dao.*;
 import cz.cvut.fel.rsp.travelandwork.dto.TripSessionDto;
-import cz.cvut.fel.rsp.travelandwork.dto.UserDto;
-import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
+import cz.cvut.fel.rsp.travelandwork.exception.NotAllowedException;
 import cz.cvut.fel.rsp.travelandwork.model.*;
-import cz.cvut.fel.rsp.travelandwork.service.EnrollmentService;
-import cz.cvut.fel.rsp.travelandwork.service.TranslateService;
-import cz.cvut.fel.rsp.travelandwork.service.TripService;
-import cz.cvut.fel.rsp.travelandwork.service.UserService;
+import cz.cvut.fel.rsp.travelandwork.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -17,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -38,9 +35,11 @@ public class DatabaseSeeder implements
     private EnrollmentDao enrollmentDao;
     private TripService tripService;
     private TranslateService translateService;
+    private TravelJournalService travelJournalService;
+    private TravelJournalDao travelJournalDao;
 
     @Autowired
-    public DatabaseSeeder(TripDao tripDao, TripSessionDao tripSessionDao, AchievementCertificateDao achievementCertificateDao, AchievementCategorizedDao achievementCategorizedDao, AchievementSpecialDao achievementSpecialDao, CategoryDao categoryDao, UserDao userDao, AddressDao addressDao, EnrollmentDao enrollmentDao, TripService tripService, TranslateService translateService) {
+    public DatabaseSeeder(TripDao tripDao, TripSessionDao tripSessionDao, AchievementCertificateDao achievementCertificateDao, AchievementCategorizedDao achievementCategorizedDao, AchievementSpecialDao achievementSpecialDao, CategoryDao categoryDao, UserDao userDao, AddressDao addressDao, EnrollmentDao enrollmentDao, TripService tripService, TranslateService translateService, TravelJournalService travelJournalService, TravelJournalDao travelJournalDao) {
         this.tripDao = tripDao;
         this.tripSessionDao = tripSessionDao;
         this.achievementCertificateDao = achievementCertificateDao;
@@ -52,6 +51,8 @@ public class DatabaseSeeder implements
         this.enrollmentDao = enrollmentDao;
         this.tripService = tripService;
         this.translateService = translateService;
+        this.travelJournalService = travelJournalService;
+        this.travelJournalDao = travelJournalDao;
     }
 
     @Override
@@ -65,8 +66,12 @@ public class DatabaseSeeder implements
         createTrips();
         setAchievementsAndCategories();
         createUsers();
-        //signUsersToTrips();git
-
+        addAchievementsToUsers();
+        try {
+            signUsersToTrips();
+        } catch (NotAllowedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Transactional
@@ -75,24 +80,7 @@ public class DatabaseSeeder implements
         Trip trip;/* = new Trip("Casablanca Me gusto",15,description,"casablanca_me_gusta",1000,"Casablan, Mexico",2);
         tripDao.persist(trip);
         */TripSession tripSession;
-/*
-        description = "Humanitární akce v imigračním táboře Ušivak v Bosně a Hercegovině. Potřeba znát základy javy, office a nebát se ušpinit si ruce při stavbě skleníku." ;
-        trip = new Trip("projekt „Úsměv pro všechny“",3,description,"usibos",200,"tábor Ušivak, Bosna a Hercegovina",1);
-        tripDao.persist(trip);
-        tripSession = new TripSession(trip, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 0);
-        tripSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-        tripSession = new TripSession(trip, LocalDate.parse("2020-06-12"), LocalDate.parse("2020-06-18"), 0);
-        tripSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-        tripSession = new TripSession(trip, LocalDate.parse("2020-06-18"), LocalDate.parse("2020-06-24"), 0);
-        tripSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-        tripSession = new TripSession(trip, LocalDate.parse("2020-06-24"), LocalDate.parse("2020-06-30"), 0);
-        tripSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-        tripDao.update(trip);
-        */
+
         //priklady tripov a user progressu medzi nimi
         description = "Tento zajezd bude mit cenu za dopravu a kurz, po absolvování se odemkne achievement ´kuchař ryb fugu´, pro absolvování je potřeba mít achievement ´Kuchtík´." ;
         trip = new Trip("Kurz vaření ryb Fugu",10,description,"fugukurz",1000,"Tokyo, Japan",1);
@@ -158,7 +146,7 @@ public class DatabaseSeeder implements
         tripDao.update(trip);
 
         description = "Tento zajezd nevyzaduje zadne achievementy a po nem se nedaji ziskat specialni achievementy ale daji se ziskat achievementy jako jsou např. ´Kuchtík´, ´Kuchař´ apod. Odměna Xp je dost nízká aby se nedalo jednoduše dostat za tuhle práci na prestižnější místa jako pražský hrad, ale zároveň je možno si dopomoct s touto lehčí a dostupnější práci nahnat achievement kuchař, jestliže xp grind mám za sebou z jiných zájezdů." ;
-        trip = new Trip("Kuchař menza Studentský dům, Praha",3,description,"studumkuch",50,"Praha, Česká republika",1);
+        trip = new Trip("Kuchař menza Studentský dům, Praha",3,description,"studumkuch",50,"Praha, Česká republika",0);
         tripDao.persist(trip);
         tripSession = new TripSession(trip, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 0);
         tripSessionDao.persist(tripSession);
@@ -172,7 +160,7 @@ public class DatabaseSeeder implements
         tripDao.update(trip);
 
         description = "Humanitární akce v imigračním táboře Ušivak v Bosně a Hercegovině. Potřeba znát základy javy, office a nebát se ušpinit si ruce při stavbě skleníku." ;
-        trip = new Trip("projekt „Úsměv pro všechny“",3,description,"usibos",200,"tábor Ušivak, Bosna a Hercegovina",1);
+        trip = new Trip("projekt „Úsměv pro všechny“",3,description,"usibos",200,"tábor Ušivak, Bosna a Hercegovina",0);
         tripDao.persist(trip);
         tripSession = new TripSession(trip, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 0);
         tripSessionDao.persist(tripSession);
@@ -391,7 +379,8 @@ public class DatabaseSeeder implements
         System.out.println("Test admin persist.");
     }
 
-    void signUsersToTrips() {
+    void signUsersToTrips() throws NotAllowedException {
+        //JAN
         User user = userDao.findAll().get(0);
         Trip trip = tripDao.findAll().get(0);
         TripSession tripSession = trip.getSessions().get(0);
@@ -408,14 +397,8 @@ public class DatabaseSeeder implements
         System.out.println("SESSION DTO: " + translateService.translateSession(tripSession));
         */
 
-        if(tripSession != null && tripSession.getTrip() != null) {
-            signUserToTrip(user, tripSession);
-        }
-
-        user = userDao.findAll().get(0);
         trip = tripDao.findAll().get(1);
         tripSession = trip.getSessions().get(0);
-
         signUserToTrip(user, tripSession);
 
         travelJournal = user.getTravel_journal();
@@ -423,8 +406,8 @@ public class DatabaseSeeder implements
         e.setDeposit_was_paid(true);
         enrollmentDao.update(e);
 
-
-        user = userDao.findAll().get(1);
+        //JULIA
+        user = userDao.findAll().get(2);
         trip = tripDao.findAll().get(0);
         tripSession = trip.getSessions().get(1);
 
@@ -442,41 +425,95 @@ public class DatabaseSeeder implements
         tripSession = trip.getSessions().get(1);
         signUserToTrip(user, tripSession);
 
-        //enrolment ke tripu, ktery ma datum  ukonceni vcera
-        tripSession = trip.getSessions().get(3);
-
-        signUserToTrip(user, tripSession);
-
-        travelJournal = user.getTravel_journal();
-        e = travelJournal.getEnrollments().get(0);
-        e.setDeposit_was_paid(true);
-        enrollmentDao.update(e);
-
-        //enrolment ke tripu, ktery ma datum  ukonceni predevcirem
-        tripSession = trip.getSessions().get(4);
-
-        signUserToTrip(user, tripSession);
-
-        travelJournal = user.getTravel_journal();
-        e = travelJournal.getEnrollments().get(1);
-        e.setDeposit_was_paid(false);
-        enrollmentDao.update(e);
-
-        //enrolment ke tripu, ktery ma datum  ukonceni pred tydem
-        tripSession = trip.getSessions().get(5);
-
-        signUserToTrip(user, tripSession);
+        signUpUserToExpiredEnrollmentsForTesting(user);
 
         travelJournal = user.getTravel_journal();
         e = travelJournal.getEnrollments().get(2);
         e.setDeposit_was_paid(true);
+        e.setState(EnrollmentState.ACTIVE);
         enrollmentDao.update(e);
     }
 
-    void signUserToTrip(User user, TripSession tripSession) {
+    void signUserToTrip(User user, TripSession tripSession) throws NotAllowedException {
         TripSessionDto tripSessionDto;
 
         tripSessionDto = translateService.translateSession(tripSession);
         tripService.signUpToTrip(tripSessionDto, user);
+    }
+
+    void addAchievementsToUsers() {
+        List<User> users = userDao.findAll();
+        List<AchievementCategorized> categorized = achievementCategorizedDao.findAll();
+        List<AchievementSpecial> special = achievementSpecialDao.findAll();
+        List<AchievementCertificate> certificates = achievementCertificateDao.findAll();
+        TravelJournal travelJournal;
+
+        //JAN Jansky
+        travelJournal = users.get(0).getTravel_journal();
+        travelJournalService.addOwnedCategorizedAchievement(travelJournal, categorized.get(0)); //kuchtik
+        travelJournalService.addOwnedSpecialAchievement(travelJournal, special.get(1)); //kuchar ryb fugu
+
+        //MILAN Milanovic
+        travelJournal = users.get(1).getTravel_journal();
+        travelJournalService.addOwnedSpecialAchievement(travelJournal, special.get(1)); //kuchar ryb fugu
+
+        //JULIA Julievna
+        travelJournal = users.get(2).getTravel_journal();
+        travelJournalService.addOwnedCategorizedAchievement(travelJournal, categorized.get(0)); // kuchtik
+
+        //ADMIN Adminovskyj
+        //travelJournal = users.get(3).getTravel_journal();
+    }
+
+    private void signUpUserToExpiredEnrollmentsForTesting(User user) {
+        TravelJournal travelJournal = user.getTravel_journal();
+        List<Enrollment> enrollments = travelJournal.getEnrollments();
+        TripSession tripSession;
+        Trip trip = tripDao.findAll().get(1);
+        Enrollment e;
+
+        //enrolment ke tripu, ktery ma datum  ukonceni vcera
+        tripSession = trip.getSessions().get(3);
+        e = createEnrol(tripSession, user);
+        enrollments.add(e);
+        enrollmentDao.persist(e);
+
+        //enrolment ke tripu, ktery ma datum  ukonceni predevcirem
+        tripSession = trip.getSessions().get(4);
+        e = createEnrol(tripSession, user);
+        enrollments.add(e);
+        enrollmentDao.persist(e);
+
+        //enrolment ke tripu, ktery ma datum  ukonceni pred tydem
+        tripSession = trip.getSessions().get(5);
+        e = createEnrol(tripSession, user);
+        enrollments.add(e);
+        enrollmentDao.persist(e);
+        travelJournal.setEnrollments(enrollments);
+        travelJournalDao.update(travelJournal);
+
+        e = user.getTravel_journal().getEnrollments().get(0);
+        e.setDeposit_was_paid(true);
+        e.setState(EnrollmentState.ACTIVE);
+        enrollmentDao.update(e);
+
+        e = user.getTravel_journal().getEnrollments().get(1);
+        e.setDeposit_was_paid(false);
+        e.setState(EnrollmentState.ACTIVE);
+        enrollmentDao.update(e);
+    }
+
+    private Enrollment createEnrol(TripSession tripSession, User user) {
+        Enrollment enrollment = new Enrollment();
+
+        enrollment.setDeposit_was_paid(false);
+        enrollment.setEnrollDate(LocalDateTime.now());
+        enrollment.setActual_xp_reward(0);
+        enrollment.setTrip(tripSession.getTrip());
+        enrollment.setState(EnrollmentState.ACTIVE);
+        enrollment.setTripSession(tripSession);
+        enrollment.setTravelJournal(user.getTravel_journal());
+
+        return enrollment;
     }
 }

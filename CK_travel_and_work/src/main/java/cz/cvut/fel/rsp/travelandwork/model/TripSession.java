@@ -43,6 +43,9 @@ public class TripSession extends AbstractEntity {
     @OneToMany(mappedBy = "tripSession")
     private List<UserReview> userReviews;
 
+    @OneToMany(mappedBy = "tripSession")
+    private List<Enrollment> enrollments;
+
     public TripSession() {
         this.userReviews = new ArrayList<>();
     }
@@ -97,6 +100,15 @@ public class TripSession extends AbstractEntity {
     public void setUserReviews(List<UserReview> userReviews) {
 
         this.userReviews = userReviews;
+    }
+
+    @JsonIgnore
+    public List<Enrollment> getEnrollments() {
+        return enrollments;
+    }
+
+    public void setEnrollments(List<Enrollment> enrollments) {
+        this.enrollments = enrollments;
     }
 
     public void addUserReview(UserReview userReview){

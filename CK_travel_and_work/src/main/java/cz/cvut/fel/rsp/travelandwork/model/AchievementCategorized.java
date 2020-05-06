@@ -58,4 +58,8 @@ public class AchievementCategorized extends Achievement {
     public void setOwned_travel_journals(List<TravelJournal> owned_travel_journals) {
         this.owned_travel_journals = owned_travel_journals;
     }
+
+    public void addTravelJournal(TravelJournal travelJournal) {
+        this.owned_travel_journals.add(travelJournal);
+    }
 }

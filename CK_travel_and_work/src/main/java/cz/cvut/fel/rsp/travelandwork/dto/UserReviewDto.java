@@ -11,7 +11,6 @@ public class UserReviewDto {
     @NotNull(message = "Id cannot be blank")
     private Long id;
 
-    @NotNull(message = "Note cannot be blank")
     @Size(max = 255, min = 0, message = "Max 255 characters.")
     private String note;
 

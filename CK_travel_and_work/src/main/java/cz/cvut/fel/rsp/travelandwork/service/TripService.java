@@ -5,6 +5,7 @@ import cz.cvut.fel.rsp.travelandwork.dto.TripDto;
 import cz.cvut.fel.rsp.travelandwork.dto.TripSessionDto;
 import cz.cvut.fel.rsp.travelandwork.exception.BadDateException;
 import cz.cvut.fel.rsp.travelandwork.exception.MissingVariableException;
+import cz.cvut.fel.rsp.travelandwork.exception.NotAllowedException;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
 import cz.cvut.fel.rsp.travelandwork.model.*;
 import cz.cvut.fel.rsp.travelandwork.service.security.AccessService;
@@ -12,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.chrono.ChronoLocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -57,13 +61,13 @@ public class TripService {
     }
 
     @Transactional
-    public Trip find(Long id) {
-        return tripDao.find(id);
+    public TripDto find(Long id) {
+        return translateService.translateTrip(tripDao.find(id));
     }
 
     @Transactional
-    public Trip findByString(String stringId) {
-        return tripDao.find(stringId);
+    public TripDto findByString(String stringId) {
+        return translateService.translateTrip(tripDao.find(stringId));
     }
 
     @Transactional
@@ -84,38 +88,47 @@ public class TripService {
     }
 
     @Transactional
-    public void signUpToTrip(TripSessionDto tripSessionDto, User current_user) {
+    public void signUpToTrip(TripSessionDto tripSessionDto, User current_user) throws NotAllowedException {
         TripSession tripSession = tripSessionDao.find(tripSessionDto.getId());
+//      TODO odkomentovat ked bude otestovane ukoncovanie tripov
+//       if (tripSession.getFrom_date().isBefore(ChronoLocalDate.from(LocalDateTime.now()))) throw new NotAllowedException();
         User user = userDao.find(current_user.getId());
-        Enrollment enrollment = new Enrollment();
 
-        enrollment.setDeposit_was_paid(false);
-        enrollment.setEnrollDate(LocalDateTime.now());
-        enrollment.setActual_xp_reward(0);
-        enrollment.setTrip(tripSession.getTrip());
-        enrollment.setState(EnrollmentState.ACTIVE);
-        enrollment.setTripSession(tripSession);
-        enrollment.setTravelJournal(user.getTravel_journal());
+        if(checkOwnedAchievements(user.getTravel_journal(), tripSession.getTrip())) {
+            Enrollment enrollment = new Enrollment();
 
-        System.out.println(enrollment.toString());
+            enrollment.setDeposit_was_paid(false);
+            enrollment.setEnrollDate(LocalDateTime.now());
+            enrollment.setActual_xp_reward(0);
+            enrollment.setTrip(tripSession.getTrip());
+            enrollment.setState(EnrollmentState.ACTIVE);
+            enrollment.setTripSession(tripSession);
+            enrollment.setTravelJournal(user.getTravel_journal());
 
-        enrollmentDao.persist(enrollment);
-        user.getTravel_journal().addEnrollment(enrollment);
-        travelJournalDao.update(user.getTravel_journal());
+            System.out.println(enrollment.toString());
+
+            enrollmentDao.persist(enrollment);
+            user.getTravel_journal().addEnrollment(enrollment);
+            travelJournalDao.update(user.getTravel_journal());
+        }
+        else {
+            System.out.println("!USER DID NOT GET SIGNED UP TO TRIP!");
+        }
     }
 
     @Transactional
-    public List<Trip> findAfford(User current_user) {
+    public List<Trip> findAfford(User current_user) throws NotAllowedException {
+        if (current_user == null) throw new NotAllowedException();
         User user = accessService.getUser(current_user);
-        //int level = user.getTravel_journal().
-        //List<Trip> trips ;
-        return null;
+        int level = translateService.countLevel(translateService.translateTravelJournal(user.getTravel_journal()).getXp_count());
+        return  tripDao.find(level);
     }
 
     @Transactional
-    public List<Trip> findNotAfford(User current_user) {
-        List<Trip> trips;
-        return null;
+    public List<Trip> findNotAfford(User current_user) throws NotAllowedException {
+        List<Trip> trips = tripDao.findAll();
+        trips.removeAll(findAfford(current_user));
+        return trips;
     }
 
     @Transactional
@@ -179,5 +192,44 @@ public class TripService {
     }
 
 
+    public List<TripDto> getAllTripsByFilter(String location, String from_date, String to_date, double maxPrice) {
 
+        List<TripDto> tripDtos = new ArrayList<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate local_to_date = LocalDate.parse(to_date, formatter);
+        LocalDate local_from_date = LocalDate.parse(from_date, formatter);
+
+        for (Trip trip : tripDao.findByFilter(location,  local_from_date, local_to_date, maxPrice)) {
+            tripDtos.add(translateService.translateTrip(trip));
+        }
+
+        return tripDtos;
+    }
+
+    public boolean checkOwnedAchievements(TravelJournal usersJournal, Trip trip) {
+        List<AchievementCategorized> ownedCat = usersJournal.getEarnedAchievementsCategorized();
+        List<AchievementCertificate> ownedCer = usersJournal.getCertificates();
+        List<AchievementSpecial> ownedSpec = usersJournal.getEarnedAchievementsSpecial();
+
+        for (AchievementCategorized ac : trip.getRequired_achievements_categorized()) {
+            if(!ownedCat.contains(ac)) {
+                System.out.println("UserJournal " + usersJournal + " lacks this achievement" + ac.getName());
+                return false;
+            }
+        }
+        for(AchievementSpecial as : trip.getRequired_achievements_special()) {
+            if(!ownedSpec.contains(as)) {
+                System.out.println("UserJournal " + usersJournal + " lacks this achievement" + as.getName());
+                return false;
+            }
+        }
+        for(AchievementCertificate ac : trip.getRequired_achievements_certificate()) {
+            if(!ownedCer.contains(ac)) {
+                System.out.println("UserJournal " + usersJournal + " lacks this achievement" + ac.getName());
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

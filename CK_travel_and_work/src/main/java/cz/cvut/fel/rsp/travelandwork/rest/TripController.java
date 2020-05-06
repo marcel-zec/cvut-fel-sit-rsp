@@ -4,6 +4,7 @@ import cz.cvut.fel.rsp.travelandwork.dto.TripDto;
 import cz.cvut.fel.rsp.travelandwork.dto.TripSessionDto;
 import cz.cvut.fel.rsp.travelandwork.exception.BadDateException;
 import cz.cvut.fel.rsp.travelandwork.exception.MissingVariableException;
+import cz.cvut.fel.rsp.travelandwork.exception.NotAllowedException;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
 import cz.cvut.fel.rsp.travelandwork.model.Trip;
 import cz.cvut.fel.rsp.travelandwork.security.SecurityUtils;
@@ -30,18 +31,20 @@ public class TripController {
         this.tripService = tripService;
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Trip> getAll() {
-        return tripService.findAll();
+    //endpoint looks like that: localhost:8080/trip/filter?location=Tokyo, Japan&max_price=4000&from_date=2020-06-07&to_date=2020-06-18
+    @GetMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<TripDto> getAllTripsByFilter(@RequestParam(value = "location", required = false) String location, @RequestParam String from_date,
+                                          @RequestParam String to_date, @RequestParam(value = "max_price") double maxPrice) {
+        return tripService.getAllTripsByFilter(location, from_date, to_date, maxPrice);
     }
 
-    @GetMapping(value = "/shortcut", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<TripDto> getAllDto() {
+    @GetMapping( produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<TripDto> getAll() {
         return tripService.findAllDto();
     }
 
     @GetMapping(value = "/{identificator}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Trip get(@PathVariable String identificator) {
+    public TripDto get(@PathVariable String identificator) {
         return tripService.findByString(identificator);
     }
 
@@ -72,7 +75,7 @@ public class TripController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping(value = "/{identificator}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void signUpToTrip(@RequestBody TripSessionDto tripSessionDto) {
+    public void signUpToTrip(@RequestBody TripSessionDto tripSessionDto) throws NotAllowedException {
         //ResponseEntity<Void>
         //return new ResponseEntity<>(headers, HttpStatus.SUCCESS);
         tripService.signUpToTrip(tripSessionDto, SecurityUtils.getCurrentUser());
@@ -80,13 +83,13 @@ public class TripController {
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping(value = "/cannotAfford", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Trip> showAllTripsCantUserAfford() {
+    public List<Trip> showAllTripsCantUserAfford() throws NotAllowedException {
         return tripService.findNotAfford(SecurityUtils.getCurrentUser());
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping(value = "/canAfford", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Trip> showAllTripsCanUserAfford() {
+    public List<Trip> showAllTripsCanUserAfford() throws NotAllowedException {
         return tripService.findAfford(SecurityUtils.getCurrentUser());
     }
 }

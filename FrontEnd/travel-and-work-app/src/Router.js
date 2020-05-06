@@ -10,6 +10,7 @@ import ProfileAchievments from "./Components/Profile/ProfileAchievments";
 import CreateTrip from "./Components/Admin/Trip/Create";
 import EditTrip from "./Components/Admin/Trip/Edit";
 import IndexTrip from "./Components/Admin/Trip/Index";
+import IndexParticipants from "./Components/Admin/Trip/Participants/Index";
 import Register from "./Components/Register";
 import { Redirect, Switch, Route } from "react-router-dom";
 import TripDetail from "./Components/Home/Trip/Detail";
@@ -20,6 +21,7 @@ import IndexCategory from "./Components/Admin/Category/Index";
 import CreateCategory from "./Components/Admin/Category/Create";
 import EditCategory from "./Components/Admin/Category/Edit";
 import IndexUser from "./Components/Admin/User/Index";
+import IndexEnrollment from "./Components/Admin/Enrollment/Index";
 import CloseEnrollment from "./Components/Admin/Enrollment/Close";
 import { appContext } from "./appContext";
 import UserReview from "./Components/Profile/UserReview";
@@ -116,11 +118,23 @@ function Router(props) {
                         return allowAuthWithRole(<CreateTrip />, ROLE_ADMIN);
                     }}
                 />
+
                 <Route
                     path="/trip/:id/edit"
                     exact
                     render={() => {
                         return allowAuthWithRole(<EditTrip />, ROLE_ADMIN);
+                    }}
+                />
+
+                <Route
+                    path="/trip/:id/participants"
+                    exact
+                    render={() => {
+                        return allowAuthWithRole(
+                            <IndexParticipants />,
+                            ROLE_ADMIN
+                        );
                     }}
                 />
 
@@ -186,6 +200,17 @@ function Router(props) {
 
                 <Route
                     path="/close"
+                    exact={true}
+                    render={() => {
+                        return allowAuthWithRole(
+                            <IndexEnrollment />,
+                            ROLE_ADMIN
+                        );
+                    }}
+                />
+
+                <Route
+                    path="/close/:id"
                     exact={true}
                     render={() => {
                         return allowAuthWithRole(

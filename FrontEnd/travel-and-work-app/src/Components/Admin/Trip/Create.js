@@ -1,6 +1,6 @@
 import React from "react";
 import Form from "react-bootstrap/Form";
-import { Col, Button, Row, Spinner } from "react-bootstrap";
+import { Col, Button, Row, Spinner, FormGroup } from "react-bootstrap";
 import { Container } from "react-bootstrap";
 import Achievements from "./UI/Achievements";
 import SessionGroup from "./SessionGroup";
@@ -12,6 +12,7 @@ import {
     validationFeedback,
     validationClassName,
 } from "../../../Validator";
+import MyAlert from "../../SmartGadgets/MyAlert";
 
 class Create extends React.Component {
     state = {
@@ -61,6 +62,11 @@ class Create extends React.Component {
                     touched: false,
                     valid: false,
                     validationRules: rules.trip.description,
+                },
+                sessions: {
+                    touched: false,
+                    valid: false,
+                    feedback: null,
                 },
             },
         },
@@ -235,11 +241,18 @@ class Create extends React.Component {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(this.state.trip),
-            }).then((response) => {
-                if (response.ok) this.props.history.push("/trip");
-                //TODO - osetrenie vynimiek
-                else console.log("Error: somethhing goes wrong");
-            });
+            })
+                .then((response) => {
+                    if (response.ok)
+                        return this.props.history.push({
+                            pathname: "/trip",
+                            alert: <MyAlert text="Trip created" flash={true} />,
+                        });
+                    else throw Error(response.status);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
         }
     };
 
@@ -247,35 +260,143 @@ class Create extends React.Component {
         console.log("in validation");
         const newState = { ...this.state.form };
         formValidation(newState, this.state.trip);
+        newState.elements.sessions.feedback = null;
+        await this.setState({ form: newState });
+
+        let sessionValid = true;
+        newState.elements.sessions.touched = true;
+        if (this.state.trip.sessions.length > 0) {
+            let index = 1;
+            this.state.trip.sessions.forEach((session) => {
+                if (session.from_date == null) {
+                    if (newState.elements.sessions.feedback)
+                        newState.elements.sessions.feedback +=
+                            "Missing 'from' date at " + index + ". session. ";
+                    else
+                        newState.elements.sessions.feedback =
+                            "Missing 'from' date at " + index + ". session. ";
+                    sessionValid = false;
+                }
+                if (session.to_date == null) {
+                    if (newState.elements.sessions.feedback)
+                        newState.elements.sessions.feedback +=
+                            "Missing 'to' date at " + index + ". session. ";
+                    else
+                        newState.elements.sessions.feedback =
+                            "Missing 'to' date at " + index + ". session. ";
+                    sessionValid = false;
+                }
+                if (session.price == null) {
+                    if (newState.elements.sessions.feedback)
+                        newState.elements.sessions.feedback +=
+                            "Missing 'price' at " + index + ". session.";
+                    else
+                        newState.elements.sessions.feedback =
+                            "Missing 'price' date at " + index + ". session.";
+                    sessionValid = false;
+                } else if (session.price.trim() == "" || isNaN(session.price)) {
+                    if (newState.elements.sessions.feedback)
+                        newState.elements.sessions.feedback +=
+                            "Price at " +
+                            index +
+                            ". session needs to be number. ";
+                    else
+                        newState.elements.sessions.feedback =
+                            "Price at " +
+                            index +
+                            ". session needs to be number. ";
+                    sessionValid = false;
+                } else if (session.price < 0 || session.price > 99999) {
+                    if (newState.elements.sessions.feedback)
+                        newState.elements.sessions.feedback +=
+                            "Price at " +
+                            index +
+                            ". session needs to be at range 0 - 99 999. ";
+                    else
+                        newState.elements.sessions.feedback =
+                            "Price at " +
+                            index +
+                            ". session needs to be at range 0 - 99 999. ";
+                }
+                index++;
+            });
+        } else {
+            if (newState.elements.sessions.feedback)
+                newState.elements.sessions.feedback +=
+                    "Trip needs to have at least one session. ";
+            else
+                newState.elements.sessions.feedback =
+                    "Trip needs to have at least one session. ";
+            sessionValid = false;
+        }
+        newState.elements.sessions.valid = sessionValid;
         await this.setState({ form: newState });
     };
 
     async componentDidMount() {
-        const response1 = await fetch(`http://localhost:8080/category`);
-        const data1 = await response1.json();
-        console.log(data1);
-        this.setState({ categories: data1 });
+        const requestSettings = {
+            method: "GET",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        };
+        await fetch(`http://localhost:8080/category`, requestSettings)
+            .then((response) => {
+                if (response.ok) return response.json();
+                else console.error(response.status);
+            })
+            .then((data) => {
+                this.setState({ categories: data });
+            })
+            .catch((error) => {
+                console.error(error);
+            });
 
-        const response2 = await fetch(
-            `http://localhost:8080/achievement/categorized`
-        );
-        const data2 = await response2.json();
-        console.log(data2);
-        this.setState({ achievements_categorized: data2 });
+        await fetch(
+            `http://localhost:8080/achievement/categorized`,
+            requestSettings
+        )
+            .then((response) => {
+                if (response.ok) return response.json();
+                else console.error(response.status);
+            })
+            .then((data) => {
+                this.setState({ achievements_categorized: data });
+            })
+            .catch((error) => {
+                console.error(error);
+            });
 
-        const response3 = await fetch(
-            `http://localhost:8080/achievement/special`
-        );
-        const data3 = await response3.json();
-        console.log(data3);
-        this.setState({ achievements_special: data3 });
+        await fetch(
+            `http://localhost:8080/achievement/special`,
+            requestSettings
+        )
+            .then((response) => {
+                if (response.ok) return response.json();
+                else console.error(response.status);
+            })
+            .then((data) => {
+                this.setState({ achievements_special: data });
+            })
+            .catch((error) => {
+                console.error(error);
+            });
 
-        const response4 = await fetch(
-            `http://localhost:8080/achievement/certificate`
-        );
-        const data4 = await response4.json();
-        console.log(data4);
-        this.setState({ achievements_certificate: data4 });
+        await fetch(
+            `http://localhost:8080/achievement/certificate`,
+            requestSettings
+        )
+            .then((response) => {
+                if (response.ok) return response.json();
+                else console.error(response.status);
+            })
+            .then((data) => {
+                this.setState({ achievements_certificate: data });
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }
 
     render() {
@@ -333,6 +454,8 @@ class Create extends React.Component {
                         label=""
                         back={true}
                     />
+
+                    {alert}
 
                     <Form className="mt-3 mb-5" onSubmit={this.submitHandler}>
                         <h1>Create trip</h1>
@@ -521,11 +644,21 @@ class Create extends React.Component {
                             selectedRequired={[]}
                         />
 
-                        <SessionGroup
-                            onChangeMethod={this.inputSessionUpdateHandler}
-                            sessions={this.state.trip.sessions}
-                            forDeleteSession={this.sessionDeleteHandler}
-                        />
+                        <Form.Group
+                            className={validationClassName(
+                                "sessions",
+                                this.state.form
+                            )}
+                        >
+                            <SessionGroup
+                                onChangeMethod={this.inputSessionUpdateHandler}
+                                sessions={this.state.trip.sessions}
+                                forDeleteSession={this.sessionDeleteHandler}
+                            />
+                        </Form.Group>
+                        <div class="invalid-feedback">
+                            {this.state.form.elements.sessions.feedback}
+                        </div>
                         <Button variant="primary" type="submit">
                             Submit
                         </Button>
