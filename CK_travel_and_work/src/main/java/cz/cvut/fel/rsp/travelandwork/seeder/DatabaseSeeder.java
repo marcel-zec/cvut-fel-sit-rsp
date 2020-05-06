@@ -467,6 +467,7 @@ public class DatabaseSeeder implements
 
     private void signUpUserToExpiredEnrollmentsForTesting(User user) {
         TravelJournal travelJournal = user.getTravel_journal();
+
         List<Enrollment> enrollments = travelJournal.getEnrollments();
         TripSession tripSession;
         Trip trip = tripDao.findAll().get(1);

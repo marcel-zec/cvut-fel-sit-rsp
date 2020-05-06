@@ -3,10 +3,7 @@
         "name": {
             "required": true,
             "minLength": 1,
-            "maxLength": 30,
-            "number": true,
-            "minValue": 0,
-            "maxValue": 350
+            "maxLength": 30
         }
     },
     "achievement": {
