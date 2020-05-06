@@ -62,6 +62,7 @@ public class TripService {
 
     @Transactional
     public TripDto find(Long id) {
+
         return translateService.translateTrip(tripDao.find(id));
     }
 
