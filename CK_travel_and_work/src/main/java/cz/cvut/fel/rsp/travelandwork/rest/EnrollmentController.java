@@ -71,6 +71,13 @@ public class EnrollmentController {
     }
 
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN')")
+    @GetMapping(value = "/setPayment", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> setPayment(@RequestBody RequestWrapperEnrollment requestWrapperEnrollment) throws  Exception {
+        enrollmentService.setPayment(requestWrapperEnrollment.getEnrollmentDto());
+        return null;
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN')")
     @PatchMapping(value = "/close", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> close(@RequestBody RequestWrapperEnrollment requestWrapperEnrollment) throws Exception {
         enrollmentService.close(requestWrapperEnrollment.getEnrollmentDto());

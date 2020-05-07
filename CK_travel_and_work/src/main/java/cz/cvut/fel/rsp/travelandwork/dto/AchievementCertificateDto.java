@@ -5,7 +5,7 @@ import javax.persistence.Basic;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-public class AchievementCertificateDto {
+public class AchievementCertificateDto extends AchievementDto {
     @NotNull(message = "Id cannot be blank")
     private Long id;
 

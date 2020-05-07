@@ -326,6 +326,9 @@ public class DatabaseSeeder implements
         user.setAddress(address);
         userDao.update(user);
         System.out.println("Test user persist.");
+        //test pre pruhlasenie na trip
+        user.getTravel_journal().setXp_count(11);
+        userDao.update(user);
 
         //user Milan
         user = new User(BCrypt.hashpw("hesloo",BCrypt.gensalt()),"Milan","Netestovany","milan@gmail.com");
@@ -467,6 +470,7 @@ public class DatabaseSeeder implements
 
     private void signUpUserToExpiredEnrollmentsForTesting(User user) {
         TravelJournal travelJournal = user.getTravel_journal();
+
         List<Enrollment> enrollments = travelJournal.getEnrollments();
         TripSession tripSession;
         Trip trip = tripDao.findAll().get(1);
