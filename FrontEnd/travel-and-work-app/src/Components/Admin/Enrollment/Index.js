@@ -192,13 +192,6 @@ class Index extends React.Component {
 
             return (
                 <Container>
-                    <ButtonInRow
-                        variant="success"
-                        link="/category/create"
-                        side="right"
-                        label="Add category"
-                    />
-
                     {alert}
 
                     <ModalCentered

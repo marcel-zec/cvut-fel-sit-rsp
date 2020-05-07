@@ -7,7 +7,14 @@ import Cookies from "universal-cookie";
 
 class Index extends React.Component {
     async componentDidMount() {
-        const response = await fetch(`http://localhost:8080/trip`);
+        const response = await fetch(`http://localhost:8080/trip`, {
+            method: "GET",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
         const data = await response.json();
         console.log(data);
         this.setState({ trips: data });
