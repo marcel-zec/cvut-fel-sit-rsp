@@ -9,6 +9,7 @@ import cz.cvut.fel.rsp.travelandwork.exception.NotAllowedException;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
 import cz.cvut.fel.rsp.travelandwork.model.*;
 import cz.cvut.fel.rsp.travelandwork.security.SecurityUtils;
+import cz.cvut.fel.rsp.travelandwork.security.model.UserDetails;
 import cz.cvut.fel.rsp.travelandwork.service.security.AccessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -55,17 +56,16 @@ public class TripService {
     @Transactional
     public List<TripDto> findAllDto() {
         List<TripDto> tripDtos = new ArrayList<>();
-        User user = SecurityUtils.getCurrentUser();
-        //todo check if this works
-        //if user is regular USER we filter all the trips he sees
 
-        //else we show all to ADMIN or SUPERUSER
-        if(user != null && (user.getRole().equals(Role.ADMIN) || user.getRole().equals(Role.SUPERUSER))) {
-            for (Trip trip:tripDao.findAll()) {
-                tripDtos.add(translateService.translateTrip(trip));
-            }
-            return tripDtos;
+        for (Trip trip:tripDao.findAll()) {
+            tripDtos.add(translateService.translateTrip(trip));
         }
+        return tripDtos;
+    }
+
+    @Transactional
+    public List<TripDto> findAllDtoFiltered() {
+        List<TripDto> tripDtos = new ArrayList<>();
 
         for (Trip trip:tripDao.findAll()) {
             if(isTripActive(trip)) {
@@ -78,15 +78,19 @@ public class TripService {
     @Transactional
     public TripDto find(Long id) {
         Trip trip = tripDao.find(id);
-        User user = SecurityUtils.getCurrentUser();
-
-        if(user != null && (user.getRole().equals(Role.ADMIN) || user.getRole().equals(Role.SUPERUSER))) {
-            return translateService.translateTrip(trip);
+        UserDetails userDetails = SecurityUtils.getCurrentUserDetails();
+        //do not werk and we propably do not use this so whatever
+        if(userDetails != null){
+            System.out.println("THIS?");
+                if (!userDetails.getUser().getRole().equals(Role.USER)) {
+                    System.out.println("AM I doing this?");
+                    return translateService.translateTrip(trip);
+                }
         }
 
         List<TripSession> sessions = new ArrayList<>();
         for(TripSession tripSession : trip.getSessions()) {
-            if(!tripSession.isNotDeleted() || tripSession.getTo_date().isBefore(LocalDate.now())) {
+            if(tripSession.isNotDeleted() && tripSession.getTo_date().isAfter(LocalDate.now())) {
                 sessions.add(tripSession);
             }
         }
@@ -99,15 +103,19 @@ public class TripService {
     public TripDto findByString(String stringId) {
         Trip trip = tripDao.find(stringId);
 
-        User user = SecurityUtils.getCurrentUser();
+        return translateService.translateTrip(trip);
+    }
 
-        if(user != null && (user.getRole().equals(Role.ADMIN) || user.getRole().equals(Role.SUPERUSER))) {
-            return translateService.translateTrip(trip);
-        }
+    @Transactional
+    public TripDto findByStringFiltered(String stringId) {
+        Trip trip = tripDao.find(stringId);
 
         List<TripSession> sessions = new ArrayList<>();
         for(TripSession tripSession : trip.getSessions()) {
-            if(!tripSession.isNotDeleted() || tripSession.getTo_date().isBefore(LocalDate.now())) {
+            if(tripSession.isNotDeleted() &&
+                    tripSession.getTo_date().isAfter(LocalDate.now()) &&
+                    tripSession.getFrom_date().isAfter(LocalDate.now())) {
+
                 sessions.add(tripSession);
             }
         }
@@ -281,7 +289,7 @@ public class TripService {
 
     private boolean isTripActive(Trip trip) {
         for(TripSession tripSession : trip.getSessions()) {
-            if(tripSession.isNotDeleted() && tripSession.getTo_date().isAfter(LocalDate.now())) {
+            if(tripSession.isNotDeleted() && tripSession.getTo_date().isAfter(LocalDate.now()) && tripSession.getFrom_date().isAfter(LocalDate.now())) {
                 return true;
             }
         }

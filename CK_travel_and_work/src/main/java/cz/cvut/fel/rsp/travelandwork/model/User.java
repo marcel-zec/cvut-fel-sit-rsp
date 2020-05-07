@@ -82,8 +82,7 @@ public class User extends AbstractEntity {
         this.tripReviews = new ArrayList<>();
     }
 
-    public User(
-            @Email(message = "Email should be valid") String email,
+    public User(@Email(message = "Email should be valid") String email,
                 @Size(max = 255, min = 6, message = "Password is in incorrect format.") String password) {
         this.email = email;
         this.password = password;
@@ -145,25 +144,24 @@ public class User extends AbstractEntity {
         this.travel_journal = travel_journal;
     }
 
-
     public Address getAddress() {
-
         return address;
     }
 
-
-    public TravelJournal getTravel_journal()
-    {
+    public TravelJournal getTravel_journal() {
         return travel_journal;
     }
-
 
     public List<TripReview> getTripReviews() {
         return tripReviews;
     }
 
-    public void addReview(TripReview tripReview) {
+    public void addTripReview(TripReview tripReview) {
          tripReviews.add(tripReview);
+    }
+
+    public void addUserReviewAutor(UserReview userReview){
+        userReviewsAuthor.add(userReview);
     }
 
     @Override

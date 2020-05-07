@@ -160,6 +160,7 @@ class Create extends React.Component {
         fetch("http://localhost:8080/category", {
             method: "GET",
             mode: "cors",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
             },

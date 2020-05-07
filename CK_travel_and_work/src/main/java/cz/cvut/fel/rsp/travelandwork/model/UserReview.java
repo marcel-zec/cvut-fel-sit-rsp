@@ -38,80 +38,68 @@ public class UserReview extends AbstractEntity {
     @JoinColumn(name = "trip_session_id", nullable = false)
     private TripSession tripSession;
 
+    public UserReview(@Size(max = 255, min = 0, message = "Max 255 characters.") String note, LocalDateTime date,
+                      @Min(value = 0, message = "Min 0") @Max(value = 5, message = "Max 5") double rating,
+                      User user, User author, TripSession tripSession) {
+        this.note = note;
+        this.date = date;
+        this.rating = rating;
+        this.setUser(user);
+        this.setAuthor(author);
+        this.tripSession = tripSession;
+    }
 
     public UserReview() {
         this.date = LocalDateTime.now();
     }
 
-
     public String getNote() {
-
         return note;
     }
 
-
     public void setNote(String note) {
-
         this.note = note;
     }
 
-
     public LocalDateTime getDate() {
-
         return date;
     }
 
-
     public void setDate(LocalDateTime date) {
-
         this.date = date;
     }
 
-
     public double getRating() {
-
         return rating;
     }
 
-
     public void setRating(double rating) {
-
         this.rating = rating;
     }
 
-
     public User getUser() {
-
         return user;
     }
-
-
+//set user which is being reviewed
     public void setUser(User user) {
-
+        user.addUserReview(this);
         this.user = user;
     }
 
-
     public User getAuthor() {
-
         return author;
     }
-
-
+//set author of review
     public void setAuthor(User author) {
-
+        author.addUserReviewAuthor(this);
         this.author = author;
     }
 
-
     public TripSession getTripSession() {
-
         return tripSession;
     }
 
-
     public void setTripSession(TripSession tripSession) {
-
         this.tripSession = tripSession;
     }
 }

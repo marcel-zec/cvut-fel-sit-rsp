@@ -24,22 +24,34 @@ class Index extends React.Component {
                 this.setState({ type: this.props.location.type });
         }
 
+        const requestSettings = {
+            method: "GET",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        };
+
         const response = await fetch(
-            `http://localhost:8080/achievement/categorized`
+            `http://localhost:8080/achievement/categorized`,
+            requestSettings
         );
         const data = await response.json();
         console.log(data);
         this.setState({ categorized: data });
 
         const response1 = await fetch(
-            `http://localhost:8080/achievement/certificate`
+            `http://localhost:8080/achievement/certificate`,
+            requestSettings
         );
         const data1 = await response1.json();
         console.log(data1);
         this.setState({ certificate: data1 });
 
         const response2 = await fetch(
-            `http://localhost:8080/achievement/special`
+            `http://localhost:8080/achievement/special`,
+            requestSettings
         );
         const data2 = await response2.json();
         console.log(data2);
