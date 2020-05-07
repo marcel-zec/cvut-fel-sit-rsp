@@ -9,6 +9,7 @@ import cz.cvut.fel.rsp.travelandwork.exception.NotAllowedException;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
 import cz.cvut.fel.rsp.travelandwork.model.*;
 import cz.cvut.fel.rsp.travelandwork.security.SecurityUtils;
+import cz.cvut.fel.rsp.travelandwork.security.model.UserDetails;
 import cz.cvut.fel.rsp.travelandwork.service.security.AccessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -55,41 +56,43 @@ public class TripService {
     @Transactional
     public List<TripDto> findAllDto() {
         List<TripDto> tripDtos = new ArrayList<>();
-
+        UserDetails userDetails = SecurityUtils.getCurrentUserDetails();
         //todo check if this works
-        //if user is regular USER we filter all the trips he sees
-        if(SecurityUtils.getCurrentUser().getRole().equals(Role.USER)) {
-            for (Trip trip:tripDao.findAll()) {
-                if(isTripActive(trip)) {
-                    tripDtos.add(translateService.translateTrip(trip));
-                }
-            }
-        }
 
-        //else we show all to ADMIN or SUPERUSER
-        else {
+
+        //we show all to ADMIN or SUPERUSER
+        if(userDetails != null && (userDetails.getUser().getRole().equals(Role.ADMIN) || userDetails.getUser().getRole().equals(Role.SUPERUSER))) {
             for (Trip trip:tripDao.findAll()) {
                 tripDtos.add(translateService.translateTrip(trip));
             }
+            return tripDtos;
         }
 
+        //if user is regular USER or guest we filter all the trips he sees
+        for (Trip trip:tripDao.findAll()) {
+            if(isTripActive(trip)) {
+                tripDtos.add(translateService.translateTrip(trip));
+            }
+        }
         return tripDtos;
     }
 
     @Transactional
     public TripDto find(Long id) {
         Trip trip = tripDao.find(id);
+        UserDetails userDetails = SecurityUtils.getCurrentUserDetails();
 
-        //todo  check if this works as authorization
-        if(SecurityUtils.getCurrentUser().getRole().equals(Role.USER)) {
-            List<TripSession> sessions = new ArrayList<>();
-            for(TripSession tripSession : trip.getSessions()) {
-                if(!tripSession.isNotDeleted() || tripSession.getTo_date().isBefore(LocalDate.now())) {
-                    sessions.add(tripSession);
-                }
-            }
-            trip.setSessions(sessions);
+        if(userDetails != null && (userDetails.getUser().getRole().equals(Role.ADMIN) || userDetails.getUser().getRole().equals(Role.SUPERUSER))) {
+            return translateService.translateTrip(trip);
         }
+
+        List<TripSession> sessions = new ArrayList<>();
+        for(TripSession tripSession : trip.getSessions()) {
+            if(!tripSession.isNotDeleted() || tripSession.getTo_date().isBefore(LocalDate.now())) {
+                sessions.add(tripSession);
+            }
+        }
+        trip.setSessions(sessions);
 
         return translateService.translateTrip(trip);
     }
@@ -97,17 +100,19 @@ public class TripService {
     @Transactional
     public TripDto findByString(String stringId) {
         Trip trip = tripDao.find(stringId);
+        UserDetails userDetails = SecurityUtils.getCurrentUserDetails();
 
-        //todo  check if this works as authorization
-        if(SecurityUtils.getCurrentUser().getRole().equals(Role.USER)) {
-            List<TripSession> sessions = new ArrayList<>();
-            for(TripSession tripSession : trip.getSessions()) {
-                if(!tripSession.isNotDeleted() || tripSession.getTo_date().isBefore(LocalDate.now())) {
-                    sessions.add(tripSession);
-                }
-            }
-            trip.setSessions(sessions);
+        if(userDetails != null && (userDetails.getUser().getRole().equals(Role.ADMIN) || userDetails.getUser().getRole().equals(Role.SUPERUSER))) {
+            return translateService.translateTrip(trip);
         }
+
+        List<TripSession> sessions = new ArrayList<>();
+        for(TripSession tripSession : trip.getSessions()) {
+            if(!tripSession.isNotDeleted() || tripSession.getTo_date().isBefore(LocalDate.now())) {
+                sessions.add(tripSession);
+            }
+        }
+        trip.setSessions(sessions);
 
         return translateService.translateTrip(trip);
     }
