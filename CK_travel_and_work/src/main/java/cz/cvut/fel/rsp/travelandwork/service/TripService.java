@@ -130,7 +130,7 @@ public class TripService {
             session.setTrip(trip);
             tripSessionDao.persist(session);
         }
-       tripDao.update(trip);
+        tripDao.update(trip);
     }
 
     @Transactional
@@ -200,7 +200,7 @@ public class TripService {
             TripSession newSession = newTrip.getSessions().get(i);
             if (newSession.getTo_date().isBefore(newSession.getFrom_date())) throw new BadDateException();
 
-                if (i <= trip.getSessions().size()-1 ){
+            if (i <= trip.getSessions().size()-1 ){
                 TripSession oldSession = trip.getSessions().get(i);
 
                 newTrip.getSessions().get(i).setId(oldSession.getId());
@@ -208,9 +208,9 @@ public class TripService {
                 oldSession.setTrip(trip);
                 tripSessionDao.update(oldSession);
             } else {
-                    newSession.setTrip(trip);
-                    tripSessionDao.persist(newSession);
-                }
+                newSession.setTrip(trip);
+                tripSessionDao.persist(newSession);
+            }
         }
 
         trip=newTrip;
