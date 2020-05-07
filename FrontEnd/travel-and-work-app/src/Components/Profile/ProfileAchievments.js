@@ -8,13 +8,9 @@ import { appContext } from "../../appContext"
 
 class ProfileAchievments extends React.Component {
     state = {user : null};
-
     static contextType = appContext;
-
     async componentDidMount() {
         this.setState({user:this.context.user});
-
-        
     }
     
     render() {
