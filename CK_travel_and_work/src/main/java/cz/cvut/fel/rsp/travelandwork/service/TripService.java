@@ -9,6 +9,7 @@ import cz.cvut.fel.rsp.travelandwork.exception.NotAllowedException;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
 import cz.cvut.fel.rsp.travelandwork.model.*;
 import cz.cvut.fel.rsp.travelandwork.security.SecurityUtils;
+import cz.cvut.fel.rsp.travelandwork.security.model.UserDetails;
 import cz.cvut.fel.rsp.travelandwork.service.security.AccessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -55,12 +56,12 @@ public class TripService {
     @Transactional
     public List<TripDto> findAllDto() {
         List<TripDto> tripDtos = new ArrayList<>();
-        User user = SecurityUtils.getCurrentUser();
+        UserDetails userDetails = SecurityUtils.getCurrentUserDetails();
         //todo check if this works
 
 
         //we show all to ADMIN or SUPERUSER
-        if(user != null && (user.getRole().equals(Role.ADMIN) || user.getRole().equals(Role.SUPERUSER))) {
+        if(userDetails != null && (userDetails.getUser().getRole().equals(Role.ADMIN) || userDetails.getUser().getRole().equals(Role.SUPERUSER))) {
             for (Trip trip:tripDao.findAll()) {
                 tripDtos.add(translateService.translateTrip(trip));
             }
@@ -79,9 +80,9 @@ public class TripService {
     @Transactional
     public TripDto find(Long id) {
         Trip trip = tripDao.find(id);
-        User user = SecurityUtils.getCurrentUser();
+        UserDetails userDetails = SecurityUtils.getCurrentUserDetails();
 
-        if(user != null && (user.getRole().equals(Role.ADMIN) || user.getRole().equals(Role.SUPERUSER))) {
+        if(userDetails != null && (userDetails.getUser().getRole().equals(Role.ADMIN) || userDetails.getUser().getRole().equals(Role.SUPERUSER))) {
             return translateService.translateTrip(trip);
         }
 
@@ -99,10 +100,9 @@ public class TripService {
     @Transactional
     public TripDto findByString(String stringId) {
         Trip trip = tripDao.find(stringId);
+        UserDetails userDetails = SecurityUtils.getCurrentUserDetails();
 
-        User user = SecurityUtils.getCurrentUser();
-
-        if(user != null && (user.getRole().equals(Role.ADMIN) || user.getRole().equals(Role.SUPERUSER))) {
+        if(userDetails != null && (userDetails.getUser().getRole().equals(Role.ADMIN) || userDetails.getUser().getRole().equals(Role.SUPERUSER))) {
             return translateService.translateTrip(trip);
         }
 
