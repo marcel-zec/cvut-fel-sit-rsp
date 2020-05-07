@@ -9,6 +9,7 @@ import { Form,Modal } from "react-bootstrap";
 import AchievmentModal from "../../SmartGadgets/AchievementModal";
 import AchievementListInline from "../../SmartGadgets/AchievementListInline";
 import { appContext } from "../../../appContext"
+import MyAlert from "../../SmartGadgets/MyAlert";
 
 class Detail extends React.Component {
     state = { trip: null, selectedSession : {id:null, from_date:null,to_date:null, price:null}};
@@ -27,11 +28,6 @@ class Detail extends React.Component {
         //data.sessions = [];
         console.log(data);
         this.user = this.context.user;
-        this.userDTO.achievements_special = [{id: 2, name: "Kuchař ryby fugu", description: "Uživatel má zkušenosti s přípravou jedovatých ryb fugu.", icon: "fish", recieved_via_enrollments: Array(0)}
-        ,{id: 3, name: "Kuchař ryby fugu", description: "Uživatel má zkušenosti s přípravou jedovatých ryb fugu.", icon: "fish", recieved_via_enrollments: Array(0)}
-                                            ,{id: 4, name: "Horolezec", description: "Uživatel má zkušenosti s lezením po skalách.", icon: "mountain", recieved_via_enrollments: Array(0)}];
-        this.userDTO.certifications = [{id: 2, name: "Certifikát Angličtina B2", description: "Uživatel má certifikát B2 v anglickém jazyku.", icon: "graduation-cap"}];
-        this.userDTO.achievements_categorized = [{id: 3, name: "Kuchtík", description: "Uživatel byl jednou vařit.", icon: "hamburger"}];
         data.rating = 4.7;
         data.reviews = [{author:"František Omáčka",rating:3.5,date:"7.srpna 2020",note:"Venenatis quis, ante. Maecenas fermentum, sem in pharetra pellentesque, velit turpis volutpat ante, in pharetra metus odio a lectus. Sed vel lectus. Donec odio tempus molestie, porttitor ut, iaculis quis, sem. Pellentesque sapien. Duis pulvinar. Nulla accumsan, elit sit amet varius semper, nulla mauris mollis quam, tempor suscipit diam nulla vel leo. Mauris tincidunt sem sed arcu."},{author:"Tomáš Omáčka",rating:4.0,date:"7.zari 2020",note:"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Etiam quis quam. Donec iaculis gravida nulla. Etiam sapien elit, consequat eget, tristique non, venenatis quis, ante. Maecenas fermentum, sem in pharetra pellentesque, velit turpis volutpat ante, in pharetra metus odio a lectus. Sed vel lectus. Donec odio tempus molestie, porttitor ut, iaculis quis, sem. Pellentesque sapien. Duis pulvinar. Nulla accumsan, elit sit amet varius semper, nulla mauris mollis quam, tempor suscipit diam nulla vel leo. Mauris tincidunt sem sed arcu."}]
         this.setState({ trip: data});
@@ -61,7 +57,28 @@ class Detail extends React.Component {
         let checboxIsChecked = false;
         checboxIsChecked = document.querySelector("#checkboxAgreement input").checked;
         if(checboxIsChecked&&this.formIsValid){
-            console.log("READY K ODESLANI");
+            fetch("http://localhost:8080/trip/"+this.state.trip.short_name, {
+                method: "POST",
+                mode: "cors",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(this.state.selectedSession),
+            }).then((response) => {
+                if (response.ok)
+                    this.props.history.push({
+                        pathname: "/",
+                        alert: (
+                            <MyAlert
+                                heading="Trip was succesfully added to your travel journal!"
+                                text="Continue"
+                                flash={true}
+                            />
+                        ),
+                    });
+                //TODO - osetrenie vynimiek
+                else alert("Error: somethhing goes wrong");
+            });
         }
     }
     validateUserAchievement(achievement,userList){
@@ -81,17 +98,15 @@ class Detail extends React.Component {
         const req_cerf = this.state.trip.required_achievements_certificate;
         const minlevel = this.state.trip.required_level;
 
-        specialValidate = req_ach_special.every(val => this.validateUserAchievement(val,this.userDTO.achievements_special));
-        categorizedValidate = req_ach_categorized.every(val => this.validateUserAchievement(val,this.userDTO.achievements_categorized));
-        certificateslValidate = req_cerf.every(val => this.validateUserAchievement(val,this.userDTO.certifications));
-        levelPassed = this.userDTO.level >= minlevel;
+        specialValidate = req_ach_special.every(val => this.validateUserAchievement(val,this.user.travel_journal.special));
+        categorizedValidate = req_ach_categorized.every(val => this.validateUserAchievement(val,this.user.travel_journal.categorized));
+        certificateslValidate = req_cerf.every(val => this.validateUserAchievement(val,this.user.travel_journal.certificates));
+        levelPassed = this.user.travel_journal.level >= minlevel;
 
 
         if(specialValidate&&categorizedValidate&&certificateslValidate&&levelPassed){
-            console.log("je to validdni");
             this.formIsValid = true;
         }else{
-            console.log("neni to validni");
             document.querySelector("#confirmPurchase").style.display = "none";
             document.querySelector("#checkboxAgreement").style.display = "none";
             document.querySelector("#validationFalse").style.display = "block";
@@ -114,7 +129,7 @@ class Detail extends React.Component {
         return starsElement;
     }
     validLevel(){
-        if (this.userDTO.level >= this.state.trip.required_level){
+        if (this.user.travel_journal.level >= this.state.trip.required_level){
             return <FontAwesomeIcon className="checked" icon="check-circle"/>;
         }
         return <FontAwesomeIcon className="false" icon="minus-circle"/>;
@@ -366,7 +381,7 @@ class Detail extends React.Component {
                                 <Col className="alignLeft">
                                     <Card.Title>Required certifications</Card.Title>
                                     <Card.Body className="flex">
-                                        <AchievementListInline achievements={this.state.trip.required_achievements_certificate} userList={this.userDTO.certifications} message={"No certifications are required"}/>
+                                        <AchievementListInline achievements={this.state.trip.required_achievements_certificate} userList={this.user.travel_journal.certificates} message={"No certifications are required"}/>
                                     </Card.Body>
                                 </Col>
                                 <Col xs={4}>
@@ -382,10 +397,10 @@ class Detail extends React.Component {
                                     <Card.Title>Required achievements</Card.Title>
 
                                     <Card.Body>
-                                        <AchievementListInline achievements={this.state.trip.required_achievements_special} userList={this.userDTO.achievements_special} message={"No achievements are required"}/>
+                                        <AchievementListInline achievements={this.state.trip.required_achievements_special} userList={this.user.travel_journal.special} message={"No achievements are required"}/>
                                     </Card.Body>
                                     <Card.Body>
-                                        <AchievementListInline achievements={this.state.trip.required_achievements_categorized} userList={this.userDTO.achievements_categorized} message={"No categorized achievements are required"}/>
+                                        <AchievementListInline achievements={this.state.trip.required_achievements_categorized} userList={this.user.travel_journal.categorized} message={"No categorized achievements are required"}/>
                                     </Card.Body>
                                 </Col>
                             </Row>

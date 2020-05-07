@@ -7,10 +7,15 @@ import Tooltip from "react-bootstrap/Tooltip";
 import AchievmentModal from "../../SmartGadgets/AchievementModal";
 
 class TripHistory extends React.Component {
+    state = {enroll:null,review_exists:null};
+    async componentDidMount() {
+        this.setState({enroll:this.props.trip});
+        this.setState({review_exists:this.props.reviewExists})
+    }
     render() {
         const achievments = [];
 
-        this.props.trip.achievments.forEach(element => {
+        this.props.trip.gain_achievements_special.forEach(element => {
             //faking icons
             let iconName = "trophy";
             if (element.id === 2) iconName = "medal";
@@ -22,13 +27,15 @@ class TripHistory extends React.Component {
                     icon={iconName}
                     title={element.title}
                     description={element.description}
+                    key={element.title}
                 />
             );
         });
         //incrementing number for tooltips ID
         let placement = 0;
         let commentButton = null;
-        if (this.props.trip.comment) {
+        //pokud user jeste nenapsal review 
+        if (this.state.review_exists) {
             //comment icons for new comment
             commentButton = (
                 <OverlayTrigger
@@ -39,27 +46,14 @@ class TripHistory extends React.Component {
                         </Tooltip>
                     }
                 >
-                    <Link className="submit">
+                    <Link className="submit" to="/">
                         Add review<FontAwesomeIcon icon="comment-medical" />
                     </Link>
                 </OverlayTrigger>
             );
         } else {
             //comment icons for updating
-            commentButton = (
-                <OverlayTrigger
-                    placement={"right"}
-                    overlay={
-                        <Tooltip id={`tooltip-${++placement}`}>
-                            Show or update your review of this trip.
-                        </Tooltip>
-                    }
-                >
-                    <Link to="/" className="submit">
-                        Show review<FontAwesomeIcon icon="comment-dots" />
-                    </Link>
-                </OverlayTrigger>
-            );
+            commentButton = "";
         }
 
         return (
@@ -96,7 +90,7 @@ class TripHistory extends React.Component {
                         <Card.Title className="mb-2 text-muted">
                             Added to travel journal on
                         </Card.Title>
-                        <Card.Text>{this.props.trip.enrollmentDate}</Card.Text>
+                        <Card.Text>{this.state.enroll.enrollDate}</Card.Text>
                         <Card.Title className="mb-2 text-muted">
                             Action
                         </Card.Title>

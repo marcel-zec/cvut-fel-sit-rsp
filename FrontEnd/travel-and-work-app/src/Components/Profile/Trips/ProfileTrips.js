@@ -5,7 +5,7 @@ import { Container, Button } from "react-bootstrap";
 import TripHistory from "./TripHistory";
 import ActiveTrips from "./ActiveTrips";
 import Spinner from "react-bootstrap/Spinner";
-
+import { appContext } from "../../../appContext"
 
 
 function ConfirmPayment(props){    
@@ -31,7 +31,16 @@ function CancelTripForm(props){
         </div>);
 }
 class ProfileTrips extends Profile {
-    state = {
+    state = {user : null};
+
+    static contextType = appContext;
+
+    async componentDidMount() {
+        this.setState({user:this.context.user});
+
+        
+    }
+    /*state = {
         tripHistory: [
             {
                 name: "Kuchař na Pražském hradě",
@@ -94,7 +103,7 @@ class ProfileTrips extends Profile {
             }
         ],
         viewForm: false
-    };
+    };*/
     paymentForm = null
     closeValidateWindow(){
         document.querySelector(".popup_background").classList.add("hidden");
@@ -105,7 +114,8 @@ class ProfileTrips extends Profile {
         console.log(props);
         console.log("rusim");
         setTimeout(function () {
-            props.setState({isActive:false});      
+            props.setState({state:"CANCELLED"}); 
+            console.log(props);     
             this.closeValidateWindow();      
             //TODO:UPDATE BACKEND
         }.bind(this), 1000);
@@ -148,14 +158,17 @@ class ProfileTrips extends Profile {
         this.component.paymentForm = <CancelTripForm state={trip} component={this.component} />
         this.component.setState({ viewForm: true });
     }
+    reviewExist(id){
+        return this.state.user.tripReviews.some((trip) => trip.short_name == id);
+    }
     renderActiveTrip(activetrips){
-        return activetrips.map(trip => <ActiveTrips trip={trip} funcToPay={this.openPayWindow} funcToCancel={this.openCancelWindow} component={this} />)
+        return activetrips.map(trip => <ActiveTrips key={trip.name} trip={trip} funcToPay={this.openPayWindow} funcToCancel={this.openCancelWindow} component={this} />)
     }
     renderArchiveTrip(archiveTrips){
-        return archiveTrips.map(trip => <TripHistory trip={trip}/>);
+        return archiveTrips.map(trip => <TripHistory key={trip.name} reviewExists={this.reviewExist(trip.short_name)} trip={trip}/>);
     }
     render() {
-        if (this.state.trip === null) {
+        if (this.state.user === null) {
             return (
                 <Container className="p-5">
                     <Spinner animation="border" role="status">
@@ -172,10 +185,10 @@ class ProfileTrips extends Profile {
                     </div> 
                     <div id="tripsElementBlock">
                         <div className="activeTrips active">
-                            {this.renderActiveTrip(this.state.tripHistory.filter(trip => trip.state == "active"))}
+                            {this.renderActiveTrip(this.state.user.travel_journal.enrollments.filter(trip => trip.state == "ACTIVE"))}
                         </div>
                         <div className="archiveTrips">
-                            {this.renderArchiveTrip(this.state.tripHistory.filter(trip => trip.state != "active"))}
+                            {this.renderArchiveTrip(this.state.user.travel_journal.enrollments.filter(trip => trip.state != "ACTIVE"))}
                         </div>
                     </div>
                     <div className="popup_background hidden">
