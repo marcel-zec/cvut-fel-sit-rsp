@@ -158,6 +158,14 @@ public class EnrollmentService {
     }
 
     @Transactional
+    public void setPayment(EnrollmentDto enrollmentDto) {
+        Enrollment enrollment = find(enrollmentDto.getId());
+        enrollment.setDeposit_was_paid(enrollmentDto.isDeposit_was_paid());
+
+        enrollmentDao.persist(enrollment);
+    }
+
+    @Transactional
     public void close(EnrollmentDto enrollmentDto){
         Enrollment enrollment = find(enrollmentDto.getId());
         enrollment.setState(EnrollmentState.FINISHED);
