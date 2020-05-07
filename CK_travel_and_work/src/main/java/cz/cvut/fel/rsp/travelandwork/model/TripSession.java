@@ -21,6 +21,7 @@ public class TripSession extends AbstractEntity {
 
     @Basic(optional = false)
     @Column(nullable = false)
+    //todo odkomentovat
 //    @FutureOrPresent
     private LocalDate from_date;
 
