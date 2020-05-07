@@ -64,9 +64,9 @@ public class TripService {
     }
 
     @Transactional
-    public List<TripDto> findAllDtosFiltered() {
+    public List<TripDto> findAllDtoFiltered() {
         List<TripDto> tripDtos = new ArrayList<>();
-        
+
         for (Trip trip:tripDao.findAll()) {
             if(isTripActive(trip)) {
                 tripDtos.add(translateService.translateTrip(trip));
@@ -79,7 +79,7 @@ public class TripService {
     public TripDto find(Long id) {
         Trip trip = tripDao.find(id);
         UserDetails userDetails = SecurityUtils.getCurrentUserDetails();
-        //do not werk
+        //do not werk and we propably do not use this so whatever
         if(userDetails != null){
             System.out.println("THIS?");
                 if (!userDetails.getUser().getRole().equals(Role.USER)) {
@@ -114,7 +114,10 @@ public class TripService {
 
         List<TripSession> sessions = new ArrayList<>();
         for(TripSession tripSession : trip.getSessions()) {
-            if(tripSession.isNotDeleted() && tripSession.getTo_date().isAfter(LocalDate.now())) {
+            if(tripSession.isNotDeleted() &&
+                    tripSession.getTo_date().isAfter(LocalDate.now()) &&
+                    tripSession.getFrom_date().isAfter(LocalDate.now())) {
+
                 sessions.add(tripSession);
             }
         }
@@ -288,7 +291,7 @@ public class TripService {
 
     private boolean isTripActive(Trip trip) {
         for(TripSession tripSession : trip.getSessions()) {
-            if(tripSession.isNotDeleted() && tripSession.getTo_date().isAfter(LocalDate.now())) {
+            if(tripSession.isNotDeleted() && tripSession.getTo_date().isAfter(LocalDate.now()) && tripSession.getFrom_date().isAfter(LocalDate.now())) {
                 return true;
             }
         }

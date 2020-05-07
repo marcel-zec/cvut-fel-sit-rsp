@@ -6,6 +6,7 @@ import cz.cvut.fel.rsp.travelandwork.exception.BadDateException;
 import cz.cvut.fel.rsp.travelandwork.exception.MissingVariableException;
 import cz.cvut.fel.rsp.travelandwork.exception.NotAllowedException;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
+import cz.cvut.fel.rsp.travelandwork.model.Role;
 import cz.cvut.fel.rsp.travelandwork.model.Trip;
 import cz.cvut.fel.rsp.travelandwork.security.SecurityUtils;
 import cz.cvut.fel.rsp.travelandwork.service.TripService;
@@ -40,7 +41,14 @@ public class TripController {
 
     @GetMapping( produces = MediaType.APPLICATION_JSON_VALUE)
     public List<TripDto> getAll() {
-        return tripService.findAllDto();
+        System.out.println("test");
+
+        if(SecurityUtils.getCurrentUser().getRole().equals(Role.ADMIN) || SecurityUtils.getCurrentUser().getRole().equals(Role.SUPERUSER)) {
+            System.out.println("testauth");
+            return tripService.findAllDto();
+        }
+        System.out.println("testguest");
+        return tripService.findAllDtoFiltered();
     }
 
     @GetMapping(value = "/{identificator}", produces = MediaType.APPLICATION_JSON_VALUE)
