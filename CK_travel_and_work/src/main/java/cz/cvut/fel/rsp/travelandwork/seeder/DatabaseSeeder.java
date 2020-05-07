@@ -326,6 +326,10 @@ public class DatabaseSeeder implements
         user.setAddress(address);
         userDao.update(user);
         System.out.println("Test user persist.");
+        //test pre pruhlasenie na trip
+        user = userDao.find("user@gmail.com");
+        user.getTravel_journal().setXp_count(11);
+        userDao.update(user);
 
         //user Milan
         user = new User(BCrypt.hashpw("hesloo",BCrypt.gensalt()),"Milan","Netestovany","milan@gmail.com");
