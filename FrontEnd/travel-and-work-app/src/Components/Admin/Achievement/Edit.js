@@ -59,30 +59,44 @@ class Edit extends React.Component {
 
     async componentDidMount() {
         const type = this.props.location.type;
+        const requestSettings = {
+            method: "GET",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        };
         if (type == "categorized") {
             const response = await fetch(
                 `http://localhost:8080/achievement/categorized/` +
-                    this.props.match.params.id
+                    this.props.match.params.id,
+                requestSettings
             );
             const data = await response.json();
             const dataCopy = { ...data };
             dataCopy.category = data.category.id;
             this.setState({ achievement: dataCopy });
 
-            const response1 = await fetch(`http://localhost:8080/category`);
+            const response1 = await fetch(
+                `http://localhost:8080/category`,
+                requestSettings
+            );
             const data1 = await response1.json();
             this.setState({ categories: data1 });
         } else if (type == "certificate") {
             const response = await fetch(
                 `http://localhost:8080/achievement/certificate/` +
-                    this.props.match.params.id
+                    this.props.match.params.id,
+                requestSettings
             );
             const data = await response.json();
             this.setState({ achievement: data });
         } else if (type == "special") {
             const response = await fetch(
                 `http://localhost:8080/achievement/special/` +
-                    this.props.match.params.id
+                    this.props.match.params.id,
+                requestSettings
             );
             const data = await response.json();
             this.setState({ achievement: data });

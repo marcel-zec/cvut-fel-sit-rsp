@@ -28,7 +28,15 @@ class Edit extends React.Component {
 
     async componentDidMount() {
         const response = await fetch(
-            `http://localhost:8080/category/` + this.props.match.params.id
+            `http://localhost:8080/category/` + this.props.match.params.id,
+            {
+                method: "GET",
+                mode: "cors",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
         );
         const data = await response.json();
         console.log(data);
