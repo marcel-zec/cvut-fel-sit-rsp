@@ -6,6 +6,7 @@ import cz.cvut.fel.rsp.travelandwork.exception.BadDateException;
 import cz.cvut.fel.rsp.travelandwork.exception.MissingVariableException;
 import cz.cvut.fel.rsp.travelandwork.exception.NotAllowedException;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
+import cz.cvut.fel.rsp.travelandwork.model.Role;
 import cz.cvut.fel.rsp.travelandwork.model.Trip;
 import cz.cvut.fel.rsp.travelandwork.security.SecurityUtils;
 import cz.cvut.fel.rsp.travelandwork.service.TripService;
@@ -40,12 +41,26 @@ public class TripController {
 
     @GetMapping( produces = MediaType.APPLICATION_JSON_VALUE)
     public List<TripDto> getAll() {
-        return tripService.findAllDto();
+
+        if(!SecurityUtils.isAuthenticatedAnonymously()) {
+            if(SecurityUtils.getCurrentUser().getRole().equals(Role.ADMIN) || SecurityUtils.getCurrentUser().getRole().equals(Role.SUPERUSER)) {
+                return tripService.findAllDto();
+            }
+        }
+
+        return tripService.findAllDtoFiltered();
     }
 
     @GetMapping(value = "/{identificator}", produces = MediaType.APPLICATION_JSON_VALUE)
     public TripDto get(@PathVariable String identificator) {
-        return tripService.findByString(identificator);
+
+        if(!SecurityUtils.isAuthenticatedAnonymously()) {
+            if(SecurityUtils.getCurrentUser().getRole().equals(Role.ADMIN) || SecurityUtils.getCurrentUser().getRole().equals(Role.SUPERUSER)) {
+                return tripService.findByString(identificator);
+            }
+        }
+
+        return tripService.findByStringFiltered(identificator);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN')")

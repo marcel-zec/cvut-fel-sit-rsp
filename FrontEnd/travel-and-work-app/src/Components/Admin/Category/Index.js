@@ -12,7 +12,14 @@ class Index extends React.Component {
     };
 
     async componentDidMount() {
-        const response = await fetch(`http://localhost:8080/category`);
+        const response = await fetch(`http://localhost:8080/category`, {
+            method: "GET",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
         const data = await response.json();
         console.log(data);
         this.setState({ categories: data });
