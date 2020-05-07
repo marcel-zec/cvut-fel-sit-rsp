@@ -69,7 +69,7 @@ class Profile extends React.Component {
                                 </Row>
                                 <h5>Your progress</h5>
                                 <Row>
-                                    <Col xs={2}><h6>{(this.state.user.travel_journal.level == 0)? "" : (this.state.user.travel_journal.level-1)+".Level"}</h6></Col>
+                                    <Col xs={2}><h6>{(this.state.user.travel_journal.level == 0)? "" : (this.state.user.travel_journal.level)+".Level"}</h6></Col>
                                     <Col><div className="progressInstance"><ProgressBar now={this.state.user.travel_journal.xp_count} label="Just 15 more XP to next level!" /></div></Col>
                                     <Col xs={2}><h6>{(this.state.user.travel_journal.level+1)}.Level</h6></Col>
                                 </Row>

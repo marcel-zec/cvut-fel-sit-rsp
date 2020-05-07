@@ -58,6 +58,7 @@ public class TripService {
 
         //todo check if this works
         //if user is regular USER we filter all the trips he sees
+
         if(SecurityUtils.getCurrentUser().getRole().equals(Role.USER)) {
             for (Trip trip:tripDao.findAll()) {
                 if(isTripActive(trip)) {
