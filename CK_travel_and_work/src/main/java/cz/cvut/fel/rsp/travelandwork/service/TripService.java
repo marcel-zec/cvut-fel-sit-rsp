@@ -102,7 +102,6 @@ public class TripService {
     @Transactional
     public TripDto findByString(String stringId) {
         Trip trip = tripDao.find(stringId);
-        System.out.println("shiet");
 
         return translateService.translateTrip(trip);
     }
@@ -110,7 +109,6 @@ public class TripService {
     @Transactional
     public TripDto findByStringFiltered(String stringId) {
         Trip trip = tripDao.find(stringId);
-        System.out.println("shiet filtered");
 
         List<TripSession> sessions = new ArrayList<>();
         for(TripSession tripSession : trip.getSessions()) {

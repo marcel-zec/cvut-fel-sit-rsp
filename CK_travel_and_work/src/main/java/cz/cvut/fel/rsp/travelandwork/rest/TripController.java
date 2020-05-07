@@ -41,19 +41,26 @@ public class TripController {
 
     @GetMapping( produces = MediaType.APPLICATION_JSON_VALUE)
     public List<TripDto> getAll() {
-        System.out.println("test");
 
-        if(SecurityUtils.getCurrentUser().getRole().equals(Role.ADMIN) || SecurityUtils.getCurrentUser().getRole().equals(Role.SUPERUSER)) {
-            System.out.println("testauth");
-            return tripService.findAllDto();
+        if(!SecurityUtils.isAuthenticatedAnonymously()) {
+            if(SecurityUtils.getCurrentUser().getRole().equals(Role.ADMIN) || SecurityUtils.getCurrentUser().getRole().equals(Role.SUPERUSER)) {
+                return tripService.findAllDto();
+            }
         }
-        System.out.println("testguest");
+
         return tripService.findAllDtoFiltered();
     }
 
     @GetMapping(value = "/{identificator}", produces = MediaType.APPLICATION_JSON_VALUE)
     public TripDto get(@PathVariable String identificator) {
-        return tripService.findByString(identificator);
+
+        if(!SecurityUtils.isAuthenticatedAnonymously()) {
+            if(SecurityUtils.getCurrentUser().getRole().equals(Role.ADMIN) || SecurityUtils.getCurrentUser().getRole().equals(Role.SUPERUSER)) {
+                return tripService.findByString(identificator);
+            }
+        }
+
+        return tripService.findByStringFiltered(identificator);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN')")
