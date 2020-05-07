@@ -327,7 +327,6 @@ public class DatabaseSeeder implements
         userDao.update(user);
         System.out.println("Test user persist.");
         //test pre pruhlasenie na trip
-        user = userDao.find("user@gmail.com");
         user.getTravel_journal().setXp_count(11);
         userDao.update(user);
 
