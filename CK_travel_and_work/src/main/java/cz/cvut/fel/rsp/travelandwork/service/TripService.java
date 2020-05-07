@@ -57,9 +57,9 @@ public class TripService {
         List<TripDto> tripDtos = new ArrayList<>();
         User user = SecurityUtils.getCurrentUser();
         //todo check if this works
-        //if user is regular USER we filter all the trips he sees
 
-        //else we show all to ADMIN or SUPERUSER
+
+        //we show all to ADMIN or SUPERUSER
         if(user != null && (user.getRole().equals(Role.ADMIN) || user.getRole().equals(Role.SUPERUSER))) {
             for (Trip trip:tripDao.findAll()) {
                 tripDtos.add(translateService.translateTrip(trip));
@@ -67,6 +67,7 @@ public class TripService {
             return tripDtos;
         }
 
+        //if user is regular USER or guest we filter all the trips he sees
         for (Trip trip:tripDao.findAll()) {
             if(isTripActive(trip)) {
                 tripDtos.add(translateService.translateTrip(trip));
