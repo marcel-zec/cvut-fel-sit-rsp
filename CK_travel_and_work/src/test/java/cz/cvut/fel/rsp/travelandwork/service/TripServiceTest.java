@@ -18,13 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
-import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -104,7 +100,7 @@ public class TripServiceTest {
         tripReview.setNote("note");
         tripReview.setRating(1);
         tripReview.setDate(LocalDateTime.now());
-        user.addReview(tripReview);
+        user.addTripReview(tripReview);
         trip.setReviews(user.getTripReviews());
 
         userService.createUser(user,user.getPassword());

@@ -95,21 +95,27 @@ public class Enrollment extends AbstractEntity {
         this.tripSession = tripSession;
     }
 
-
     public EnrollmentState getState() {
-
         return state;
     }
 
-
     public void setState(EnrollmentState state) {
-
         this.state = state;
     }
 
+    public boolean isActive(){
+        return this.getState() == EnrollmentState.ACTIVE;
+    }
+
+    public boolean isFinished(){
+        return this.getState() == EnrollmentState.FINISHED;
+    }
+
+    public boolean isCancelled(){
+        return this.getState() == EnrollmentState.CANCELED;
+    }
 
     public List<AchievementSpecial> getRecieved_achievements() {
-
         return recieved_achievements_special;
     }
 

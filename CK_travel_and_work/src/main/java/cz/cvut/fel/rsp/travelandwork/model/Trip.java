@@ -1,5 +1,7 @@
 package cz.cvut.fel.rsp.travelandwork.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.ArrayList;
@@ -140,6 +142,7 @@ public class Trip extends AbstractEntity {
     public Category getCategory() {
         return category;
     }
+
     public String getName() {
         return name;
     }
@@ -188,51 +191,40 @@ public class Trip extends AbstractEntity {
         this.short_name = short_name;
     }
 
-
     public String getLocation() {
         return location;
     }
 
-
     public void setLocation(String location) {
-
         this.location = location;
     }
 
-
     public double getDeposit() {
-
         return deposit;
     }
 
-
     public void setDeposit(double deposit) {
-
         this.deposit = deposit;
     }
 
-
     public int getRequired_level() {
-
         return required_level;
     }
 
-
     public void setRequired_level(int required_level) {
-
         this.required_level = required_level;
     }
 
-
     public List<TripReview> getReviews() {
-
         return reviews;
     }
 
-
     public void setReviews(List<TripReview> reviews) {
-
         this.reviews = reviews;
+    }
+
+    public void addTripReview(TripReview tripReview){
+        this.reviews.add(tripReview);
     }
 
     public void setPossible_xp_reward(int possible_xp_reward) {
@@ -246,7 +238,6 @@ public class Trip extends AbstractEntity {
     public void setRequired_achievements_certificate(List<AchievementCertificate> required_achievements_certificate) {
         this.required_achievements_certificate = required_achievements_certificate;
     }
-
 
     public void addRequired_achievements_certificate(AchievementCertificate achievementCertificate) {
         this.required_achievements_certificate.add(achievementCertificate);

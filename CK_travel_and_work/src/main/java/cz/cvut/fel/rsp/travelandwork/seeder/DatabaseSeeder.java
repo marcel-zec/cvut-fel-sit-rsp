@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -37,9 +38,15 @@ public class DatabaseSeeder implements
     private TranslateService translateService;
     private TravelJournalService travelJournalService;
     private TravelJournalDao travelJournalDao;
+    private TripReviewDao tripReviewDao;
+    private UserReviewDao userReviewDao;
 
     @Autowired
-    public DatabaseSeeder(TripDao tripDao, TripSessionDao tripSessionDao, AchievementCertificateDao achievementCertificateDao, AchievementCategorizedDao achievementCategorizedDao, AchievementSpecialDao achievementSpecialDao, CategoryDao categoryDao, UserDao userDao, AddressDao addressDao, EnrollmentDao enrollmentDao, TripService tripService, TranslateService translateService, TravelJournalService travelJournalService, TravelJournalDao travelJournalDao) {
+    public DatabaseSeeder(TripDao tripDao, TripSessionDao tripSessionDao, AchievementCertificateDao achievementCertificateDao,
+                          AchievementCategorizedDao achievementCategorizedDao, AchievementSpecialDao achievementSpecialDao,
+                          CategoryDao categoryDao, UserDao userDao, AddressDao addressDao, EnrollmentDao enrollmentDao,
+                          TripService tripService, TranslateService translateService, TravelJournalService travelJournalService,
+                          TravelJournalDao travelJournalDao, TripReviewDao tripReviewDao, UserReviewDao userReviewDao) {
         this.tripDao = tripDao;
         this.tripSessionDao = tripSessionDao;
         this.achievementCertificateDao = achievementCertificateDao;
@@ -53,6 +60,8 @@ public class DatabaseSeeder implements
         this.translateService = translateService;
         this.travelJournalService = travelJournalService;
         this.travelJournalDao = travelJournalDao;
+        this.tripReviewDao = tripReviewDao;
+        this.userReviewDao = userReviewDao;
     }
 
     @Override
@@ -71,6 +80,60 @@ public class DatabaseSeeder implements
             signUsersToTrips();
         } catch (NotAllowedException e) {
             e.printStackTrace();
+        }
+        createTripReviews();
+        createUserReviews();
+    }
+
+    private void createUserReviews() {
+        //1.userReview from Milan to Jan
+        User author = userDao.findByEmail("milan@gmail.com");
+        User user = userDao.findByEmail("jan@gmail.com");
+        TripSession tripSession = user.getTravel_journal().getEnrollments().get(0).getTripSession();
+        UserReview userReview = new UserReview("It was a pleasure to work with you, Jane :) ", LocalDateTime.now(), 5, user, author, tripSession);
+        userReviewDao.persist(userReview);
+
+        //2.userReview from Jan to Milan
+        author = userDao.findByEmail("jan@gmail.com");
+        user = userDao.findByEmail("milan@gmail.com");
+        tripSession = user.getTravel_journal().getEnrollments().get(0).getTripSession();
+        userReview = new UserReview("You are a super fugu guy, Milane :) ", LocalDateTime.now(), 5, user, author, tripSession);
+        userReviewDao.persist(userReview);
+
+        //3.userReview from Milan to Julia
+        author = userDao.findByEmail("milan@gmail.com");
+        user = userDao.findByEmail("july1331@gmail.com");
+        tripSession = user.getTravel_journal().getEnrollments().get(0).getTripSession();
+        userReview = new UserReview("I hope I see you again someday, Julia :) ", LocalDateTime.now(), 5, user, author, tripSession);
+        userReviewDao.persist(userReview);
+    }
+
+    private void createTripReviews() {
+        //1.tripReview from Milan
+        User author = userDao.findByEmail("milan@gmail.com");
+        if(author.getTravel_journal().getEnrollments().size() > 0) {
+            Trip trip = author.getTravel_journal().getEnrollments().get(0).getTrip();
+            TripReview tripReview = new TripReview("Really good trip, love it <3", LocalDateTime.now(), 5, author, trip);
+            tripReviewDao.persist(tripReview);
+            tripDao.update(trip);
+        }
+
+        //2.tripReview from Milan
+        author = userDao.findByEmail("milan@gmail.com");
+        if(author.getTravel_journal().getEnrollments().size() > 1) {
+            Trip trip = author.getTravel_journal().getEnrollments().get(1).getTrip();
+            TripReview tripReview = new TripReview("it was good, but the whether was really bad :( ", LocalDateTime.now(), 3, author, trip);
+            tripReviewDao.persist(tripReview);
+            tripDao.update(trip);
+        }
+
+        //3.tripReview from Jan
+        author = userDao.findByEmail("jan@gmail.com");
+        if(author.getTravel_journal().getEnrollments().size() > 0) {
+            Trip trip = author.getTravel_journal().getEnrollments().get(0).getTrip();
+            TripReview tripReview = new TripReview("it was the best trip of my entire life! Don't be afraid to enrol ;) ", LocalDateTime.now(), 3, author, trip);
+            tripReviewDao.persist(tripReview);
+            tripDao.update(trip);
         }
     }
 
@@ -114,23 +177,24 @@ public class DatabaseSeeder implements
         tripSessionDao.persist(tripSession);
         trip.addSession(tripSession);
 
-        //trip ma datum  ukonceni vcera :D
+        //tripSession ma datum  ukonceni vcera
         tripSession = new TripSession(trip, LocalDate.now().minusDays(16), LocalDate.now().minusDays(1), 0);
         tripSessionDao.persist(tripSession);
         trip.addSession(tripSession);
 
-        //trip ma datum  ukonceni predevcirem :D
+        //tripSession ma datum  ukonceni predevcirem
         tripSession = new TripSession(trip, LocalDate.now().minusDays(15), LocalDate.now().minusDays(2), 0);
         tripSessionDao.persist(tripSession);
         trip.addSession(tripSession);
 
-        //trip ma datum  ukonceni pred tydnem :D
+        //tripSession ma datum  ukonceni pred tydnem
         tripSession = new TripSession(trip, LocalDate.now().minusDays(21), LocalDate.now().minusDays(7), 0);
         tripSessionDao.persist(tripSession);
         trip.addSession(tripSession);
 
         tripDao.update(trip);
 
+        //1.trip "Kuchař na Pražském hradě"
         description = "Tento zajezd bude mit zalohu, pro absolvování je potřeba mít achievement ´Kuchař´." ;
         trip = new Trip("Kuchař na Pražském hradě",8,description,"prahradvar",1000,"Praha, Česká republika",3);
         tripDao.persist(trip);
@@ -145,6 +209,7 @@ public class DatabaseSeeder implements
         trip.addSession(tripSession);
         tripDao.update(trip);
 
+        //2.trip "Kuchař menza Studentský dům, Praha"
         description = "Tento zajezd nevyzaduje zadne achievementy a po nem se nedaji ziskat specialni achievementy ale daji se ziskat achievementy jako jsou např. ´Kuchtík´, ´Kuchař´ apod. Odměna Xp je dost nízká aby se nedalo jednoduše dostat za tuhle práci na prestižnější místa jako pražský hrad, ale zároveň je možno si dopomoct s touto lehčí a dostupnější práci nahnat achievement kuchař, jestliže xp grind mám za sebou z jiných zájezdů." ;
         trip = new Trip("Kuchař menza Studentský dům, Praha",3,description,"studumkuch",50,"Praha, Česká republika",0);
         tripDao.persist(trip);
@@ -159,6 +224,7 @@ public class DatabaseSeeder implements
         trip.addSession(tripSession);
         tripDao.update(trip);
 
+        //3.trip "projekt „Úsměv pro všechny“"
         description = "Humanitární akce v imigračním táboře Ušivak v Bosně a Hercegovině. Potřeba znát základy javy, office a nebát se ušpinit si ruce při stavbě skleníku." ;
         trip = new Trip("projekt „Úsměv pro všechny“",3,description,"usibos",200,"tábor Ušivak, Bosna a Hercegovina",0);
         tripDao.persist(trip);
@@ -198,6 +264,9 @@ public class DatabaseSeeder implements
         achievementSpecial = new AchievementSpecial("Kuchař ryby fugu", "Uživatel má zkušenosti s přípravou jedovatých ryb fugu.", "fish"); //1
         achievementSpecialDao.persist(achievementSpecial);
 
+        achievementSpecial = new AchievementSpecial("Mastet Kung-Fugu", "Uživatel je sama zkušenost ohledne přípravy jedovatých ryb fugu.", "fish");
+        achievementSpecialDao.persist(achievementSpecial);
+
         achievementSpecial = new AchievementSpecial("Horolezec", "Uživatel má zkušenosti s lezením po skalách.", "mountain"); //2
         achievementSpecialDao.persist(achievementSpecial);
 
@@ -232,6 +301,7 @@ public class DatabaseSeeder implements
         //ak budete mat problem sa orientovat v tejto casti nemam vam to za zle je to humus...
         //O.S.
 
+        //Kurz vareni ryb fugu
         Trip trip = trips.get(0);
         trip.addRequired_achievements_categorized(categorized.get(0));
         categorized.get(0).addTrips(trip);
@@ -240,9 +310,12 @@ public class DatabaseSeeder implements
         trip.setCategory(categories.get(4));
         categories.get(4).add(trip);
 
+        //Vareni ryb Fugu, Praha
         trip =  trips.get(1);
         trip.addRequired_achievements_special(special.get(1));
         special.get(1).addTrips(trip);
+        trip.addGain_achievements_special(special.get(2));
+        special.get(2).addTrips(trip);
         trip.setCategory(categories.get(0));
         categories.get(0).add(trip);
 
@@ -311,7 +384,7 @@ public class DatabaseSeeder implements
     void createUsers(){
 
         //user Jan
-        User user = new User(BCrypt.hashpw("hesloo",BCrypt.gensalt()),"Jan","Testovany","user@gmail.com");
+        User user = new User(BCrypt.hashpw("hesloo",BCrypt.gensalt()),"Jan","Testovany","jan@gmail.com");
         user.setRole(Role.USER);
 
         userDao.persist(user);

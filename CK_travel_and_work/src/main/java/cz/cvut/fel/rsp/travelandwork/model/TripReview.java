@@ -1,6 +1,5 @@
 package cz.cvut.fel.rsp.travelandwork.model;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -11,6 +10,9 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "TRIP_REVIEW")
+@NamedQueries({
+        @NamedQuery(name = "TripReview.findByTripId", query = "SELECT t FROM Trip t WHERE t.short_name = :id AND t.deleted_at is null")
+        })
 public class TripReview extends AbstractEntity {
 
     @Basic(optional = false)
@@ -32,12 +34,21 @@ public class TripReview extends AbstractEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User author;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "trip_id", nullable = false)
     private Trip trip;
 
     public TripReview() {
         date = LocalDateTime.now();
+    }
+
+    public TripReview(@Size(max = 255, min = 0, message = "Max 255 characters.") String note, LocalDateTime date, @Min(value = 0, message = "Min 0") @Max(value = 5, message = "Max 5") double rating, User author, Trip trip) {
+        this.note = note;
+        this.date = date;
+        this.rating = rating;
+        this.setAuthor(author);
+        this.setTrip(trip);
     }
 
     public String getNote() {
@@ -64,27 +75,21 @@ public class TripReview extends AbstractEntity {
         this.rating = rating;
     }
 
-
     public User getAuthor() {
-
         return author;
     }
 
-
     public Trip getTrip() {
-
         return trip;
     }
 
-
     public void setAuthor(User author) {
-
         this.author = author;
+        author.addTripReview(this);
     }
 
-
     public void setTrip(Trip trip) {
-
         this.trip = trip;
+        trip.addTripReview(this);
     }
 }
