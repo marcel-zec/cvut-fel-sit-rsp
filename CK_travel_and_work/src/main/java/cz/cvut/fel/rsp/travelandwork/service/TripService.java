@@ -56,19 +56,17 @@ public class TripService {
     @Transactional
     public List<TripDto> findAllDto() {
         List<TripDto> tripDtos = new ArrayList<>();
-        UserDetails userDetails = SecurityUtils.getCurrentUserDetails();
-        //todo check if this works
 
-
-        //we show all to ADMIN or SUPERUSER
-        if(userDetails != null && (userDetails.getUser().getRole().equals(Role.ADMIN) || userDetails.getUser().getRole().equals(Role.SUPERUSER))) {
-            for (Trip trip:tripDao.findAll()) {
-                tripDtos.add(translateService.translateTrip(trip));
-            }
-            return tripDtos;
+        for (Trip trip:tripDao.findAll()) {
+            tripDtos.add(translateService.translateTrip(trip));
         }
+        return tripDtos;
+    }
 
-        //if user is regular USER or guest we filter all the trips he sees
+    @Transactional
+    public List<TripDto> findAllDtosFiltered() {
+        List<TripDto> tripDtos = new ArrayList<>();
+        
         for (Trip trip:tripDao.findAll()) {
             if(isTripActive(trip)) {
                 tripDtos.add(translateService.translateTrip(trip));
@@ -81,14 +79,18 @@ public class TripService {
     public TripDto find(Long id) {
         Trip trip = tripDao.find(id);
         UserDetails userDetails = SecurityUtils.getCurrentUserDetails();
-
-        if(userDetails != null && (userDetails.getUser().getRole().equals(Role.ADMIN) || userDetails.getUser().getRole().equals(Role.SUPERUSER))) {
-            return translateService.translateTrip(trip);
+        //do not werk
+        if(userDetails != null){
+            System.out.println("THIS?");
+                if (!userDetails.getUser().getRole().equals(Role.USER)) {
+                    System.out.println("AM I doing this?");
+                    return translateService.translateTrip(trip);
+                }
         }
 
         List<TripSession> sessions = new ArrayList<>();
         for(TripSession tripSession : trip.getSessions()) {
-            if(!tripSession.isNotDeleted() || tripSession.getTo_date().isBefore(LocalDate.now())) {
+            if(tripSession.isNotDeleted() && tripSession.getTo_date().isAfter(LocalDate.now())) {
                 sessions.add(tripSession);
             }
         }
@@ -100,15 +102,19 @@ public class TripService {
     @Transactional
     public TripDto findByString(String stringId) {
         Trip trip = tripDao.find(stringId);
-        UserDetails userDetails = SecurityUtils.getCurrentUserDetails();
+        System.out.println("shiet");
 
-        if(userDetails != null && (userDetails.getUser().getRole().equals(Role.ADMIN) || userDetails.getUser().getRole().equals(Role.SUPERUSER))) {
-            return translateService.translateTrip(trip);
-        }
+        return translateService.translateTrip(trip);
+    }
+
+    @Transactional
+    public TripDto findByStringFiltered(String stringId) {
+        Trip trip = tripDao.find(stringId);
+        System.out.println("shiet filtered");
 
         List<TripSession> sessions = new ArrayList<>();
         for(TripSession tripSession : trip.getSessions()) {
-            if(!tripSession.isNotDeleted() || tripSession.getTo_date().isBefore(LocalDate.now())) {
+            if(tripSession.isNotDeleted() && tripSession.getTo_date().isAfter(LocalDate.now())) {
                 sessions.add(tripSession);
             }
         }
