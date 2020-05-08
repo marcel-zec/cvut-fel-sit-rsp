@@ -242,6 +242,15 @@ public class DatabaseSeeder implements
         trip.addSession(tripSession);
         tripDao.update(trip);
 
+        //trip bez sessions
+        description = "Neaktivni trip. Nema aktivni sessions, je viditelny pouze Administratorem.";
+        trip = new Trip("Retired trip", 12, description, "retrip", 10000, "London, Great Britain", 5);
+        tripDao.persist(trip);
+        //tripSession ma datum  ukonceni vcera
+        tripSession = new TripSession(trip, LocalDate.now().minusDays(16), LocalDate.now().minusDays(1), 0);
+        tripSessionDao.persist(tripSession);
+        trip.addSession(tripSession);
+        tripDao.update(trip);
     }
 
     @Transactional
@@ -332,6 +341,10 @@ public class DatabaseSeeder implements
         trip = trips.get(4);
         trip.setCategory(categories.get(6));
         categories.get(6).add(trip);
+
+        trip = trips.get(5);
+        trip.setCategory(categories.get(2));
+        categories.get(2).add(trip);
 
         //jediny zlepsovak co tu je aj ked by to but ani nemusel...
         for(Trip t : trips) {

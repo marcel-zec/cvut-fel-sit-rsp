@@ -27,14 +27,16 @@ public class EnrollmentService {
     private final AccessService accessService;
     private final UserDao userDao;
     private final AchievementSpecialDao achievementSpecialDao;
+    private final TravelJournalService travelJournalService;
 
     @Autowired
-    public EnrollmentService(EnrollmentDao enrollmentDao, TranslateService translateService, AccessService accessService, UserDao userDao, AchievementSpecialDao achievementSpecialDao) {
+    public EnrollmentService(EnrollmentDao enrollmentDao, TranslateService translateService, AccessService accessService, UserDao userDao, AchievementSpecialDao achievementSpecialDao, TravelJournalService travelJournalService) {
         this.enrollmentDao = enrollmentDao;
         this.translateService =  translateService;
         this.accessService = accessService;
         this.userDao = userDao;
         this.achievementSpecialDao = achievementSpecialDao;
+        this.travelJournalService = travelJournalService;
     }
 
     private List<Enrollment> findAll(){
@@ -176,6 +178,8 @@ public class EnrollmentService {
             achievementSpecials.add(achievementSpecialDao.find(achievementSpecialDto.getId()));
         }
 
+        travelJournalService.addTrip(enrollment.getTravelJournal(), enrollment.getTrip());
+
         enrollment.setRecieved_achievements_special(achievementSpecials);
         enrollmentDao.update(enrollment);
     }
@@ -189,6 +193,8 @@ public class EnrollmentService {
         enrollment.setRecieved_achievements_special(new ArrayList());
         enrollment.getRecieved_achievements().addAll(achievementSpecials);
        // enrollment.setRecieved_achievements_special(achievementSpecials);
+
+        travelJournalService.addTrip(enrollment.getTravelJournal(), enrollment.getTrip());
         enrollmentDao.update(enrollment);
     }
 }
