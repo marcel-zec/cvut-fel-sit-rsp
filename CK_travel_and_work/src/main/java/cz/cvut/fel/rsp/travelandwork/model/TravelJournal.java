@@ -14,7 +14,6 @@ public class TravelJournal extends AbstractEntity{
     @Column(nullable = false)
     private int xp_count = 0;
 
-
     //@Basic(optional = false)
     @Column(nullable = false)
     private HashMap<Category, Integer> trip_counter;
@@ -97,15 +96,21 @@ public class TravelJournal extends AbstractEntity{
         return enrollments;
     }
 
-
     public void setEnrollments(List<Enrollment> enrollments) {
-
         this.enrollments = enrollments;
     }
 
     public void addEnrollment(Enrollment enrollment){
         if (enrollments == null) enrollments = new ArrayList<Enrollment>();
         enrollments.add(enrollment);
+    }
+
+    public List<Enrollment> getFinishedEnrollments() {
+        List<Enrollment> finishedEnrollments = new ArrayList<>();
+        for(Enrollment e : enrollments){
+            if(e.isFinished()) finishedEnrollments.add(e);
+        }
+        return finishedEnrollments;
     }
 
     public List<AchievementCategorized> getEarnedAchievementsCategorized() {
@@ -131,6 +136,7 @@ public class TravelJournal extends AbstractEntity{
     public void addEarnedAchievementSpecial(AchievementSpecial achievementSpecial) {
         this.earnedAchievementsSpecial.add(achievementSpecial);
     }
+
     /**
      * Adds trip to travel journal
      * If travel journal already contains the category, adds one more.

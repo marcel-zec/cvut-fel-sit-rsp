@@ -9,6 +9,7 @@ import { Form, Modal } from "react-bootstrap";
 import AchievmentModal from "../../SmartGadgets/AchievementModal";
 import AchievementListInline from "../../SmartGadgets/AchievementListInline";
 import { appContext } from "../../../appContext";
+import MyAlert from "../../SmartGadgets/MyAlert";
 
 class Detail extends React.Component {
     state = {
@@ -24,9 +25,9 @@ class Detail extends React.Component {
     formIsValid = false;
     static contextType = appContext;
     userDTO = {
-        achievements_special: null,
-        certifications: null,
-        achievements_categorized: null,
+        achievements_special: [],
+        certifications: [],
+        achievements_categorized: [],
         level: 1,
     };
     sessionsIds = [];
@@ -45,51 +46,14 @@ class Detail extends React.Component {
         );
 
         const data = await response.json();
-        //data.sessions = [{id:2, from_date:"5.cerva",to_date:"7.zari", price:1999}];
-        //data.sessions = [];
         console.log(data);
         this.user = this.context.user;
-        this.userDTO.achievements_special = [
-            {
-                id: 2,
-                name: "Kuchař ryby fugu",
-                description:
-                    "Uživatel má zkušenosti s přípravou jedovatých ryb fugu.",
-                icon: "fish",
-                recieved_via_enrollments: Array(0),
-            },
-            {
-                id: 3,
-                name: "Kuchař ryby fugu",
-                description:
-                    "Uživatel má zkušenosti s přípravou jedovatých ryb fugu.",
-                icon: "fish",
-                recieved_via_enrollments: Array(0),
-            },
-            {
-                id: 4,
-                name: "Horolezec",
-                description: "Uživatel má zkušenosti s lezením po skalách.",
-                icon: "mountain",
-                recieved_via_enrollments: Array(0),
-            },
-        ];
-        this.userDTO.certifications = [
-            {
-                id: 2,
-                name: "Certifikát Angličtina B2",
-                description: "Uživatel má certifikát B2 v anglickém jazyku.",
-                icon: "graduation-cap",
-            },
-        ];
-        this.userDTO.achievements_categorized = [
-            {
-                id: 3,
-                name: "Kuchtík",
-                description: "Uživatel byl jednou vařit.",
-                icon: "hamburger",
-            },
-        ];
+        if(this.user != null){
+            this.userDTO.achievements_special = this.user.travel_journal.special;
+            this.userDTO.certifications = this.user.travel_journal.certificates;
+            this.userDTO.achievements_categorized = this.user.travel_journal.categorized;
+        }
+        
         data.rating = 4.7;
         data.reviews = [
             {
@@ -114,7 +78,6 @@ class Detail extends React.Component {
         this.sessionsIds = data.sessions.map(function (session) {
             return session.id;
         });
-        //TODO: nacist prihlaseneho usera
     }
     sessionTripChange = async (selectElement) => {
         const optId = selectElement.value;
@@ -138,7 +101,30 @@ class Detail extends React.Component {
             .checked;
         if (checboxIsChecked && this.formIsValid) {
             console.log("READY K ODESLANI");
-        }
+            fetch("http://localhost:8080/trip/"+this.state.trip.short_name, {
+                method: "POST",
+                mode: "cors",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(this.state.selectedSession),
+            }).then((response) => {
+                if (response.ok)
+                    this.props.history.push({
+                        pathname: "/",
+                        alert: (
+                            <MyAlert
+                                heading="Trip was added to your travel journal"
+                                text="Thank you, now please pay the deposit in your user profile"
+                                flash={true}
+                            />
+                        ),
+                    });
+                //TODO - osetrenie vynimiek
+                else alert("Error: somethhing goes wrong");
+            });
+            }
     }
     validateUserAchievement(achievement, userList) {
         return userList.some((item) => item.id == achievement.id);
@@ -264,7 +250,31 @@ class Detail extends React.Component {
                 sessionBlock = (
                     <div className="trip_price">Cannot be purchased</div>
                 );
-            } else {
+            } else if(this.user == null) {
+                options = (
+                    <Form.Control
+                        as="select"
+                        id="dateSessionSelect"
+                        onChange={(event) =>
+                            this.sessionTripChange(event.target)
+                        }
+                    >
+                        {optionArray}
+                    </Form.Control>
+                );
+                sessionBlock = (
+                    <div>
+                        <div className="trip_price">
+                            <span id="tripPrice">
+                                {" "}
+                                {this.state.selectedSession.price}
+                            </span>
+                            Kč
+                        </div>
+                        <div>Only logged users can purchase. <Link to="/login">Login</Link></div>
+                    </div>
+                );
+            }else {
                 options = (
                     <Form.Control
                         as="select"

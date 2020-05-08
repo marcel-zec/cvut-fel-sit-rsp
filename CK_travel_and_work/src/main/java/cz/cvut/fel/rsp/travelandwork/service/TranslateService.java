@@ -57,17 +57,18 @@ public class TranslateService {
         List<AchievementCategorizedDto> required_achievements_categorized = new ArrayList<>();
         List<AchievementSpecialDto> required_achievements_special = new ArrayList<>();
         List<AchievementSpecialDto> gain_achievements = new ArrayList<>();
+        List<TripReviewDto> tripReviews = new ArrayList<>();
 
         trip.getRequired_achievements_certificate().forEach(achievementCertificate -> required_certificates.add(translateAchievementCertificate(achievementCertificate)));
         trip.getRequired_achievements_categorized().forEach(achievementCategorized -> required_achievements_categorized.add(translateAchievementCategorized(achievementCategorized)));
         trip.getRequired_achievements_special().forEach(achievementSpecial -> required_achievements_special.add(translateAchievementSpecial(achievementSpecial)));
         trip.getGain_achievements_special().forEach(achievementSpecial -> gain_achievements.add(translateAchievementSpecial(achievementSpecial)));
         trip.getSessions().forEach(session-> sessions.add(translateSession(session)));
-
+        trip.getReviews().forEach(tripReview -> tripReviews.add(translateTripReview(tripReview)));
 
         return new TripDto(trip.getId(),trip.getName(),trip.getShort_name(),trip.getPossible_xp_reward(),
                 trip.getDescription(),trip.getRating(),trip.getDeposit(),trip.getLocation(), trip.getRequired_level(),
-                trip.getCategory().getId(), required_certificates, required_achievements_categorized, required_achievements_special, gain_achievements, sessions);
+                trip.getCategory().getId(), required_certificates, required_achievements_categorized, required_achievements_special, gain_achievements, sessions, tripReviews);
     }
 
     @Transactional
