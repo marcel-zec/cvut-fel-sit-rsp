@@ -10,6 +10,7 @@ import cz.cvut.fel.rsp.travelandwork.model.*;
 import cz.cvut.fel.rsp.travelandwork.service.security.AccessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -179,8 +180,8 @@ public class EnrollmentService {
         }
 
         enrollment.setRecieved_achievements_special(achievementSpecials);
+        travelJournalService.addTrip(enrollment.getTravelJournal(), enrollment.getTrip());
         enrollmentDao.update(enrollment);
-        //travelJournalService.addTrip(enrollment.getTravelJournal(), enrollment.getTrip());
     }
 
     @Transactional
@@ -194,7 +195,7 @@ public class EnrollmentService {
         enrollment.getRecieved_achievements().addAll(achievementSpecials);
        // enrollment.setRecieved_achievements_special(achievementSpecials);
 
+        travelJournalService.addTrip(enrollment.getTravelJournal(), enrollment.getTrip());
         enrollmentDao.update(enrollment);
-        //travelJournalService.addTrip(enrollment.getTravelJournal(), enrollment.getTrip());
     }
 }

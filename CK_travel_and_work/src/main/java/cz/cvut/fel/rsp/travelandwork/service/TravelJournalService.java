@@ -6,6 +6,7 @@ import cz.cvut.fel.rsp.travelandwork.model.*;
 import org.hibernate.validator.internal.constraintvalidators.bv.time.futureorpresent.FutureOrPresentValidatorForDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -26,7 +27,6 @@ public class TravelJournalService {
     public void addTrip(TravelJournal travelJournal, Trip trip) {
         Objects.requireNonNull(trip);
         Objects.requireNonNull(travelJournal);
-        System.out.println("AIGHT");
         travelJournal.addTrip(trip);
         dao.update(travelJournal);
         //checkCategorizedAchievements(trip.getCategory(), travelJournal);
