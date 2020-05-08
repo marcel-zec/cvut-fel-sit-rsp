@@ -7,13 +7,34 @@ import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import { Row, Col } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
+import { NavLink, withRouter } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import logo from "../Files/images/logo.png";
 import { appContext } from "../appContext";
 
 class Navigation extends React.Component {
     static contextType = appContext;
+
+    state = {
+        search: null,
+    };
+
+    searchInputHandler = async (event) => {
+        event.target.value.trim() != ""
+            ? await this.setState({ search: event.target.value })
+            : await this.setState({ search: null });
+    };
+
+    searchFormHandler = async (event) => {
+        event.preventDefault();
+        await this.props.history.replace({
+            pathname: "/trips",
+            search:
+                this.state.search == null
+                    ? null
+                    : "?search=" + this.state.search,
+        });
+    };
 
     render() {
         const ROLE_SUPERUSER = "SUPERUSER";
@@ -126,13 +147,24 @@ class Navigation extends React.Component {
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />
                         <Navbar.Collapse id="basic-navbar-nav">
                             <Col xs={9}>
-                                <Form inline>
+                                <Form
+                                    inline
+                                    onSubmit={(event) =>
+                                        this.searchFormHandler(event)
+                                    }
+                                >
                                     <FormControl
                                         type="text"
                                         placeholder="Search"
                                         className="mr-sm-2"
+                                        onChange={(event) =>
+                                            this.searchInputHandler(event)
+                                        }
                                     />
-                                    <Button variant="outline-success">
+                                    <Button
+                                        variant="outline-success"
+                                        type="submit"
+                                    >
                                         Search
                                     </Button>
                                 </Form>
@@ -159,4 +191,4 @@ class Navigation extends React.Component {
     }
 }
 
-export default Navigation;
+export default withRouter(Navigation);

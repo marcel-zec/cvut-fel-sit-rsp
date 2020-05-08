@@ -32,11 +32,15 @@ public class TripController {
         this.tripService = tripService;
     }
 
-    //endpoint looks like that: localhost:8080/trip/filter?location=Tokyo, Japan&max_price=4000&from_date=2020-06-07&to_date=2020-06-18
+    //endpoint looks like that:
+    // localhost:8080/trip/filter?location=Tokyo, Japan&max_price=4000&from_date=2020-06-07&to_date=2020-06-18&search=fugu
     @GetMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<TripDto> getAllTripsByFilter(@RequestParam(value = "location", required = false) String location, @RequestParam String from_date,
-                                          @RequestParam String to_date, @RequestParam(value = "max_price") double maxPrice) {
-        return tripService.getAllTripsByFilter(location, from_date, to_date, maxPrice);
+    public List<TripDto> getAllTripsByFilter(@RequestParam(required = false) String location,
+                                             @RequestParam(required = false) String from_date,
+                                             @RequestParam(required = false) String to_date,
+                                             @RequestParam(value = "max_price", required = false) Double maxPrice,
+                                             @RequestParam(value = "search", required = false) String[] search) {
+        return tripService.getAllTripsByFilter(location, from_date, to_date, maxPrice, search);
     }
 
     @GetMapping( produces = MediaType.APPLICATION_JSON_VALUE)

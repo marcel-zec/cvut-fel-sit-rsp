@@ -12,8 +12,18 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(name = "Trip.findByStringId", query = "SELECT t FROM Trip t WHERE t.short_name = :id AND t.deleted_at is null"),
         @NamedQuery(name = "Trip.findByLevel", query = "SELECT t FROM Trip t WHERE t.required_level <= :required_level AND t.deleted_at is null"),
+
         @NamedQuery(name = "Trip.findByFilter", query = "SELECT DISTINCT t FROM Trip t JOIN t.sessions s WHERE (" +
-                "(:location is null OR t.location = :location) AND (s.price <= :price) AND (s.from_date >= :from_date) AND (s.to_date <= :to_date))")
+                "(:location is null OR t.location = :location) AND " +
+                "(:maxPrice is null OR s.price <= :maxPrice) AND " +
+                "(:from_date is null OR s.from_date >= :from_date) AND " +
+                "(:from_date is null OR s.from_date >= :from_date) AND " +
+                "(:to_date is null OR s.to_date <= :to_date))"),
+
+        @NamedQuery(name = "Trip.findByPattern", query = "SELECT DISTINCT t FROM Trip t WHERE (" +
+                "(t.id IN :ids) AND " +
+                "(t.description LIKE :pattern ) OR " +
+                "(t.name LIKE :pattern))"),
 })
 public class Trip extends AbstractEntity {
 
