@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Card, Form } from "react-bootstrap";
+import { Container, Card, Form, Row } from "react-bootstrap";
 import TripSmall from "./TripSmall";
 import CardColumns from "react-bootstrap/CardColumns";
 import Spinner from "react-bootstrap/Spinner";
@@ -7,6 +7,7 @@ import Cookies from "universal-cookie";
 import DatePicker from "react-datepicker";
 import RangeSlider from "react-bootstrap-range-slider";
 import "react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css";
+import TripMedium from "./TripMedium";
 
 class IndexFilter extends React.Component {
     state = {
@@ -15,51 +16,61 @@ class IndexFilter extends React.Component {
             from: null,
             to: null,
             price: null,
+            words: [],
         },
     };
 
-    componentDidUpdate() {
-        console.log("aaaaaaaaaaaaaaaaaaaaaaaa");
-        console.log("bbbbbbbbbbbbbb");
+    componentDidUpdate(prevState) {
+        if (prevState.location.search != this.props.location.search) {
+            const newState = { ...this.state };
+            newState.filter["words"] = this.searchParameter();
+            this.setState({ state: newState });
+        }
     }
 
+    searchParameter = () => {
+        const urlParams = new URLSearchParams(this.props.location.search);
+        const parameters = urlParams.get("search");
+        return parameters ? parameters.split(" ") : null;
+    };
+
     async componentDidMount() {
-        console.log("ta so?");
-        console.log(this.props.location.search);
-        await fetch(
-            `http://localhost:8080/trip/filter` +
-                (this.props.location.search != null)
-                ? this.props.location.search
-                : "",
-            {
-                method: "GET",
-                mode: "cors",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            }
-        )
+        const newState = { ...this.state };
+        newState.filter.words = this.searchParameter();
+        if (newState.filter.words != this.state.filter.words) {
+            this.setState(newState);
+        }
+
+        /*const url =
+            this.props.location.search.trim() != ""
+                ? "http://localhost:8080/trip/filter" +
+                  this.props.location.search
+                : "http://localhost:8080/trip";*/
+        const url = "http://localhost:8080/trip";
+        await fetch(url, {
+            method: "GET",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
             .then((response) => {
-                console.log("response?");
                 console.log(response);
                 if (response.ok) return response.json();
                 else console.error(response.status);
             })
             .then((data) => {
-                console.log("response!");
                 console.log(data);
                 this.setState({ trips: data });
             })
             .catch((error) => {
                 console.error(error);
             });
-
-        console.log("ta nic");
     }
 
     render() {
-        if (false) {
+        if (this.state.trips == null) {
             return (
                 <Container className="p-5">
                     <Spinner animation="border" role="status">
@@ -69,43 +80,57 @@ class IndexFilter extends React.Component {
             );
         } else {
             return (
-                <Container className="trips">
-                    <Card>
-                        <Form>
-                            <Form.Group>
-                                <Form.Label>Date</Form.Label>
-                                <Card.Body className="d-flex">
-                                    <Form.Label>from </Form.Label>
-                                    <DatePicker
-                                        className="form-control"
-                                        dateFormat="dd. MM. yyyy"
-                                        selected={this.state.filter.from}
+                <Container className="d-flex justify-content-center">
+                    <Row>
+                        <Card>
+                            <Form>
+                                <Form.Group>
+                                    <Form.Label>Date</Form.Label>
+                                    <Card.Body className="d-flex">
+                                        <Form.Label>from </Form.Label>
+                                        <DatePicker
+                                            className="form-control"
+                                            dateFormat="dd. MM. yyyy"
+                                            selected={this.state.filter.from}
+                                        />
+                                        <Form.Label>to </Form.Label>
+                                        <DatePicker
+                                            className="form-control ml-3"
+                                            dateFormat="dd. MM. yyyy"
+                                            selected={this.state.filter.to}
+                                        />
+                                    </Card.Body>
+                                </Form.Group>
+                                <Form.Group>
+                                    <Card.Body className="d-flex">
+                                        <Form.Label>Price </Form.Label>
+                                        <RangeSlider
+                                            value={this.state.filter.price}
+                                            min={0}
+                                            max={5000}
+                                            step={200}
+                                            tooltip="off"
+                                        />
+                                    </Card.Body>
+                                </Form.Group>
+                            </Form>
+                        </Card>
+                    </Row>
+
+                    <Row className="ml-3">
+                        <CardColumns className="d-flex flex-column">
+                            {this.state.trips.map((trip) => {
+                                return (
+                                    <TripMedium
+                                        key={trip.short_name}
+                                        highlightWords={this.state.filter.words}
+                                        trip={trip}
                                     />
-                                    <Form.Label>to </Form.Label>
-                                    <DatePicker
-                                        className="form-control ml-3"
-                                        dateFormat="dd. MM. yyyy"
-                                        selected={this.state.filter.to}
-                                    />
-                                </Card.Body>
-                            </Form.Group>
-                            <Form.Group>
-                                <Card.Body className="d-flex">
-                                    <Form.Label>Price </Form.Label>
-                                    <RangeSlider
-                                        value={this.state.filter.price}
-                                        min={0}
-                                        max={5000}
-                                        step={200}
-                                        tooltip="off"
-                                    />
-                                </Card.Body>
-                            </Form.Group>
-                        </Form>
-                    </Card>
-                    {this.props.location.search == null
-                        ? null
-                        : this.props.location.search}
+                                );
+                            })}
+                        </CardColumns>
+                    </Row>
+
                     {/*<CardColumns>
                         {this.state.trips.map((trip) => {
                             return (

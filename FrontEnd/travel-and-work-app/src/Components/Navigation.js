@@ -19,15 +19,15 @@ class Navigation extends React.Component {
         search: null,
     };
 
-    searchInputHandler = (event) => {
-        console.log("seac");
-        this.setState({ search: event.target.value });
-        console.log(this.state.search);
+    searchInputHandler = async (event) => {
+        event.target.value.trim() != ""
+            ? await this.setState({ search: event.target.value })
+            : await this.setState({ search: null });
     };
 
-    searchFormHandler = (event) => {
+    searchFormHandler = async (event) => {
         event.preventDefault();
-        this.props.history.replace({
+        await this.props.history.replace({
             pathname: "/trips",
             search:
                 this.state.search == null
