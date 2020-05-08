@@ -58,7 +58,7 @@ public class TravelJournalServiceTest {
         tripService.create(trip);
 
         travelJournal = new TravelJournal(user);
-        travelJournal.addTrip(trip);
+        travelJournal.addTrip(trip.getCategory());
         travelJournal.setXp_count(5);
 
         travelJournal.setTrip_counter(new HashMap<Category,Integer>(){{put(category,1);}});
@@ -68,7 +68,7 @@ public class TravelJournalServiceTest {
     @Transactional
     @Rollback
     public void addTrip(){
-        travelJournalService.addTrip(travelJournal,trip);
+        travelJournalService.addTrip(travelJournal.getId(),trip.getId());
         assertEquals(travelJournal.getId(),userService.find(user.getId()).getTravel_journal().getId());
     }
 }

@@ -10,7 +10,6 @@ import cz.cvut.fel.rsp.travelandwork.model.*;
 import cz.cvut.fel.rsp.travelandwork.service.security.AccessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -31,7 +30,7 @@ public class EnrollmentService {
     private final TravelJournalService travelJournalService;
 
     @Autowired
-    public EnrollmentService(EnrollmentDao enrollmentDao, TranslateService translateService, AccessService accessService, UserDao userDao, AchievementSpecialDao achievementSpecialDao, TravelJournalService travelJournalService) {
+    public EnrollmentService(EnrollmentDao enrollmentDao, TranslateService translateService, AccessService accessService, UserDao userDao, AchievementSpecialDao achievementSpecialDao, TravelJournalService travelJournalService, TravelJournalDao travelJournalDao) {
         this.enrollmentDao = enrollmentDao;
         this.translateService =  translateService;
         this.accessService = accessService;
@@ -180,7 +179,8 @@ public class EnrollmentService {
         }
 
         enrollment.setRecieved_achievements_special(achievementSpecials);
-        travelJournalService.addTrip(enrollment.getTravelJournal(), enrollment.getTrip());
+        travelJournalService.addXP(enrollment.getTravelJournal().getId(), enrollment.getActual_xp_reward());
+        travelJournalService.addTrip(enrollment.getTravelJournal().getId(), enrollment.getTrip().getId());
         enrollmentDao.update(enrollment);
     }
 
@@ -195,7 +195,8 @@ public class EnrollmentService {
         enrollment.getRecieved_achievements().addAll(achievementSpecials);
        // enrollment.setRecieved_achievements_special(achievementSpecials);
 
-        travelJournalService.addTrip(enrollment.getTravelJournal(), enrollment.getTrip());
         enrollmentDao.update(enrollment);
-    }
+        travelJournalService.addXP(enrollment.getTravelJournal().getId(), enrollment.getActual_xp_reward());
+        travelJournalService.addTrip(enrollment.getTravelJournal().getId(), enrollment.getTrip().getId());
+}
 }
