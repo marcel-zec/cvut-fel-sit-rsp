@@ -21,8 +21,8 @@ public class AchievementCategorized extends Achievement {
     @JsonIgnore
     @ManyToMany
     @JoinTable(
-            name = "achievement_certificate_owned_travel_journals",
-            joinColumns = @JoinColumn(name = "achievement_certificate_id"),
+            name = "achievement_categorized_owned_travel_journals",
+            joinColumns = @JoinColumn(name = "achievement_categorized_id"),
             inverseJoinColumns = @JoinColumn(name = "traveljournal_id"))
     private List<TravelJournal> owned_travel_journals;
 
