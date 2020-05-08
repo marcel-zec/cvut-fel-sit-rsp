@@ -15,7 +15,7 @@ class IndexFilter extends React.Component {
         filter: {
             from: null,
             to: null,
-            price: null,
+            price: 600,
             words: [],
         },
     };
@@ -32,6 +32,22 @@ class IndexFilter extends React.Component {
         const urlParams = new URLSearchParams(this.props.location.search);
         const parameters = urlParams.get("search");
         return parameters ? parameters.split(" ") : null;
+    };
+
+    inputUpdateHandler = (event, inputName) => {
+        const newState = { ...this.state.filter };
+        if (inputName == "price")
+            newState["price"] = Number(event.target.value);
+        else if (inputName == "from" || inputName == "to") {
+            let newDate = new Date(event);
+            console.log("date " + inputName);
+            console.log(newDate);
+            newDate.setTime(
+                newDate.getTime() - new Date().getTimezoneOffset() * 60 * 1000
+            );
+            newState[inputName] = newDate;
+        }
+        this.setState({ filter: newState });
     };
 
     async componentDidMount() {
@@ -92,12 +108,24 @@ class IndexFilter extends React.Component {
                                             className="form-control"
                                             dateFormat="dd. MM. yyyy"
                                             selected={this.state.filter.from}
+                                            onChange={(event) =>
+                                                this.inputUpdateHandler(
+                                                    event,
+                                                    "from"
+                                                )
+                                            }
                                         />
                                         <Form.Label>to </Form.Label>
                                         <DatePicker
                                             className="form-control ml-3"
                                             dateFormat="dd. MM. yyyy"
                                             selected={this.state.filter.to}
+                                            onChange={(event) =>
+                                                this.inputUpdateHandler(
+                                                    event,
+                                                    "to"
+                                                )
+                                            }
                                         />
                                     </Card.Body>
                                 </Form.Group>
@@ -109,7 +137,14 @@ class IndexFilter extends React.Component {
                                             min={0}
                                             max={5000}
                                             step={200}
-                                            tooltip="off"
+                                            tooltip="on"
+                                            tooltipPlacement="top"
+                                            onChange={(event) =>
+                                                this.inputUpdateHandler(
+                                                    event,
+                                                    "price"
+                                                )
+                                            }
                                         />
                                     </Card.Body>
                                 </Form.Group>
