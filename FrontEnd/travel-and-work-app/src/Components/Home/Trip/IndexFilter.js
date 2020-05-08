@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Card, Form, Row } from "react-bootstrap";
+import { Container, Card, Form, Row, Col } from "react-bootstrap";
 import TripSmall from "./TripSmall";
 import CardColumns from "react-bootstrap/CardColumns";
 import Spinner from "react-bootstrap/Spinner";
@@ -96,8 +96,8 @@ class IndexFilter extends React.Component {
             );
         } else {
             return (
-                <Container className="d-flex justify-content-center">
-                    <Row>
+                <Container className="d-flex mt-3">
+                    <Col>
                         <Card>
                             <Form>
                                 <Form.Group>
@@ -150,21 +150,23 @@ class IndexFilter extends React.Component {
                                 </Form.Group>
                             </Form>
                         </Card>
-                    </Row>
+                    </Col>
 
-                    <Row className="ml-3">
-                        <CardColumns className="d-flex flex-column">
-                            {this.state.trips.map((trip) => {
-                                return (
+                    <Col className="ml-3">
+                        {/*<CardColumns className="d-flex flex-column">*/}
+                        {this.state.trips.map((trip) => {
+                            return (
+                                <Row>
                                     <TripMedium
                                         key={trip.short_name}
                                         highlightWords={this.state.filter.words}
                                         trip={trip}
                                     />
-                                );
-                            })}
-                        </CardColumns>
-                    </Row>
+                                </Row>
+                            );
+                        })}
+                        {/*</CardColumns>*/}
+                    </Col>
 
                     {/*<CardColumns>
                         {this.state.trips.map((trip) => {

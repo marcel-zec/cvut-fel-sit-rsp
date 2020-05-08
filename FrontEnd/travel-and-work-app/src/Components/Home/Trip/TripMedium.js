@@ -56,7 +56,7 @@ class TripMedium extends React.Component {
 
         return (
             <Link to={"/trips/" + this.props.trip.short_name}>
-                <Card>
+                <Card className="mb-3">
                     <Card.Body className="d-flex">
                         <div>
                             <div className="image-card">
@@ -71,12 +71,33 @@ class TripMedium extends React.Component {
                                             this.props.trip.possible_xp_reward
                                         } xp{" "}
                                     </span>
-                                    <h4 className="ml-3" id="trip-title">
-                                        {" "}
-                                        {this.props.trip.name}
-                                    </h4>
                                 </div>
                             </div>
+                        </div>
+                        <div>
+                            <h4 className="ml-3">
+                                <Highlighter
+                                    highlightClassName="textHighlight"
+                                    searchWords={
+                                        this.props.highlightWords
+                                            ? this.props.highlightWords
+                                            : []
+                                    }
+                                    autoEscape={true}
+                                    textToHighlight={this.props.trip.name}
+                                />
+                            </h4>
+
+                            <Highlighter
+                                highlightClassName="textHighlight"
+                                searchWords={
+                                    this.props.highlightWords
+                                        ? this.props.highlightWords
+                                        : []
+                                }
+                                autoEscape={true}
+                                textToHighlight={this.props.trip.description}
+                            />
                             <Row className="trip_sessions">
                                 <Col className="">
                                     <span className="dateIcon">
@@ -93,18 +114,6 @@ class TripMedium extends React.Component {
                                     <span>{lowestPrice} Kč</span>
                                 </Col>
                             </Row>
-                        </div>
-                        <div>
-                            <Highlighter
-                                highlightClassName="YourHighlightClass"
-                                searchWords={
-                                    this.props.highlightWords
-                                        ? this.props.highlightWords
-                                        : []
-                                }
-                                autoEscape={true}
-                                textToHighlight={this.props.trip.description}
-                            />
                         </div>
                     </Card.Body>
                 </Card>
