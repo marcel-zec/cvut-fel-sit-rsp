@@ -178,15 +178,15 @@ public class EnrollmentService {
             achievementSpecials.add(achievementSpecialDao.find(achievementSpecialDto.getId()));
         }
 
-        travelJournalService.addTrip(enrollment.getTravelJournal(), enrollment.getTrip());
-
         enrollment.setRecieved_achievements_special(achievementSpecials);
         enrollmentDao.update(enrollment);
+        //travelJournalService.addTrip(enrollment.getTravelJournal(), enrollment.getTrip());
     }
 
     @Transactional
     public void closeOk(Long id){
         Enrollment enrollment = find(id);
+
         List<AchievementSpecial> achievementSpecials = enrollment.getTrip().getGain_achievements_special();
         enrollment.setState(EnrollmentState.FINISHED);
         enrollment.setActual_xp_reward(enrollment.getTrip().getPossible_xp_reward());
@@ -194,7 +194,7 @@ public class EnrollmentService {
         enrollment.getRecieved_achievements().addAll(achievementSpecials);
        // enrollment.setRecieved_achievements_special(achievementSpecials);
 
-        travelJournalService.addTrip(enrollment.getTravelJournal(), enrollment.getTrip());
         enrollmentDao.update(enrollment);
+        //travelJournalService.addTrip(enrollment.getTravelJournal(), enrollment.getTrip());
     }
 }

@@ -26,9 +26,10 @@ public class TravelJournalService {
     public void addTrip(TravelJournal travelJournal, Trip trip) {
         Objects.requireNonNull(trip);
         Objects.requireNonNull(travelJournal);
+        System.out.println("AIGHT");
         travelJournal.addTrip(trip);
         dao.update(travelJournal);
-        checkCategorizedAchievements(trip.getCategory(), travelJournal);
+        //checkCategorizedAchievements(trip.getCategory(), travelJournal);
     }
 
     @Transactional
