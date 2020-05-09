@@ -16,9 +16,8 @@ import java.util.List;
         @NamedQuery(name = "Trip.findByFilter", query = "SELECT DISTINCT t FROM Trip t JOIN t.sessions s WHERE (" +
                 "(:location is null OR t.location = :location) AND " +
                 "(:maxPrice is null OR s.price <= :maxPrice) AND " +
-                "(:from_date is null OR s.from_date >= :from_date) AND " +
-                "(:from_date is null OR s.from_date >= :from_date) AND " +
-                "(:to_date is null OR s.to_date <= :to_date))"),
+                "(s.from_date >= :from_date) AND " +
+                "(s.to_date <= :to_date))"),
 
         @NamedQuery(name = "Trip.findByPattern", query = "SELECT DISTINCT t FROM Trip t WHERE (" +
                 "(t.id IN :ids) AND " +
