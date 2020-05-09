@@ -105,7 +105,7 @@ function Router(props) {
                 <Route path="/" exact={true} component={Home} />
                 <Route path="/trips" component={IndexFilter} />
 
-                <Route path="/trip_detail/:id" exact component={TripDetail} />
+                <Route path="/trip/:id" exact component={TripDetail} />
                 {/*Admin*/}
                 <Route
                     path="/trip"

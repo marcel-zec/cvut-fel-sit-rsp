@@ -14,7 +14,7 @@ class ActiveTrips extends React.Component {
         console.log(this.state);
         console.log(this.props.trip.state);
         this.paided = <span style={{color:"#28a745"}}>Paid <FontAwesomeIcon icon="check-circle"/></span>
-        this.buttonToPay = <Button className="submit" onClick={price => this.props.funcToPay(this.props.trip.deposit,this)}>Pay deposit <FontAwesomeIcon icon={"money-bill-alt"}/></Button>;
+        this.buttonToPay = <Button className="submit" onClick={price => this.props.funcToPay(this.state.enroll.trip.deposit,this)}>Pay deposit <FontAwesomeIcon icon={"money-bill-alt"}/></Button>;
         this.notPaided = <span style={{color:"#ce3131"}}>Not paid <FontAwesomeIcon icon="minus-circle"/></span>
         this.actionElement = <Button className="cancel" onClick={event => this.props.funcToCancel(this)} style={{float:"right"}}>Cancel<FontAwesomeIcon icon={"trash-alt"}/></Button>;
         if  (this.state.enroll == null){

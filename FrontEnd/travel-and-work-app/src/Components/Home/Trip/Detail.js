@@ -110,8 +110,14 @@ class Detail extends React.Component {
                 },
                 body: JSON.stringify(this.state.selectedSession),
             }).then((response) => {
-                if (response.ok)
-                    this.props.history.push({
+                if (response.ok) {
+                    window.setTimeout(function(){
+                        alert("Trip was added to your travel journal");
+                        document.location.reload();
+                    },500);
+
+                }
+                    /*this.props.history.push({
                         pathname: "/",
                         alert: (
                             <MyAlert
@@ -120,7 +126,7 @@ class Detail extends React.Component {
                                 flash={true}
                             />
                         ),
-                    });
+                    });*/
                 //TODO - osetrenie vynimiek
                 else alert("Error: somethhing goes wrong");
             });

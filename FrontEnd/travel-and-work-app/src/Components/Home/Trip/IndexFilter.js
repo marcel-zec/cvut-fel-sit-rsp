@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Card, Form, Row, Col } from "react-bootstrap";
+import { Container, Card, Form, Row, Col, Button } from "react-bootstrap";
 import TripSmall from "./TripSmall";
 import CardColumns from "react-bootstrap/CardColumns";
 import Spinner from "react-bootstrap/Spinner";
@@ -15,7 +15,7 @@ class IndexFilter extends React.Component {
         filter: {
             from: null,
             to: null,
-            price: 600,
+            price: 6000,
             words: [],
         },
     };
@@ -25,6 +25,7 @@ class IndexFilter extends React.Component {
             const newState = { ...this.state };
             newState.filter["words"] = this.searchParameter();
             this.setState({ state: newState });
+            this.fetchData();
         }
     }
 
@@ -50,19 +51,43 @@ class IndexFilter extends React.Component {
         this.setState({ filter: newState });
     };
 
-    async componentDidMount() {
-        const newState = { ...this.state };
-        newState.filter.words = this.searchParameter();
-        if (newState.filter.words != this.state.filter.words) {
-            this.setState(newState);
-        }
+    searchUrl = () => {
+        let filterUrl = "http://localhost:8080/trip/filter?";
+        let filter = false;
 
-        /*const url =
-            this.props.location.search.trim() != ""
-                ? "http://localhost:8080/trip/filter" +
-                  this.props.location.search
-                : "http://localhost:8080/trip";*/
-        const url = "http://localhost:8080/trip";
+        const searchParameters = this.searchParameter();
+        console.log("searching");
+        console.log(searchParameters);
+        console.log(this.state.filter.price);
+
+        if (searchParameters && searchParameters.length > 0) {
+            searchParameters.forEach((param) => {
+                if (filter) {
+                    filterUrl += "&search=" + param;
+                } else {
+                    filterUrl += "search=" + param;
+                }
+
+                filter = true;
+            });
+        }
+        if (this.state.filter.price) {
+            if (filter) {
+                filterUrl += "&max_price=" + this.state.filter.price;
+            } else {
+                filterUrl += "max_price=" + this.state.filter.price;
+            }
+            filter = true;
+        }
+        return filter ? filterUrl : "http://localhost:8080/trip";
+    };
+
+    fetchData = async (event = null) => {
+        if (event) {
+            event.preventDefault();
+        }
+        const url = this.searchUrl();
+        console.log(url);
         await fetch(url, {
             method: "GET",
             mode: "cors",
@@ -83,6 +108,16 @@ class IndexFilter extends React.Component {
             .catch((error) => {
                 console.error(error);
             });
+    };
+
+    async componentDidMount() {
+        const newState = { ...this.state };
+        newState.filter.words = this.searchParameter();
+        if (newState.filter.words != this.state.filter.words) {
+            this.setState(newState);
+        }
+
+        this.fetchData();
     }
 
     render() {
@@ -99,7 +134,10 @@ class IndexFilter extends React.Component {
                 <Container className="d-flex mt-3">
                     <Col>
                         <Card>
-                            <Form>
+                            <Form
+                                className="p-3"
+                                onSubmit={(event) => this.fetchData(event)}
+                            >
                                 <Form.Group>
                                     <Form.Label>Date</Form.Label>
                                     <Card.Body className="d-flex">
@@ -135,9 +173,9 @@ class IndexFilter extends React.Component {
                                         <RangeSlider
                                             value={this.state.filter.price}
                                             min={0}
-                                            max={5000}
-                                            step={200}
-                                            tooltip="on"
+                                            max={6000}
+                                            step={100}
+                                            tooltip="auto"
                                             tooltipPlacement="top"
                                             onChange={(event) =>
                                                 this.inputUpdateHandler(
@@ -148,6 +186,9 @@ class IndexFilter extends React.Component {
                                         />
                                     </Card.Body>
                                 </Form.Group>
+                                <Button variant="primary" type="submit">
+                                    Filter
+                                </Button>
                             </Form>
                         </Card>
                     </Col>

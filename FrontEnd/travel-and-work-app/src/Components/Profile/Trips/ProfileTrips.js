@@ -137,7 +137,7 @@ class ProfileTrips extends Profile {
         console.log("PLATIS !!!");
         console.log(state);
         setTimeout(function () {
-            state.setState({depositWasPaided:true});
+            state.setState({deposit_was_paid:true});
             //TODO:UPDATE BACKEND
         }, 1000);
         this.component.closeValidateWindow();
@@ -145,7 +145,7 @@ class ProfileTrips extends Profile {
     openPayWindow(price,trip){
         console.log(this);
         const popup = document.querySelector(".popup_background");
-        console.log(trip);
+        console.log(price);
         popup.classList.remove("hidden");
         this.component.paymentForm = <ConfirmPayment payFunc={this.component.payDeposit} state={trip} component={this.component} cancelled={this.component.closeValidateWindow} price={price} />
         this.component.setState({ viewForm: true });
@@ -162,10 +162,10 @@ class ProfileTrips extends Profile {
         return this.state.user.tripReviews.some((trip) => trip.short_name == id);
     }
     renderActiveTrip(activetrips){
-        return activetrips.map(trip => <ActiveTrips key={trip.name} trip={trip} funcToPay={this.openPayWindow} funcToCancel={this.openCancelWindow} component={this} />)
+        return activetrips.slice(0).reverse().map(trip => <ActiveTrips key={trip.name} trip={trip} funcToPay={this.openPayWindow} funcToCancel={this.openCancelWindow} component={this} />)
     }
     renderArchiveTrip(archiveTrips){
-        return archiveTrips.map(trip => <TripHistory key={trip.name} reviewExists={this.reviewExist(trip.short_name)} trip={trip}/>);
+        return archiveTrips.slice(0).reverse().map(trip => <TripHistory key={trip.name} reviewExists={this.reviewExist(trip.short_name)} trip={trip}/>);
     }
     render() {
         if (this.state.user === null) {
