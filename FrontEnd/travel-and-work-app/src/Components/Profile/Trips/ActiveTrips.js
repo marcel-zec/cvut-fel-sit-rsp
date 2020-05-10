@@ -1,6 +1,7 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Card, Button, Col, Row, Image } from "react-bootstrap";
+import DatePicker from "react-datepicker";
 
 
 class ActiveTrips extends React.Component {
@@ -29,7 +30,7 @@ class ActiveTrips extends React.Component {
                                 <Image src="https://specials-images.forbesimg.com/imageserve/5db15891616a45000704761f/960x0.jpg?fit=scale" rounded/>
                             </div>
                         </Col>
-                        <Col xs={4}>
+                        <Col xs={3}>
                             <Card.Title className="mb-2 text-muted">
                                 Name
                             </Card.Title>
@@ -40,11 +41,30 @@ class ActiveTrips extends React.Component {
                             </Card.Title>
                             <Card.Text>{this.state.enroll.trip.location}</Card.Text>
                         </Col>
-                        <Col>
+                        <Col xs={4}>
                             <Card.Title className="mb-2 text-muted">
                                 Trip session
                             </Card.Title>
-                            <Card.Text>{this.state.enroll.tripSession.from_date}-{this.state.enroll.tripSession.to_date}</Card.Text>
+                            <Card.Text>
+                                <DatePicker
+                                        className="form-control"
+                                        selected={Date.parse(
+                                            this.state.enroll.tripSession
+                                                .from_date
+                                        )}
+                                        dateFormat="dd. MM. yyyy"
+                                        disabled={true}
+                                />
+                                <DatePicker
+                                        className="form-control"
+                                        selected={Date.parse(
+                                            this.state.enroll.tripSession
+                                                .to_date
+                                        )}
+                                        dateFormat="dd. MM. yyyy"
+                                        disabled={true}
+                                />
+                            </Card.Text>
     
                             <Card.Title className="mb-2 text-muted">
                                 Deposit
@@ -55,7 +75,16 @@ class ActiveTrips extends React.Component {
                             <Card.Title className="mb-2 text-muted">
                                 Added to travel journal on
                             </Card.Title>
-                            <Card.Text>{this.props.trip.enrollDate}</Card.Text>
+                            <Card.Text>
+                                <DatePicker
+                                        className="form-control"
+                                        selected={Date.parse(
+                                            this.state.enroll.enrollDate
+                                        )}
+                                        dateFormat="dd. MM. yyyy, hh:mm"
+                                        disabled={true}
+                                    />
+                            </Card.Text>
                             <Card.Title className="mb-2 text-muted">
                                 Action
                             </Card.Title>

@@ -177,9 +177,10 @@ class IndexFilter extends React.Component {
         } else {
             return (
                 <Container className="searchTrips mt-5">
-
-                <div className="topLine">
-                <h4>Search results</h4><img src={line} /></div>
+                    <div className="topLine">
+                        <h4>Search results</h4>
+                        <img src={line} />
+                    </div>
 
             <Row>
             <Col className="col-md-4 filter">

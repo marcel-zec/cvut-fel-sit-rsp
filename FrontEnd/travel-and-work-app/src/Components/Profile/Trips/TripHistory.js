@@ -26,6 +26,31 @@ class TripHistory extends React.Component {
         this.setState({ show_review: !this.state.show_review });
     };
 
+    submitHandler = (event) => {
+        event.preventDefault();
+        const request = {
+            note: this.state.note,
+            rating: this.state.rating,
+            trip: this.state.enroll,
+        };
+        fetch("http://localhost:8080/trip_review", {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(request),
+        })
+            .then((response) => {
+                if (response.ok) {
+                    this.toggleReviewForm();
+                } else console.error(response.status);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
     inputUpdateHandler = (event, inputName) => {
         console.log(this.state);
         if (inputName == "note") {
@@ -74,7 +99,7 @@ class TripHistory extends React.Component {
                         }
                     >
                         <Button
-                            className="submit"
+                            className="submit createReview"
                             onClick={() => {
                                 this.toggleReviewForm();
                             }}
@@ -94,19 +119,20 @@ class TripHistory extends React.Component {
             let review = null;
             if (this.state.show_review) {
                 review = (
-                    <Card className="userTrip window radius mb-5">
+                    <Card className="userTrip window radius mb-5 addReviewForm">
                         <Form onSubmit={(event) => this.submitHandler(event)}>
                             <Card.Body>
                                 <Button
-                                    className="submit"
+                                    className="submit closeButton"
                                     onClick={() => {
                                         this.toggleReviewForm();
                                     }}
                                 >
                                     <FontAwesomeIcon icon="times" />
                                 </Button>
-                                <Form.Label>Review</Form.Label>
-                                <Form.Group className="d-flex flex-column w-50">
+                                <Form.Label><h5>Add review</h5></Form.Label>
+                                <Form.Group className="d-flex flex-column w-50" style={{margin:"auto"}}>
+                                    <Form.Label>Evaluate the trip (5=max,0=min)</Form.Label>
                                     <RangeSlider
                                         value={this.state.rating}
                                         min={0}
@@ -126,6 +152,7 @@ class TripHistory extends React.Component {
                                     <Form.Control
                                         as="textarea"
                                         rows="2"
+                                        placeholder="Please, write some note..."
                                         onChange={(event) =>
                                             this.inputUpdateHandler(
                                                 event,
@@ -137,7 +164,7 @@ class TripHistory extends React.Component {
                                 <Button
                                     variant="primary"
                                     type="submit"
-                                    className="mb-1"
+                                    className="mb-1 submit"
                                 >
                                     Submit
                                 </Button>
