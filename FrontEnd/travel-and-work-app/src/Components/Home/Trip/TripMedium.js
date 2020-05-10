@@ -55,26 +55,28 @@ class TripMedium extends React.Component {
         });
 
         return (
-            <Link to={"/trip/" + this.props.trip.short_name}>
-                <Card className="mb-3">
+            <Link to={"/trip_detail/" + this.props.trip.short_name}>
+                <Card className="mb-3 searchTrip">
                     <Card.Body className="d-flex">
-                        <div>
-                            <div className="image-card">
-                                <Card.Img
-                                    variant="top"
-                                    src="https://www.transparency.cz/wp-content/uploads/Jablonec-nad-Nisou-621x466.jpg"
-                                />
-                                <div className="trip_info">
-                                    <span className="image-text">
-                                        {" "}
-                                        {
-                                            this.props.trip.possible_xp_reward
-                                        } xp{" "}
-                                    </span>
+  
+                            <Col xs={5}>
+                                <div className="image-card">
+                                    <Card.Img
+                                        variant="top"
+                                        src="https://www.transparency.cz/wp-content/uploads/Jablonec-nad-Nisou-621x466.jpg"
+                                    />
+                                    <div className="trip_info">
+                                        <span className="image-text">
+                                            {" "}
+                                            {
+                                                this.props.trip.possible_xp_reward
+                                            } xp{" "}
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div>
+                            
+                                </Col>
+                        <Col xs={7}>
                             <h4 className="ml-3">
                                 <Highlighter
                                     highlightClassName="textHighlight"
@@ -114,7 +116,7 @@ class TripMedium extends React.Component {
                                     <span>{lowestPrice} Kč</span>
                                 </Col>
                             </Row>
-                        </div>
+                        </Col>
                     </Card.Body>
                 </Card>
             </Link>

@@ -129,7 +129,6 @@ public class TranslateService {
     @Transactional
     public TravelJournalDto translateTravelJournal(TravelJournal travelJournal){
         Objects.requireNonNull(travelJournal);
-        List<EnrollmentDto> enrollmentDtos = new ArrayList<>();
         List<AchievementCertificateDto> certificateDtos = new ArrayList<>();
         List<AchievementCategorizedDto> categorizedDtos = new ArrayList<>();
         List<AchievementSpecialDto> specialDtos = new ArrayList<>();
@@ -141,13 +140,11 @@ public class TranslateService {
             trip_counter.put(categoryDto,travelJournal.getTrip_counter().get(category));
         }
 
-
-        travelJournal1.getEnrollments().forEach(enrollment -> enrollmentDtos.add(translateEnrollment(enrollment)));
         travelJournal1.getCertificates().forEach(certificate -> certificateDtos.add(translateAchievementCertificate(certificate)));
         travelJournal1.getEarnedAchievementsCategorized().forEach(categorized -> categorizedDtos.add(translateAchievementCategorized(categorized)));
         travelJournal1.getEarnedAchievementsSpecial().forEach(special -> specialDtos.add(translateAchievementSpecial(special)));
 
-        return new TravelJournalDto(travelJournal.getId(), travelJournal.getXp_count(), trip_counter,travelJournal.getUser().getId(), certificateDtos, categorizedDtos, specialDtos,enrollmentDtos, countLevel(travelJournal.getXp_count()));
+        return new TravelJournalDto(travelJournal.getId(), travelJournal.getXp_count(), trip_counter,travelJournal.getUser().getId(), certificateDtos, categorizedDtos, specialDtos, countLevel(travelJournal.getXp_count()));
     }
 
     @Transactional

@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Card, Form, Row, Col, Button } from "react-bootstrap";
+import { Container, Card, Form, Row, Col } from "react-bootstrap";
 import TripSmall from "./TripSmall";
 import CardColumns from "react-bootstrap/CardColumns";
 import Spinner from "react-bootstrap/Spinner";
@@ -8,6 +8,7 @@ import DatePicker from "react-datepicker";
 import RangeSlider from "react-bootstrap-range-slider";
 import "react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css";
 import TripMedium from "./TripMedium";
+import line from "../../../Files/images/topLine.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 class IndexFilter extends React.Component {
@@ -16,7 +17,7 @@ class IndexFilter extends React.Component {
         filter: {
             from: null,
             to: null,
-            price: 6000,
+            price: 600,
             words: [],
         },
     };
@@ -175,17 +176,24 @@ class IndexFilter extends React.Component {
             );
         } else {
             return (
-                <Container className="d-flex mt-3">
-                    <Col>
+                <Container className="searchTrips mt-5">
+
+                <div className="topLine">
+                <h4>Search results</h4><img src={line} /></div>
+
+            <Row>
+            <Col className="col-md-4 filter">
                         <Card>
                             <Form
                                 className="p-3"
                                 onSubmit={(event) => this.fetchData(event)}
                             >
+                            <h5>Filter trips</h5>
+
                                 <Form.Group>
                                     <Form.Label>Date</Form.Label>
                                     <Card.Body className="d-flex">
-                                        <Form.Label>from </Form.Label>
+                                        <Form.Label>From:</Form.Label>
                                         <DatePicker
                                             className="form-control"
                                             dateFormat="dd. MM. yyyy"
@@ -197,9 +205,9 @@ class IndexFilter extends React.Component {
                                                 )
                                             }
                                         />
-                                        <Form.Label>to </Form.Label>
+                                        <Form.Label>To:</Form.Label>
                                         <DatePicker
-                                            className="form-control ml-3"
+                                            className="form-control"
                                             dateFormat="dd. MM. yyyy"
                                             selected={this.state.filter.to}
                                             onChange={(event) =>
@@ -247,8 +255,7 @@ class IndexFilter extends React.Component {
                             </Form>
                         </Card>
                     </Col>
-
-                    <Col className="ml-3">
+                    <Col className="col-md-8">
                         {/*<CardColumns className="d-flex flex-column">*/}
                         {this.state.trips.map((trip) => {
                             return (
@@ -263,7 +270,7 @@ class IndexFilter extends React.Component {
                         })}
                         {/*</CardColumns>*/}
                     </Col>
-
+                    </Row>
                     {/*<CardColumns>
                         {this.state.trips.map((trip) => {
                             return (
