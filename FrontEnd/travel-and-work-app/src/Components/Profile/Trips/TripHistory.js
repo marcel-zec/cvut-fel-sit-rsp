@@ -26,6 +26,31 @@ class TripHistory extends React.Component {
         this.setState({ show_review: !this.state.show_review });
     };
 
+    submitHandler = (event) => {
+        event.preventDefault();
+        const request = {
+            note: this.state.note,
+            rating: this.state.rating,
+            trip: this.state.enroll,
+        };
+        fetch("http://localhost:8080/trip_review", {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(request),
+        })
+            .then((response) => {
+                if (response.ok) {
+                    this.toggleReviewForm();
+                } else console.error(response.status);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
     inputUpdateHandler = (event, inputName) => {
         console.log(this.state);
         if (inputName == "note") {
