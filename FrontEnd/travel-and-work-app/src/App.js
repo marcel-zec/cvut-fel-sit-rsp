@@ -51,6 +51,7 @@ import {
     faMoneyBillAlt,
     faAddressCard,
     faCheck,
+    faRedo,
 } from "@fortawesome/free-solid-svg-icons";
 import { faStar as emptyStar } from "@fortawesome/free-regular-svg-icons";
 import { appContext } from "./appContext";
@@ -102,7 +103,8 @@ library.add(
     faCheckCircle,
     faMoneyBillAlt,
     faAddressCard,
-    faCheck
+    faCheck,
+    faRedo
 );
 
 class App extends React.Component {

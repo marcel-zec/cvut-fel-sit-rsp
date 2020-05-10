@@ -8,6 +8,7 @@ import DatePicker from "react-datepicker";
 import RangeSlider from "react-bootstrap-range-slider";
 import "react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css";
 import TripMedium from "./TripMedium";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 class IndexFilter extends React.Component {
     state = {
@@ -43,6 +44,13 @@ class IndexFilter extends React.Component {
             let newDate = new Date(event);
             console.log("date " + inputName);
             console.log(newDate);
+            console.log(
+                newDate.getFullYear() +
+                    "-" +
+                    (newDate.getMonth() + 1) +
+                    "-" +
+                    newDate.getDate()
+            );
             newDate.setTime(
                 newDate.getTime() - new Date().getTimezoneOffset() * 60 * 1000
             );
@@ -79,7 +87,32 @@ class IndexFilter extends React.Component {
             }
             filter = true;
         }
+        if (this.state.filter.from) {
+            const date = this.getFormatedDate(this.state.filter.from);
+            if (filter) {
+                filterUrl += "&from_date=" + date;
+            } else {
+                filterUrl += "from_date=" + date;
+            }
+            filter = true;
+        }
+        if (this.state.filter.to) {
+            const date = this.getFormatedDate(this.state.filter.to);
+            if (filter) {
+                filterUrl += "&to_date=" + date;
+            } else {
+                filterUrl += "to_date=" + date;
+            }
+            filter = true;
+        }
         return filter ? filterUrl : "http://localhost:8080/trip";
+    };
+
+    getFormatedDate = (date) => {
+        const month = ("0" + (date.getMonth() + 1)).slice(-2);
+        const day = ("0" + date.getDate()).slice(-2);
+
+        return date.getFullYear() + "-" + month + "-" + day;
     };
 
     fetchData = async (event = null) => {
@@ -119,6 +152,17 @@ class IndexFilter extends React.Component {
 
         this.fetchData();
     }
+
+    refresh = () => {
+        this.setState({
+            filter: {
+                from: null,
+                to: null,
+                price: 6000,
+                words: this.state.filter.words,
+            },
+        });
+    };
 
     render() {
         if (this.state.trips == null) {
@@ -186,9 +230,20 @@ class IndexFilter extends React.Component {
                                         />
                                     </Card.Body>
                                 </Form.Group>
-                                <Button variant="primary" type="submit">
-                                    Filter
-                                </Button>
+                                <Form.Group className="d-flex justify-content-between">
+                                    <Button variant="primary" type="submit">
+                                        Filter
+                                    </Button>
+                                    <Button
+                                        variant="danger"
+                                        onClick={() => this.refresh()}
+                                    >
+                                        <FontAwesomeIcon
+                                            icon="redo"
+                                            size="lg"
+                                        />
+                                    </Button>
+                                </Form.Group>
                             </Form>
                         </Card>
                     </Col>
