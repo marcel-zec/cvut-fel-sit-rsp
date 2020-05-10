@@ -43,7 +43,7 @@ class TripSmall extends React.Component {
         });
 
         return (
-            <Link to={"/trips/" + this.props.trip.short_name}>
+            <Link to={"/trip_detail/" + this.props.trip.short_name}>
                 <Card>
                     <div className="image-card">
                         <Card.Img
