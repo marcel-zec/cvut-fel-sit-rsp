@@ -886,3 +886,73 @@ header .nav-link a {
     background-color: yellow;
     padding: 0%;
 }
+/*Trip Search*/
+.searchTrip{
+
+}
+.searchTrips a{
+    color: #252525;
+}
+.searchTrips a:hover{
+    color: #101010;
+}
+.searchTrips a:hover h4{
+    text-decoration: underline;
+}
+.searchTrips a:hover{
+    text-decoration: none!important;
+}
+.searchTrip .card-body{
+    padding: 0px;
+}
+.searchTrip .card-body .col-5{
+    padding-left: 0px!important;
+    padding-right: 0px;
+}
+.searchTrip .card-body .col-7{
+    padding: 1.25em;
+}
+.searchTrip h4{
+    text-align: left;
+    font-size: 20px;
+}
+.searchTrip h4+span{
+    height: 50px;
+    overflow: hidden;
+    display: block;
+    text-overflow: ellipsis;
+}
+.filter .card{
+    padding: 15px;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, .1), 0 1px 10px rgba(0, 0, 0, .15);
+}
+.filter form label{
+    margin-bottom: 0px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: 5px;
+    margin-right: 10px;
+    font-weight: 500;
+}
+.filter form .react-datepicker-wrapper{
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+.range-slider__wrap{
+    width:100%;
+}
+.filter input[type=range].range-slider.range-slider--primary::-webkit-slider-thumb {
+    background-color: #ff6666;
+}
+.topLine img{
+    width: 100%;
+    padding-left: 40px;
+    padding-right: 28px;
+}
+.topLine h4{
+    width: 100%;
+    padding-left: 50px;
+    padding-right: 28px;
+    text-align: left;
+}

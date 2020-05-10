@@ -8,6 +8,7 @@ import DatePicker from "react-datepicker";
 import RangeSlider from "react-bootstrap-range-slider";
 import "react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css";
 import TripMedium from "./TripMedium";
+import line from "../../../Files/images/topLine.png";
 
 class IndexFilter extends React.Component {
     state = {
@@ -96,14 +97,20 @@ class IndexFilter extends React.Component {
             );
         } else {
             return (
-                <Container className="d-flex mt-3">
-                    <Col>
+                <Container className="searchTrips mt-5">
+                    
+                    <div className="topLine">
+                    <h4>Search results</h4><img src={line} /></div>
+                    
+                    <Row>
+                    <Col className="col-md-4 filter">
                         <Card>
+                            <h5>Filter trips</h5>
                             <Form>
                                 <Form.Group>
                                     <Form.Label>Date</Form.Label>
                                     <Card.Body className="d-flex">
-                                        <Form.Label>from </Form.Label>
+                                        <Form.Label>From:</Form.Label>
                                         <DatePicker
                                             className="form-control"
                                             dateFormat="dd. MM. yyyy"
@@ -115,9 +122,9 @@ class IndexFilter extends React.Component {
                                                 )
                                             }
                                         />
-                                        <Form.Label>to </Form.Label>
+                                        <Form.Label>To:</Form.Label>
                                         <DatePicker
-                                            className="form-control ml-3"
+                                            className="form-control"
                                             dateFormat="dd. MM. yyyy"
                                             selected={this.state.filter.to}
                                             onChange={(event) =>
@@ -151,8 +158,7 @@ class IndexFilter extends React.Component {
                             </Form>
                         </Card>
                     </Col>
-
-                    <Col className="ml-3">
+                    <Col className="col-md-8">
                         {/*<CardColumns className="d-flex flex-column">*/}
                         {this.state.trips.map((trip) => {
                             return (
@@ -167,7 +173,7 @@ class IndexFilter extends React.Component {
                         })}
                         {/*</CardColumns>*/}
                     </Col>
-
+                    </Row>
                     {/*<CardColumns>
                         {this.state.trips.map((trip) => {
                             return (
