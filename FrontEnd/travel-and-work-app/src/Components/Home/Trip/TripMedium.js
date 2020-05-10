@@ -55,7 +55,7 @@ class TripMedium extends React.Component {
         });
 
         return (
-            <Link to={"/trip_detail/" + this.props.trip.short_name}>
+            <Link to={"/trip/" + this.props.trip.short_name}>
                 <Card className="mb-3 searchTrip">
                     <Card.Body className="d-flex">
   

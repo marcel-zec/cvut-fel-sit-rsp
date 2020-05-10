@@ -926,6 +926,12 @@ header .nav-link a {
     padding: 15px;
     box-shadow: 0 0 0 1px rgba(0, 0, 0, .1), 0 1px 10px rgba(0, 0, 0, .15);
 }
+.filter .form-group{
+    margin-bottom: 0px;
+}
+.filter form .submit{
+    width: 180px;
+}
 .filter form label{
     margin-bottom: 0px;
     display: inline-block;

@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Card, Form, Row, Col } from "react-bootstrap";
+import { Container, Card, Form, Row, Col, Button } from "react-bootstrap";
 import TripSmall from "./TripSmall";
 import CardColumns from "react-bootstrap/CardColumns";
 import Spinner from "react-bootstrap/Spinner";
@@ -185,7 +185,6 @@ class IndexFilter extends React.Component {
             <Col className="col-md-4 filter">
                         <Card>
                             <Form
-                                className="p-3"
                                 onSubmit={(event) => this.fetchData(event)}
                             >
                             <h5>Filter trips</h5>
@@ -239,7 +238,7 @@ class IndexFilter extends React.Component {
                                     </Card.Body>
                                 </Form.Group>
                                 <Form.Group className="d-flex justify-content-between">
-                                    <Button variant="primary" type="submit">
+                                    <Button className="submit" variant="primary" type="submit">
                                         Filter
                                     </Button>
                                     <Button
