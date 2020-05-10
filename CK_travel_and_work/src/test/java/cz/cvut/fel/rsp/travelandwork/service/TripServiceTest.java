@@ -94,7 +94,8 @@ public class TripServiceTest {
     @Test
     @Transactional
     @Rollback
-    public void remove_TripRemoved() throws NotFoundException, BadPassword, BadDateException, MissingVariableException, UnauthorizedException, NotAllowedException {
+    public void remove_TripRemoved() throws NotFoundException, BadPassword, UnauthorizedException, NotAllowedException {
+
         User user = Generator.generateUser();
         TripReview tripReview = new TripReview();
         tripReview.setNote("note");

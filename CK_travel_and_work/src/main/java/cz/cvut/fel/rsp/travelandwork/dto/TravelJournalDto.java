@@ -26,11 +26,9 @@ public class TravelJournalDto {
     private List<AchievementCertificateDto> certificates;
     private List<AchievementCategorizedDto> categorized;
     private List<AchievementSpecialDto> special;
-    private List<EnrollmentDto> enrollments;
-
 
     public TravelJournalDto(@NotNull(message = "Id cannot be blank") Long id, int xp_count, HashMap<CategoryDto, Integer> trip_counter, Long userId, List<AchievementCertificateDto> certificates, List<AchievementCategorizedDto> categorized,
-                            List<AchievementSpecialDto> special, List<EnrollmentDto> enrollments, int level) {
+                            List<AchievementSpecialDto> special, int level) {
         this.id = id;
         this.xp_count = xp_count;
         this.trip_counter = trip_counter;
@@ -38,7 +36,6 @@ public class TravelJournalDto {
         this.certificates = certificates;
         this.categorized = categorized;
         this.special = special;
-        this.enrollments = enrollments;
         this.level = level;
     }
 
@@ -118,18 +115,6 @@ public class TravelJournalDto {
     public void setSpecial(List<AchievementSpecialDto> special) {
         this.special = special;
     }
-
-    public List<EnrollmentDto> getEnrollments() {
-        if (enrollments==null) enrollments = new ArrayList<EnrollmentDto>();
-        return enrollments;
-    }
-
-
-    public void setEnrollments(List<EnrollmentDto> enrollments) {
-
-        this.enrollments = enrollments;
-    }
-
 
     public int getLevel() {
 
