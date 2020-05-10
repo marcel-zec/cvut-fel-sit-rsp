@@ -37,7 +37,7 @@ public class TravelJournalService {
 
         travelJournal.addTrip(category);
         dao.update(travelJournal);
-        //checkCategorizedAchievements(trip.getCategory(), travelJournal);
+        checkCategorizedAchievements(trip.getCategory(), travelJournal);
     }
 
     @Transactional

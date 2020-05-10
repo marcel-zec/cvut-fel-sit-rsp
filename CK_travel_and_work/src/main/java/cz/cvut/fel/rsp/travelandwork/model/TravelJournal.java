@@ -122,6 +122,9 @@ public class TravelJournal extends AbstractEntity{
     }
 
     public void addEarnedAchievementCategorized(AchievementCategorized achievementCategorized) {
+        if(earnedAchievementsCategorized.contains(achievementCategorized)) {
+            return;
+        }
         this.earnedAchievementsCategorized.add(achievementCategorized);
     }
 
@@ -134,6 +137,9 @@ public class TravelJournal extends AbstractEntity{
     }
 
     public void addEarnedAchievementSpecial(AchievementSpecial achievementSpecial) {
+        if(earnedAchievementsSpecial.contains(achievementSpecial)) {
+            return;
+        }
         this.earnedAchievementsSpecial.add(achievementSpecial);
     }
 

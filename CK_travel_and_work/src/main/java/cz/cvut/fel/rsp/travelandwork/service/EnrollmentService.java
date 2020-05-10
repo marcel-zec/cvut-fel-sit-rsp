@@ -171,6 +171,7 @@ public class EnrollmentService {
     public void close(EnrollmentDto enrollmentDto){
         Enrollment enrollment = find(enrollmentDto.getId());
         enrollment.setState(EnrollmentState.FINISHED);
+        enrollment.setDeposit_was_paid(true);
         enrollment.setActual_xp_reward(enrollmentDto.getActual_xp_reward());
 
         List<AchievementSpecial> achievementSpecials = new ArrayList<>();
@@ -179,9 +180,13 @@ public class EnrollmentService {
         }
 
         enrollment.setRecieved_achievements_special(achievementSpecials);
+        enrollmentDao.update(enrollment);
+
         travelJournalService.addXP(enrollment.getTravelJournal().getId(), enrollment.getActual_xp_reward());
         travelJournalService.addTrip(enrollment.getTravelJournal().getId(), enrollment.getTrip().getId());
-        enrollmentDao.update(enrollment);
+        for(AchievementSpecial as : enrollment.getRecieved_achievements()) {
+            travelJournalService.addOwnedSpecialAchievement(enrollment.getTravelJournal(), as);
+        }
     }
 
     @Transactional
@@ -190,6 +195,7 @@ public class EnrollmentService {
 
         List<AchievementSpecial> achievementSpecials = enrollment.getTrip().getGain_achievements_special();
         enrollment.setState(EnrollmentState.FINISHED);
+        enrollment.setDeposit_was_paid(true);
         enrollment.setActual_xp_reward(enrollment.getTrip().getPossible_xp_reward());
         enrollment.setRecieved_achievements_special(new ArrayList());
         enrollment.getRecieved_achievements().addAll(achievementSpecials);
@@ -198,5 +204,15 @@ public class EnrollmentService {
         enrollmentDao.update(enrollment);
         travelJournalService.addXP(enrollment.getTravelJournal().getId(), enrollment.getActual_xp_reward());
         travelJournalService.addTrip(enrollment.getTravelJournal().getId(), enrollment.getTrip().getId());
-}
+        for(AchievementSpecial as : enrollment.getRecieved_achievements()) {
+            travelJournalService.addOwnedSpecialAchievement(enrollment.getTravelJournal(), as);
+        }
+    }
+
+    @Transactional
+    public void cancel(Long id) {
+        Enrollment enrollment = find(id);
+        enrollment.setState(EnrollmentState.CANCELED);
+        enrollmentDao.update(enrollment);
+    }
 }
