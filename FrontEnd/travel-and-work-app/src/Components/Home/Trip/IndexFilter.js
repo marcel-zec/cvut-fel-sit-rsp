@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Card, Form, Row, Col } from "react-bootstrap";
+import { Container, Card, Form, Row, Col, Button } from "react-bootstrap";
 import TripSmall from "./TripSmall";
 import CardColumns from "react-bootstrap/CardColumns";
 import Spinner from "react-bootstrap/Spinner";
@@ -177,99 +177,104 @@ class IndexFilter extends React.Component {
         } else {
             return (
                 <Container className="searchTrips mt-5">
+                    <div className="topLine">
+                        <h4>Search results</h4>
+                        <img src={line} />
+                    </div>
 
-                <div className="topLine">
-                <h4>Search results</h4><img src={line} /></div>
+                    <Row>
+                        <Col className="col-md-4 filter">
+                            <Card>
+                                <Form
+                                    className="p-3"
+                                    onSubmit={(event) => this.fetchData(event)}
+                                >
+                                    <h5>Filter trips</h5>
 
-            <Row>
-            <Col className="col-md-4 filter">
-                        <Card>
-                            <Form
-                                className="p-3"
-                                onSubmit={(event) => this.fetchData(event)}
-                            >
-                            <h5>Filter trips</h5>
-
-                                <Form.Group>
-                                    <Form.Label>Date</Form.Label>
-                                    <Card.Body className="d-flex">
-                                        <Form.Label>From:</Form.Label>
-                                        <DatePicker
-                                            className="form-control"
-                                            dateFormat="dd. MM. yyyy"
-                                            selected={this.state.filter.from}
-                                            onChange={(event) =>
-                                                this.inputUpdateHandler(
-                                                    event,
-                                                    "from"
-                                                )
+                                    <Form.Group>
+                                        <Form.Label>Date</Form.Label>
+                                        <Card.Body className="d-flex">
+                                            <Form.Label>From:</Form.Label>
+                                            <DatePicker
+                                                className="form-control"
+                                                dateFormat="dd. MM. yyyy"
+                                                selected={
+                                                    this.state.filter.from
+                                                }
+                                                onChange={(event) =>
+                                                    this.inputUpdateHandler(
+                                                        event,
+                                                        "from"
+                                                    )
+                                                }
+                                            />
+                                            <Form.Label>To:</Form.Label>
+                                            <DatePicker
+                                                className="form-control"
+                                                dateFormat="dd. MM. yyyy"
+                                                selected={this.state.filter.to}
+                                                onChange={(event) =>
+                                                    this.inputUpdateHandler(
+                                                        event,
+                                                        "to"
+                                                    )
+                                                }
+                                            />
+                                        </Card.Body>
+                                    </Form.Group>
+                                    <Form.Group>
+                                        <Card.Body className="d-flex">
+                                            <Form.Label>Price </Form.Label>
+                                            <RangeSlider
+                                                value={this.state.filter.price}
+                                                min={0}
+                                                max={6000}
+                                                step={100}
+                                                tooltip="auto"
+                                                tooltipPlacement="top"
+                                                onChange={(event) =>
+                                                    this.inputUpdateHandler(
+                                                        event,
+                                                        "price"
+                                                    )
+                                                }
+                                            />
+                                        </Card.Body>
+                                    </Form.Group>
+                                    <Form.Group className="d-flex justify-content-between">
+                                        <Button variant="primary" type="submit">
+                                            Filter
+                                        </Button>
+                                        <Button
+                                            variant="danger"
+                                            onClick={() => this.refresh()}
+                                        >
+                                            <FontAwesomeIcon
+                                                icon="redo"
+                                                size="lg"
+                                            />
+                                        </Button>
+                                    </Form.Group>
+                                </Form>
+                            </Card>
+                        </Col>
+                        <Col className="col-md-8">
+                            {/*<CardColumns className="d-flex flex-column">*/}
+                            {this.state.trips.map((trip) => {
+                                return (
+                                    <Row>
+                                        <TripMedium
+                                            key={trip.short_name}
+                                            highlightWords={
+                                                this.state.filter.words
                                             }
+                                            trip={trip}
                                         />
-                                        <Form.Label>To:</Form.Label>
-                                        <DatePicker
-                                            className="form-control"
-                                            dateFormat="dd. MM. yyyy"
-                                            selected={this.state.filter.to}
-                                            onChange={(event) =>
-                                                this.inputUpdateHandler(
-                                                    event,
-                                                    "to"
-                                                )
-                                            }
-                                        />
-                                    </Card.Body>
-                                </Form.Group>
-                                <Form.Group>
-                                    <Card.Body className="d-flex">
-                                        <Form.Label>Price </Form.Label>
-                                        <RangeSlider
-                                            value={this.state.filter.price}
-                                            min={0}
-                                            max={6000}
-                                            step={100}
-                                            tooltip="auto"
-                                            tooltipPlacement="top"
-                                            onChange={(event) =>
-                                                this.inputUpdateHandler(
-                                                    event,
-                                                    "price"
-                                                )
-                                            }
-                                        />
-                                    </Card.Body>
-                                </Form.Group>
-                                <Form.Group className="d-flex justify-content-between">
-                                    <Button variant="primary" type="submit">
-                                        Filter
-                                    </Button>
-                                    <Button
-                                        variant="danger"
-                                        onClick={() => this.refresh()}
-                                    >
-                                        <FontAwesomeIcon
-                                            icon="redo"
-                                            size="lg"
-                                        />
-                                    </Button>
-                                </Form.Group>
-                            </Form>
-                        </Card>
-                    </Col>
-                    <Col className="col-md-8">
-                        {/*<CardColumns className="d-flex flex-column">*/}
-                        {this.state.trips.map((trip) => {
-                            return (
-                                <Row>
-                                    <TripMedium
-                                        key={trip.short_name}
-                                        highlightWords={this.state.filter.words}
-                                        trip={trip}
-                                    />
-                                </Row>
-                            );
-                        })}
-                        {/*</CardColumns>*/}
-                    </Col>
+                                    </Row>
+                                );
+                            })}
+                            {/*</CardColumns>*/}
+                        </Col>
                     </Row>
                     {/*<CardColumns>
                         {this.state.trips.map((trip) => {
