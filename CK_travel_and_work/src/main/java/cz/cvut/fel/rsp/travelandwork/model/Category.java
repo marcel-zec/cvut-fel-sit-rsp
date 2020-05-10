@@ -17,7 +17,7 @@ public class Category extends AbstractEntity{
     private String name;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "category")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "category")
     private List<Trip> trips;
 
     @JsonIgnore

@@ -29,21 +29,32 @@ class TripSmall extends React.Component {
             const session = this.props.trip.sessions[0];
             var from = new Date(session.from_date);
             var to = new Date(session.to_date);
-            dates = from.getDate() + "." + (from.getMonth()+1)+"."+from.getFullYear()+"-"+ to.getDate() + "." + (to.getMonth()+1)+"."+to.getFullYear();
+            dates =
+                from.getDate() +
+                "." +
+                (from.getMonth() + 1) +
+                "." +
+                from.getFullYear() +
+                "-" +
+                to.getDate() +
+                "." +
+                (to.getMonth() + 1) +
+                "." +
+                to.getFullYear();
         } else {
             dates = numberOfDates + " dates";
         }
         let sessions = this.props.trip.sessions;
         let lowestPrice = sessions[0].price;
 
-        sessions.forEach(session => {
+        sessions.forEach((session) => {
             if (session.price < lowestPrice) {
                 lowestPrice = session.price;
             }
         });
 
         return (
-            <Link to={"/trip_detail/" + this.props.trip.short_name}>
+            <Link to={"/trip/" + this.props.trip.short_name}>
                 <Card>
                     <div className="image-card">
                         <Card.Img
@@ -52,22 +63,29 @@ class TripSmall extends React.Component {
                         />
                         <div className="trip_info">
                             <span className="image-text">
-                                {" "}{this.props.trip.possible_xp_reward} xp{" "}
+                                {" "}
+                                {this.props.trip.possible_xp_reward} xp{" "}
                             </span>
                             <h4 className="ml-3" id="trip-title">
-                                {" "} {this.props.trip.name}
+                                {" "}
+                                {this.props.trip.name}
                             </h4>
                         </div>
                     </div>
-                    <Row className="trip_sessions"><Col className=""><span className="dateIcon"><FontAwesomeIcon icon="clock"/></span>{dates}</Col></Row>
+                    <Row className="trip_sessions">
+                        <Col className="">
+                            <span className="dateIcon">
+                                <FontAwesomeIcon icon="clock" />
+                            </span>
+                            {dates}
+                        </Col>
+                    </Row>
                     <Row>
-                        <Col className="d-flex flex-column date_stars">    
+                        <Col className="d-flex flex-column date_stars">
                             <Row>{reviewStars}</Row>
                         </Col>
                         <Col className="text price">
-                            <span>
-                                {lowestPrice} Kč
-                            </span>
+                            <span>{lowestPrice} Kč</span>
                         </Col>
                     </Row>
                 </Card>

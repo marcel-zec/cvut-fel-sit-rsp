@@ -9,6 +9,7 @@ import RangeSlider from "react-bootstrap-range-slider";
 import "react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css";
 import TripMedium from "./TripMedium";
 import line from "../../../Files/images/topLine.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 class IndexFilter extends React.Component {
     state = {
@@ -26,6 +27,7 @@ class IndexFilter extends React.Component {
             const newState = { ...this.state };
             newState.filter["words"] = this.searchParameter();
             this.setState({ state: newState });
+            this.fetchData();
         }
     }
 
@@ -43,6 +45,13 @@ class IndexFilter extends React.Component {
             let newDate = new Date(event);
             console.log("date " + inputName);
             console.log(newDate);
+            console.log(
+                newDate.getFullYear() +
+                    "-" +
+                    (newDate.getMonth() + 1) +
+                    "-" +
+                    newDate.getDate()
+            );
             newDate.setTime(
                 newDate.getTime() - new Date().getTimezoneOffset() * 60 * 1000
             );
@@ -51,19 +60,68 @@ class IndexFilter extends React.Component {
         this.setState({ filter: newState });
     };
 
-    async componentDidMount() {
-        const newState = { ...this.state };
-        newState.filter.words = this.searchParameter();
-        if (newState.filter.words != this.state.filter.words) {
-            this.setState(newState);
-        }
+    searchUrl = () => {
+        let filterUrl = "http://localhost:8080/trip/filter?";
+        let filter = false;
 
-        /*const url =
-            this.props.location.search.trim() != ""
-                ? "http://localhost:8080/trip/filter" +
-                  this.props.location.search
-                : "http://localhost:8080/trip";*/
-        const url = "http://localhost:8080/trip";
+        const searchParameters = this.searchParameter();
+        console.log("searching");
+        console.log(searchParameters);
+        console.log(this.state.filter.price);
+
+        if (searchParameters && searchParameters.length > 0) {
+            searchParameters.forEach((param) => {
+                if (filter) {
+                    filterUrl += "&search=" + param;
+                } else {
+                    filterUrl += "search=" + param;
+                }
+
+                filter = true;
+            });
+        }
+        if (this.state.filter.price) {
+            if (filter) {
+                filterUrl += "&max_price=" + this.state.filter.price;
+            } else {
+                filterUrl += "max_price=" + this.state.filter.price;
+            }
+            filter = true;
+        }
+        if (this.state.filter.from) {
+            const date = this.getFormatedDate(this.state.filter.from);
+            if (filter) {
+                filterUrl += "&from_date=" + date;
+            } else {
+                filterUrl += "from_date=" + date;
+            }
+            filter = true;
+        }
+        if (this.state.filter.to) {
+            const date = this.getFormatedDate(this.state.filter.to);
+            if (filter) {
+                filterUrl += "&to_date=" + date;
+            } else {
+                filterUrl += "to_date=" + date;
+            }
+            filter = true;
+        }
+        return filter ? filterUrl : "http://localhost:8080/trip";
+    };
+
+    getFormatedDate = (date) => {
+        const month = ("0" + (date.getMonth() + 1)).slice(-2);
+        const day = ("0" + date.getDate()).slice(-2);
+
+        return date.getFullYear() + "-" + month + "-" + day;
+    };
+
+    fetchData = async (event = null) => {
+        if (event) {
+            event.preventDefault();
+        }
+        const url = this.searchUrl();
+        console.log(url);
         await fetch(url, {
             method: "GET",
             mode: "cors",
@@ -84,7 +142,28 @@ class IndexFilter extends React.Component {
             .catch((error) => {
                 console.error(error);
             });
+    };
+
+    async componentDidMount() {
+        const newState = { ...this.state };
+        newState.filter.words = this.searchParameter();
+        if (newState.filter.words != this.state.filter.words) {
+            this.setState(newState);
+        }
+
+        this.fetchData();
     }
+
+    refresh = () => {
+        this.setState({
+            filter: {
+                from: null,
+                to: null,
+                price: 6000,
+                words: this.state.filter.words,
+            },
+        });
+    };
 
     render() {
         if (this.state.trips == null) {
@@ -98,15 +177,19 @@ class IndexFilter extends React.Component {
         } else {
             return (
                 <Container className="searchTrips mt-5">
-                    
-                    <div className="topLine">
-                    <h4>Search results</h4><img src={line} /></div>
-                    
-                    <Row>
-                    <Col className="col-md-4 filter">
+
+                <div className="topLine">
+                <h4>Search results</h4><img src={line} /></div>
+
+            <Row>
+            <Col className="col-md-4 filter">
                         <Card>
+                            <Form
+                                className="p-3"
+                                onSubmit={(event) => this.fetchData(event)}
+                            >
                             <h5>Filter trips</h5>
-                            <Form>
+
                                 <Form.Group>
                                     <Form.Label>Date</Form.Label>
                                     <Card.Body className="d-flex">
@@ -142,9 +225,9 @@ class IndexFilter extends React.Component {
                                         <RangeSlider
                                             value={this.state.filter.price}
                                             min={0}
-                                            max={5000}
-                                            step={200}
-                                            tooltip="on"
+                                            max={6000}
+                                            step={100}
+                                            tooltip="auto"
                                             tooltipPlacement="top"
                                             onChange={(event) =>
                                                 this.inputUpdateHandler(
@@ -154,6 +237,20 @@ class IndexFilter extends React.Component {
                                             }
                                         />
                                     </Card.Body>
+                                </Form.Group>
+                                <Form.Group className="d-flex justify-content-between">
+                                    <Button variant="primary" type="submit">
+                                        Filter
+                                    </Button>
+                                    <Button
+                                        variant="danger"
+                                        onClick={() => this.refresh()}
+                                    >
+                                        <FontAwesomeIcon
+                                            icon="redo"
+                                            size="lg"
+                                        />
+                                    </Button>
                                 </Form.Group>
                             </Form>
                         </Card>

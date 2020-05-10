@@ -1,12 +1,11 @@
 package cz.cvut.fel.rsp.travelandwork.service;
 
-import cz.cvut.fel.rsp.travelandwork.dao.AchievementCategorizedDao;
+import cz.cvut.fel.rsp.travelandwork.dao.CategoryDao;
 import cz.cvut.fel.rsp.travelandwork.dao.TravelJournalDao;
+import cz.cvut.fel.rsp.travelandwork.dao.TripDao;
 import cz.cvut.fel.rsp.travelandwork.model.*;
-import org.hibernate.validator.internal.constraintvalidators.bv.time.futureorpresent.FutureOrPresentValidatorForDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -15,21 +14,30 @@ import java.util.Objects;
 @Service
 public class TravelJournalService {
     private final TravelJournalDao dao;
+    private final TripDao tripDao;
+    private final CategoryDao categoryDao;
     private final AchievementCategorizedService achievementCategorizedService;
 
     @Autowired
-    public TravelJournalService(TravelJournalDao dao, AchievementCategorizedService achievementCategorizedService) {
+    public TravelJournalService(TravelJournalDao dao, TripDao tripDao, CategoryDao categoryDao, AchievementCategorizedService achievementCategorizedService) {
         this.dao = dao;
+        this.tripDao = tripDao;
+        this.categoryDao = categoryDao;
         this.achievementCategorizedService = achievementCategorizedService;
     }
 
     @Transactional
-    public void addTrip(TravelJournal travelJournal, Trip trip) {
-        Objects.requireNonNull(trip);
-        Objects.requireNonNull(travelJournal);
-        travelJournal.addTrip(trip);
+    public void addTrip(Long travelJournalId, Long tripId) {
+        Objects.requireNonNull(travelJournalId);
+        Objects.requireNonNull(tripId);
+
+        TravelJournal travelJournal = dao.find(travelJournalId);
+        Trip trip = tripDao.find(tripId);
+        Category category =categoryDao.find(trip.getCategory().getId());
+
+        travelJournal.addTrip(category);
         dao.update(travelJournal);
-        //checkCategorizedAchievements(trip.getCategory(), travelJournal);
+        checkCategorizedAchievements(trip.getCategory(), travelJournal);
     }
 
     @Transactional
@@ -75,5 +83,12 @@ public class TravelJournalService {
         }
 
         dao.update(currentTravelJournal);
+    }
+
+    @Transactional
+    public void addXP(Long travelJournalId,int actual_xp_reward) {
+        TravelJournal travelJournal = dao.find(travelJournalId);
+        travelJournal.addsXp(actual_xp_reward);
+        dao.update(travelJournal);
     }
 }

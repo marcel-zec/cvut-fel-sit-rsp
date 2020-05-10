@@ -252,10 +252,10 @@ public class TripService {
         List<TripDto> tripDtos = new ArrayList<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        LocalDate local_to_date = null;
+        LocalDate local_to_date = LocalDate.parse("2030-01-01", formatter);
         if(to_date != null){ local_to_date = LocalDate.parse(to_date, formatter); }
 
-        LocalDate local_from_date = null;
+        LocalDate local_from_date = LocalDate.parse("1999-01-01", formatter);
         if(from_date != null){ local_from_date = LocalDate.parse(from_date, formatter); }
 
         for (Trip trip : tripDao.findByFilter(location,  local_from_date, local_to_date, maxPrice, search)) {

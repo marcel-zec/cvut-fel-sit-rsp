@@ -100,4 +100,9 @@ public class EnrollmentController {
         enrollmentService.closeOk(id);
         userReviewService.create(id,SecurityUtils.getCurrentUser());
     }
+
+    @PostMapping(value = "cancel/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public void cancel(@PathVariable Long id) throws Exception {
+        enrollmentService.cancel(id);
+    }
 }

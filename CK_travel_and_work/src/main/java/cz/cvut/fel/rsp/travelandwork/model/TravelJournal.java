@@ -122,6 +122,9 @@ public class TravelJournal extends AbstractEntity{
     }
 
     public void addEarnedAchievementCategorized(AchievementCategorized achievementCategorized) {
+        if(earnedAchievementsCategorized.contains(achievementCategorized)) {
+            return;
+        }
         this.earnedAchievementsCategorized.add(achievementCategorized);
     }
 
@@ -134,6 +137,9 @@ public class TravelJournal extends AbstractEntity{
     }
 
     public void addEarnedAchievementSpecial(AchievementSpecial achievementSpecial) {
+        if(earnedAchievementsSpecial.contains(achievementSpecial)) {
+            return;
+        }
         this.earnedAchievementsSpecial.add(achievementSpecial);
     }
 
@@ -142,16 +148,15 @@ public class TravelJournal extends AbstractEntity{
      * If travel journal already contains the category, adds one more.
      * If doesn't, adds a new category counted with one trip in there.
      */
-    public void addTrip(Trip trip){
-        int actualValue = findAndGetCategoryValueIfExists(trip.getCategory());
+    public void addTrip(Category category){
+        int actualValue = findAndGetCategoryValueIfExists(category);
         if(actualValue != -1) {
             actualValue++;
-            this.trip_counter.put(trip.getCategory(), actualValue);
+            this.trip_counter.put(category, actualValue);
         }
         else{
-            this.trip_counter.put(trip.getCategory(), 1);
+            this.trip_counter.put(category, 1);
         }
-        addsXp(trip.getPossible_xp_reward());
     }
 
     //if it has to be private we can copy it, but it would be great to have this accesible in services
@@ -164,7 +169,7 @@ public class TravelJournal extends AbstractEntity{
         return -1;
     }
 
-    private void addsXp(int xp){
+    public void addsXp(int xp){
         this.xp_count += xp;
     }
 }
