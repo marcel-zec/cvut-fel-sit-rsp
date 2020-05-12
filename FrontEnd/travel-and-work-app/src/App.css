@@ -788,9 +788,16 @@ header .nav-link a {
 #tripsElementBlock .archiveTrips {
     display: none;
 }
-#tripsElementBlock .activeTrips.active,
+#tripsElementBlock .react-datepicker-wrapper{
+    width: 120px;
+}
+#tripsElementBlock .activeTrips.active ,
 #tripsElementBlock .archiveTrips.active {
     display: block;
+}
+#tripsElementBlock button.submit.createReview svg{
+    color: #fff;
+    margin-left: 10px;
 }
 .archiveTrips .card-text svg {
     color: #ff6666;
@@ -926,6 +933,12 @@ header .nav-link a {
     padding: 15px;
     box-shadow: 0 0 0 1px rgba(0, 0, 0, .1), 0 1px 10px rgba(0, 0, 0, .15);
 }
+.filter .form-group{
+    margin-bottom: 0px;
+}
+.filter form .submit{
+    width: 180px;
+}
 .filter form label{
     margin-bottom: 0px;
     display: inline-block;
@@ -945,6 +958,9 @@ header .nav-link a {
 .filter input[type=range].range-slider.range-slider--primary::-webkit-slider-thumb {
     background-color: #ff6666;
 }
+.addReviewForm input[type=range].range-slider.range-slider--primary::-webkit-slider-thumb {
+    background-color: #ff6666;
+}
 .topLine img{
     width: 100%;
     padding-left: 40px;
@@ -955,4 +971,11 @@ header .nav-link a {
     padding-left: 50px;
     padding-right: 28px;
     text-align: left;
+}
+.addReviewForm{
+    width: 650px;
+    margin:auto;
+}
+.addReviewForm .closeButton{
+    float: right;
 }

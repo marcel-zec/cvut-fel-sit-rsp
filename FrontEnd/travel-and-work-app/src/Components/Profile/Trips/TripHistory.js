@@ -99,7 +99,7 @@ class TripHistory extends React.Component {
                         }
                     >
                         <Button
-                            className="submit"
+                            className="submit createReview"
                             onClick={() => {
                                 this.toggleReviewForm();
                             }}
@@ -119,19 +119,20 @@ class TripHistory extends React.Component {
             let review = null;
             if (this.state.show_review) {
                 review = (
-                    <Card className="userTrip window radius mb-5">
+                    <Card className="userTrip window radius mb-5 addReviewForm">
                         <Form onSubmit={(event) => this.submitHandler(event)}>
                             <Card.Body>
                                 <Button
-                                    className="submit"
+                                    className="submit closeButton"
                                     onClick={() => {
                                         this.toggleReviewForm();
                                     }}
                                 >
                                     <FontAwesomeIcon icon="times" />
                                 </Button>
-                                <Form.Label>Review</Form.Label>
-                                <Form.Group className="d-flex flex-column w-50">
+                                <Form.Label><h5>Add review</h5></Form.Label>
+                                <Form.Group className="d-flex flex-column w-50" style={{margin:"auto"}}>
+                                    <Form.Label>Evaluate the trip (5=max,0=min)</Form.Label>
                                     <RangeSlider
                                         value={this.state.rating}
                                         min={0}
@@ -151,6 +152,7 @@ class TripHistory extends React.Component {
                                     <Form.Control
                                         as="textarea"
                                         rows="2"
+                                        placeholder="Please, write some note..."
                                         onChange={(event) =>
                                             this.inputUpdateHandler(
                                                 event,
@@ -162,7 +164,7 @@ class TripHistory extends React.Component {
                                 <Button
                                     variant="primary"
                                     type="submit"
-                                    className="mb-1"
+                                    className="mb-1 submit"
                                 >
                                     Submit
                                 </Button>

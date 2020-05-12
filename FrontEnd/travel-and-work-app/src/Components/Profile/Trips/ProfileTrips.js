@@ -124,9 +124,10 @@ class ProfileTrips extends Profile {
         this.component.setState({ viewForm: true });
     }
     reviewExist(id) {
-        return this.state.user.tripReviews.some(
+        /*return this.state.archive_trips.some(
             (trip) => trip.short_name == id
-        );
+        );*/
+        return false;
     }
     renderActiveTrip(activetrips) {
         return activetrips
