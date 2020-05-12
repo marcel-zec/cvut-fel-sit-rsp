@@ -194,7 +194,7 @@ public class TripService {
 
         newTrip.setId(trip.getId());
 
-        newTrip.setReviews(trip.getReviews());
+//        newTrip.setReviews(trip.getReviews());
         if (newTrip.getSessions().size()<=0) throw new MissingVariableException();
 
         //less new sessions
@@ -234,11 +234,6 @@ public class TripService {
         for (TripSession session :trip.getSessions()) {
             session.softDelete();
             tripSessionDao.update(session);
-        }
-
-        for (TripReview review: trip.getReviews()) {
-            review.softDelete();
-            tripReviewDao.update(review);
         }
 
         trip.softDelete();

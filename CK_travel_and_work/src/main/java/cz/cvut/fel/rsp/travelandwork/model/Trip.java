@@ -108,17 +108,12 @@ public class Trip extends AbstractEntity {
     @OneToMany(mappedBy = "trip")
     private List<TripSession> sessions;
 
-    @OrderBy("date ASC")
-    @OneToMany(mappedBy = "trip")
-    private List<TripReview> reviews;
-
     public Trip() {
         this.required_achievements_categorized = new ArrayList<>();
         this.required_achievements_special = new ArrayList<>();
         this.required_achievements_certificate = new ArrayList<>();
         this.gain_achievements_special = new ArrayList<>();
         this.sessions = new ArrayList<>();
-        this.reviews = new ArrayList<>();
     }
 
     public Trip(@Size(max = 255, min = 3, message = "Name has to be from 3 to 255 characters.")  @NotBlank(message = "Name has to be from 3 to 255 characters.") String name,
@@ -141,7 +136,6 @@ public class Trip extends AbstractEntity {
         this.required_achievements_certificate = new ArrayList<>();
         this.gain_achievements_special = new ArrayList<>();
         this.sessions = new ArrayList<>();
-        this.reviews = new ArrayList<>();
     }
 
     public void setCategory(Category category) {
@@ -224,18 +218,6 @@ public class Trip extends AbstractEntity {
         this.required_level = required_level;
     }
 
-    public List<TripReview> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(List<TripReview> reviews) {
-        this.reviews = reviews;
-    }
-
-    public void addTripReview(TripReview tripReview){
-        this.reviews.add(tripReview);
-    }
-
     public void setPossible_xp_reward(int possible_xp_reward) {
         this.possible_xp_reward = possible_xp_reward;
     }
@@ -310,7 +292,6 @@ public class Trip extends AbstractEntity {
                 ", required_achievements_categorized=" + required_achievements_categorized +
                 ", gain_achievements_special=" + gain_achievements_special +
                 ", sessions=" + sessions +
-                ", reviews=" + reviews +
                 '}';
     }
 }

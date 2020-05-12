@@ -102,7 +102,6 @@ public class TripServiceTest {
         tripReview.setRating(1);
         tripReview.setDate(LocalDateTime.now());
         user.addTripReview(tripReview);
-        trip.setReviews(user.getTripReviews());
 
         userService.createUser(user,user.getPassword());
         tripReviewService.create(tripReview,trip.getShort_name());

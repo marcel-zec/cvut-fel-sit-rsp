@@ -24,20 +24,18 @@ public class TripReviewDto {
     @Max(value = 5, message = "Max 5")
     private double rating;
 
-    private Long userId;
-    private Long tripId;
+    private String author;
+
 
 
     public TripReviewDto(@NotNull(message = "Id cannot be blank") Long id, @Size(max = 255, min = 0, message = "Max 255 characters.") String note,
-                         LocalDateTime date, @Min(value = 0, message = "Min 0") @Max(value = 5, message = "Max 5") double rating,
-                         Long userId, Long tripId) {
+                         LocalDateTime date, @Min(value = 0, message = "Min 0") @Max(value = 5, message = "Max 5") double rating, String author ) {
 
         this.id = id;
         this.note = note;
         this.date = date;
         this.rating = rating;
-        this.userId = userId;
-        this.tripId = tripId;
+        this.author = author;
     }
 
 
@@ -80,27 +78,11 @@ public class TripReviewDto {
         this.rating = rating;
     }
 
-
-    public Long getUserId() {
-
-        return userId;
+    public String getAuthor() {
+        return author;
     }
 
-
-    public void setUserId(Long userId) {
-
-        this.userId = userId;
-    }
-
-
-    public Long getTripId() {
-
-        return tripId;
-    }
-
-
-    public void setTripId(Long tripId) {
-
-        this.tripId = tripId;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 }

@@ -36,19 +36,19 @@ public class TripReview extends AbstractEntity {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "trip_id", nullable = false)
-    private Trip trip;
+    @JoinColumn(name = "tripsession_id", nullable = false)
+    private TripSession tripSession;
 
     public TripReview() {
         date = LocalDateTime.now();
     }
 
-    public TripReview(@Size(max = 255, min = 0, message = "Max 255 characters.") String note, LocalDateTime date, @Min(value = 0, message = "Min 0") @Max(value = 5, message = "Max 5") double rating, User author, Trip trip) {
+    public TripReview(@Size(max = 255, min = 0, message = "Max 255 characters.") String note, LocalDateTime date, @Min(value = 0, message = "Min 0") @Max(value = 5, message = "Max 5") double rating, User author, TripSession tripSession) {
         this.note = note;
         this.date = date;
         this.rating = rating;
         this.setAuthor(author);
-        this.setTrip(trip);
+        this.setTripSession(tripSession);
     }
 
     public String getNote() {
@@ -79,8 +79,13 @@ public class TripReview extends AbstractEntity {
         return author;
     }
 
-    public Trip getTrip() {
-        return trip;
+
+    public TripSession getTripSession() {
+        return tripSession;
+    }
+
+    public void setTripSession(TripSession tripSession) {
+        this.tripSession = tripSession;
     }
 
     public void setAuthor(User author) {
@@ -88,8 +93,4 @@ public class TripReview extends AbstractEntity {
         author.addTripReview(this);
     }
 
-    public void setTrip(Trip trip) {
-        this.trip = trip;
-        trip.addTripReview(this);
-    }
 }

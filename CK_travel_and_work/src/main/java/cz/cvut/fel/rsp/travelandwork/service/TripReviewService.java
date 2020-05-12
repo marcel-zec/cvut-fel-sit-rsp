@@ -38,13 +38,13 @@ public class TripReviewService {
 
     @Transactional
     public void create(TripReview tripReview, String short_name_trip) throws UnauthorizedException, NotAllowedException {
-        Objects.requireNonNull(tripReview);
-        if (SecurityUtils.isAuthenticatedAnonymously()) throw new UnauthorizedException();
-        if (short_name_trip == null) throw new NotAllowedException();
-
-        tripReview.setAuthor(userDao.find(SecurityUtils.getCurrentUser().getId()));
-        tripReview.setTrip(tripDao.find(short_name_trip));
-        tripReviewDao.persist(tripReview);
+//        Objects.requireNonNull(tripReview);
+//        if (SecurityUtils.isAuthenticatedAnonymously()) throw new UnauthorizedException();
+//        if (short_name_trip == null) throw new NotAllowedException();
+//
+//        tripReview.setAuthor(userDao.find(SecurityUtils.getCurrentUser().getId()));
+//        tripReview.setTripSession(tripDao.find(short_name_trip));
+//        tripReviewDao.persist(tripReview);
     }
 
     @Transactional

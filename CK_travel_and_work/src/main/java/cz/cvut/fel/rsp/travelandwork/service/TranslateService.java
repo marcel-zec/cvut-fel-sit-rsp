@@ -73,8 +73,11 @@ public class TranslateService {
         trip1.getRequired_achievements_categorized().forEach(achievementCategorized -> required_achievements_categorized.add(translateAchievementCategorized(achievementCategorized)));
         trip1.getRequired_achievements_special().forEach(achievementSpecial -> required_achievements_special.add(translateAchievementSpecial(achievementSpecial)));
         trip1.getGain_achievements_special().forEach(achievementSpecial -> gain_achievements.add(translateAchievementSpecial(achievementSpecial)));
-        trip1.getSessions().forEach(session-> sessions.add(translateSession(session)));
-        trip1.getReviews().forEach(tripReview -> tripReviews.add(translateTripReview(tripReview)));
+        trip1.getSessions().forEach(session-> {
+            sessions.add(translateSession(session));
+            session.getTripReviews().forEach((review) -> tripReviews.add(translateTripReview(review)));
+        });
+//        trip1.getReviews().forEach(tripReview -> tripReviews.add(translateTripReview(tripReview)));
 
         return new TripDto(trip.getId(),trip.getName(),trip.getShort_name(),trip.getPossible_xp_reward(),
                 trip.getDescription(),trip.getRating(),trip.getDeposit(),trip.getLocation(), trip.getRequired_level(),
@@ -175,7 +178,7 @@ public class TranslateService {
         Objects.requireNonNull(tripReview);
 
         return new TripReviewDto(tripReview.getId(),tripReview.getNote(),tripReview.getDate(),
-                tripReview.getRating(),tripReview.getAuthor().getId(),tripReview.getTrip().getId());
+                tripReview.getRating(),tripReview.getAuthor().getFirstName() + tripReview.getAuthor().getLastName());
     }
 
     @Transactional
