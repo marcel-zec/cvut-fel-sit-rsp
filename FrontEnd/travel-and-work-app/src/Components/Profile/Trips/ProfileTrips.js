@@ -191,21 +191,10 @@ class ProfileTrips extends Profile {
                     </div>
                     <div id="tripsElementBlock">
                         <div className="activeTrips active">
-                            {this.renderActiveTrip(
-                                /*
-                               this.state.user.travel_journal.enrollments.filter(
-                                    (trip) => trip.state == "ACTIVE"
-                                ) */
-                                this.state.active_trips
-                            )}
+                            {this.renderActiveTrip(this.state.active_trips)}
                         </div>
                         <div className="archiveTrips">
-                            {this.renderArchiveTrip(
-                                /*this.state.user.travel_journal.enrollments.filter(
-                                    (trip) => trip.state != "ACTIVE"
-                                )*/
-                                this.state.archive_trips
-                            )}
+                            {this.renderArchiveTrip(this.state.archive_trips)}
                         </div>
                     </div>
                     <div className="popup_background hidden">

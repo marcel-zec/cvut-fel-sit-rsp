@@ -19,7 +19,11 @@ class TripHistory extends React.Component {
     };
     async componentDidMount() {
         this.setState({ enroll: this.props.trip });
-        this.setState({ review_exists: this.props.reviewExists });
+        this.setState({
+            review_exists: this.props.trip.review
+                ? this.props.trip.review
+                : null,
+        });
     }
 
     toggleReviewForm = () => {
@@ -31,19 +35,24 @@ class TripHistory extends React.Component {
         const request = {
             note: this.state.note,
             rating: this.state.rating,
-            trip: this.state.enroll,
         };
-        fetch("http://localhost:8080/trip_review", {
-            method: "POST",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(request),
-        })
+        fetch(
+            "http://localhost:8080/trip_review/" +
+                this.state.enroll.tripSession.id,
+            {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(request),
+            }
+        )
             .then((response) => {
                 if (response.ok) {
                     this.toggleReviewForm();
+                    console.log(response);
+                    this.setState(this.state);
                 } else console.error(response.status);
             })
             .catch((error) => {
@@ -130,9 +139,16 @@ class TripHistory extends React.Component {
                                 >
                                     <FontAwesomeIcon icon="times" />
                                 </Button>
-                                <Form.Label><h5>Add review</h5></Form.Label>
-                                <Form.Group className="d-flex flex-column w-50" style={{margin:"auto"}}>
-                                    <Form.Label>Evaluate the trip (5=max,0=min)</Form.Label>
+                                <Form.Label>
+                                    <h5>Add review</h5>
+                                </Form.Label>
+                                <Form.Group
+                                    className="d-flex flex-column w-50"
+                                    style={{ margin: "auto" }}
+                                >
+                                    <Form.Label>
+                                        Evaluate the trip (5=max,0=min)
+                                    </Form.Label>
                                     <RangeSlider
                                         value={this.state.rating}
                                         min={0}
