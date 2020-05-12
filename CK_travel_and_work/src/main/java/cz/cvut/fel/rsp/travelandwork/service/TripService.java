@@ -109,19 +109,19 @@ public class TripService {
     @Transactional
     public TripDto findByStringFiltered(String stringId) {
         Trip trip = tripDao.find(stringId);
+        TripDto tripDto = translateService.translateTrip(trip);
 
-        List<TripSession> sessions = new ArrayList<>();
+        List<TripSessionDto> sessions = new ArrayList<>();
         for(TripSession tripSession : trip.getSessions()) {
             if(tripSession.isNotDeleted() &&
                     tripSession.getTo_date().isAfter(LocalDate.now()) &&
                     tripSession.getFrom_date().isAfter(LocalDate.now())) {
-
-                sessions.add(tripSession);
+                sessions.add(translateService.translateSession(tripSession));
             }
         }
-        trip.setSessions(sessions);
+        tripDto.setSessions(sessions);
 
-        return translateService.translateTrip(trip);
+        return tripDto;
     }
 
     @Transactional

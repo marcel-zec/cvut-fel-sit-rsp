@@ -29,7 +29,7 @@ public class TripReviewDto {
 
 
     public TripReviewDto(@NotNull(message = "Id cannot be blank") Long id, @Size(max = 255, min = 0, message = "Max 255 characters.") String note,
-                         LocalDateTime date, @Min(value = 0, message = "Min 0") @Max(value = 5, message = "Max 5") double rating, String author ) {
+                         LocalDateTime date, @Min(value = 0, message = "Min 0") @Max(value = 5, message = "Max 5") double rating, String author) {
 
         this.id = id;
         this.note = note;
