@@ -206,12 +206,6 @@ class Detail extends React.Component {
      * Return check-circle icon or minus-circle icons after trip level and user level validation.
      */
     validLevel() {
-        console.log(Number(this.context.user.travel_journal.level));
-        console.log(this.state.trip.required_level);
-        console.log(
-            Number(this.context.user.travel_journal.level) >=
-                this.state.trip.required_level
-        );
         if (
             (this.context.user
                 ? Number(this.context.user.travel_journal.level)
@@ -245,6 +239,18 @@ class Detail extends React.Component {
             );
         });
         return toReturn;
+    }
+
+    dateTimeFormater(dateToFormat) {
+        const date = new Date(dateToFormat);
+        let formated = "";
+        formated +=
+            date.getDate() +
+            "." +
+            (date.getMonth() + 1) +
+            "." +
+            date.getFullYear();
+        return formated;
     }
 
     render() {
@@ -349,6 +355,9 @@ class Detail extends React.Component {
                         <Col className="rev_author" xs={6}>
                             <FontAwesomeIcon icon="user-alt" />
                             <span>{review.author}</span>
+                            <span className="text-muted">
+                                {this.dateTimeFormater(review.date)}
+                            </span>
                         </Col>
                         <Col className="rev_rating" xs={6}>
                             {this.renderRating(review.rating)}
@@ -361,6 +370,13 @@ class Detail extends React.Component {
                     </Row>
                 </div>
             ));
+            if (reviewsBlock.length == 0) {
+                reviewsBlock.push(
+                    <Row className="d-flex justify-content-center">
+                        Trip has no reviews yet.
+                    </Row>
+                );
+            }
             //render page
             return (
                 <Container id="trip_detail">
