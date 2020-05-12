@@ -55,70 +55,7 @@ class ProfileTrips extends Profile {
 
         this.setState({ user: this.context.user });
     }
-    /*state = {
-        tripHistory: [
-            {
-                name: "Kuchař na Pražském hradě",
-                xp: 12,
-                tripDate: "1995.12.17 - 25.12.1998",
-                achievments: [
-                    { id: 1, title: "Aaa", description: "Aaa description" },
-                    { id: 2, title: "Bbb", description: "Bbb description" }
-                ],
-                comment: {
-                    commentDate: "1996-02-11",
-                    content:
-                        "Lorem ipsum damlkd nuids mkoda dainuinjuida odasjuida miodauida danuomodmaoi, dakiokioda daiodsaiojk. Ddajoiiojjiioa dasd mmfydc ahuida 12 djuidjas dajiosda. Cadjis mmhusa miouynouicnsd. :)"
-                },
-                state:"active",
-                deposit:"1000",
-                enrollmentDate:"5.7.2020",
-                location:"Berlin, Germany",
-                depositWasPaided:false
-            },
-            {
-                name: "Samujifds",
-                xp: 2,
-                tripDate: "1995-04-02",
-                achievments: [
-                    { id: 3, title: "Ccc", description: "Ccc description" }
-                ],
-                state:"active",
-                deposit:"1350",
-                enrollmentDate:"5.7.2020",
-                location:"Helsinky, Finland",
-                depositWasPaided:false
-            },
-            {
-                name: "Mdsaerrr",
-                xp: 15,
-                tripDate: "1995-06-19",
-                achievments: [
-                    { id: 4, title: "Ddd", description: "Ddd description" }
-                ],
-                comment: {
-                    commentDate: "1996-02-11",
-                    content:
-                        "Lorem ipsum damlkd nuids mkoda dainuinjuida odasjuida miodauida danuomodmaoi, dakiokioda daiodsaiojk. Ddajoiiojjiioa dasd mmfydc ahuida 12 djuidjas dajiosda. Cadjis mmhusa miouynouicnsd. :)"
-                },
-                state:"canceled",
-                location:"Moscow, Russia",
-                enrollmentDate:"5.7.2020"
-            },
-            {
-                name: "Ldsamiodsa",
-                xp: 8,
-                tripDate: "1995-04-15",
-                achievments: [],
-                state:"active",
-                deposit:"1000",
-                enrollmentDate:"5.7.2020",
-                location:"Lisabon, Portugal",
-                depositWasPaided:true
-            }
-        ],
-        viewForm: false
-    };*/
+
     paymentForm = null;
     closeValidateWindow() {
         document.querySelector(".popup_background").classList.add("hidden");
