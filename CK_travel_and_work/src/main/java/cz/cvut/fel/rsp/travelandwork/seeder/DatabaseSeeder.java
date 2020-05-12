@@ -101,11 +101,11 @@ public class DatabaseSeeder implements
         userReviewDao.persist(userReview);
 
         //3.userReview from Milan to Julia
-        author = userDao.findByEmail("milan@gmail.com");
-        user = userDao.findByEmail("july1331@gmail.com");
-        tripSession = user.getTravel_journal().getEnrollments().get(0).getTripSession();
-        userReview = new UserReview("I hope I see you again someday, Julia :) ", LocalDateTime.now(), 5, user, author, tripSession);
-        userReviewDao.persist(userReview);
+//        author = userDao.findByEmail("milan@gmail.com");
+//        user = userDao.findByEmail("july1331@gmail.com");
+//        tripSession = user.getTravel_journal().getEnrollments().get(0).getTripSession();
+//        userReview = new UserReview("I hope I see you again someday, Julia :) ", LocalDateTime.now(), 5, user, author, tripSession);
+//        userReviewDao.persist(userReview);
     }
 
     private void createTripReviews() {
