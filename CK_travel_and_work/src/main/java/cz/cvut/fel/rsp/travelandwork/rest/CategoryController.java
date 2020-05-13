@@ -1,7 +1,6 @@
 package cz.cvut.fel.rsp.travelandwork.rest;
 
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
-import cz.cvut.fel.rsp.travelandwork.model.Category;
 import cz.cvut.fel.rsp.travelandwork.service.CategoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -2,7 +2,6 @@ package cz.cvut.fel.rsp.travelandwork.service;
 
 import cz.cvut.fel.rsp.travelandwork.environment.util.Generator;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
-import cz.cvut.fel.rsp.travelandwork.model.Category;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
