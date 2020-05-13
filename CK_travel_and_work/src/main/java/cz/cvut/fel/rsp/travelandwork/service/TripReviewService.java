@@ -1,9 +1,7 @@
 package cz.cvut.fel.rsp.travelandwork.service;
 
-import cz.cvut.fel.rsp.travelandwork.dao.TripDao;
-import cz.cvut.fel.rsp.travelandwork.dao.TripReviewDao;
-import cz.cvut.fel.rsp.travelandwork.dao.TripSessionDao;
-import cz.cvut.fel.rsp.travelandwork.dao.UserDao;
+import cz.cvut.fel.rsp.travelandwork.dao.*;
+import cz.cvut.fel.rsp.travelandwork.dto.EnrollmentDto;
 import cz.cvut.fel.rsp.travelandwork.dto.TripSessionDto;
 import cz.cvut.fel.rsp.travelandwork.exception.AlreadyExistsException;
 import cz.cvut.fel.rsp.travelandwork.exception.NotAllowedException;
@@ -27,12 +25,14 @@ public class TripReviewService {
     private final UserDao userDao;
     private final TripDao tripDao;
     private final TripSessionDao tripSessionDao;
+    private final EnrollmentDao enrollmentDao;
 
-    public TripReviewService(TripReviewDao tripReviewDao, UserDao userDao, TripDao tripDao, TripSessionDao tripSessionDao) {
+    public TripReviewService(TripReviewDao tripReviewDao, UserDao userDao, TripDao tripDao, TripSessionDao tripSessionDao, EnrollmentDao enrollmentDao) {
         this.tripReviewDao = tripReviewDao;
         this.userDao = userDao;
         this.tripDao = tripDao;
         this.tripSessionDao = tripSessionDao;
+        this.enrollmentDao = enrollmentDao;
     }
 
     @Transactional
@@ -46,26 +46,18 @@ public class TripReviewService {
     }
 
     @Transactional
-    public void create(TripReview tripReview, Long sessionId) throws AlreadyExistsException, UnauthorizedException, NotFoundException {
+    public void create(TripReview tripReview, Long enrollmentId) throws AlreadyExistsException, UnauthorizedException, NotFoundException {
         Objects.requireNonNull(tripReview);
         if (SecurityUtils.isAuthenticatedAnonymously()) throw new UnauthorizedException();
 
-        TripSession tripSession = tripSessionDao.find(sessionId);
-        if (tripSession == null) throw new NotFoundException();
-        for(TripReview review : tripSession.getTripReviews()){
-            if (review.getAuthor().getId().equals(SecurityUtils.getCurrentUser().getId())) throw new AlreadyExistsException();
-        }
-        Optional<Enrollment> found = tripSession.getEnrollments().stream().filter(enrollment -> enrollment.getTravelJournal().getUser().getId().equals(SecurityUtils.getCurrentUser().getId())).findFirst();
-        if(found.isPresent()){
-            tripReview.setAuthor(userDao.find(SecurityUtils.getCurrentUser().getId()));
-            tripReview.setTripSession(tripSession);
-            tripSession.addTripReview(tripReview);
-            tripReviewDao.persist(tripReview);
-            tripSessionDao.update(tripSession);
-            System.out.println("Review should be added");
-        } else {
-            throw new NotFoundException();
-        }
+        Enrollment enrollment = enrollmentDao.find(enrollmentId);
+        if (enrollment == null) throw new NotFoundException();
+        if (enrollment.hasTripReview()) throw new AlreadyExistsException();
+
+        tripReview.setTrip(enrollment.getTrip());
+        tripReview.setAuthor(SecurityUtils.getCurrentUser());
+        tripReview.setEnrollment(enrollment);
+        tripReviewDao.persist(tripReview);
     }
 
     @Transactional

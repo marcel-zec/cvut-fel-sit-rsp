@@ -71,10 +71,8 @@ public class TranslateService {
         trip1.getRequired_achievements_categorized().forEach(achievementCategorized -> required_achievements_categorized.add(translateAchievementCategorized(achievementCategorized)));
         trip1.getRequired_achievements_special().forEach(achievementSpecial -> required_achievements_special.add(translateAchievementSpecial(achievementSpecial)));
         trip1.getGain_achievements_special().forEach(achievementSpecial -> gain_achievements.add(translateAchievementSpecial(achievementSpecial)));
-        trip1.getSessions().forEach(session-> {
-            sessions.add(translateSession(session));
-            session.getTripReviews().forEach((review) -> tripReviews.add(translateTripReview(review)));
-        });
+        trip1.getTripReviews().forEach(review -> tripReviews.add(translateTripReview(review)));
+        trip1.getSessions().forEach(session-> sessions.add(translateSession(session)));
 
         return new TripDto(trip.getId(),trip.getName(),trip.getShort_name(),trip.getPossible_xp_reward(),
                 trip.getDescription(),trip.getRating(),trip.getDeposit(),trip.getLocation(), trip.getRequired_level(),
@@ -165,11 +163,10 @@ public class TranslateService {
         List<AchievementSpecialDto> recieved_achievements_special = new ArrayList<>();
 
         enrollment.getRecieved_achievements().forEach(achievement_special -> recieved_achievements_special.add(translateAchievementSpecial(achievement_special)));
-        Optional<TripReview> foundTripReview = enrollment.getTravelJournal().getUser().getTripReviews().stream().filter((review) -> review.getTripSession().getId().equals(enrollment.getTripSession().getId())).findFirst();
-        TripReviewDto tripReview = foundTripReview.map(this::translateTripReview).orElse(null);
+        TripReviewDto tripReviewDto = enrollment.hasTripReview() ? translateTripReview(enrollment.getTripReview()) : null;
 
         return new EnrollmentDto(enrollment.getId(),enrollment.getEnrollDate(),enrollment.isDeposit_was_paid(),enrollment.getActual_xp_reward(),enrollment.getState(),
-                recieved_achievements_special,enrollment.getTravelJournal().getId(),translateTrip(enrollment.getTrip()),translateSession(enrollment.getTripSession()),tripReview);
+                recieved_achievements_special,enrollment.getTravelJournal().getId(),translateTrip(enrollment.getTrip()),translateSession(enrollment.getTripSession()),tripReviewDto);
     }
 
     @Transactional

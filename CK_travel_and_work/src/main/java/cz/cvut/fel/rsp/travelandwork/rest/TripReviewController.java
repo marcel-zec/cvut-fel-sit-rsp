@@ -34,9 +34,9 @@ public class TripReviewController {
         return tripReviewService.findAll();
     }
 
-    @PostMapping(value = "/{sessionId}",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void create(@RequestBody TripReview tripReview, @PathVariable Long sessionId ) throws UnauthorizedException, AlreadyExistsException, NotFoundException {
-        tripReviewService.create(tripReview, sessionId);
+    @PostMapping(value = "/{enrollmentId}",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void create(@RequestBody TripReview tripReview, @PathVariable Long enrollmentId ) throws UnauthorizedException, AlreadyExistsException, NotFoundException {
+        tripReviewService.create(tripReview, enrollmentId);
     }
 
     @PatchMapping(value = "/{identificator}", consumes = MediaType.APPLICATION_JSON_VALUE)
