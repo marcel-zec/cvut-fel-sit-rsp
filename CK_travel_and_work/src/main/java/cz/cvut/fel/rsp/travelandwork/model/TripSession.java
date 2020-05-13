@@ -42,13 +42,10 @@ public class TripSession extends AbstractEntity {
     private Trip trip;
 
     @OneToMany(mappedBy = "tripSession")
-    private List<TripReview> tripReviews;
-
-    @OneToMany(mappedBy = "tripSession")
     private List<Enrollment> enrollments;
 
     public TripSession() {
-        this.tripReviews = new ArrayList<>();
+        this.enrollments = new ArrayList<>();
     }
 
     public TripSession(Trip trip, LocalDate from_date, LocalDate to_date, double price) {
@@ -56,7 +53,7 @@ public class TripSession extends AbstractEntity {
         this.from_date = from_date;
         this.to_date = to_date;
         this.price = price;
-        this.tripReviews = new ArrayList<>();
+        this.enrollments = new ArrayList<>();
     }
 
     public LocalDate getFrom_date() {
@@ -91,15 +88,6 @@ public class TripSession extends AbstractEntity {
         this.trip = trip;
     }
 
-
-    public List<TripReview> getTripReviews() {
-        return tripReviews;
-    }
-
-    public void setTripReviews(List<TripReview> tripReviews) {
-        this.tripReviews = tripReviews;
-    }
-
     @JsonIgnore
     public List<Enrollment> getEnrollments() {
         return enrollments;
@@ -109,7 +97,4 @@ public class TripSession extends AbstractEntity {
         this.enrollments = enrollments;
     }
 
-    public void addTripReview(TripReview tripReview){
-        this.tripReviews.add(tripReview);
-    }
 }

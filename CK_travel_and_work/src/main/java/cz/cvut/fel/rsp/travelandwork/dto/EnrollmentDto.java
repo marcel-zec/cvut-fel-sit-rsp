@@ -158,4 +158,12 @@ public class EnrollmentDto {
 
         this.tripSession = tripSession;
     }
+
+    public TripReviewDto getTripReview() {
+        return tripReview;
+    }
+
+    public void setTripReview(TripReviewDto tripReview) {
+        this.tripReview = tripReview;
+    }
 }

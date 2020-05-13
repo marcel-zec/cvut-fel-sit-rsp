@@ -108,6 +108,9 @@ public class Trip extends AbstractEntity {
     @OneToMany(mappedBy = "trip")
     private List<TripSession> sessions;
 
+    @OneToMany(mappedBy = "trip")
+    private List<TripReview> tripReviews;
+
     public Trip() {
         this.required_achievements_categorized = new ArrayList<>();
         this.required_achievements_special = new ArrayList<>();
@@ -272,6 +275,14 @@ public class Trip extends AbstractEntity {
 
     public void addSession(TripSession tripSession) {
         this.sessions.add(tripSession);
+    }
+
+    public List<TripReview> getTripReviews() {
+        return tripReviews;
+    }
+
+    public void setTripReviews(List<TripReview> tripReviews) {
+        this.tripReviews = tripReviews;
     }
 
     @Override
