@@ -55,70 +55,11 @@ class ProfileTrips extends Profile {
 
         this.setState({ user: this.context.user });
     }
-    /*state = {
-        tripHistory: [
-            {
-                name: "Kuchař na Pražském hradě",
-                xp: 12,
-                tripDate: "1995.12.17 - 25.12.1998",
-                achievments: [
-                    { id: 1, title: "Aaa", description: "Aaa description" },
-                    { id: 2, title: "Bbb", description: "Bbb description" }
-                ],
-                comment: {
-                    commentDate: "1996-02-11",
-                    content:
-                        "Lorem ipsum damlkd nuids mkoda dainuinjuida odasjuida miodauida danuomodmaoi, dakiokioda daiodsaiojk. Ddajoiiojjiioa dasd mmfydc ahuida 12 djuidjas dajiosda. Cadjis mmhusa miouynouicnsd. :)"
-                },
-                state:"active",
-                deposit:"1000",
-                enrollmentDate:"5.7.2020",
-                location:"Berlin, Germany",
-                depositWasPaided:false
-            },
-            {
-                name: "Samujifds",
-                xp: 2,
-                tripDate: "1995-04-02",
-                achievments: [
-                    { id: 3, title: "Ccc", description: "Ccc description" }
-                ],
-                state:"active",
-                deposit:"1350",
-                enrollmentDate:"5.7.2020",
-                location:"Helsinky, Finland",
-                depositWasPaided:false
-            },
-            {
-                name: "Mdsaerrr",
-                xp: 15,
-                tripDate: "1995-06-19",
-                achievments: [
-                    { id: 4, title: "Ddd", description: "Ddd description" }
-                ],
-                comment: {
-                    commentDate: "1996-02-11",
-                    content:
-                        "Lorem ipsum damlkd nuids mkoda dainuinjuida odasjuida miodauida danuomodmaoi, dakiokioda daiodsaiojk. Ddajoiiojjiioa dasd mmfydc ahuida 12 djuidjas dajiosda. Cadjis mmhusa miouynouicnsd. :)"
-                },
-                state:"canceled",
-                location:"Moscow, Russia",
-                enrollmentDate:"5.7.2020"
-            },
-            {
-                name: "Ldsamiodsa",
-                xp: 8,
-                tripDate: "1995-04-15",
-                achievments: [],
-                state:"active",
-                deposit:"1000",
-                enrollmentDate:"5.7.2020",
-                location:"Lisabon, Portugal",
-                depositWasPaided:true
-            }
-        ],
-        viewForm: false
-    };*/
+
+    refreshComponent = () => {
+        this.setState(this.state);
+    };
+
     paymentForm = null;
     closeValidateWindow() {
         document.querySelector(".popup_background").classList.add("hidden");
@@ -203,6 +144,7 @@ class ProfileTrips extends Profile {
                     funcToPay={this.openPayWindow}
                     funcToCancel={this.openCancelWindow}
                     component={this}
+                    refreshFunction={this.refreshComponent}
                 />
             ));
     }
@@ -215,6 +157,7 @@ class ProfileTrips extends Profile {
                     key={trip.name}
                     reviewExists={this.reviewExist(trip.short_name)}
                     trip={trip}
+                    refreshFunction={this.refreshComponent}
                 />
             ));
     }
@@ -254,21 +197,10 @@ class ProfileTrips extends Profile {
                     </div>
                     <div id="tripsElementBlock">
                         <div className="activeTrips active">
-                            {this.renderActiveTrip(
-                                /*
-                               this.state.user.travel_journal.enrollments.filter(
-                                    (trip) => trip.state == "ACTIVE"
-                                ) */
-                                this.state.active_trips
-                            )}
+                            {this.renderActiveTrip(this.state.active_trips)}
                         </div>
                         <div className="archiveTrips">
-                            {this.renderArchiveTrip(
-                                /*this.state.user.travel_journal.enrollments.filter(
-                                    (trip) => trip.state != "ACTIVE"
-                                )*/
-                                this.state.archive_trips
-                            )}
+                            {this.renderArchiveTrip(this.state.archive_trips)}
                         </div>
                     </div>
                     <div className="popup_background hidden">

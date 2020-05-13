@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,11 +27,11 @@ public class AchievementCategorizedService {
 
     @Transactional
     public List<AchievementCategorized> findAllInCategory(Category category) {
-        List<AchievementCategorized> result = achievementCategorizedDao.findAll();
-
-        for(AchievementCategorized a : result) {
-            if(!a.getCategory().equals(category)) {
-                result.remove(a);
+        List<AchievementCategorized> all = achievementCategorizedDao.findAll();
+        List<AchievementCategorized> result = new ArrayList<AchievementCategorized>();
+        for(AchievementCategorized a : all) {
+            if(a.getCategory().equals(category)) {
+                result.add(a);
             }
         }
 

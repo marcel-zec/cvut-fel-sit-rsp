@@ -47,6 +47,9 @@ public class Enrollment extends AbstractEntity {
     private TripSession tripSession;
 
 
+    @OneToOne(mappedBy = "enrollment")
+    private TripReview tripReview;
+
     public LocalDateTime getEnrollDate() {
         return enrollDate;
     }
@@ -117,6 +120,18 @@ public class Enrollment extends AbstractEntity {
 
     public List<AchievementSpecial> getRecieved_achievements() {
         return recieved_achievements_special;
+    }
+
+    public TripReview getTripReview() {
+        return tripReview;
+    }
+
+    public void setTripReview(TripReview tripReview) {
+        this.tripReview = tripReview;
+    }
+
+    public boolean hasTripReview() {
+        return tripReview != null;
     }
 
     @Override

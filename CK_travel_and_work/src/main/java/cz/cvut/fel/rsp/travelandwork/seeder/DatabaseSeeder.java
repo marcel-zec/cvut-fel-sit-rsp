@@ -102,39 +102,36 @@ public class DatabaseSeeder implements
         userReviewDao.persist(userReview);
 
         //3.userReview from Milan to Julia
-        author = userDao.findByEmail("milan@gmail.com");
-        user = userDao.findByEmail("july1331@gmail.com");
-        tripSession = user.getTravel_journal().getEnrollments().get(0).getTripSession();
-        userReview = new UserReview("I hope I see you again someday, Julia :) ", LocalDateTime.now(), 5, user, author, tripSession);
-        userReviewDao.persist(userReview);
+//        author = userDao.findByEmail("milan@gmail.com");
+//        user = userDao.findByEmail("july1331@gmail.com");
+//        tripSession = user.getTravel_journal().getEnrollments().get(0).getTripSession();
+//        userReview = new UserReview("I hope I see you again someday, Julia :) ", LocalDateTime.now(), 5, user, author, tripSession);
+//        userReviewDao.persist(userReview);
     }
 
     private void createTripReviews() {
         //1.tripReview from Milan
         User author = userDao.findByEmail("milan@gmail.com");
         if(author.getTravel_journal().getEnrollments().size() > 0) {
-            Trip trip = author.getTravel_journal().getEnrollments().get(0).getTrip();
-            TripReview tripReview = new TripReview("Really good trip, love it <3", LocalDateTime.now(), 5, author, trip);
+            Enrollment enrollment = author.getTravel_journal().getEnrollments().get(0);
+            TripReview tripReview = new TripReview("Really good trip, love it <3", LocalDateTime.now(), 5, author, enrollment.getTrip(),enrollment);
             tripReviewDao.persist(tripReview);
-            tripDao.update(trip);
         }
 
         //2.tripReview from Milan
         author = userDao.findByEmail("milan@gmail.com");
         if(author.getTravel_journal().getEnrollments().size() > 1) {
-            Trip trip = author.getTravel_journal().getEnrollments().get(1).getTrip();
-            TripReview tripReview = new TripReview("it was good, but the whether was really bad :( ", LocalDateTime.now(), 3, author, trip);
+            Enrollment enrollment = author.getTravel_journal().getEnrollments().get(1);
+            TripReview tripReview = new TripReview("it was good, but the whether was really bad :( ", LocalDateTime.now(), 3, author, enrollment.getTrip(),enrollment);
             tripReviewDao.persist(tripReview);
-            tripDao.update(trip);
         }
 
         //3.tripReview from Jan
         author = userDao.findByEmail("jan@gmail.com");
         if(author.getTravel_journal().getEnrollments().size() > 0) {
-            Trip trip = author.getTravel_journal().getEnrollments().get(0).getTrip();
-            TripReview tripReview = new TripReview("it was the best trip of my entire life! Don't be afraid to enrol ;) ", LocalDateTime.now(), 3, author, trip);
+            Enrollment enrollment = author.getTravel_journal().getEnrollments().get(0);
+            TripReview tripReview = new TripReview("it was the best trip of my entire life! Don't be afraid to enrol ;) ", LocalDateTime.now(), 3, author, enrollment.getTrip(),enrollment);
             tripReviewDao.persist(tripReview);
-            tripDao.update(trip);
         }
     }
 

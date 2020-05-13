@@ -7,10 +7,7 @@ import cz.cvut.fel.rsp.travelandwork.model.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class TranslateService {
@@ -68,13 +65,14 @@ public class TranslateService {
         List<AchievementSpecialDto> gain_achievements = new ArrayList<>();
         List<TripReviewDto> tripReviews = new ArrayList<>();
         Trip trip1 = tripDao.find(trip.getId());
+        System.out.println("number of sessions " + trip1.getSessions().size());
 
         trip1.getRequired_achievements_certificate().forEach(achievementCertificate -> required_certificates.add(translateAchievementCertificate(achievementCertificate)));
         trip1.getRequired_achievements_categorized().forEach(achievementCategorized -> required_achievements_categorized.add(translateAchievementCategorized(achievementCategorized)));
         trip1.getRequired_achievements_special().forEach(achievementSpecial -> required_achievements_special.add(translateAchievementSpecial(achievementSpecial)));
         trip1.getGain_achievements_special().forEach(achievementSpecial -> gain_achievements.add(translateAchievementSpecial(achievementSpecial)));
+        trip1.getTripReviews().forEach(review -> tripReviews.add(translateTripReview(review)));
         trip1.getSessions().forEach(session-> sessions.add(translateSession(session)));
-        trip1.getReviews().forEach(tripReview -> tripReviews.add(translateTripReview(tripReview)));
 
         return new TripDto(trip.getId(),trip.getName(),trip.getShort_name(),trip.getPossible_xp_reward(),
                 trip.getDescription(),trip.getRating(),trip.getDeposit(),trip.getLocation(), trip.getRequired_level(),
@@ -165,9 +163,10 @@ public class TranslateService {
         List<AchievementSpecialDto> recieved_achievements_special = new ArrayList<>();
 
         enrollment.getRecieved_achievements().forEach(achievement_special -> recieved_achievements_special.add(translateAchievementSpecial(achievement_special)));
+        TripReviewDto tripReviewDto = enrollment.hasTripReview() ? translateTripReview(enrollment.getTripReview()) : null;
 
         return new EnrollmentDto(enrollment.getId(),enrollment.getEnrollDate(),enrollment.isDeposit_was_paid(),enrollment.getActual_xp_reward(),enrollment.getState(),
-                recieved_achievements_special,enrollment.getTravelJournal().getId(),translateTrip(enrollment.getTrip()),translateSession(enrollment.getTripSession()));
+                recieved_achievements_special,enrollment.getTravelJournal().getId(),translateTrip(enrollment.getTrip()),translateSession(enrollment.getTripSession()),tripReviewDto);
     }
 
     @Transactional
@@ -175,7 +174,7 @@ public class TranslateService {
         Objects.requireNonNull(tripReview);
 
         return new TripReviewDto(tripReview.getId(),tripReview.getNote(),tripReview.getDate(),
-                tripReview.getRating(),tripReview.getAuthor().getId(),tripReview.getTrip().getId());
+                tripReview.getRating(),tripReview.getAuthor().getFirstName() + " " +tripReview.getAuthor().getLastName());
     }
 
     @Transactional

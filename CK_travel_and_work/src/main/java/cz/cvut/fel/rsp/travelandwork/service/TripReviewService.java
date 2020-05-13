@@ -1,17 +1,22 @@
 package cz.cvut.fel.rsp.travelandwork.service;
 
-import cz.cvut.fel.rsp.travelandwork.dao.TripDao;
-import cz.cvut.fel.rsp.travelandwork.dao.TripReviewDao;
-import cz.cvut.fel.rsp.travelandwork.dao.UserDao;
+import cz.cvut.fel.rsp.travelandwork.dao.*;
+import cz.cvut.fel.rsp.travelandwork.dto.EnrollmentDto;
+import cz.cvut.fel.rsp.travelandwork.dto.TripSessionDto;
+import cz.cvut.fel.rsp.travelandwork.exception.AlreadyExistsException;
 import cz.cvut.fel.rsp.travelandwork.exception.NotAllowedException;
+import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
 import cz.cvut.fel.rsp.travelandwork.exception.UnauthorizedException;
+import cz.cvut.fel.rsp.travelandwork.model.Enrollment;
 import cz.cvut.fel.rsp.travelandwork.model.TripReview;
+import cz.cvut.fel.rsp.travelandwork.model.TripSession;
 import cz.cvut.fel.rsp.travelandwork.security.SecurityUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class TripReviewService {
@@ -19,11 +24,15 @@ public class TripReviewService {
     private final TripReviewDao tripReviewDao;
     private final UserDao userDao;
     private final TripDao tripDao;
+    private final TripSessionDao tripSessionDao;
+    private final EnrollmentDao enrollmentDao;
 
-    public TripReviewService(TripReviewDao tripReviewDao, UserDao userDao, TripDao tripDao) {
+    public TripReviewService(TripReviewDao tripReviewDao, UserDao userDao, TripDao tripDao, TripSessionDao tripSessionDao, EnrollmentDao enrollmentDao) {
         this.tripReviewDao = tripReviewDao;
         this.userDao = userDao;
         this.tripDao = tripDao;
+        this.tripSessionDao = tripSessionDao;
+        this.enrollmentDao = enrollmentDao;
     }
 
     @Transactional
@@ -37,13 +46,17 @@ public class TripReviewService {
     }
 
     @Transactional
-    public void create(TripReview tripReview, String short_name_trip) throws UnauthorizedException, NotAllowedException {
+    public void create(TripReview tripReview, Long enrollmentId) throws AlreadyExistsException, UnauthorizedException, NotFoundException {
         Objects.requireNonNull(tripReview);
         if (SecurityUtils.isAuthenticatedAnonymously()) throw new UnauthorizedException();
-        if (short_name_trip == null) throw new NotAllowedException();
 
-        tripReview.setAuthor(userDao.find(SecurityUtils.getCurrentUser().getId()));
-        tripReview.setTrip(tripDao.find(short_name_trip));
+        Enrollment enrollment = enrollmentDao.find(enrollmentId);
+        if (enrollment == null) throw new NotFoundException();
+        if (enrollment.hasTripReview()) throw new AlreadyExistsException();
+
+        tripReview.setTrip(enrollment.getTrip());
+        tripReview.setAuthor(SecurityUtils.getCurrentUser());
+        tripReview.setEnrollment(enrollment);
         tripReviewDao.persist(tripReview);
     }
 

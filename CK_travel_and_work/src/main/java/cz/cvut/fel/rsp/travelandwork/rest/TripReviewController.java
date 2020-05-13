@@ -1,5 +1,6 @@
 package cz.cvut.fel.rsp.travelandwork.rest;
 
+import cz.cvut.fel.rsp.travelandwork.exception.AlreadyExistsException;
 import cz.cvut.fel.rsp.travelandwork.exception.NotAllowedException;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
 import cz.cvut.fel.rsp.travelandwork.exception.UnauthorizedException;
@@ -33,9 +34,9 @@ public class TripReviewController {
         return tripReviewService.findAll();
     }
 
-    @PostMapping(value = "/{short_name_trip}",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void create(@RequestBody TripReview tripReview, @PathVariable String short_name_trip ) throws UnauthorizedException, NotAllowedException {
-        tripReviewService.create(tripReview, short_name_trip);
+    @PostMapping(value = "/{enrollmentId}",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void create(@RequestBody TripReview tripReview, @PathVariable Long enrollmentId ) throws UnauthorizedException, AlreadyExistsException, NotFoundException {
+        tripReviewService.create(tripReview, enrollmentId);
     }
 
     @PatchMapping(value = "/{identificator}", consumes = MediaType.APPLICATION_JSON_VALUE)

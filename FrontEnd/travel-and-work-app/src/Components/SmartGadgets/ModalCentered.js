@@ -54,6 +54,11 @@ function ModalCentered(props) {
         }
     }
 
+    let stars = null;
+    if (props.stars) {
+        stars = renderRating(props.stars);
+    }
+
     return (
         <Modal
             {...props}
@@ -70,11 +75,30 @@ function ModalCentered(props) {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
+                {stars}
                 <FontAwesomeIcon icon={props.icon} size="6x" />
+
                 <p>{description}</p>
             </Modal.Body>
             {footer}
         </Modal>
     );
 }
+
+function renderRating(rating) {
+    let starsElement = [];
+    if (rating == 0) {
+        return <span style={{ color: "black" }}>Trip has not any review</span>;
+    }
+    for (var i = 1; i <= rating; i++) {
+        starsElement.push(<FontAwesomeIcon key={i} icon="star" />);
+    }
+    if (rating - starsElement.length >= 0.5) {
+        starsElement.push(
+            <FontAwesomeIcon key={starsElement.length + 1} icon="star-half" />
+        );
+    }
+    return starsElement;
+}
+
 export default ModalCentered;

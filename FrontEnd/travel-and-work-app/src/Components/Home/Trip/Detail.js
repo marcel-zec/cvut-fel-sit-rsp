@@ -21,15 +21,10 @@ class Detail extends React.Component {
             price: null,
         },
     };
-    user = null;
+
     formIsValid = false;
     static contextType = appContext;
-    userDTO = {
-        achievements_special: [],
-        certifications: [],
-        achievements_categorized: [],
-        level: 1,
-    };
+
     sessionsIds = [];
 
     async componentDidMount() {
@@ -47,30 +42,10 @@ class Detail extends React.Component {
 
         const data = await response.json();
         console.log(data);
-        this.user = this.context.user;
-        if(this.user != null){
-            this.userDTO.achievements_special = this.user.travel_journal.special;
-            this.userDTO.certifications = this.user.travel_journal.certificates;
-            this.userDTO.achievements_categorized = this.user.travel_journal.categorized;
-        }
-        
-        data.rating = 4.7;
-        data.reviews = [
-            {
-                author: "František Omáčka",
-                rating: 3.5,
-                date: "7.srpna 2020",
-                note:
-                    "Venenatis quis, ante. Maecenas fermentum, sem in pharetra pellentesque, velit turpis volutpat ante, in pharetra metus odio a lectus. Sed vel lectus. Donec odio tempus molestie, porttitor ut, iaculis quis, sem. Pellentesque sapien. Duis pulvinar. Nulla accumsan, elit sit amet varius semper, nulla mauris mollis quam, tempor suscipit diam nulla vel leo. Mauris tincidunt sem sed arcu.",
-            },
-            {
-                author: "Tomáš Omáčka",
-                rating: 4.0,
-                date: "7.zari 2020",
-                note:
-                    "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Etiam quis quam. Donec iaculis gravida nulla. Etiam sapien elit, consequat eget, tristique non, venenatis quis, ante. Maecenas fermentum, sem in pharetra pellentesque, velit turpis volutpat ante, in pharetra metus odio a lectus. Sed vel lectus. Donec odio tempus molestie, porttitor ut, iaculis quis, sem. Pellentesque sapien. Duis pulvinar. Nulla accumsan, elit sit amet varius semper, nulla mauris mollis quam, tempor suscipit diam nulla vel leo. Mauris tincidunt sem sed arcu.",
-            },
-        ];
+        console.log(
+            this.context.user ? this.context.user.travel_journal : "neni user"
+        );
+
         this.setState({ trip: data });
         if (data.sessions.length > 0) {
             this.setState({ selectedSession: data.sessions[0] });
@@ -101,7 +76,7 @@ class Detail extends React.Component {
             .checked;
         if (checboxIsChecked && this.formIsValid) {
             console.log("READY K ODESLANI");
-            fetch("http://localhost:8080/trip/"+this.state.trip.short_name, {
+            fetch("http://localhost:8080/trip/" + this.state.trip.short_name, {
                 method: "POST",
                 mode: "cors",
                 credentials: "include",
@@ -111,13 +86,12 @@ class Detail extends React.Component {
                 body: JSON.stringify(this.state.selectedSession),
             }).then((response) => {
                 if (response.ok) {
-                    window.setTimeout(function(){
+                    window.setTimeout(function () {
                         alert("Trip was added to your travel journal");
                         document.location.reload();
-                    },500);
-
+                    }, 500);
                 }
-                    /*this.props.history.push({
+                /*this.props.history.push({
                         pathname: "/",
                         alert: (
                             <MyAlert
@@ -130,11 +104,17 @@ class Detail extends React.Component {
                 //TODO - osetrenie vynimiek
                 else alert("Error: somethhing goes wrong");
             });
-            }
+        }
     }
+
     validateUserAchievement(achievement, userList) {
         return userList.some((item) => item.id == achievement.id);
     }
+
+    /**
+     * Validation before purchase trip.
+     * @param {event} event
+     */
     validatePurchase(event) {
         event.preventDefault();
         document.querySelector(".popup_background").classList.remove("hidden");
@@ -150,18 +130,33 @@ class Detail extends React.Component {
         const minlevel = this.state.trip.required_level;
 
         specialValidate = req_ach_special.every((val) =>
-            this.validateUserAchievement(val, this.userDTO.achievements_special)
+            this.validateUserAchievement(
+                val,
+                this.context.user
+                    ? this.context.user.travel_journal.special
+                    : []
+            )
         );
         categorizedValidate = req_ach_categorized.every((val) =>
             this.validateUserAchievement(
                 val,
-                this.userDTO.achievements_categorized
+                this.context.user
+                    ? this.context.user.travel_journal.categorized
+                    : []
             )
         );
         certificateslValidate = req_cerf.every((val) =>
-            this.validateUserAchievement(val, this.userDTO.certifications)
+            this.validateUserAchievement(
+                val,
+                this.context.user
+                    ? this.context.user.travel_journal.certificates
+                    : []
+            )
         );
-        levelPassed = this.userDTO.level >= minlevel;
+        levelPassed =
+            (this.context.user
+                ? Number(this.context.user.travel_journal.level)
+                : 0) >= minlevel;
 
         if (
             specialValidate &&
@@ -181,6 +176,11 @@ class Detail extends React.Component {
     closeValidateWindow(element) {
         document.querySelector(".popup_background").classList.add("hidden");
     }
+
+    /**
+     * Render rating stars.
+     * @param {Number} rating
+     */
     renderRating(rating) {
         let starsElement = [];
         if (rating == 0) {
@@ -201,12 +201,26 @@ class Detail extends React.Component {
         }
         return starsElement;
     }
+
+    /**
+     * Return check-circle icon or minus-circle icons after trip level and user level validation.
+     */
     validLevel() {
-        if (this.userDTO.level >= this.state.trip.required_level) {
+        if (
+            (this.context.user
+                ? Number(this.context.user.travel_journal.level)
+                : 0) >= this.state.trip.required_level
+        ) {
             return <FontAwesomeIcon className="checked" icon="check-circle" />;
         }
         return <FontAwesomeIcon className="false" icon="minus-circle" />;
     }
+
+    /**
+     * Render achievements.
+     * @param {*} achievements
+     * @param {*} message
+     */
     renderAchievements(achievements, message = "No achievements are required") {
         if (achievements.length == 0) {
             return message;
@@ -226,6 +240,19 @@ class Detail extends React.Component {
         });
         return toReturn;
     }
+
+    dateTimeFormater(dateToFormat) {
+        const date = new Date(dateToFormat);
+        let formated = "";
+        formated +=
+            date.getDate() +
+            "." +
+            (date.getMonth() + 1) +
+            "." +
+            date.getFullYear();
+        return formated;
+    }
+
     render() {
         if (this.state.trip === null) {
             return (
@@ -256,7 +283,7 @@ class Detail extends React.Component {
                 sessionBlock = (
                     <div className="trip_price">Cannot be purchased</div>
                 );
-            } else if(this.user == null) {
+            } else if (this.context.user == null) {
                 options = (
                     <Form.Control
                         as="select"
@@ -277,10 +304,13 @@ class Detail extends React.Component {
                             </span>
                             Kč
                         </div>
-                        <div>Only logged users can purchase. <Link to="/login">Login</Link></div>
+                        <div>
+                            Only logged users can purchase.{" "}
+                            <Link to="/login">Login</Link>
+                        </div>
                     </div>
                 );
-            }else {
+            } else {
                 options = (
                     <Form.Control
                         as="select"
@@ -318,13 +348,16 @@ class Detail extends React.Component {
                 dateTitle = "Dates";
             }
             //setting reviews
-            const reviews = this.state.trip.reviews;
+            const reviews = this.state.trip.tripReviewDtos;
             const reviewsBlock = reviews.map((review) => (
                 <div className="review">
                     <Row>
                         <Col className="rev_author" xs={6}>
                             <FontAwesomeIcon icon="user-alt" />
                             <span>{review.author}</span>
+                            <span className="text-muted">
+                                {this.dateTimeFormater(review.date)}
+                            </span>
                         </Col>
                         <Col className="rev_rating" xs={6}>
                             {this.renderRating(review.rating)}
@@ -337,6 +370,13 @@ class Detail extends React.Component {
                     </Row>
                 </div>
             ));
+            if (reviewsBlock.length == 0) {
+                reviewsBlock.push(
+                    <Row className="d-flex justify-content-center">
+                        Trip has no reviews yet.
+                    </Row>
+                );
+            }
             //render page
             return (
                 <Container id="trip_detail">
@@ -413,7 +453,7 @@ class Detail extends React.Component {
                                         {this.state.trip.deposit} Kč
                                     </Card.Text>
                                     <Card.Subtitle className="mb-2 text-muted">
-                                        <FontAwesomeIcon icon="minus-circle" />
+                                        {this.validLevel()}
                                         Minimum level required
                                     </Card.Subtitle>
                                     <Card.Text>
@@ -562,7 +602,11 @@ class Detail extends React.Component {
                                                         .required_achievements_certificate
                                                 }
                                                 userList={
-                                                    this.userDTO.certifications
+                                                    this.context.user
+                                                        ? this.context.user
+                                                              .travel_journal
+                                                              .certificates
+                                                        : []
                                                 }
                                                 message={
                                                     "No certifications are required"
@@ -601,8 +645,11 @@ class Detail extends React.Component {
                                                         .required_achievements_special
                                                 }
                                                 userList={
-                                                    this.userDTO
-                                                        .achievements_special
+                                                    this.context.user
+                                                        ? this.context.user
+                                                              .travel_journal
+                                                              .special
+                                                        : []
                                                 }
                                                 message={
                                                     "No achievements are required"
@@ -616,8 +663,11 @@ class Detail extends React.Component {
                                                         .required_achievements_categorized
                                                 }
                                                 userList={
-                                                    this.userDTO
-                                                        .achievements_categorized
+                                                    this.context.user
+                                                        ? this.context.user
+                                                              .travel_journal
+                                                              .categorized
+                                                        : []
                                                 }
                                                 message={
                                                     "No categorized achievements are required"
