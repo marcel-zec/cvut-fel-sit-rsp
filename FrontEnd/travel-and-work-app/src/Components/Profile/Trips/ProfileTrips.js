@@ -56,6 +56,10 @@ class ProfileTrips extends Profile {
         this.setState({ user: this.context.user });
     }
 
+    refreshComponent = () => {
+        this.setState(this.state);
+    };
+
     paymentForm = null;
     closeValidateWindow() {
         document.querySelector(".popup_background").classList.add("hidden");
@@ -140,6 +144,7 @@ class ProfileTrips extends Profile {
                     funcToPay={this.openPayWindow}
                     funcToCancel={this.openCancelWindow}
                     component={this}
+                    refreshFunction={this.refreshComponent}
                 />
             ));
     }
@@ -152,6 +157,7 @@ class ProfileTrips extends Profile {
                     key={trip.name}
                     reviewExists={this.reviewExist(trip.short_name)}
                     trip={trip}
+                    refreshFunction={this.refreshComponent}
                 />
             ));
     }

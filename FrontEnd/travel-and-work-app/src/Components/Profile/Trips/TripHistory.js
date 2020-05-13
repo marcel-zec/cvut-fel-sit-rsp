@@ -8,26 +8,34 @@ import AchievmentModal from "../../SmartGadgets/AchievementModal";
 import DatePicker from "react-datepicker";
 import RangeSlider from "react-bootstrap-range-slider";
 import "react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css";
+import ModalCentered from "../../SmartGadgets/ModalCentered";
 
 class TripHistory extends React.Component {
     state = {
-        enroll: null,
-        review_exists: null,
+        enrollment: null,
         show_review: false,
+        show_modal_review: false,
         note: null,
         rating: 5,
     };
     async componentDidMount() {
-        this.setState({ enroll: this.props.trip });
-        this.setState({
-            review_exists: this.props.trip.review
-                ? this.props.trip.review
-                : null,
-        });
+        this.setState({ enrollment: this.props.trip });
     }
 
     toggleReviewForm = () => {
         this.setState({ show_review: !this.state.show_review });
+    };
+
+    showModalHandler = () => {
+        const newState = { ...this.state };
+        newState.show_modal_review = true;
+        this.setState(newState);
+    };
+
+    onHideModalHandler = () => {
+        const newState = { ...this.state };
+        newState.show_modal_review = false;
+        this.setState(newState);
     };
 
     submitHandler = (event) => {
@@ -36,23 +44,17 @@ class TripHistory extends React.Component {
             note: this.state.note,
             rating: this.state.rating,
         };
-        fetch(
-            "http://localhost:8080/trip_review/" +
-                this.state.enroll.tripSession.id,
-            {
-                method: "POST",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(request),
-            }
-        )
+        fetch("http://localhost:8080/trip_review/" + this.state.enrollment.id, {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(request),
+        })
             .then((response) => {
                 if (response.ok) {
-                    this.toggleReviewForm();
-                    console.log(response);
-                    this.setState(this.state);
+                    this.props.refreshFunction();
                 } else console.error(response.status);
             })
             .catch((error) => {
@@ -75,12 +77,12 @@ class TripHistory extends React.Component {
     };
 
     render() {
-        if (this.state.enroll == null) {
+        if (this.state.enrollment == null) {
             return "null";
         } else {
             const achievments = [];
             console.log(this.state);
-            this.state.enroll.trip.gain_achievements_special.forEach(
+            this.state.enrollment.trip.gain_achievements_special.forEach(
                 (element) => {
                     achievments.push(
                         <AchievmentModal
@@ -96,7 +98,10 @@ class TripHistory extends React.Component {
             let placement = 0;
             let commentButton = null;
             //pokud user jeste nenapsal review
-            if (!this.state.review_exists && !this.state.show_review) {
+            if (
+                !this.state.enrollment.hasOwnProperty("tripReview") &&
+                !this.state.show_review
+            ) {
                 //comment icons for new comment
                 commentButton = (
                     <OverlayTrigger
@@ -118,11 +123,33 @@ class TripHistory extends React.Component {
                         </Button>
                     </OverlayTrigger>
                 );
-            } else if (this.state.show_review) {
+            } else if (
+                this.state.show_review &&
+                !this.state.enrollment.hasOwnProperty("tripReview")
+            ) {
                 commentButton = "Review in process";
             } else {
                 //comment icons for updating
-                commentButton = "Review was added";
+                commentButton = (
+                    <>
+                        <Button
+                            className="submit createReview"
+                            onClick={() => {
+                                this.showModalHandler();
+                            }}
+                        >
+                            Show review
+                        </Button>
+                        <ModalCentered
+                            show={this.state.show_modal_review}
+                            onHide={() => this.onHideModalHandler()}
+                            title={this.state.enrollment.trip.name + " review"}
+                            stars={this.state.enrollment.tripReview.rating}
+                            description={this.state.enrollment.tripReview.note}
+                            size="lg"
+                        />
+                    </>
+                );
             }
 
             let review = null;
@@ -212,14 +239,14 @@ class TripHistory extends React.Component {
                                     Name
                                 </Card.Title>
                                 <Card.Text>
-                                    {this.state.enroll.trip.name}
+                                    {this.state.enrollment.trip.name}
                                 </Card.Text>
 
                                 <Card.Title className="mb-2 text-muted">
                                     Location
                                 </Card.Title>
                                 <Card.Text>
-                                    {this.state.enroll.trip.location}
+                                    {this.state.enrollment.trip.location}
                                 </Card.Text>
                             </Col>
                             <Col>
@@ -230,7 +257,7 @@ class TripHistory extends React.Component {
                                     <DatePicker
                                         className="form-control"
                                         selected={Date.parse(
-                                            this.state.enroll.tripSession
+                                            this.state.enrollment.tripSession
                                                 .from_date
                                         )}
                                         dateFormat="dd. MM. yyyy"
@@ -239,7 +266,7 @@ class TripHistory extends React.Component {
                                     <DatePicker
                                         className="form-control"
                                         selected={Date.parse(
-                                            this.state.enroll.tripSession
+                                            this.state.enrollment.tripSession
                                                 .to_date
                                         )}
                                         dateFormat="dd. MM. yyyy"
@@ -261,7 +288,7 @@ class TripHistory extends React.Component {
                                     <DatePicker
                                         className="form-control"
                                         selected={Date.parse(
-                                            this.state.enroll.enrollDate
+                                            this.state.enrollment.enrollDate
                                         )}
                                         dateFormat="dd. MM. yyyy, hh:mm"
                                         disabled={true}
