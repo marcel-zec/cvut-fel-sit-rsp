@@ -303,6 +303,7 @@ public class DatabaseSeeder implements
         List<Category> categories = categoryDao.findAll();
         List<Trip> trips = tripDao.findAll();
 
+        //sakra prace :D mozno to pojde
         //IT IS DONE THE HARD WAY BECAUSE AUTHOR (ME) IS LITERALLY BRAINDED RETARD
         //ak budete mat problem sa orientovat v tejto casti nemam vam to za zle je to humus...
         //O.S.
