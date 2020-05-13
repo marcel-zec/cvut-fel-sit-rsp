@@ -4,6 +4,7 @@ import cz.cvut.fel.rsp.travelandwork.dao.*;
 import cz.cvut.fel.rsp.travelandwork.dto.TripSessionDto;
 import cz.cvut.fel.rsp.travelandwork.exception.NotAllowedException;
 import cz.cvut.fel.rsp.travelandwork.model.*;
+import cz.cvut.fel.rsp.travelandwork.model.Category;
 import cz.cvut.fel.rsp.travelandwork.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
