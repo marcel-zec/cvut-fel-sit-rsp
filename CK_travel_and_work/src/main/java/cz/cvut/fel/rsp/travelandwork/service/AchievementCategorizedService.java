@@ -2,6 +2,7 @@ package cz.cvut.fel.rsp.travelandwork.service;
 
 import cz.cvut.fel.rsp.travelandwork.dao.AchievementCategorizedDao;
 import cz.cvut.fel.rsp.travelandwork.model.AchievementCategorized;
+import cz.cvut.fel.rsp.travelandwork.model.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

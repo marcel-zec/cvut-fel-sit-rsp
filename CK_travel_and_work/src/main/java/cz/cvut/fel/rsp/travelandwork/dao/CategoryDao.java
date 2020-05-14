@@ -1,5 +1,6 @@
 package cz.cvut.fel.rsp.travelandwork.dao;
 
+import cz.cvut.fel.rsp.travelandwork.model.Category;
 import cz.cvut.fel.rsp.travelandwork.model.Trip;
 import org.springframework.stereotype.Repository;
 
