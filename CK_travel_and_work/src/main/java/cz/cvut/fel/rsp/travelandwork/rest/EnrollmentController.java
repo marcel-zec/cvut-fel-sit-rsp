@@ -101,8 +101,15 @@ public class EnrollmentController {
         userReviewService.create(id,SecurityUtils.getCurrentUser());
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_SUPERUSER', 'ROLE_ADMIN')")
     @PostMapping(value = "cancel/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public void cancel(@PathVariable Long id) throws Exception {
         enrollmentService.cancel(id);
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_SUPERUSER', 'ROLE_ADMIN')")
+    @PostMapping(value = "changePayment/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public void changePayment(@PathVariable Long id) throws Exception {
+        enrollmentService.changePaymnet(id);
     }
 }
