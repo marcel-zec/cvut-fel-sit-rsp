@@ -65,7 +65,6 @@ public class TranslateService {
         List<AchievementSpecialDto> gain_achievements = new ArrayList<>();
         List<TripReviewDto> tripReviews = new ArrayList<>();
         Trip trip1 = tripDao.find(trip.getId());
-        System.out.println("number of sessions " + trip1.getSessions().size());
 
         trip1.getRequired_achievements_certificate().forEach(achievementCertificate -> required_certificates.add(translateAchievementCertificate(achievementCertificate)));
         trip1.getRequired_achievements_categorized().forEach(achievementCategorized -> required_achievements_categorized.add(translateAchievementCategorized(achievementCategorized)));
