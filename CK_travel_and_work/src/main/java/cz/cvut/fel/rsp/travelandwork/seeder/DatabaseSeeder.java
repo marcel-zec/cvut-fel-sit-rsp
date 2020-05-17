@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -40,13 +39,14 @@ public class DatabaseSeeder implements
     private TravelJournalDao travelJournalDao;
     private TripReviewDao tripReviewDao;
     private UserReviewDao userReviewDao;
+    private EnrollmentService enrollmentService;
 
     @Autowired
     public DatabaseSeeder(TripDao tripDao, TripSessionDao tripSessionDao, AchievementCertificateDao achievementCertificateDao,
                           AchievementCategorizedDao achievementCategorizedDao, AchievementSpecialDao achievementSpecialDao,
                           CategoryDao categoryDao, UserDao userDao, AddressDao addressDao, EnrollmentDao enrollmentDao,
                           TripService tripService, TranslateService translateService, TravelJournalService travelJournalService,
-                          TravelJournalDao travelJournalDao, TripReviewDao tripReviewDao, UserReviewDao userReviewDao) {
+                          TravelJournalDao travelJournalDao, TripReviewDao tripReviewDao, UserReviewDao userReviewDao, EnrollmentService enrollmentService) {
         this.tripDao = tripDao;
         this.tripSessionDao = tripSessionDao;
         this.achievementCertificateDao = achievementCertificateDao;
@@ -62,6 +62,7 @@ public class DatabaseSeeder implements
         this.travelJournalDao = travelJournalDao;
         this.tripReviewDao = tripReviewDao;
         this.userReviewDao = userReviewDao;
+        this.enrollmentService = enrollmentService;
     }
 
     @Override
@@ -589,6 +590,8 @@ public class DatabaseSeeder implements
         e.setDeposit_was_paid(false);
         e.setState(EnrollmentState.ACTIVE);
         enrollmentDao.update(e);
+        enrollmentService.closeOk(e.getId());
+
     }
 
     private Enrollment createEnrol(TripSession tripSession, User user) {
