@@ -12,16 +12,16 @@ class ActiveTrips extends React.Component {
         this.setState({state:this.props.trip.state});
     }
     render() {
-        console.log(this.state);
-        console.log(this.props.trip.state);
+        //console.log(this.state);
+        //console.log(this.props.trip.state);
         this.paided = <span style={{color:"#28a745"}}>Paid <FontAwesomeIcon icon="check-circle"/></span>
-        this.buttonToPay = <Button className="submit" onClick={price => this.props.funcToPay(this.state.enroll.trip.deposit,this)}>Pay deposit <FontAwesomeIcon icon={"money-bill-alt"}/></Button>;
+        this.buttonToPay = <Button className="submit" onClick={price => this.props.funcToPay(this.state.enroll,this)}>Pay deposit <FontAwesomeIcon icon={"money-bill-alt"}/></Button>;
         this.notPaided = <span style={{color:"#ce3131"}}>Not paid <FontAwesomeIcon icon="minus-circle"/></span>
-        this.actionElement = <Button className="cancel" onClick={event => this.props.funcToCancel(this)} style={{float:"right"}}>Cancel<FontAwesomeIcon icon={"trash-alt"}/></Button>;
+        this.actionElement = <Button className="cancel" onClick={event => this.props.funcToCancel(this,this.state.enroll)} style={{float:"right"}}>Cancel<FontAwesomeIcon icon={"trash-alt"}/></Button>;
         if  (this.state.enroll == null){
             return "null";
         }else{
-            console.log(this.state);
+            //console.log(this.state);
             return (
                 <Card className="mb-3 userTrip window radius">
                     <Card.Body className="d-flex flex-row">
