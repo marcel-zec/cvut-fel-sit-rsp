@@ -215,4 +215,11 @@ public class EnrollmentService {
         enrollment.setState(EnrollmentState.CANCELED);
         enrollmentDao.update(enrollment);
     }
+
+    @Transactional
+    public void changePaymnet(Long id) {
+        Enrollment enrollment = find(id);
+        enrollment.setDeposit_was_paid(!enrollment.isDeposit_was_paid());
+        enrollmentDao.update(enrollment);
+    }
 }
