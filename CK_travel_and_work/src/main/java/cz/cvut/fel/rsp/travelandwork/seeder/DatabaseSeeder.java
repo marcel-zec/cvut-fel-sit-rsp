@@ -116,6 +116,7 @@ public class DatabaseSeeder implements
             Enrollment enrollment = author.getTravel_journal().getEnrollments().get(0);
             TripReview tripReview = new TripReview("Really good trip, love it <3", LocalDateTime.now(), 5, author, enrollment.getTrip(),enrollment);
             tripReviewDao.persist(tripReview);
+            updateTripRating(tripReview.getTrip(), tripReview.getRating());
         }
 
         //2.tripReview from Milan
@@ -124,6 +125,7 @@ public class DatabaseSeeder implements
             Enrollment enrollment = author.getTravel_journal().getEnrollments().get(1);
             TripReview tripReview = new TripReview("it was good, but the whether was really bad :( ", LocalDateTime.now(), 3, author, enrollment.getTrip(),enrollment);
             tripReviewDao.persist(tripReview);
+            updateTripRating(tripReview.getTrip(), tripReview.getRating());
         }
 
         //3.tripReview from Jan
@@ -132,6 +134,7 @@ public class DatabaseSeeder implements
             Enrollment enrollment = author.getTravel_journal().getEnrollments().get(0);
             TripReview tripReview = new TripReview("it was the best trip of my entire life! Don't be afraid to enrol ;) ", LocalDateTime.now(), 3, author, enrollment.getTrip(),enrollment);
             tripReviewDao.persist(tripReview);
+            updateTripRating(tripReview.getTrip(), tripReview.getRating());
         }
     }
 
@@ -680,5 +683,18 @@ public class DatabaseSeeder implements
         enrollment.setTravelJournal(user.getTravel_journal());
 
         return enrollment;
+    }
+
+    private void updateTripRating(Trip trip, double rating) {
+        long noReviews;
+        if(trip.getTripReviews() == null) {
+            noReviews = 1;
+        }
+        else {
+            noReviews = trip.getTripReviews().size();
+        }
+        double currentRating = trip.getRating();
+        trip.setRating((currentRating*(noReviews) + rating)/(noReviews+1));
+        tripDao.update(trip);
     }
 }

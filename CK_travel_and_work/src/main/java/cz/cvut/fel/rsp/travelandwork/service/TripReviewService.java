@@ -8,6 +8,7 @@ import cz.cvut.fel.rsp.travelandwork.exception.NotAllowedException;
 import cz.cvut.fel.rsp.travelandwork.exception.NotFoundException;
 import cz.cvut.fel.rsp.travelandwork.exception.UnauthorizedException;
 import cz.cvut.fel.rsp.travelandwork.model.Enrollment;
+import cz.cvut.fel.rsp.travelandwork.model.Trip;
 import cz.cvut.fel.rsp.travelandwork.model.TripReview;
 import cz.cvut.fel.rsp.travelandwork.model.TripSession;
 import cz.cvut.fel.rsp.travelandwork.security.SecurityUtils;
@@ -58,11 +59,29 @@ public class TripReviewService {
         tripReview.setAuthor(SecurityUtils.getCurrentUser());
         tripReview.setEnrollment(enrollment);
         tripReviewDao.persist(tripReview);
+
+        Trip trip = enrollment.getTrip();
+        long noReviews = trip.getTripReviews().size();
+        double currentRating = trip.getRating();
+        trip.setRating((currentRating*(noReviews-1) + tripReview.getRating())/noReviews);
+        tripDao.update(trip);
     }
 
     @Transactional
     public void update(TripReview tripReview) {
         Objects.requireNonNull(tripReview);
+
+        TripReview old = tripReviewDao.find(tripReview.getId());
+        double oldRating = old.getRating();
+        double newRating = tripReview.getRating();
+
+        Trip trip = old.getTrip();
+        double currentRating = trip.getRating();
+        long noReviews = trip.getTripReviews().size();
+
+        trip.setRating((currentRating*(noReviews) + newRating - oldRating)/noReviews);
+
+        tripDao.update(trip);
         tripReviewDao.update(tripReview);
     }
 }
