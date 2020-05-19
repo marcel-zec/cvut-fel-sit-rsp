@@ -6,13 +6,24 @@ import TripHistory from "./TripHistory";
 import ActiveTrips from "./ActiveTrips";
 import Spinner from "react-bootstrap/Spinner";
 import { appContext } from "../../../appContext";
+import { withRouter } from "react-router-dom";
 
 class ProfileTrips extends Profile {
-    state = { user: null, active_trips: null, archive_trips: null };
+    state = {
+        user: null,
+        active_trips: null,
+        archive_trips: null,
+        refresh: false,
+    };
 
     static contextType = appContext;
 
     async componentDidMount() {
+        await this.fetchData();
+        this.setState({ user: this.context.user });
+    }
+
+    fetchData = async () => {
         await fetch("http://localhost:8080/enrollment/complete", {
             method: "GET",
             mode: "cors",
@@ -52,12 +63,18 @@ class ProfileTrips extends Profile {
             .catch((error) => {
                 console.error(error);
             });
+    };
 
-        this.setState({ user: this.context.user });
+    async componentDidUpdate() {
+        if (this.state.refresh) {
+            await this.setState({ refresh: false, archive_trips: null });
+            await this.fetchData();
+        }
     }
 
-    refreshComponent = () => {
-        this.setState(this.state);
+    refreshComponent = async () => {
+        console.log("refreeeesh");
+        await this.setState({ refresh: true });
     };
 
     paymentForm = null;
@@ -66,7 +83,7 @@ class ProfileTrips extends Profile {
         this.setState({ paymentForm: null });
         this.setState({ viewForm: false });
     }
-    cancelTrip(props,enrollment) {
+    cancelTrip(props, enrollment) {
         console.log(enrollment);
         console.log("rusim");
         setTimeout(
@@ -75,19 +92,22 @@ class ProfileTrips extends Profile {
                 console.log(props);
                 this.closeValidateWindow();
                 //TODO:UPDATE BACKEND
-                fetch("http://localhost:8080/enrollment/cancel/" + enrollment.id, {
-                    method: "POST",
-                    mode: "cors",
-                    credentials: "include",
-                    headers: {
-                        "Content-Type": "application/json",
+                fetch(
+                    "http://localhost:8080/enrollment/cancel/" + enrollment.id,
+                    {
+                        method: "POST",
+                        mode: "cors",
+                        credentials: "include",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
                     }
-                }).then((response) => {
+                ).then((response) => {
                     if (response.ok) {
                         window.setTimeout(function () {
                             alert("Trip was cancelled");
                         }, 500);
-                    }else{
+                    } else {
                         alert("Error witch cancel enrollment");
                     }
                 });
@@ -107,36 +127,40 @@ class ProfileTrips extends Profile {
         document.querySelector(".archiveTrips").classList.add("active");
         document.querySelector(".activeTrips").classList.remove("active");
     }
-    payDeposit(state,enrollment) {
+    payDeposit(state, enrollment) {
         console.log(enrollment);
         console.log("PLATIS !!!");
         console.log(state);
         setTimeout(function () {
             state.setState({ deposit_was_paid: true });
             //TODO:UPDATE BACKEND
-            fetch("http://localhost:8080/enrollment/changePayment/" + enrollment.id, {
+            fetch(
+                "http://localhost:8080/enrollment/changePayment/" +
+                    enrollment.id,
+                {
                     method: "POST",
                     mode: "cors",
                     credentials: "include",
                     headers: {
                         "Content-Type": "application/json",
-                    }
-                }).then((response) => {
-                    if (response.ok) {
-                        window.setTimeout(function () {
-                            alert("Trip was sucessfuly paid");
-                        }, 500);
-                    }else{
-                        alert("Error with paying");
-                    }
-                });
+                    },
+                }
+            ).then((response) => {
+                if (response.ok) {
+                    window.setTimeout(function () {
+                        alert("Trip was sucessfuly paid");
+                    }, 500);
+                } else {
+                    alert("Error with paying");
+                }
+            });
         }, 1000);
         this.component.closeValidateWindow();
     }
     openPayWindow(enrollment, trip) {
         console.log(this);
         const popup = document.querySelector(".popup_background");
-        
+
         popup.classList.remove("hidden");
         this.component.paymentForm = (
             <ConfirmPayment
@@ -150,14 +174,18 @@ class ProfileTrips extends Profile {
         );
         this.component.setState({ viewForm: true });
     }
-    openCancelWindow(trip,enrollment) {
+    openCancelWindow(trip, enrollment) {
         console.log(this);
-        console.log(enrollment)
+        console.log(enrollment);
         const popup = document.querySelector(".popup_background");
         console.log(trip);
         popup.classList.remove("hidden");
         this.component.paymentForm = (
-            <CancelTripForm state={trip} enrollment={enrollment} component={this.component} />
+            <CancelTripForm
+                state={trip}
+                enrollment={enrollment}
+                component={this.component}
+            />
         );
         this.component.setState({ viewForm: true });
     }
@@ -169,7 +197,7 @@ class ProfileTrips extends Profile {
     }
     renderActiveTrip(activetrips) {
         return activetrips
-            .sort(function(a, b) {
+            .sort(function (a, b) {
                 return parseFloat(a.id) - parseFloat(b.id);
             })
             .slice(0)
@@ -187,7 +215,7 @@ class ProfileTrips extends Profile {
     }
     renderArchiveTrip(archiveTrips) {
         return archiveTrips
-            .sort(function(a, b) {
+            .sort(function (a, b) {
                 return parseFloat(a.id) - parseFloat(b.id);
             })
             .slice(0)
@@ -263,7 +291,9 @@ function ConfirmPayment(props) {
             <div>
                 <Button
                     className="submit"
-                    onClick={(event) => props.payFunc(props.state,props.enrollment)}
+                    onClick={(event) =>
+                        props.payFunc(props.state, props.enrollment)
+                    }
                 >
                     Yes
                 </Button>
@@ -288,7 +318,12 @@ function CancelTripForm(props) {
             <div>
                 <Button
                     className="submit"
-                    onClick={(event) => props.component.cancelTrip(props.state,props.enrollment)}
+                    onClick={(event) =>
+                        props.component.cancelTrip(
+                            props.state,
+                            props.enrollment
+                        )
+                    }
                 >
                     Yes
                 </Button>
@@ -302,4 +337,4 @@ function CancelTripForm(props) {
         </div>
     );
 }
-export default ProfileTrips;
+export default withRouter(ProfileTrips);
