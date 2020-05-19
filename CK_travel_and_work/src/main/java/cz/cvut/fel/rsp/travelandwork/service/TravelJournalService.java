@@ -33,9 +33,11 @@ public class TravelJournalService {
 
         TravelJournal travelJournal = dao.find(travelJournalId);
         Trip trip = tripDao.find(tripId);
-        Category category =categoryDao.find(trip.getCategory().getId());
+        Category category = categoryDao.find(trip.getCategory().getId());
 
-        travelJournal.addTrip(category);
+        System.out.println("ADDING TRIP" + category.getName());
+
+        travelJournal.addTrip(trip.getCategory().getId());
         dao.update(travelJournal);
         checkCategorizedAchievements(trip.getCategory(), travelJournal);
     }
@@ -68,7 +70,7 @@ public class TravelJournalService {
     //this should be used after finalizing/closing the enrollment and adding new trip to hashmap in travel journal
     @Transactional
     public void checkCategorizedAchievements(Category category, TravelJournal currentTravelJournal) {
-        int numberOfTripsInCat = currentTravelJournal.findAndGetCategoryValueIfExists(category);
+        int numberOfTripsInCat = currentTravelJournal.findAndGetCategoryValueIfExists(category.getId());
         List<AchievementCategorized> categorizedAchievements = achievementCategorizedService.findAllInCategory(category);
         List<AchievementCategorized> ownedAchievements = currentTravelJournal.getEarnedAchievementsCategorized();
 

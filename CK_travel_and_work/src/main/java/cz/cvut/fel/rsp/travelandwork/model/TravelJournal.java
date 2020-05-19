@@ -16,7 +16,7 @@ public class TravelJournal extends AbstractEntity{
 
     //@Basic(optional = false)
     @Column(nullable = false)
-    private HashMap<Category, Integer> trip_counter;
+    private HashMap<Long, Integer> trip_counter;
 
     @JsonIgnore
     @OneToOne(mappedBy = "travel_journal")
@@ -35,7 +35,7 @@ public class TravelJournal extends AbstractEntity{
     private List<Enrollment> enrollments;
 
     public TravelJournal() {
-        this.trip_counter = new HashMap<Category,Integer>();
+        this.trip_counter = new HashMap<Long,Integer>();
         this.enrollments = new ArrayList<Enrollment>();
         this.earnedAchievementsCategorized = new ArrayList<AchievementCategorized>();
         this.earnedAchievementsSpecial = new ArrayList<AchievementSpecial>();
@@ -44,7 +44,7 @@ public class TravelJournal extends AbstractEntity{
 
     public TravelJournal(User user) {
         this.user = user;
-        this.trip_counter = new HashMap<Category,Integer>();
+        this.trip_counter = new HashMap<Long,Integer>();
         this.enrollments = new ArrayList<Enrollment>();
         this.earnedAchievementsCategorized = new ArrayList<AchievementCategorized>();
         this.earnedAchievementsSpecial = new ArrayList<AchievementSpecial>();
@@ -56,7 +56,7 @@ public class TravelJournal extends AbstractEntity{
         return xp_count;
     }
 
-    public HashMap<Category, Integer> getTrip_counter() {
+    public HashMap<Long, Integer> getTrip_counter() {
         return trip_counter;
     }
 
@@ -68,7 +68,7 @@ public class TravelJournal extends AbstractEntity{
         this.xp_count = xp_count;
     }
 
-    public void setTrip_counter(HashMap<Category, Integer> trip_counter) {
+    public void setTrip_counter(HashMap<Long, Integer> trip_counter) {
         this.trip_counter = trip_counter;
     }
 
@@ -148,22 +148,23 @@ public class TravelJournal extends AbstractEntity{
      * If travel journal already contains the category, adds one more.
      * If doesn't, adds a new category counted with one trip in there.
      */
-    public void addTrip(Category category){
+    public void addTrip(Long category){
         int actualValue = findAndGetCategoryValueIfExists(category);
         if(actualValue != -1) {
-            actualValue++;
-            this.trip_counter.put(category, actualValue);
+            this.trip_counter.put(category, trip_counter.get(category).intValue() + 1);
+            System.out.println("||||ACTUAL COUNTER OF TRIPS :" + findAndGetCategoryValueIfExists(category));
         }
         else{
             this.trip_counter.put(category, 1);
+            System.out.println("||||Adding COUNTER OF TRIPS :" + findAndGetCategoryValueIfExists(category));
         }
     }
 
     //if it has to be private we can copy it, but it would be great to have this accesible in services
-    public int findAndGetCategoryValueIfExists(Category category){
-        for (Category key: this.trip_counter.keySet()) {
+    public int findAndGetCategoryValueIfExists(Long category){
+        for (Long key: this.trip_counter.keySet()) {
             if(key.equals(category)){
-                return this.trip_counter.get(key);
+                return this.trip_counter.get(key).intValue();
             }
         }
         return -1;

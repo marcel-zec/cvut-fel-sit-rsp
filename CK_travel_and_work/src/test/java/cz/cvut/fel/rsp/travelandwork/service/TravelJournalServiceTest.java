@@ -58,10 +58,10 @@ public class TravelJournalServiceTest {
         tripService.create(trip);
 
         travelJournal = new TravelJournal(user);
-        travelJournal.addTrip(trip.getCategory());
+        travelJournal.addTrip(trip.getCategory().getId());
         travelJournal.setXp_count(5);
 
-        travelJournal.setTrip_counter(new HashMap<Category,Integer>(){{put(category,1);}});
+        travelJournal.setTrip_counter(new HashMap<Long,Integer>(){{put(category.getId(),1);}});
     }
 
     @Test

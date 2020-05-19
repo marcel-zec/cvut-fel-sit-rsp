@@ -1,5 +1,6 @@
 package cz.cvut.fel.rsp.travelandwork.service;
 
+import cz.cvut.fel.rsp.travelandwork.dao.CategoryDao;
 import cz.cvut.fel.rsp.travelandwork.dao.TravelJournalDao;
 import cz.cvut.fel.rsp.travelandwork.dao.TripDao;
 import cz.cvut.fel.rsp.travelandwork.dto.*;
@@ -13,10 +14,12 @@ import java.util.*;
 public class TranslateService {
     private final TravelJournalDao travelJournalDao;
     private final TripDao tripDao;
+    private final CategoryDao categoryDao;
 
-    public TranslateService(TravelJournalDao travelJournalDao, TripDao tripDao) {
+    public TranslateService(TravelJournalDao travelJournalDao, TripDao tripDao, CategoryDao categoryDao) {
         this.travelJournalDao = travelJournalDao;
         this.tripDao = tripDao;
+        this.categoryDao = categoryDao;
     }
 
     @Transactional
@@ -132,7 +135,8 @@ public class TranslateService {
         HashMap<CategoryDto, Integer> trip_counter= new HashMap<CategoryDto, Integer>();
         TravelJournal travelJournal1 = travelJournalDao.find(travelJournal.getId());
 
-        for (Category category : travelJournal1.getTrip_counter().keySet()) {
+        for (Long categoryID : travelJournal1.getTrip_counter().keySet()) {
+            Category category = categoryDao.find(categoryID);
             CategoryDto categoryDto= translateCategory(category);
             trip_counter.put(categoryDto,travelJournal.getTrip_counter().get(category));
         }
