@@ -11,7 +11,7 @@ Webová stránka pre cestovnú kanceláriu, ktorá ponúka pracovno-rekreačné 
 ##### RIEŠENIE
 Uživateľské rozhranie je single page aplikácia napísaná v JavaScript frameworku **ReactJS**, napojená na REST API napísané v jazyku Java s pomocou frameworku SpringBoot. 
 #### MOJA PRÁCA
-Vývoj single page aplikácia v ReactJS ~ 70-80% kódu.
+Vývoj single page aplikácia v ReactJS ~ [70-80% kódu](https://github.com/marcel-zec/cvut-fel-sit-rsp/tree/develop/FrontEnd/travel-and-work-app).
 
 
 # English
@@ -30,4 +30,4 @@ Web page for travel agency that offer work and travel trips.
 ##### SOLUTION
 User interface is single page application written in JavaScript framework **ReactJS**, it gets data from REST API written in Java with help of SpringBoot framework.
 #### MY JOB
-Develop single page application in ReactJS ~ 70-80% of code.
+Develop single page application in ReactJS ~ [70-80% of code](https://github.com/marcel-zec/cvut-fel-sit-rsp/tree/develop/FrontEnd/travel-and-work-app).
